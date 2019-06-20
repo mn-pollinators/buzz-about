@@ -27,6 +27,7 @@
     "jsartoolkit5": "0.0.4",
     "material-components-web": "^2.3.1",
     "rxjs": "~6.4.0",
+    "three": "^0.105.2",
     "threex": "^1.0.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
