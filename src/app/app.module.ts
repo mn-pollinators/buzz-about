@@ -6,6 +6,24 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
+import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
+
+import {
+  MdcButtonModule,
+  MdcFabModule,
+  MdcIconModule,
+  MdcMenuModule
+} from '@angular-mdc/web';
+
+const MDC_MODULES: any[] = [
+  MdcButtonModule,
+  MdcFabModule,
+  MdcIconModule,
+  MdcMenuModule,
+];
+
 @NgModule({
   declarations: [
     AppComponent
@@ -13,7 +31,11 @@ import { environment } from '../environments/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    HttpClientModule,
+    FlexLayoutModule,
+    FormsModule,
+    MDC_MODULES,
   ],
   providers: [],
   bootstrap: [AppComponent]
