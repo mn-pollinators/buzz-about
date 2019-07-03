@@ -1,51 +1,8 @@
-<!--    OUR REPO IMPLEMENTATION    -->
-
-<!-- <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
-	<a-marker id='round-change-marker' type='barcode' value='2'>
-		<a-image id="round-change-a-image" position="0 0 0" rotation="-90 0 0" width="" height="" opacity="1" src="assets/flower.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
-	</a-marker>
-	<a-entity camera></a-entity>
-</a-scene> -->
-
-<!-- OUT OF THE BOX HIRO -->
-<!-- <a-scene embedded arjs>
-  <a-marker preset="hiro">
-      <a-box position='0 0 0' material='color: green;'></a-box>
-  </a-marker>
-  <a-entity camera></a-entity>
-</a-scene> -->
-
-<!-- WORKIN HIRO EXAMPLE BOX -->
-<!-- <a-scene embedded arjs>
-  <a-marker-camera preset='hiro'>
-    <a-box position='0 0.5 0' material='opacity: 1.0;' material='color: yellow;'></a-box>
-  </a-marker-camera>
-</a-scene> -->
-
-<!-- <a-scene embedded arjs>
-  <a-marker-camera preset='hiro'>
-    <a-image id="round-change-a-image" position="0 1 0" rotation="-90 0 0" width="" height="" opacity="1" src="assets/apis.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
-  </a-marker-camera>
-</a-scene> -->
-
 <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false'>
   <a-marker-camera preset='hiro'>
     <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/apis.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
   </a-marker-camera>
 </a-scene>
-
-<!-- <mdc-top-app-bar short #topbar>
-  <mdc-top-app-bar-row>
-    <mdc-top-app-bar-section align="start" title="AR Simulation">
-      <button mdcTopAppBarNavIcon>
-        <mdc-icon>menu</mdc-icon>
-      </button>
-    </mdc-top-app-bar-section>
-    <mdc-top-app-bar-section align="end">
-      <mdc-icon mdcTopAppBarActionItem>help_outline</mdc-icon>
-    </mdc-top-app-bar-section>
-  </mdc-top-app-bar-row>
-</mdc-top-app-bar> -->
 
 <button mdc-button raised [className]="example-class" (click)="atts.height = 0">test</button>
 
@@ -53,9 +10,3 @@
   <mdc-icon>edit</mdc-icon>
 </button>
 
-<router-outlet></router-outlet>
-<!-- <a-scene embedded arjs>
-  <a-marker-camera type='barcode' value='2'>
-    <a-image id="round-change-a-image" position="0 0 0" rotation="-90 0 0" width="" height="" opacity="1" src="assets/flower.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
-  </a-marker-camera>
-</a-scene> -->
