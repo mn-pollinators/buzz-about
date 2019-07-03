@@ -12,10 +12,7 @@ export class AppComponent {
   collapseBar: boolean = false;
 
   atts = {
-    'height': 3
+    'height': 3,
+    'imgs': ['apis.png','flower.png']
   }
-
 }
-
-
-
