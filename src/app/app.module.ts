@@ -10,6 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+import { AframePipeModule } from 'angular-aframe-pipe';
+
 import {
   MdcButtonModule,
   MdcFabModule,
@@ -38,8 +42,10 @@ const MDC_MODULES: any[] = [
     FlexLayoutModule,
     FormsModule,
     MDC_MODULES,
+    AframePipeModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }
