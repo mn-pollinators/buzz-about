@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,11 @@ export class AppComponent {
 
   collapseBar: boolean = false;
 
+  atts = {
+    'height': 3
+  }
+
 }
+
+
+
