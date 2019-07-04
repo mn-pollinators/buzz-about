@@ -1,14 +1,15 @@
 <!-- TODO: AFRAME DATA BINDING: https://github.com/aframevr/aframe/issues/2518#issuecomment-289450266 -->
 
+<div [ngClass]="'gui-buttons'">
+  <button id="clickable" mdc-button raised (click)="atts.height = 0">test</button>
+    
+  <button mdc-fab >
+    <mdc-icon>edit</mdc-icon>
+  </button>
+</div>
+
 <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false'>
   <a-marker-camera preset='hiro'>
-    <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/apis.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
+    <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/flower.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
   </a-marker-camera>
 </a-scene>
-
-<button mdc-button raised [className]="example-class" (click)="atts.height = 0">test</button>
-
-<button mdc-fab [className]="example-class">
-  <mdc-icon>edit</mdc-icon>
-</button>
-

@@ -1,5 +1,7 @@
-.example-class {
-    z-index: 500;
-    top: 50%;
-    right: 5%;
+.gui-buttons {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    z-index: 1;
 }
