@@ -45,3 +45,7 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode/settings.json
+src/js/aframe.js
+src/js/aframe.min.js
+src/js/aframe-ar.min.js
+src/js/aframe-ar.js
