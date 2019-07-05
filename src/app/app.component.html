@@ -5,8 +5,13 @@
   <button id="imgPos0" mdc-button raised (click)="atts.height = 1">img.pos=1</button>
 </div>
 
-<a-scene embedded vr-mode-ui="enabled: false" arjs='sourceType: webcam; debugUIEnabled: false'>
-  <a-marker-camera preset='hiro'>
-    <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/flower.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
-  </a-marker-camera>
+<a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false' vr-mode-ui="enabled: false">
+  <a-camera>
+    <a-marker preset="hiro">
+      <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/flower.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
+    </a-marker>
+    <a-marker preset="kanji">
+      <a-image id="round-change-a-image" [attr.position]="{x: 0, y: atts.height, z: 0} | aframe" rotation="-90 0 0" width="" height="" opacity="1" src="assets/apis.png" transparent="true" alpha-test="0.2" shader="standard" scale="1 1 1" visible="" material="" geometry=""></a-image>
+    </a-marker>
+  </a-camera>
 </a-scene>
