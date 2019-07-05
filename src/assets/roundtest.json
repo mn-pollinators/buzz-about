@@ -1,0 +1,14 @@
+{
+    "markers": [
+        {
+            "id": 1,
+            "position": "0 0 0",
+            "src": "assets/flower.png"
+        },
+        {
+            "id": 2,
+            "position": "0 0 0",
+            "src": "assets/apis.png"
+        }
+    ]
+}
