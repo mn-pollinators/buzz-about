@@ -10,18 +10,6 @@ import JSON from 'src/assets/roundtest.json';
 export class AppComponent {
   title = 'ar-simulation';
 
-  collapseBar: boolean = false;
-
-  constructor() {
-    console.log('Reading local json files');
-    console.log(JSON);
-   }
-
-  atts = {
-    'height': 3,
-    'imgs': ['apis.png','flower.png']
-  }
-
   ngAfterViewInit(): void { //Thanks to HeinPauwelyn @ https://github.com/aframevr/aframe/issues/2518#issuecomment-289450266
 
     for (let i: number = JSON.markers.length; i--;) {
@@ -34,5 +22,5 @@ export class AppComponent {
         el.setAttribute("rotation", image.rotation);
         el.setAttribute("scale", image.scale);
     }
-}
+  }
 }
