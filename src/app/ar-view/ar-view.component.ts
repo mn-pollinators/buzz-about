@@ -48,12 +48,12 @@ export class ArViewComponent implements OnInit {
   deltaTime: number;
   totalTime: number;
 
-  arToolkitSource: any;
-  arToolkitContext: any;
+  arToolkitSource: any; //from ar.js
+  arToolkitContext: any; //from ar.js
 
   markerControls: any[];
 
-  constructor(arService : ArService) {
+  constructor() {
 
     this.markerControls = [];
 
