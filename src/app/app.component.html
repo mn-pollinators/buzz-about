@@ -1,11 +1,15 @@
-<a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false' vr-mode-ui="enabled: false">
+<a-scene embedded arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; debugUIEnabled: false;'>
   <a-camera>
 
     <a-marker preset="hiro">
       <a-image id="1"></a-image>
     </a-marker>
     
-    <a-marker preset="kanji">
+    <!-- <a-marker preset="kanji">
+      <a-image id="2"></a-image>
+    </a-marker> -->
+
+    <a-marker type='barcode' value='42'>
       <a-image id="2"></a-image>
     </a-marker>
 
