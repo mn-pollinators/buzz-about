@@ -1,3 +1,2 @@
-<p>
-  ar-view works!
-</p>
+<canvas #canvas (window:resize)="onResize($event)" click="canvasClick($event)"></canvas>
+<button (click)="this.testAddMarker()">test add marker</button>
