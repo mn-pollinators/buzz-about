@@ -17,6 +17,7 @@ import {
   MdcMenuModule,
   MdcTopAppBarModule
 } from '@angular-mdc/web';
+import { ArViewComponent } from './ar-view/ar-view.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -28,7 +29,8 @@ const MDC_MODULES: any[] = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ArViewComponent
   ],
   imports: [
     BrowserModule,
