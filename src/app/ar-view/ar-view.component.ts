@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { ArService } from '../ar.service';
 import * as THREE from 'three';
 
 //declare var THREE: any;
