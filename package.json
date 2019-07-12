@@ -24,12 +24,10 @@
     "@angular/pwa": "^0.800.3",
     "@angular/router": "~8.0.0",
     "@angular/service-worker": "~8.0.0",
-    "aframe": "^0.9.2",
     "angular-aframe-pipe": "^1.0.0",
     "jsartoolkit5": "0.0.4",
     "material-components-web": "^2.3.1",
     "rxjs": "~6.4.0",
-    "threex": "^1.0.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
