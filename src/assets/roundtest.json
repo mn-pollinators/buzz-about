@@ -1,14 +1,14 @@
 {
     "markers": [
         {
-            "id": 2,
+            "id": 0,
             "position": "0 0 0",
             "src": "assets/apis.png",
             "rotation": "-90 0 0",
             "scale": "1 1 1"
         },
         {
-            "id": 42,
+            "id": 1,
             "position": "0 0 0",
             "src": "assets/flower.png",
             "rotation": "-90 0 0",
