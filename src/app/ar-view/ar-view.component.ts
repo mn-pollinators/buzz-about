@@ -2,10 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 
-//declare var THREE: any;
-//declare var THREEx: any;
-
-
 @Component({
   selector: 'app-ar-view',
   templateUrl: './ar-view.component.html',
@@ -13,32 +9,24 @@ import * as THREEAR from 'threear';
 })
 export class ArViewComponent implements OnInit {
   
-  @Input() markers: {id: string, barcodeValue: string, img: string}[];
+  @Input() markers: {id: string, barcodeValue: number, imgPath: string}[];
   @Output() markerFound = new EventEmitter<boolean>();
   
   //https://github.com/stemkoski/AR-Examples/blob/master/texture.html
+  //https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
   
-  //var scene, camera, renderer, clock, deltaTime, totalTime;
   scene: THREE.Scene;
   camera: THREE.Camera;
   renderer: THREE.WebGLRenderer;
   clock: THREE.Clock;
   deltaTime: number;
   totalTime: number;
-  //markerGroup: THREE.Group;
   source: THREEAR.Source;
   
   controller: THREEAR.Controller;
   
   
-  //arToolkitSource: any; //from ar.js
-  //arToolkitContext: any; //from ar.js
-  
-  markerControls: any[];
-  
   constructor() {
-    
-    this.markerControls = [];
     
   }
   
@@ -74,12 +62,8 @@ export class ArViewComponent implements OnInit {
       canvas: this.canvas
     });
     
-    //this.renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+    this.renderer.setClearColor(new THREE.Color('lightgrey'), 0)
     this.renderer.setSize( 640, 480 ); //TODO: resize to entire component size
-    //this.renderer.domElement.style.position = 'absolute'
-    //this.renderer.domElement.style.top = '0px'
-    //this.renderer.domElement.style.left = '0px'
-    //document.body.appendChild( this.renderer.domElement );
     
     
     
@@ -98,15 +82,6 @@ export class ArViewComponent implements OnInit {
       
     }
     
-    setupAREvents() {
-      window.addEventListener('markerFound', () => {
-        console.log('markerFound');
-      })
-    }
-    
-    onResize() {
-      console.log("onResize called");
-    }
     
     animate() {
       requestAnimationFrame(() => {this.animate();});
@@ -123,12 +98,11 @@ export class ArViewComponent implements OnInit {
     }
   
     ngAfterViewInit() {
-      this.initAR();
-      this.setupAREvents();
+      this.initAR(); 
     }
     
     
-    addMarker(barcodeID: number, imgPath: string) {
+    addMarker(barcodeValue: number, imgPath: string) {
 
       let markerGroup = new THREE.Group;
       this.scene.add(markerGroup);
@@ -144,7 +118,7 @@ export class ArViewComponent implements OnInit {
       markerGroup.add( mesh1 );
 
       let barcodeMarker = new THREEAR.BarcodeMarker({
-        barcodeValue: barcodeID,
+        barcodeValue: barcodeValue,
         markerObject: markerGroup,
         minConfidence: 0.2
       });
@@ -157,6 +131,11 @@ export class ArViewComponent implements OnInit {
       this.addMarker(2, "assets/icons/icon-512x512.png");
       this.addMarker(3, "assets/icons/icon-512x512.png");
     }
+
+    testButton() {
+      let test = this.controller.markers;
+      console.log(test);
+    }
     
     
     ngOnChanges() {
@@ -165,8 +144,7 @@ export class ArViewComponent implements OnInit {
     }
     
     ngOnDestroy() {
-      
-      
+      //TODO: make sure everything is cleaned up properly
     }
     
   }
