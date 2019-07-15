@@ -22,6 +22,8 @@ import {
   MdcTopAppBarModule
 } from '@angular-mdc/web';
 
+import { DynamicScriptLoaderService } from './DynamicScriptLoaderService';
+
 const MDC_MODULES: any[] = [
   MdcButtonModule,
   MdcFabModule,
@@ -44,7 +46,7 @@ const MDC_MODULES: any[] = [
     MDC_MODULES,
     AframePipeModule
   ],
-  providers: [],
+  providers: [DynamicScriptLoaderService],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
