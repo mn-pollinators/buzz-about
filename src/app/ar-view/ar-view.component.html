@@ -1,2 +1,4 @@
-<canvas #canvas (window:resize)="onResize($event)" click="canvasClick($event)"></canvas>
+<div #container>
+    <canvas #canvas (window:resize)="onResize($event)" click="canvasClick($event)"></canvas>
+</div>
 <button (click)="this.testAddMarker()">test add marker</button>
