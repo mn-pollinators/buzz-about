@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   JSON: any;
   public showContent: boolean = false;
-
+  
   constructor(private dynamicScriptLoader: DynamicScriptLoaderService) {}
 
   ngOnInit() {
@@ -21,13 +21,9 @@ export class AppComponent implements OnInit {
 
     window.addEventListener('load', (event) => {  //Thanks to this article: https://www.kirupa.com/html5/running_your_code_at_the_right_time.htm
       
-      for (let i: number = JSON.markers.length; i--;) { //Thanks to HeinPauwelyn @ https://github.com/aframevr/aframe/issues/2518#issuecomment-289450266
-        let image: any = JSON.markers[i],
-        el: any = document.getElementById(image.id); 
-        el.setAttribute("position", image.position); 
-        el.setAttribute("src", image.src);
-        el.setAttribute("rotation", image.rotation);
-        el.setAttribute("scale", image.scale);
+      for (let i: number = JSON.markers.length; i--;) {
+        let image: any = JSON.markers[i];
+        this.addMarker(image.id,image.src);
       }
     });
   }
@@ -37,5 +33,24 @@ export class AppComponent implements OnInit {
     this.dynamicScriptLoader.load('aframe','arjs').then(data => {
       this.showContent=true;
     }).catch(error => console.log(error));
+  }
+
+  private addMarker(value: string, imageSrc: string) {
+      
+    var sceneEl = document.querySelector('a-scene');
+
+    var newMarker = document.createElement('a-marker');
+    newMarker.setAttribute('id',value);
+    newMarker.setAttribute('type','barcode');
+    newMarker.setAttribute('value',value);
+    sceneEl.appendChild(newMarker);
+
+    var markerEl = document.getElementById(value);
+    var newImage = document.createElement('a-image');
+    newImage.setAttribute('position','0 0 0');
+    newImage.setAttribute('src',imageSrc);
+    newImage.setAttribute('rotation','-90 0 0');
+    newImage.setAttribute('scale','1 1 1');
+    markerEl.appendChild(newImage);
   }
 }
