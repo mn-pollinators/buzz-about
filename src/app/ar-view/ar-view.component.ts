@@ -36,7 +36,7 @@ export class ArViewComponent implements OnInit {
   
   @ViewChild('canvas', {static: true}) 
   private canvasRef: ElementRef;
-
+  
   private get container(): HTMLCanvasElement {
     return this.containerRef.nativeElement;
   }
@@ -44,42 +44,45 @@ export class ArViewComponent implements OnInit {
   @ViewChild('container', {static: true}) 
   private containerRef: ElementRef;
   
-  initAR() {
-
-    this.clock = new THREE.Clock();
-    this.deltaTime = 0;
-    this.totalTime = 0;
-
-    this.scene = new THREE.Scene();
-    let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 );
-    this.scene.add( ambientLight );
-    
-    this.camera = new THREE.Camera();
-    this.scene.add(this.camera);
-    this.renderer = new THREE.WebGLRenderer({
-      antialias : true,
-      alpha: true,
-      canvas: this.canvas
-    });
-    
-    this.renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-    this.renderer.setSize( 640, 480 ); //TODO: resize to entire component size
-    
-    
-    
-    this.source = new THREEAR.Source({parent: this.container, renderer: this.renderer, camera: this.camera});
-    
-    THREEAR.initialize(
-      {
-        source: this.source,
-        detectionMode: 'mono_and_matrix',
-        matrixCodeType: '3x3'
-      }
-      ).then((controller: THREEAR.Controller) => {
-        this.controller = controller;
-        this.animate();
-      })
+  initAR() : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.clock = new THREE.Clock();
+      this.deltaTime = 0;
+      this.totalTime = 0;
       
+      this.scene = new THREE.Scene();
+      let ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 );
+      this.scene.add( ambientLight );
+      
+      this.camera = new THREE.Camera();
+      this.scene.add(this.camera);
+      this.renderer = new THREE.WebGLRenderer({
+        antialias : true,
+        alpha: true,
+        canvas: this.canvas
+      });
+      
+      this.renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+      this.renderer.setSize( 640, 480 ); //TODO: resize to entire component size
+      
+      
+      
+      this.source = new THREEAR.Source({parent: this.container, renderer: this.renderer, camera: this.camera});
+      
+      THREEAR.initialize(
+        {
+          source: this.source,
+          detectionMode: 'mono_and_matrix',
+          matrixCodeType: '3x3'
+        }
+        ).then((controller: THREEAR.Controller) => {
+          this.controller = controller;
+          this.animate();
+          resolve();
+        }).catch(error => {
+          reject(error);
+        });
+      }) 
     }
     
     
@@ -87,26 +90,31 @@ export class ArViewComponent implements OnInit {
       requestAnimationFrame(() => {this.animate();});
       this.deltaTime = this.clock.getDelta();
       this.totalTime += this.deltaTime;
-
+      
       this.controller.update( this.source.domElement );
-          
+      
       this.renderer.render( this.scene, this.camera );
     }
-
+    
     
     ngOnInit() {
     }
-  
+    
     ngAfterViewInit() {
-      this.initAR(); 
+      this.initAR().then(() => {
+        for(var marker of this.markers) {
+          this.addMarker(marker.barcodeValue,marker.imgPath);
+        }
+        //do initial marker setup, probably also set a ready flag
+      });
     }
     
     
     addMarker(barcodeValue: number, imgPath: string) {
-
+      
       let markerGroup = new THREE.Group;
       this.scene.add(markerGroup);
-
+      
       let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
       let loader = new THREE.TextureLoader();
       let texture = loader.load(imgPath);
@@ -116,10 +124,11 @@ export class ArViewComponent implements OnInit {
       mesh1.rotation.x = -Math.PI/2;
       
       markerGroup.add( mesh1 );
-
+      
       let barcodeMarker = new THREEAR.BarcodeMarker({
         barcodeValue: barcodeValue,
         markerObject: markerGroup,
+        size: 1,
         minConfidence: 0.2
       });
       
@@ -131,7 +140,7 @@ export class ArViewComponent implements OnInit {
       this.addMarker(2, "assets/icons/icon-512x512.png");
       this.addMarker(3, "assets/icons/icon-512x512.png");
     }
-
+    
     testButton() {
       let test = this.controller.markers;
       console.log(test);
