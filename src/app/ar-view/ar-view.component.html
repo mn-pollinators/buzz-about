@@ -1,3 +1,9 @@
 <div #container class="ar-container">
     <canvas #canvas class="ar-canvas"></canvas>
 </div>
+<div *ngIf="this.arReady && this.debug" style="z-index: 5; color:white;margin-top: 100px;background: rgba(10, 13, 209, 0.3);width:fit-content;padding: 4px">
+    <span>ar ready</span>
+    <div *ngFor="let marker of this.controller.markers.barcode">
+        <span>barcode: {{marker.barcodeValue}} found: {{marker.found}}</span>
+    </div>
+</div>
