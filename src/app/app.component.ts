@@ -30,10 +30,12 @@ export class AppComponent implements OnInit {
 
    
   private loadScripts() {
-    this.dynamicScriptLoader.load('aframe','arjs').then(data => {
-      this.showContent=true;
+    this.dynamicScriptLoader.load('aframe').then(data => {
+      this.dynamicScriptLoader.load('arjs').then(data => {
+        this.showContent=true;
     }).catch(error => console.log(error));
-  }
+  }).catch(error => console.log(error));
+}
 
   private addMarker(value: string, imageSrc: string) {
       
