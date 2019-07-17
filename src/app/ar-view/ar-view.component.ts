@@ -84,12 +84,13 @@ export class ArViewComponent implements OnInit {
 
       this.arReady = true;
 
+      this.setupEvents();
+
       //loop through markers provided to the component
       for(var marker of this.markers) {
         //add each marker
         this.addMarker(marker.barcodeValue,marker.imgPath);
-
-        this.setupEvents();
+        
       }
       //do initial marker setup, probably also set a ready flag
     });
@@ -258,19 +259,7 @@ export class ArViewComponent implements OnInit {
       })
     }
     
-
-    testAddMarker() {
-      this.addMarker(1, "assets/icons/icon-512x512.png");
-      this.addMarker(2, "assets/icons/icon-512x512.png");
-      this.addMarker(3, "assets/icons/icon-512x512.png");
-    }
-    
-    testButton() {
-      let test = this.controller.markers;
-      console.log(test);
-    }
-    
-    
+ 
     ngOnChanges() {
       
       
