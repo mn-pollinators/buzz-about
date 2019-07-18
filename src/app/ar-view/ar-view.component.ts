@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, SimpleChanges, SimpleChange, SystemJsNgModuleLoader } from '@angular/core';
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 
@@ -35,7 +35,7 @@ export class ArViewComponent implements OnInit {
   /**
    * Outputs an event whenever a marker is found.
    */
-  @Output() markerStates = new EventEmitter<MarkerState[]>();
+  @Output() onMarkerStates = new EventEmitter<MarkerState[]>();
   
   //https://github.com/stemkoski/AR-Examples/blob/master/texture.html
   //https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
@@ -86,12 +86,7 @@ export class ArViewComponent implements OnInit {
 
       this.setupEvents();
 
-      //loop through markers provided to the component
-      for(var marker of this.markers) {
-        //add each marker
-        this.addMarker(marker.barcodeValue,marker.imgPath);
-        
-      }
+      this.markers.forEach((marker) => this.addMarker(marker));
       //do initial marker setup, probably also set a ready flag
     });
   }
@@ -101,7 +96,7 @@ export class ArViewComponent implements OnInit {
    * Setup the canvas, camera, and basic AR library
    * @returns a promise that resolves when AR is ready.
    */
-  initAR() : Promise<any> {
+  private initAR() : Promise<any> {
     return new Promise((resolve, reject) => {
       this.clock = new THREE.Clock(); //setup the clock for keeping track of frametimes
       
@@ -192,7 +187,7 @@ export class ArViewComponent implements OnInit {
     /**
      * Animation and AR updating loop
      */
-    animate() {
+    private animate() {
       //Setup the next call
       requestAnimationFrame(() => {this.animate();});
 
@@ -212,7 +207,7 @@ export class ArViewComponent implements OnInit {
      * @param barcodeValue the number of the barcode for the marker
      * @param imgPath the path to the image to display for the marker
      */
-    addMarker(barcodeValue: number, imgPath: string) {
+    public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
       
       //Setup the three group for this marker
       let markerGroup = new THREE.Group;
@@ -224,7 +219,7 @@ export class ArViewComponent implements OnInit {
 
       //Create the basic image texture
       let loader = new THREE.TextureLoader();
-      let texture = loader.load(imgPath);
+      let texture = loader.load(marker.imgPath);
       let material1 = new THREE.MeshBasicMaterial( { map: texture } );
       
       //create a mesh of the image texture on the geometry
@@ -238,30 +233,81 @@ export class ArViewComponent implements OnInit {
       
       //Create the THREEAR BarcodeMarker object for this marker
       let barcodeMarker = new THREEAR.BarcodeMarker({
-        barcodeValue: barcodeValue,
+        barcodeValue: marker.barcodeValue,
         markerObject: markerGroup,
         size: 1,
         minConfidence: 0.2
       });
+
+      
       
       //Start tracking the marker
       this.controller.trackMarker(barcodeMarker);
+
+      if(this.debug) console.log(barcodeMarker);
+
+      return barcodeMarker;
     }
 
-    setupEvents() {
+    /**
+     * Sets up marker events
+     */
+    private setupEvents() {
       this.controller.addEventListener("markerFound", (event) => {
         //if (this.debug) console.log(event.marker);
-        this.markerStates.emit(this.controller.markers.barcode.map(barcode => <MarkerState>{barcodeValue: barcode.barcodeValue, found: barcode.found}));
+        this.onMarkerStates.emit(this.controller.markers.barcode.map(barcode => <MarkerState>{barcodeValue: barcode.barcodeValue, found: barcode.found}));
       })
       this.controller.addEventListener("markerLost", (event) => {
         //if (this.debug) console.log(event.marker);
-        this.markerStates.emit(this.controller.markers.barcode.map(barcode => <MarkerState>{barcodeValue: barcode.barcodeValue, found: barcode.found}));
+        this.onMarkerStates.emit(this.controller.markers.barcode.map(barcode => <MarkerState>{barcodeValue: barcode.barcodeValue, found: barcode.found}));
       })
     }
     
+    /**
+     * Updates existing markers or adds new ones based on a list of markers that have changed.
+     * @param changedMarkers 
+     */
+    private updateMarkers(changedMarkers: ARMarker[]) {
+
+      //Loop through changed markers
+      for(let changedMarker of changedMarkers) {
+
+        //Get the current marker with the same barcode value as the current changed marker if it exists
+        let oldMarker = this.controller.markers.barcode.find((value) =>
+        changedMarker.barcodeValue == value.barcodeValue);
+
+        //If there is already a marker for this ID
+        if (oldMarker) {
+          //Find the existing marker's mesh
+          let object = oldMarker.markerObject as THREE.Group;
+          let mesh = object.children[0] as THREE.Mesh
+          
+          //Replace the existing marker's texture with a new one from the changed image path.
+          let loader = new THREE.TextureLoader();
+          let texture = loader.load(changedMarker.imgPath);
+          let material = mesh.material as THREE.MeshBasicMaterial;
+          material.map = texture;
+          
+        } else {
+          //If there is not an existing marker for the ID, add a new one.
+          this.addMarker(changedMarker);
+        }
+      }
+    }
  
-    ngOnChanges() {
-      
+    ngOnChanges(changes: SimpleChanges) {
+      console.log(changes);
+      if(typeof changes['markers'] != "undefined" && this.arReady) {
+        let change = changes['markers'];
+        console.log(change);
+        if(!change.firstChange) {
+          let current = change.currentValue as ARMarker[];
+          let previous = change.previousValue as ARMarker[];
+          let diff = current.filter(m => !previous.includes(m));
+          if(this.debug) console.log(diff);
+          this.updateMarkers(diff);
+        }
+      }
       
     }
     
