@@ -1,0 +1,6 @@
+<div *ngIf="this.roundReady">
+  <button mdc-button raised (click)="this.round.interactButton.onClick()" *ngIf="this.round.interactButton && this.round.interactButton.display">{{this.round.interactButton.text}}</button>
+  <button mdc-button (click)="this.testMarkerChange()">test add marker</button>
+
+  <app-ar-view #arview [markers]="this.round.markers" [debug]="true" (onMarkerStates)="this.onMarkerState($event)"></app-ar-view>
+</div>

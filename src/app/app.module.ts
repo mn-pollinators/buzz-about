@@ -21,6 +21,8 @@ import {
   MdcMenuModule,
   MdcTopAppBarModule
 } from '@angular-mdc/web';
+import { ArViewComponent } from './ar-view/ar-view.component';
+import { PlayRoundComponent } from './play-round/play-round.component';
 
 import { DynamicScriptLoaderService } from './DynamicScriptLoaderService';
 
@@ -34,7 +36,9 @@ const MDC_MODULES: any[] = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ArViewComponent,
+    PlayRoundComponent
   ],
   imports: [
     BrowserModule,
