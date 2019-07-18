@@ -3,3 +3,13 @@ $mdc-theme-primary: #4CAF50; // primary color
 $mdc-theme-secondary: #FFC107; // secondary color
 
 @import "~@angular-mdc/theme/material";
+
+.debug {
+    margin-top: 60px;
+    div {
+        position: relative !important;
+        top: none !important;
+        left: none !important;
+    }
+
+}

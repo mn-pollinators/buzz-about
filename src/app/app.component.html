@@ -1,5 +1,5 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mdc-top-app-bar short #topbar>
+
+<mdc-top-app-bar fixed #topbar [scrollTarget]="mainContent">
   <mdc-top-app-bar-row>
     <mdc-top-app-bar-section align="start" title="AR Simulation">
       <button mdcTopAppBarNavIcon>
@@ -12,12 +12,6 @@
   </mdc-top-app-bar-row>
 </mdc-top-app-bar>
 
-<br><br>
-
-<button mdc-button raised (click)="topbar.setShortCollapsed(!topbar.isCollapsed(), true)">test</button>
-
-<button mdc-fab>
-  <mdc-icon>edit</mdc-icon>
-</button>
-
-<router-outlet></router-outlet>
+<div #mainContent class="main-content">
+  <router-outlet></router-outlet>
+</div>
