@@ -2,11 +2,17 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 
+/**
+ * A barcode marker for AR
+ */
 export interface ARMarker {
   barcodeValue: number;
   imgPath: string;
 }
 
+/**
+ * The state of a marker
+ */
 export interface MarkerState {
   barcodeValue: number; 
   found: boolean;
@@ -82,12 +88,14 @@ export class ArViewComponent implements OnInit {
   ngAfterViewInit() {
     this.initAR().then(() => { //init ar
 
+      //Set flag that AR is ready
       this.arReady = true;
 
+      //Setup AR events
       this.setupEvents();
 
+      //Add initial set of markers passed into the component
       this.markers.forEach((marker) => this.addMarker(marker));
-      //do initial marker setup, probably also set a ready flag
     });
   }
 
@@ -265,7 +273,7 @@ export class ArViewComponent implements OnInit {
     
     /**
      * Updates existing markers or adds new ones based on a list of markers that have changed.
-     * @param changedMarkers 
+     * @param changedMarkers the markers that have been changed and need to be updated or added
      */
     private updateMarkers(changedMarkers: ARMarker[]) {
 
@@ -287,7 +295,7 @@ export class ArViewComponent implements OnInit {
           let texture = loader.load(changedMarker.imgPath);
           let material = mesh.material as THREE.MeshBasicMaterial;
           material.map = texture;
-          
+
         } else {
           //If there is not an existing marker for the ID, add a new one.
           this.addMarker(changedMarker);
@@ -296,15 +304,20 @@ export class ArViewComponent implements OnInit {
     }
  
     ngOnChanges(changes: SimpleChanges) {
-      console.log(changes);
+      //Check if there is a change to the markers and make sure AR has started
       if(typeof changes['markers'] != "undefined" && this.arReady) {
         let change = changes['markers'];
-        console.log(change);
-        if(!change.firstChange) {
+
+        //We don't want to do this on the first change because that is when we are already setting the markers
+        if(!change.firstChange && change.previousValue) {
           let current = change.currentValue as ARMarker[];
           let previous = change.previousValue as ARMarker[];
+
+          //Get which markers have changed
           let diff = current.filter(m => !previous.includes(m));
           if(this.debug) console.log(diff);
+
+          //Send the markers that have been changed to updateMarkers to be updated or added.
           this.updateMarkers(diff);
         }
       }
