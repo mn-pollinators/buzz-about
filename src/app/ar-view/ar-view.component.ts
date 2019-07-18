@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, SimpleChanges, SimpleChange, SystemJsNgModuleLoader } from '@angular/core';
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
+import Info from 'info-monitor';
 
 /**
  * A barcode marker for AR
@@ -59,6 +60,9 @@ export class ArViewComponent implements OnInit {
 
   arReady: boolean = false;
   
+  monitor1: Info;
+  monitor2: Info;
+  monitor3: Info;
   
   constructor() {
     
@@ -82,6 +86,10 @@ export class ArViewComponent implements OnInit {
   @ViewChild('container', {static: true}) 
   private containerRef: ElementRef;
   
+  
+  @ViewChild('monitorcontainer', {static: true})
+  private monitorContainerRef: ElementRef;
+
   ngOnInit() {
   }
   
@@ -131,6 +139,17 @@ export class ArViewComponent implements OnInit {
       //Setup the THREEAR Source with the parent div and the renderer and camera we setup
       this.source = new THREEAR.Source({parent: this.container, renderer: this.renderer, camera: this.camera});
       
+      if(this.debug){
+        this.monitor1 = new Info();
+        this.monitorContainerRef.nativeElement.appendChild(this.monitor1.getElement());
+        this.monitor1.displayPanel(0);
+        this.monitor2 = new Info();
+        this.monitorContainerRef.nativeElement.appendChild(this.monitor2.getElement());
+        this.monitor2.displayPanel(1);
+        this.monitor3 = new Info();
+        this.monitorContainerRef.nativeElement.appendChild(this.monitor3.getElement());
+        this.monitor3.displayPanel(2);
+      }
 
       //Initialize THREEAR
       THREEAR.initialize(
@@ -173,7 +192,7 @@ export class ArViewComponent implements OnInit {
 
           // enable image smoothing or not for canvas copy - default to true
           // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-          imageSmoothingEnabled: false
+          imageSmoothingEnabled: true
         }
         ).then((controller: THREEAR.Controller) => {
           //Initalize returns a controller, set this.controller to that so we have a reference to it
@@ -197,8 +216,11 @@ export class ArViewComponent implements OnInit {
      */
     private animate() {
       //Setup the next call
-      requestAnimationFrame(() => {this.animate();});
-
+      if(this.debug) {
+        this.monitor1.begin();
+        this.monitor2.begin();
+        this.monitor3.begin();
+      } 
       this.deltaTime = this.clock.getDelta(); //Calculate the time delta between frames
       this.totalTime += this.deltaTime; //Add to the current timestamp
       
@@ -207,6 +229,12 @@ export class ArViewComponent implements OnInit {
       
       //Render the markers
       this.renderer.render( this.scene, this.camera );
+      if(this.debug) {
+        this.monitor1.end();
+        this.monitor2.end();
+        this.monitor3.end();
+      }
+      requestAnimationFrame(() => {this.animate();});
     }
     
     

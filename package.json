@@ -24,6 +24,7 @@
     "@angular/pwa": "^0.800.3",
     "@angular/router": "~8.0.0",
     "@angular/service-worker": "~8.0.0",
+    "info-monitor": "^1.0.12",
     "material-components-web": "^2.3.1",
     "rxjs": "~6.4.0",
     "three": "^0.106.2",
