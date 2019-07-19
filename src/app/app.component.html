@@ -1,3 +1,17 @@
-<a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;' *ngIf="showContent">
-	<a-entity camera></a-entity>
-</a-scene>
+
+<mdc-top-app-bar fixed #topbar [scrollTarget]="mainContent">
+  <mdc-top-app-bar-row>
+    <mdc-top-app-bar-section align="start" title="AR Simulation">
+      <button mdcTopAppBarNavIcon>
+        <mdc-icon>menu</mdc-icon>
+      </button>
+    </mdc-top-app-bar-section>
+    <mdc-top-app-bar-section align="end">
+      <mdc-icon mdcTopAppBarActionItem>help_outline</mdc-icon>
+    </mdc-top-app-bar-section>
+  </mdc-top-app-bar-row>
+</mdc-top-app-bar>
+
+<div #mainContent class="main-content">
+  <router-outlet></router-outlet>
+</div>
