@@ -19,6 +19,7 @@ import {
 } from '@angular-mdc/web';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
+import { EntryScreenComponent } from './entry-screen/entry-screen.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -32,7 +33,8 @@ const MDC_MODULES: any[] = [
   declarations: [
     AppComponent,
     ArViewComponent,
-    PlayRoundComponent
+    PlayRoundComponent,
+    EntryScreenComponent
   ],
   imports: [
     BrowserModule,
