@@ -15,24 +15,28 @@ import {
   MdcFabModule,
   MdcIconModule,
   MdcMenuModule,
-  MdcTopAppBarModule
+  MdcTopAppBarModule,
+  MdcLinearProgressModule
 } from '@angular-mdc/web';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
+import { LargeDisplayComponent } from './large-display/large-display.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
   MdcFabModule,
   MdcIconModule,
   MdcMenuModule,
-  MdcTopAppBarModule
+  MdcTopAppBarModule,
+  MdcLinearProgressModule
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     ArViewComponent,
-    PlayRoundComponent
+    PlayRoundComponent,
+    LargeDisplayComponent
   ],
   imports: [
     BrowserModule,
