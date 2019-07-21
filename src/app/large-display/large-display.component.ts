@@ -9,20 +9,40 @@ export class LargeDisplayComponent implements OnInit {
 
   progress: number = 0;
   buffer: number;
-  // round time in seconds
+  // Amount of time in a round in seconds
   roundTime: number = 60;
-  interval;
+  // Interval between updates of the progress bar in milliseconds
+  updateInterval: number = 10;
+  // Total number of increments for the progress bar to make
+  numIncrements: number;
 
-  constructor() { }
+  interval;
+  paused=true;
+
+  constructor() {
+    this.numIncrements = this.roundTime * (1000/this.updateInterval);
+   }
 
   ngOnInit() {
-    this.interval = setInterval(() => {
-      if(this.progress < this.roundTime) {
-        this.progress += 1;
-      } else {
-        clearInterval(this.interval);
-      }
-    },1000)
+    this.startTimer();
+  }
+
+  startTimer(){
+    if(this.paused) {
+      this.paused = false;
+      this.interval = setInterval(() => {
+        if(this.progress < this.numIncrements) {
+          this.progress += 1;
+        } else {
+          clearInterval(this.interval);
+        }
+      },this.updateInterval)
+    }
+  }
+
+  pauseTimer() {
+    clearInterval(this.interval);
+    this.paused = true;
   }
 
   
