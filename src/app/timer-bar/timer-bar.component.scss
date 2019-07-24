@@ -7,7 +7,7 @@ ul {
     text-align: center;
     list-style-type: none;
     position: relative;
-    bottom: 35px;
+    bottom: 40px;
     margin: 0px;
     padding: 0px;
 
@@ -20,6 +20,8 @@ li {
     border-right-style: solid;
     border-color: white;
     width:12%;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 #last {
