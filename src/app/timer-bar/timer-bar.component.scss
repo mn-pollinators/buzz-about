@@ -1,3 +1,27 @@
-#progressBar {
-    // height: 30px;
+mdc-linear-progress {
+    height: 40px;
+    border-radius: 16px;
+}
+
+ul {
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    bottom: 35px;
+    margin: 0px;
+    padding: 0px;
+
+}
+
+li {
+    font-size: 24px;
+    color: white;
+    display: inline-block;
+    border-right-style: solid;
+    border-color: white;
+    width:12%;
+}
+
+#last {
+    border-style: none;
 }
