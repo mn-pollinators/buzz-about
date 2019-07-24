@@ -1,15 +1,11 @@
-// @import "@material/linear-progress/mdc-linear-progress.scss";
+// @import '~@angular-mdc/theme/material';
 
-$bufferColor: #A1A1A1;
+// $bufferColor: #A1A1A1;
 
-mdc-linear-progress {
+.mdc-linear-progress {
+    // @include mdc-linear-progress-buffer-color($bufferColor);
     height: 40px;
     border-radius: 16px;
-}
-
-// The only way I've found to change the buffer color on the progress bar
-::ng-deep .mdc-linear-progress__buffer {
-    background-color: $bufferColor;
 }
 
 ul {

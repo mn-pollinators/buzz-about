@@ -13,3 +13,10 @@ $mdc-theme-secondary: #FFC107; // secondary color
     }
 
 }
+
+// Changes the buffer color to a darker color so the text is more readable
+// Note: I tried to do this in the component scss file where it would make more sense to do so, but it did not work for some reason.
+$bufferColor: #A1A1A1;
+.timerBar {
+    @include mdc-linear-progress-buffer-color($bufferColor);
+}
