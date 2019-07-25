@@ -40,12 +40,12 @@ export class TimerBarComponent implements OnInit {
   }
 
   pauseTimer() {
-    if(this.paused){
-      this.startTimer();
-    } else {
-      clearInterval(this.interval);
-      this.paused = true;
-    }
+    clearInterval(this.interval);
+    this.paused = true;
+  }
+
+  isPaused(): boolean {
+    return this.paused;
   }
 
 

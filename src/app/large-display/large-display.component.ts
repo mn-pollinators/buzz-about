@@ -17,6 +17,4 @@ export class LargeDisplayComponent implements OnInit {
     this.timerBar.startTimer();
   }
 
-  
-
 }
