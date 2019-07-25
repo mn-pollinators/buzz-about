@@ -12,7 +12,7 @@ export class TimerBarComponent implements OnInit {
   // Amount of time in a round in seconds
   roundTime: number = 60;
   // Interval between updates of the progress bar in milliseconds
-  updateInterval: number = 1000;
+  updateInterval: number = 10;
   // Total number of increments for the progress bar to make
   numIncrements: number;
 
