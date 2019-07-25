@@ -1,2 +1,2 @@
-<button mdc-button secondary=true (click)="openFullscreen()" *ngIf="!this.fullscreen" [mdcElevation]="1">Fullscreen</button>
-<button mdc-button secondary=true (click)="closeFullscreen()" *ngIf="this.fullscreen" [mdcElevation]="1">Close Fullscreen</button>
+<mdc-icon mdcTopAppBarActionItem (click)="openFullscreen()" *ngIf="!this.fullscreen" >fullscreen</mdc-icon>
+<mdc-icon mdcTopAppBarActionItem (click)="closeFullscreen()" *ngIf="this.fullscreen" >fullscreen_exit</mdc-icon>
