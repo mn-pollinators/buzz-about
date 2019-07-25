@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component'
 
 @Component({
   selector: 'app-large-display',
@@ -7,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LargeDisplayComponent implements OnInit {
 
-  constructor() {
-   }
+  @ViewChild('timerBar', {static: true}) timerBar: TimerBarComponent;
+  constructor() {   
+    
+  }
 
   ngOnInit() {
+    this.timerBar.startTimer();
   }
 
   

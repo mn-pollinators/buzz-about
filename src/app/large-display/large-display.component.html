@@ -1,4 +1,12 @@
 <div id="largeDisplayContent">
     <img id="prairieHill" src="/assets/images/large-display/prairieHill.jpg">
-    <app-timer-bar></app-timer-bar>
+    <div id="buttonControls">
+        <button mdc-button secondary (click)="this.timerBar.pauseTimer()">
+            <mdc-icon>pause_circle</mdc-icon>Pause
+        </button>
+        <button mdc-button secondary>
+            <mdc-icon>stop</mdc-icon>End Round
+        </button>
+    </div>
+    <app-timer-bar #timerBar></app-timer-bar>
 </div>

@@ -8,3 +8,16 @@ app-timer-bar {
 #prairieHill {
     width: 100%;
 }
+
+#buttonControls {
+    top:90px;
+    right:20px;
+    position: fixed;
+}
+
+#buttonControls > button {
+    display: block;
+    width: 140px;
+    margin-bottom: 10px;
+    color: white;
+}

@@ -12,7 +12,7 @@ export class TimerBarComponent implements OnInit {
   // Amount of time in a round in seconds
   roundTime: number = 60;
   // Interval between updates of the progress bar in milliseconds
-  updateInterval: number = 10;
+  updateInterval: number = 100;
   // Total number of increments for the progress bar to make
   numIncrements: number;
 
@@ -24,7 +24,6 @@ export class TimerBarComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.startTimer();
   }
 
   startTimer(){
@@ -41,8 +40,12 @@ export class TimerBarComponent implements OnInit {
   }
 
   pauseTimer() {
-    clearInterval(this.interval);
-    this.paused = true;
+    if(this.paused){
+      this.startTimer();
+    } else {
+      clearInterval(this.interval);
+      this.paused = true;
+    }
   }
 
 
