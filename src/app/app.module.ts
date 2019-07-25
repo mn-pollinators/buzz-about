@@ -23,6 +23,7 @@ import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
 import { TimerBarComponent } from './timer-bar/timer-bar.component';
+import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -40,7 +41,8 @@ const MDC_MODULES: any[] = [
     ArViewComponent,
     PlayRoundComponent,
     LargeDisplayComponent,
-    TimerBarComponent
+    TimerBarComponent,
+    FullscreenButtonComponent
   ],
   imports: [
     BrowserModule,
