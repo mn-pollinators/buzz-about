@@ -5,18 +5,18 @@ app-timer-bar {
     left: 1%;
 }
 
-// #largeDisplayContent {
+// .largeDisplayContent {
 //     background-image: url('/assets/images/large-display/prairieHill.jpg');
 //     background-size: cover;
 // }
 
-#buttonControls {
+.buttonControls {
     top:90px;
     right:20px;
     position: fixed;
 }
 
-#buttonControls > button {
+.buttonControls > button {
     display: block;
     width: 145px;
     margin-bottom: 10px;
