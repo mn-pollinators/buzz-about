@@ -14,7 +14,7 @@ export class LargeDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.timerBar.startTimer();
+    this.timerBar.startTimer(60);
   }
 
 }

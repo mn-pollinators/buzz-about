@@ -4,7 +4,7 @@
         <button mdc-button raised secondary *ngIf="!this.timerBar.isPaused()" (click)="this.timerBar.pauseTimer()">
             <mdc-icon>pause_circle</mdc-icon>Pause
         </button>
-        <button mdc-button raised secondary *ngIf="this.timerBar.isPaused()" (click)="this.timerBar.startTimer()">
+        <button mdc-button raised secondary *ngIf="this.timerBar.isPaused()" (click)="this.timerBar.resumeTimer()">
             <mdc-icon>play_arrow</mdc-icon>Play
         </button>
         <button mdc-button raised secondary>
