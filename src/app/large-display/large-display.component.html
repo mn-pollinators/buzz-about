@@ -1,5 +1,4 @@
-<div class="largeDisplayContent">
-    <!-- <img id="prairieHill" src="/assets/images/large-display/prairieHill.jpg"> -->
+<div class="largeDisplayContent" [style.height.px]="this.componentHeight">
     <div class="buttonControls">
         <button mdc-button raised secondary *ngIf="!this.timerBar.isPaused()" (click)="this.timerBar.pauseTimer()">
             <mdc-icon>pause_circle</mdc-icon>Pause
