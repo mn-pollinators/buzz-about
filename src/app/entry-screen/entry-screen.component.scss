@@ -1,0 +1,19 @@
+h1{
+    display: inline-block;
+}
+
+.image {
+    display: inline-block;
+}
+
+.non-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
