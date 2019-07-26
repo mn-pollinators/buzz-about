@@ -15,7 +15,6 @@ ul {
     bottom: 40px;
     margin: 0px; 
     padding: 0px;
-
 }
 
 li {
@@ -28,6 +27,6 @@ li {
     padding: 5px 0px;
 }
 
-.lastMonth {
+li:last-child {
     border-style: none;
 }
