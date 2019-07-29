@@ -17,7 +17,7 @@ import {
   MdcMenuModule,
   MdcTopAppBarModule,
   MdcLinearProgressModule,
-  MdcElevationModule
+  MdcElevationModule,
 } from '@angular-mdc/web';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
