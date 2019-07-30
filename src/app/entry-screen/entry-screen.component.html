@@ -1,15 +1,12 @@
 <div class="entry">
     <div class="image">
         <img src="assets/images/entry-screen/sunflower Entry.png">
-        <div id="bee">
-            <img src="assets/images/entry-screen/rusty patch bumblebee Entry.png">
-        </div>
     </div>
     <div class="non-image">
         <h1>Be The Bee</h1>
         <br>
-        <button class="mdc-button mdc-button--raised" onclick="window.location.href= 'ar';"> I am a Teacher</button>
+        <button class="mdc-button mdc-button--raised" [routerLink]="['ar']"> I am a Student</button>
         &nbsp; &nbsp;
-        <button class="mdc-button mdc-button--raised" onclick="window.location.href= 'ar';"> I am a Student</button>
+        <button class="mdc-button" [routerLink]="['ar']"> I am a Teacher </button>
     </div>
 </div>
