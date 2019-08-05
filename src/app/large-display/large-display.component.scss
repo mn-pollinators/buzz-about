@@ -32,3 +32,17 @@ app-timer-bar {
     background-color:#F00;
     position: fixed;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+  }
+
+.grid-item {
+    border: 1px solid rgba(0, 0, 0, 1);
+}
