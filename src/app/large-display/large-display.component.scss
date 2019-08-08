@@ -35,16 +35,17 @@ app-timer-bar {
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(10, 1fr); //repeats 10 per grid row, each item 1/10 width
     position: absolute;
     margin: auto;
     width: 100%;
-    height: 50%;
+    // height: 50%;
+    height: 45%;
     justify-items: center;
     align-items: center;
 }
 
 .grid-item {
     border: 1px solid rgba(0, 0, 0, 1);
-    width: 33%;
+    width: 90%;
 }
