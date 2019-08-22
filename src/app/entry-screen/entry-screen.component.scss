@@ -1,19 +1,64 @@
-h1{
-    display: inline-block;
-}
-
-.image {
-    display: inline-block;
-}
-
-.non-image {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+@import "~@angular-mdc/theme/material";
+@import "src/styles.scss";
 
 .entry {
+    background: url("src/assets/images/entry-screen/Entry Screen 652x803.png") no-repeat center center fixed;
+    background-size: cover;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
+
+h1 {
+    color: orange; 
+}
+
+$radius: 5;
+$rtl-reflexive: false;
+
+#primary {
+    @include mdc-button-filled-accessible($mdc-theme-secondary);
+    @include mdc-button-shape-radius($radius, $rtl-reflexive);
+}
+
+#secondary {
+    @include mdc-button-ink-color($mdc-theme-secondary);
+}
+
+
+@media only screen and (min-width: 600px) {
+    //Tablet
+    
+    .entry {
+        background: url("src/assets/images/entry-screen/Entry Screen 1909x1421.png") no-repeat center center fixed;
+        background-size: cover;
+    }
+}
+
+// @media only screen and (min-width: 768px) {
+//     Desktop
+
+
+//     .entry {
+//         background: url("src/assets/images/entry-screen/Entry Screen 1909x1421.png") no-repeat center center fixed;
+//         background-size: cover;
+//         display: flex;
+//         flex-direction: row;
+//         justify-content: flex-end;
+//     }
+
+//     .content {
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: center;
+//     }
+
+//     $radius: 5;
+//     $rtl-reflexive: false;
+//     .mdc-button {
+//         @include mdc-button-filled-accessible($mdc-theme-secondary);
+//         @include mdc-button-shape-radius($radius, $rtl-reflexive)
+//     }
+    
+// }

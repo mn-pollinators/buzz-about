@@ -1,12 +1,10 @@
-<div class="entry">
-    <div class="image">
-        <img src="assets/images/entry-screen/sunflower Entry.png">
-    </div>
-    <div class="non-image">
+<div class="entry"  [style.height.px]="this.componentHeight">
         <h1>Be The Bee</h1>
+        <button id="primary" class="mdc-button mdc-button--raised" [routerLink]="['ar']">
+                <span class="mdc-button__label">Pollinate</span>
+        </button>
         <br>
-        <button class="mdc-button mdc-button--raised" [routerLink]="['ar']"> I am a Student</button>
-        &nbsp; &nbsp;
-        <button class="mdc-button" [routerLink]="['ar']"> I am a Teacher </button>
-    </div>
+        <button id="secondary" class="mdc-button" [routerLink]="['ar']">
+                <span class="mdc-button__label">Set up a simulation</span>
+        </button>
 </div>
