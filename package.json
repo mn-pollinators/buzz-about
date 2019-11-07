@@ -25,7 +25,7 @@
     "@angular/router": "~8.2.13",
     "@angular/service-worker": "~8.2.13",
     "info-monitor": "^1.0.12",
-    "material-components-web": "^2.3.1",
+    "material-components-web": "^3.2.0",
     "rxjs": "~6.5.3",
     "three": "^0.106.2",
     "threear": "^1.0.0-alpha.5",
