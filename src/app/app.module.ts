@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +25,7 @@ import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
 import { TimerBarComponent } from './timer-bar/timer-bar.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
+import { DisplayItemComponent } from './display-item/display-item.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -42,10 +44,12 @@ const MDC_MODULES: any[] = [
     PlayRoundComponent,
     LargeDisplayComponent,
     TimerBarComponent,
-    FullscreenButtonComponent
+    FullscreenButtonComponent,
+    DisplayItemComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     HttpClientModule,

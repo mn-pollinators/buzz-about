@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, ViewChild, HostListener } from '@angular/core';
-import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component'
+import { Component, OnInit, HostListener } from '@angular/core';
+import { Flower } from 'src/app/item';
 
 @Component({
   selector: 'app-large-display',
@@ -8,69 +8,63 @@ import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component'
 })
 export class LargeDisplayComponent implements OnInit {
 
-  // Hardcode the original dimmensions of the background image
-  image = { width: 1920, height: 1224 }; //assets/images/large-display/field.jpg 
-
-  // The lowest point of the field in which a flower's "root" could be placed,
-  // aka the highest place the bottom of a flower could be without floating in the sky.
-  // [this is hardcoded to the lowest y-coordinate of the background image where the field meets the sky]
-  target = { x: 0, y: 608 };
-                          
   componentHeight: number;
   componentWidth: number;
-  windowWidth: number;
-  windowHeight: number;
-  xScale: number;
-  yScale: number; 
-  scale: number;
-  yOffset: number;
-  xOffset: number;
-  topPosition: number;
-  leftPosition: number;
-  
-  @ViewChild('timerBar', {static: true}) timerBar: TimerBarComponent;
+
+  flowers: Flower[] = new Array;
+  flowers_A: Flower[] = new Array;
+  flowers_B: Flower[] = new Array;
 
   constructor() { }
 
   // resize the component height with the window
-  @HostListener('window:resize', ['$event']) onResize(event) {
+  @HostListener('window:resize', ['$event']) onResize() {
+    for (let f of this.flowers) {
+      f.x = f.x / this.componentWidth * window.innerWidth;
+      f.y = f.y / this.componentHeight * window.innerHeight;
+    }
     this.componentHeight = window.innerHeight;
     this.componentWidth = window.innerWidth;
-    this.updateFlowerRootHighestPoint();
   }
 
   ngOnInit() {
-    this.timerBar.startTimer(60);
-    // set the height of the component so that the background actually shows up. 
     this.componentHeight = window.innerHeight;
     this.componentWidth = window.innerWidth;
-    this.updateFlowerRootHighestPoint();
+    this.initializeTestFlowers();
+    this.flowers = this.flowers_B;
+    // this.testUpdateFlowers();
   }
 
-  private updateFlowerRootHighestPoint() { // Daniel Imms answered Apr 5 '13 at 15:43 @ https://stackoverflow.com/a/15838104
-    this.windowWidth = this.componentWidth;
-    this.windowHeight = this.componentHeight;
+  initializeTestFlowers() {
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/black raspberry.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/rudbeckia hirta.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/solidago rigida.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/sunflower.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/taraxacum officinale.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/trifolium repens.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
+    this.flowers_A.push(new Flower( "assets/images/1000w-8bit/flowers/vaccinium angustifolium.png", 0.5*this.componentWidth, 0.5*this.componentHeight, 15, false));
 
-    // Get largest dimension increase
-    this.xScale = this.windowWidth / this.image.width;
-    this.yScale = this.windowHeight / this.image.height;
-    this.scale;
-    this.yOffset = 0;
-    this.xOffset = 0;
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/black raspberry.png", 0.1*this.componentWidth, 0.2*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/rudbeckia hirta.png", 0.2*this.componentWidth, 0.6*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/solidago rigida.png", 0.4*this.componentWidth, 0.4*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/sunflower.png", 0.6*this.componentWidth, 0.2*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/taraxacum officinale.png", 0.5*this.componentWidth, 0.75*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/trifolium repens.png", 0.9*this.componentWidth, 0.4*this.componentHeight, 15, true));
+    this.flowers_B.push(new Flower( "assets/images/1000w-8bit/flowers/vaccinium angustifolium.png", 0.8*this.componentWidth, 0.7*this.componentHeight, 15, true));
+  }
 
-    if (this.xScale > this.yScale) {
-      // The image fits perfectly in x axis, stretched in y
-      this.scale = this.xScale;
-      this.yOffset = (this.windowHeight - (this.image.height * this.scale)) / 2;
-      console.log("xScale > yScale");
-    } else {
-      // The image fits perfectly in y axis, stretched in x
-      this.scale = this.yScale;
-      this.xOffset = (this.windowWidth - (this.image.width * this.scale)) / 2;
-      console.log("yScale > xScale");
-    }
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
-    this.topPosition = (this.target.y) * this.scale + this.yOffset;
-    this.leftPosition = (this.target.x) * this.scale + this.xOffset;
+  testUpdateFlowers(): void {
+    (async () => {
+        this.flowers = this.flowers_A;
+        await this.sleep(2000);
+        this.flowers = this.flowers_B
+        await this.sleep(2000);
+      console.log('update');
+      this.testUpdateFlowers();
+    })();
   }
 }
