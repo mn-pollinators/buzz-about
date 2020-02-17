@@ -7,6 +7,7 @@ export interface DisplayItem {
   scale: number;
   offset: number;
   displayed: boolean;
+  displayState: String;
 }
 
 export class Flower implements DisplayItem {
@@ -18,6 +19,7 @@ export class Flower implements DisplayItem {
   scale = 100;
   offset = this.scale/2;
   displayed = true;
+  displayState = 'normal';
 
   constructor(id: string, imgSrc: string, x: number, y: number, scale: number, active: boolean) {
     this.id = id;

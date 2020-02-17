@@ -1,2 +1,2 @@
-<img [@active]="flower.active" [@position]="{value: 'normal', params: {left: flower.x, top: flower.y, scale: flower.scale, offset: flower.offset }}"
+<img [@active]="flower.active" [@position]="{value: flower.displayState, params: {left: flower.x, top: flower.y, scale: flower.scale, offset: flower.offset }}"
   class="displayItem"  id="testItem" src={{this.flower.imgSrc}} style="position: relative; display: inline">

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, Input } from '@angular/core';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Flower } from '../item';
 import { trigger, animate, transition, style, keyframes, state} from '@angular/animations';
 
@@ -16,7 +16,7 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
         opacity: 0.2,
       })),
       transition('true <=> false', [
-        animate(500)
+        animate("300ms ease")
       ])
     ]),
 
@@ -24,13 +24,21 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
       state('normal', style({
         marginTop: '-{{scale}}%',
         marginLeft: '-{{offset}}%',
-        maxWidth: '{{scale}}%',
-        maxHeight: '{{scale}}%',
+        width: '{{scale}}%',
+        // Height: '{{scale}}%',
         left: '{{left}}px',
         top: '{{top}}px',
       }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
-      transition('* => normal', [
-        animate(0)
+      state('normal_2', style({
+        marginTop: '-{{scale}}%',
+        marginLeft: '-{{offset}}%',
+        width: '{{scale}}%',
+        // Height: '{{scale}}%',
+        left: '{{left}}px',
+        top: '{{top}}px',
+      }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
+      transition('normal <=> normal_2', [
+        animate("300ms ease")
       ])
     ]),
   ],
