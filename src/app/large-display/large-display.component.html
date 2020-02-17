@@ -1,5 +1,5 @@
 <div class="largeDisplayContent">
     <a class="flowers" *ngFor="let flower of this.flowers" style="position: absolute;">
-      <app-display-item [flower]="flower"></app-display-item>
+      <app-display-item [flower]="flower" (click)="testReactivate(flower.id)"></app-display-item>
     </a>
 </div>

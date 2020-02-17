@@ -16,7 +16,7 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
         opacity: 0.2,
       })),
       transition('true <=> false', [
-        animate(2000)
+        animate(500)
       ])
     ]),
 
@@ -24,12 +24,13 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
       state('normal', style({
         marginTop: '-{{scale}}%',
         marginLeft: '-{{offset}}%',
-        width: '{{scale}}%',
+        maxWidth: '{{scale}}%',
+        maxHeight: '{{scale}}%',
         left: '{{left}}px',
         top: '{{top}}px',
-      }), {params: {left: 0, top: 0, scale: 100, offset: 50}}),
-      transition('* <=> *', [
-        animate(10)
+      }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
+      transition('* => normal', [
+        animate(0)
       ])
     ]),
   ],
