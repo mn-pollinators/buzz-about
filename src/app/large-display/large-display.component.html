@@ -1,5 +1,6 @@
 <div class="largeDisplayContent">
-    <a class="flowers" *ngFor="let flower of this.flowers" style="position: absolute;">
-      <app-display-item [flower]="flower" (click)="testReactivate(flower.id)"></app-display-item>
-    </a>
+  <a class="flowers" *ngFor="let flower of this.flowers" style="position: absolute;">
+    <app-display-item [flower]="flower" (click)="testReactivate(flower.id)"></app-display-item>
+  </a>
+  <img class="display-background" src="assets/images/large-display/hill-16-8.png" style="width: 100%; position: relative; z-index: -2; opacity: 0.3;">
 </div>
