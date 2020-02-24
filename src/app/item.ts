@@ -11,13 +11,13 @@ export interface DisplayItem {
 }
 
 export class Flower implements DisplayItem {
-  id = "";
-  imgSrc = "";
+  id = '';
+  imgSrc = '';
   active = true;
   x = 0;
   y = 0;
   scale = 100;
-  offset = this.scale/2;
+  offset = this.scale / 2;
   displayed = true;
   displayState = 'normal';
 

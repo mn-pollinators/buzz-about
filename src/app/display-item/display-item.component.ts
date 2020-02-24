@@ -16,7 +16,7 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
         opacity: 0.2,
       })),
       transition('true <=> false', [
-        animate("300ms ease")
+        animate('300ms ease')
       ])
     ]),
 
@@ -38,7 +38,7 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
         top: '{{top}}px',
       }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
       transition('normal <=> normal_2', [
-        animate("300ms ease")
+        animate('300ms ease')
       ])
     ]),
   ],
