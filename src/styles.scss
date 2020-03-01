@@ -20,3 +20,43 @@ $bufferColor: #A1A1A1;
 .timerBar {
     @include mdc-linear-progress-buffer-color($bufferColor);
 }
+
+.flowers {
+  position: absolute;
+}
+
+.largeDisplayContent {
+  height: 100%;
+}
+
+.backgroundWrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  z-index: -2;
+}
+
+.displayBackground {
+  position: absolute;
+  width: 100%;
+  opacity: 0.75
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.main-content {
+  display: block;
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  top: 64px;
+  left: 0;
+  right: 0;
+}
