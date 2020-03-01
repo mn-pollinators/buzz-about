@@ -50,7 +50,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     (async () => {
       for (let i = this.flowers.length - 1; i >= 0; --i) {
         await this.sleep(250);
-        this.testReactivate(this.flowers[i].id);
+        this.testReactivate(this.flowers[i].name);
       }
     })();
   }
@@ -129,11 +129,11 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  public testReactivate(id: string) {
+  public testReactivate(name: string) {
 
-    const current = this.flowers.filter(f => f.id === id)[0];
-    const targetA = this.flowersA.filter(f => f.id === id)[0];
-    const targetB = this.flowersB.filter(f => f.id === id)[0];
+    const current = this.flowers.filter(f => f.name === name)[0];
+    const targetA = this.flowersA.filter(f => f.name === name)[0];
+    const targetB = this.flowersB.filter(f => f.name === name)[0];
 
     if (current.displayState === 'normal') {
       current.displayState = 'normal_2';

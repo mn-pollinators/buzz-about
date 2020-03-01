@@ -1,28 +1,28 @@
 export interface DisplayItem {
-  id : String;
-  imgSrc: String;
+  name: string;
+  imgSrc: string;
   active: boolean;
   x: number;
   y: number;
   scale: number;
   offset: number;
   displayed: boolean;
-  displayState: String;
+  displayState: string;
 }
 
 export class Flower implements DisplayItem {
-  id = '';
+  name = '';
   imgSrc = '';
   active = true;
   x = 0;
   y = 0;
   scale = 100;
-  offset = this.scale / 2;
+  offset = this.scale / 2;  // Used in CSS positioning
   displayed = true;
   displayState = 'normal';
 
-  constructor(id: string, imgSrc: string, x: number, y: number, scale: number, active: boolean) {
-    this.id = id;
+  constructor(name: string, imgSrc: string, x: number, y: number, scale: number, active: boolean) {
+    this.name = name;
     this.imgSrc = imgSrc;
     this.x = x;
     this.y = y;
