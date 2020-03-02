@@ -2,8 +2,11 @@
 
   <div class="displayedMonth">
     <button *ngIf="this.currentTime >= 0" id="previousMonth" mdc-button (click)="this.prevMonth()">Prev</button>
-    <div class="monthWrapper">{{this.currentMonth.toLocaleUpperCase()}}</div>
-    <button *ngIf="this.currentTime !== -3 && this.currentTime < this.gameLength" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
+    <mdc-linear-progress class="progressBar" determinate [progress]="(this.currentTime%this.monthLength + 1)/this.monthLength" [buffer]="1"></mdc-linear-progress>
+    <div class="monthWrapper">
+      <a>{{this.currentMonth.toLocaleUpperCase()}}</a>
+    </div>
+    <button *ngIf="this.currentTime >= 0 && this.currentTime < this.gameLength" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
   </div>
 
   <div class="timeSliderWrapper">

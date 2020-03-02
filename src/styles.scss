@@ -75,17 +75,26 @@ body {
   background-color: $mdc-theme-primary;
 }
 
-.monthWrapper {
+.monthWrapper, .progressBar {
   position: relative;
   display: inline-block;
   left: 110px;
   width: 280px;
   height: 48px;
-  background-color: #789d40;
+  background-color: rgba(96, 128, 49, 0.75);
   line-height: 48px;
   text-align: center;
   font-size: 32px;
   color: $mdc-theme-secondary
+}
+
+.progressBar {
+  text-align: left;
+  font-weight: 100;
+  position: absolute;
+  top: 0;
+  height: 48px;
+  z-index: 0;
 }
 
 #previousMonth, #nextMonth {
