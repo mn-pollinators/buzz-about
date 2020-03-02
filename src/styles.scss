@@ -136,7 +136,7 @@ body {
   text-align: center;
   font-size: 14px;
   color: $mdc-theme-secondary;
-  right: 10px;
+  right: 18px;
 }
 
 
@@ -145,7 +145,7 @@ body {
   position: absolute;
   text-align: left;
   top: 48px;
-  left: 0;
+  left: 6px;
 }
 
 .timerController button {
@@ -170,4 +170,9 @@ body {
 
 .mdc-icon-button::before, .mdc-icon-button::after {
   background-color: $mdc-theme-secondary;
+}
+
+.mdc-button:disabled, .mdc-icon-button:disabled {
+  color: $mdc-theme-secondary;
+  opacity: 0.38;
 }
