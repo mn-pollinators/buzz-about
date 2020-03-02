@@ -10,8 +10,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
 
   @Input() gameLength: number;
 
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-   'October', 'November', 'December', 'Completed'];
+  months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
   paused = true;
 
@@ -28,7 +27,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
-    this.monthLength = this.gameLength / 12;
+    this.monthLength = this.gameLength / this.months.length;
     this.currentTime = -3;
     this.updateMonth();
   }
@@ -74,6 +73,9 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
         break;
       case -1:
         this.currentMonth = 'Go!!!';
+        break;
+      case this.gameLength:
+        this.currentMonth = 'Completed';
         break;
       default:
         this.currentMonth = this.months[Math.min(12, Math.floor(this.currentTime / this.monthLength))];
