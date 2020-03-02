@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import {MdcSliderChange} from '@angular-mdc/web';
+import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
+import { MdcSliderChange } from '@angular-mdc/web';
 import { MDCLinearProgress } from '@material/linear-progress';
 
 @Component({
@@ -12,17 +12,17 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
 
   @Input() gameLength: number;
 
+  @Output() currentTime: number;
+
+  @Output() currentMonth: string;
+
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
   paused = true;
 
   sliding = false;
 
-  currentTime: number;
-
   monthLength: number;
-
-  currentMonth: string;
 
   displayedRemainingTime: string;
 
@@ -51,7 +51,6 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
           this.paused = true;
         }
       }
-      console.log('Paused: ' + this.paused);
     }, 1000);
   }
 
@@ -76,14 +75,13 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
         this.currentMonth = 'Ready?';
         break;
       case -2:
-        this.currentMonth = 'Set';
+        this.currentMonth = 'Set...';
         break;
       case -1:
         this.currentMonth = 'Go!!!';
-        this.linearProgress.open();
         break;
       case this.gameLength:
-        this.currentMonth = 'Well Done';
+        this.currentMonth = 'Well Done!';
         this.linearProgress.close();
         break;
       default:
@@ -122,8 +120,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
     this.linearProgress.close();
   }
 
-  onChange(event: MdcSliderChange): void {
-    console.log('Slides to ' + event.value);
+  onChange(): void {
     this.sliding = false;
     if (this.currentTime !== this.gameLength) {
       this.linearProgress.open();
