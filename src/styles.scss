@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-$mdc-theme-primary: #88b248; // primary color
+$mdc-theme-primary: #84aa4c; // primary color
 $mdc-theme-secondary: #eeda5c; // secondary color
 
 @import "~@angular-mdc/theme/material";
@@ -56,18 +56,25 @@ body {
   position: absolute;
   height: auto;
   bottom: 0;
-  top: 64px;
+  top:56px;
   left: 0;
   right: 0;
+}
+
+// adapt to auto tool bar height
+@media screen and (min-width: 600px) {
+  .main-content {
+    top:64px;
+  }
 }
 
 .timerBar {
   position: absolute;
   display: block;
-  right: 0;
-  // margin-left: -250px;
-  // left: 50%;
-  bottom: 32px; // minimum: 16px
+  // left: 0;
+  margin-left: -250px;
+  left: 50%;
+  bottom: 48px; // minimum: 16px
   z-index: 2;
   width: 500px;
   justify-self: center;
@@ -84,7 +91,7 @@ body {
   background-color: rgba(96, 128, 49, 0.75);
   line-height: 48px;
   text-align: center;
-  font-size: 32px;
+  font-size: 28px;
   color: $mdc-theme-secondary
 }
 
@@ -127,7 +134,7 @@ body {
   width: 75px;
   position: absolute;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   color: $mdc-theme-secondary;
   right: 10px;
 }
@@ -147,7 +154,7 @@ body {
 
 .backgroundMonth {
   position: absolute;
-  line-height: 200px;
+  line-height: 180px;
   font-size: 180px;
   top: 0;
   display: block;
@@ -157,4 +164,10 @@ body {
   z-index: 0;
   text-shadow:  0 0 5px $mdc-theme-secondary;
   overflow: hidden;
+  opacity: 0.85;
+  font-family: Comic Sans MS;
+}
+
+.mdc-icon-button::before, .mdc-icon-button::after {
+  background-color: $mdc-theme-secondary;
 }
