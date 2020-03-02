@@ -19,6 +19,8 @@ import {
   MdcTopAppBarModule,
   MdcLinearProgressModule,
   MdcElevationModule,
+  MdcSliderModule,
+  MdcIconButtonModule
 } from '@angular-mdc/web';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
@@ -34,7 +36,9 @@ const MDC_MODULES: any[] = [
   MdcMenuModule,
   MdcTopAppBarModule,
   MdcLinearProgressModule,
-  MdcElevationModule
+  MdcElevationModule,
+  MdcSliderModule,
+  MdcIconButtonModule
 ];
 
 @NgModule({
@@ -45,7 +49,7 @@ const MDC_MODULES: any[] = [
     LargeDisplayComponent,
     TimerBarComponent,
     FullscreenButtonComponent,
-    DisplayItemComponent
+    DisplayItemComponent,
   ],
   imports: [
     BrowserModule,

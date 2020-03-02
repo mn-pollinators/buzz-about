@@ -1,11 +1,21 @@
-<mdc-linear-progress class="timerBar" determinate [progress]="this.progress/this.numIncrements" [buffer]="1.0" secondary="true" [mdcElevation]="1"></mdc-linear-progress>
-<ul>
-  <li>April</li>
-  <li>May</li>
-  <li>June</li>
-  <li>July</li>
-  <li>August</li>
-  <li>September</li>
-  <li>October</li>
-  <li>November</li>
-</ul>
+<div class="timerBar">
+  <div class="displayedMonth">
+    <!-- <button mdc-icon-button icon="fast_rewind"></button> -->
+    <!-- <button mdc-icon-button icon="fast_forward"></button> -->
+  </div>
+  <div class="timeSliderWrapper">
+    <div class="timerController">
+      <button mdcIconButton [on]="this.paused" (click)="this.clickPausePlay()">
+        <mdc-icon mdcIconOn>play_arrow</mdc-icon>
+        <mdc-icon>pause</mdc-icon>
+      </button>
+      <button mdc-icon-button icon="replay" (click)="this.reset()"></button>
+    </div>
+    <mdc-slider class="timeSlider" [min]="0" [max]="this.gameLength" value="{{this.currentTime}}" (input)="onInput($event)" (change)="onChange($event)"></mdc-slider>
+    <a id='toEnd' class='displayedTime'>{{this.timeRemaining()}}s left</a>
+  </div>
+</div>
+
+<div class="backgroundMonth">
+  {{this.currentMonth.toLocaleUpperCase()}}
+</div>
