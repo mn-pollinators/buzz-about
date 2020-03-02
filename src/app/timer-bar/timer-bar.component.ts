@@ -7,6 +7,7 @@ import { MDCLinearProgress } from '@material/linear-progress';
   templateUrl: './timer-bar.component.html',
   styleUrls: ['./timer-bar.component.scss']
 })
+
 export class TimerBarComponent implements OnInit, AfterViewInit {
 
   @Input() gameLength: number;
@@ -36,9 +37,9 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.runClock();
     this.linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
     this.linearProgress.close();
-    this.runClock();
   }
 
   runClock() {
@@ -111,17 +112,30 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   }
 
   timeRemaining() {
-    return Math.min(this.gameLength, this.gameLength - this.currentTime);
+    return Math.max(0, Math.min(this.gameLength, this.gameLength - this.currentTime - 1));
   }
 
   onInput(event: MdcSliderChange): void {
     this.sliding = true;
     this.currentTime = event.value;
     this.updateMonth();
+    this.linearProgress.close();
   }
 
   onChange(event: MdcSliderChange): void {
     console.log('Slides to ' + event.value);
     this.sliding = false;
+    if (this.currentTime !== this.gameLength) {
+      this.linearProgress.open();
+    }
   }
+
+  getCurrentProgress() {
+    if (this.currentTime !== this.gameLength) {
+      return this.currentTime % this.monthLength / (this.monthLength - 1);
+    } else {
+      return 1;
+    }
+  }
+
 }
