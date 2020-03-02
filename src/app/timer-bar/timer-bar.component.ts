@@ -73,22 +73,22 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
     switch (this.currentTime) {
       case -3:
         this.currentMonth = 'Ready?';
-        this.linearProgress.close();
+        if (this.linearProgress) { this.linearProgress.close(); }
         break;
       case -2:
         this.currentMonth = 'Set...';
-        this.linearProgress.close();
+        if (this.linearProgress) { this.linearProgress.close(); }
         break;
       case -1:
         this.currentMonth = 'Go!!!';
-        this.linearProgress.close();
+        if (this.linearProgress) { this.linearProgress.close(); }
         break;
       case this.gameLength:
         this.currentMonth = 'Finished!';
-        this.linearProgress.close();
+        if (this.linearProgress) { this.linearProgress.close(); }
         break;
       default:
-        this.linearProgress.open();
+        if (this.linearProgress) { this.linearProgress.open(); }
         this.currentMonth = this.months[Math.min(12, Math.floor(this.currentTime / this.monthLength))];
     }
   }
