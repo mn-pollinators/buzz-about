@@ -14,6 +14,36 @@ $large-display-background: #84aa4c; // a color picked from background image
     }
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.main-content {
+  display: block;
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  top:56px;
+  left: 0;
+  right: 0;
+}
+
+// adapt to auto tool bar height
+@media screen and (min-width: 600px) {
+  .main-content {
+    top:64px;
+  }
+}
+
+////////////////////////////////
+// styles to the large display//
+////////////////////////////////
+
 .flowers {
   position: absolute;
   z-index: 1;
@@ -43,44 +73,24 @@ $large-display-background: #84aa4c; // a color picked from background image
   opacity: 1
 }
 
-html {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  height: 100%;
-}
-
-.main-content {
-  display: block;
-  position: absolute;
-  height: auto;
-  bottom: 0;
-  top:56px;
-  left: 0;
-  right: 0;
-}
-
-// adapt to auto tool bar height
-@media screen and (min-width: 600px) {
-  .main-content {
-    top:64px;
-  }
-}
-
 .timerBar {
   position: absolute;
   display: block;
-  // left: 0;
-  margin-left: -250px;
-  left: 50%;
+  right: 0;
   bottom: 48px; // minimum: 16px
   z-index: 2;
   width: 500px;
   justify-self: center;
   height: 96px;
-  background-color: $mdc-theme-primary;
+  background-color: $large-display-background;
+  // box-shadow: 0 15px 75px darken( $large-display-background, 20% );
+}
+
+@media screen and (max-width: 500px) {
+  .timerBar {
+    margin-left: -250px;
+    left: 50%;
+  }
 }
 
 .monthWrapper, .progressBar {
@@ -140,7 +150,6 @@ body {
   right: 18px;
 }
 
-
 .timerController {
   height: 48px;
   position: absolute;
@@ -155,8 +164,8 @@ body {
 
 .backgroundMonth {
   position: absolute;
-  line-height: 180px;
-  font-size: 180px;
+  line-height: 200px;
+  font-size: 200px;
   top: 0;
   display: block;
   color: $mdc-theme-secondary;
