@@ -64,7 +64,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   }
 
   updateMonth() {
-    switch(this.currentTime) {
+    switch (this.currentTime) {
       case -3:
         this.currentMonth = 'Ready?';
         break;
@@ -75,11 +75,30 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
         this.currentMonth = 'Go!!!';
         break;
       case this.gameLength:
-        this.currentMonth = 'Completed';
+        this.currentMonth = 'Well Done!!!';
         break;
       default:
         this.currentMonth = this.months[Math.min(12, Math.floor(this.currentTime / this.monthLength))];
     }
+  }
+
+  prevMonth() {
+    if (this.currentMonth === this.months[0]) {
+      this.setTimer(0);
+    } else if (this.currentTime === this.gameLength) {
+      this.setTimer(this.monthLength * (this.months.length - 1));
+    } else {
+      this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) - 1));
+    }
+  }
+
+  nextMonth() {
+    this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
+  }
+
+  setTimer(s: number) {
+    this.currentTime = s;
+    this.updateMonth();
   }
 
   timeRemaining() {

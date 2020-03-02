@@ -67,12 +67,36 @@ body {
   right: 0;
   // margin-left: -250px;
   // left: 50%;
-  bottom: 16px;
+  bottom: 32px; // minimum: 16px
   z-index: 2;
   width: 500px;
   justify-self: center;
   height: 96px;
   background-color: $mdc-theme-primary;
+}
+
+.monthWrapper {
+  position: relative;
+  display: inline-block;
+  left: 110px;
+  width: 280px;
+  height: 48px;
+  background-color: #789d40;
+  line-height: 48px;
+  text-align: center;
+  font-size: 32px;
+  color: $mdc-theme-secondary
+}
+
+#previousMonth, #nextMonth {
+  position: absolute;
+  color: $mdc-theme-secondary;
+  height: 48px;
+  width: 110px;
+}
+
+#nextMonth {
+  right: 0;
 }
 
 .displayedMonth {
@@ -114,13 +138,14 @@ body {
 
 .backgroundMonth {
   position: absolute;
-  line-height: 150px;
+  line-height: 200px;
+  font-size: 180px;
   top: 0;
   display: block;
   color: $mdc-theme-secondary;
   width: 100%;
   text-align: center;
-  font-size: 150px;
   z-index: 0;
   text-shadow:  0 0 5px $mdc-theme-secondary;
+  overflow: hidden;
 }

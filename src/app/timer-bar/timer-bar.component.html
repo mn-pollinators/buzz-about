@@ -1,8 +1,11 @@
 <div class="timerBar">
+
   <div class="displayedMonth">
-    <!-- <button mdc-icon-button icon="fast_rewind"></button> -->
-    <!-- <button mdc-icon-button icon="fast_forward"></button> -->
+    <button *ngIf="this.currentTime >= 0" id="previousMonth" mdc-button (click)="this.prevMonth()">Prev</button>
+    <div class="monthWrapper">{{this.currentMonth.toLocaleUpperCase()}}</div>
+    <button *ngIf="this.currentTime !== -3 && this.currentTime < this.gameLength" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
   </div>
+
   <div class="timeSliderWrapper">
     <div class="timerController">
       <button mdcIconButton [on]="this.paused" (click)="this.clickPausePlay()">
@@ -17,5 +20,5 @@
 </div>
 
 <div class="backgroundMonth">
-  {{this.currentMonth.toLocaleUpperCase()}}
+  {{this.currentMonth}}
 </div>
