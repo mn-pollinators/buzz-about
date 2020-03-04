@@ -4,7 +4,7 @@
     <button disabled="{{this.currentTime < 0}}" id="previousMonth" mdc-button (click)="this.prevMonth()">Prev</button>
     <mdc-linear-progress class="progressBar" determinate [progress]="this.getCurrentProgress()" [buffer]="1"></mdc-linear-progress>
     <div class="monthWrapper">
-      {{this.currentMonth}}
+      <a>{{this.currentMonth}}</a>
     </div>
     <button disabled="{{this.currentTime === this.gameLength}}" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
   </div>

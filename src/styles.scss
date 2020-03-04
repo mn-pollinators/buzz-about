@@ -106,6 +106,12 @@ body {
   color: $mdc-theme-secondary
 }
 
+.monthWrapper a {
+  color: rgb(228, 223, 198);
+  font-family: Comic Sans MS;
+  text-transform: uppercase;
+}
+
 .progressBar {
   text-align: left;
   font-weight: 100;
