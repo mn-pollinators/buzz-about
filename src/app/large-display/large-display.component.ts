@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
-import { Flower } from 'src/app/item';
+import { DisplayFlower } from 'src/app/item';
 
 @Component({
   selector: 'app-large-display',
@@ -12,9 +12,9 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   componentHeight: number;
   componentWidth: number;
 
-  flowers: Flower[] = new Array<Flower>();
-  flowersA: Flower[] = new Array<Flower>();
-  flowersB: Flower[] = new Array<Flower>();
+  flowers: DisplayFlower[] = new Array<DisplayFlower>();
+  flowersA: DisplayFlower[] = new Array<DisplayFlower>();
+  flowersB: DisplayFlower[] = new Array<DisplayFlower>();
 
   constructor() { }
 

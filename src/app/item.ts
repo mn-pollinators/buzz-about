@@ -10,7 +10,7 @@ export interface DisplayItem {
   displayState: string;
 }
 
-export class Flower implements DisplayItem {
+export class DisplayFlower implements DisplayItem {
   name = '';
   imgSrc = '';
   active = true;

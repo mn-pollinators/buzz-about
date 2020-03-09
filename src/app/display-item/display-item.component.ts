@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Flower } from '../item';
+import { DisplayFlower } from '../item';
 import { trigger, animate, transition, style, keyframes, state} from '@angular/animations';
 
 @Component({
@@ -46,5 +46,5 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
 
 export class DisplayItemComponent {
 
-  @Input() flower: Flower;
+  @Input() flower: DisplayFlower;
 }
