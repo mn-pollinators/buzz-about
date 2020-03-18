@@ -15,7 +15,8 @@
         <mdc-icon mdcIconOn>play_arrow</mdc-icon>
         <mdc-icon>pause</mdc-icon>
       </button>
-      <button disabled="{{this.currentTime < 0}}" mdc-icon-button icon="replay" (click)="this.reset()"></button>
+      <button disabled="{{this.currentTime === this.gameLength}}" mdc-icon-button icon="stop" (click)="this.reset()"></button>
+      <button disabled="{{this.currentTime < 0}}" mdc-icon-button icon="replay" (click)="this.end()"></button>
     </div>
     <mdc-slider class="timeSlider" [min]="0" [max]="this.gameLength" value="{{this.currentTime}}" (input)="onInput($event)" (change)="onChange($event)"></mdc-slider>
     <a id='toEnd' class='displayedTime'>{{this.timeRemaining()}}s left</a>
