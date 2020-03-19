@@ -1,5 +1,6 @@
-import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChild, AfterViewChecked } from '@angular/core';
 import { DisplayFlower } from 'src/app/item';
+import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 
 @Component({
   selector: 'app-large-display',
@@ -9,6 +10,8 @@ import { DisplayFlower } from 'src/app/item';
 
 export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
+  @ViewChild(TimerBarComponent, {static: false}) private timerBar: TimerBarComponent;
+
   componentHeight: number;
   componentWidth: number;
   component: LargeDisplayComponent;
@@ -16,6 +19,10 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   flowers: DisplayFlower[] = new Array<DisplayFlower>();
   flowersA: DisplayFlower[] = new Array<DisplayFlower>();
   flowersB: DisplayFlower[] = new Array<DisplayFlower>();
+
+  gameLength = 120;
+  gameTime = 0;
+  gameMonth = '';
 
   constructor() { }
 
@@ -37,6 +44,12 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.timerBar.open();
+
+    setInterval(() => {
+      this.gameMonth = this.timerBar.getMonth();
+      this.gameTime = this.timerBar.getTime();
+    }, 1000);
   }
 
   updatePositions(flowers: DisplayFlower[]) {
