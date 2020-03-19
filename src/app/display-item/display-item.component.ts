@@ -29,7 +29,7 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
         left: '{{left}}px',
         top: '{{top}}px',
       }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
-      state('normal_2', style({
+      state('normal_', style({
         marginTop: '-{{scale}}%',
         marginLeft: '-{{offset}}%',
         width: '{{scale}}%',
