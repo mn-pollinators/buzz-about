@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { DisplayFlower } from 'src/app/item';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 
@@ -17,8 +17,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   component: LargeDisplayComponent;
 
   flowers: DisplayFlower[] = new Array<DisplayFlower>();
-  flowersA: DisplayFlower[] = new Array<DisplayFlower>();
-  flowersB: DisplayFlower[] = new Array<DisplayFlower>();
 
   gameLength = 120;
   gameTime = 0;
@@ -38,8 +36,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.componentWidth = window.innerWidth;
-    // this.componentHeight = this.componentWidth * 9 / 16;
-    // this.componentHeight = window.innerHeight;
     this.initializeTestFlowers();
   }
 
@@ -56,7 +52,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     for (const f of flowers) {
       f.x = f.x / this.componentWidth * window.innerWidth;
       f.y = f.y / this.componentWidth * window.innerWidth;
-      // f.y = f.y / this.componentHeight * window.innerHeight;
     }
   }
 
