@@ -20,6 +20,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   gameLength = 120;
   gameTime = 0;
+  gameRunning = false;
   gameMonth = '';
 
   constructor() { }
@@ -43,6 +44,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.timerBar.open();
 
     setInterval(() => {
+      this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
       this.gameTime = this.timerBar.getTime();
     }, 1000);

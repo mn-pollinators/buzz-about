@@ -177,4 +177,8 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
     return Math.max(this.gameLength, Math.min(0, this.currentTime));
   }
 
+  getStatus(): boolean {
+    return !this.paused;
+  }
+
 }
