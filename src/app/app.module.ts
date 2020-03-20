@@ -22,6 +22,7 @@ import {
   MdcSliderModule,
   MdcIconButtonModule
 } from '@angular-mdc/web';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
@@ -61,6 +62,7 @@ const MDC_MODULES: any[] = [
     HttpClientModule,
     FlexLayoutModule,
     FormsModule,
+    MatProgressSpinnerModule,
     MDC_MODULES,
   ],
   providers: [],
