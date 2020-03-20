@@ -169,7 +169,8 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
   }
 
   getMonth(): string {
-    if (this.currentTime < 0 || this.currentTime === this.gameLength) {return ''; }
+    if (this.currentTime < 0) {return this.months[0]; }
+    if (this.currentTime === this.gameLength) {return ''; }
     return this.currentMonth;
   }
 
