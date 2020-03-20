@@ -77,7 +77,7 @@ body {
   position: absolute;
   display: block;
   right: 0;
-  bottom: 48px; // minimum: 16px
+  bottom: 0;
   z-index: 2;
   width: 500px;
   justify-self: center;
@@ -193,5 +193,9 @@ body {
   .mdc-button:disabled, .mdc-icon-button:disabled {
     color: $mdc-theme-secondary;
     opacity: 0.38;
+  }
+
+  .mdc-slider__thumb-container {
+    height: 23px;
   }
 }
