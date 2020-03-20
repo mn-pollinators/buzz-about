@@ -174,7 +174,7 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
   }
 
   getTime(): number {
-    return Math.max(this.gameLength, Math.min(0, this.currentTime));
+    return Math.min(this.gameLength, Math.max(0, this.currentTime));
   }
 
   getStatus(): boolean {
