@@ -1,3 +1,6 @@
-<p>
-  game-progress-indicator works!
-</p>
+<div class='progress-indicator-wrapper'>
+  <mat-progress-spinner mode='determinate' value='{{this.spinnerProgress()}}' strokeWidth='60'></mat-progress-spinner>
+
+</div>
+
+{{this.gameLength + ' ' + this.gameTime + ' ' + this.gameMonth}}

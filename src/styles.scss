@@ -199,3 +199,17 @@ body {
     height: 23px;
   }
 }
+
+.progress-indicator-wrapper {
+  position: absolute;
+  top: 0;
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $mdc-theme-secondary;
+    transform: scaleY(-1);
+  }
+
+  .mat-progress-spinner svg {
+    padding: 10px;
+  }
+}
