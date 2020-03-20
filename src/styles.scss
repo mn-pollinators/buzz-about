@@ -171,13 +171,14 @@ body {
 
 .backgroundMonth {
   position: absolute;
-  line-height: 200px;
-  font-size: 200px;
-  top: 0;
-  display: block;
+  line-height: 120px;
+  font-size: 120px;
+  top: 20px;
+  padding-left: 155px;
+  // display: block;
   color: $mdc-theme-secondary;
-  width: 100%;
-  text-align: center;
+  // width: 100%;
+  text-align: left;
   z-index: 0;
   text-shadow:  0 0 5px $mdc-theme-secondary;
   overflow: hidden;
@@ -206,10 +207,15 @@ body {
 
   .mat-progress-spinner circle, .mat-spinner circle {
     stroke: $mdc-theme-secondary;
+    opacity: 0.75;
     transform: scaleY(-1);
   }
 
   .mat-progress-spinner svg {
     padding: 10px;
+  }
+
+  .progress-spinner-wrapper {
+    margin: 20px;
   }
 }
