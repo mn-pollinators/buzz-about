@@ -13,13 +13,18 @@ export class GameProgressIndicatorComponent implements OnInit {
 
   @Input() gameMonth: string;
 
+  months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   spinnerProgress(): number {
     return 100 * (1 - this.gameTime / this.gameLength);
+  }
+
+  linearProgress(): number {
+    return this.gameTime / this.gameLength;
   }
 
 }

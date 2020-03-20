@@ -93,88 +93,13 @@ body {
   }
 }
 
-.monthWrapper, .progressBar {
-  position: relative;
-  display: inline-block;
-  left: 110px;
-  width: 280px;
-  height: 48px;
-  background-color: rgba(113, 145, 39, 0.85);
-  line-height: 48px;
-  text-align: center;
-  font-size: 28px;
-  color: $mdc-theme-secondary
-}
-
-.monthWrapper a {
-  color: lightgoldenrodyellow;
-  font-family: Comic Sans MS;
-  text-transform: uppercase;
-}
-
-.progressBar {
-  text-align: left;
-  font-weight: 100;
-  position: absolute;
-  top: 0;
-  height: 48px;
-  z-index: 0;
-}
-
-#previousMonth, #nextMonth {
-  position: absolute;
-  color: $mdc-theme-secondary;
-  height: 48px;
-  width: 110px;
-}
-
-#nextMonth {
-  right: 0;
-}
-
-.displayedMonth {
-  height: 48px;
-}
-
-.timeSliderWrapper {
-  padding: 0 110px 0 160px;
-  height: 48px;
-}
-
-.timeSlier {
-  position: absolute;
-}
-
-.displayedTime {
-  height: 48px;
-  line-height: 48px;
-  width: 75px;
-  position: absolute;
-  text-align: center;
-  font-size: 14px;
-  color: lightgoldenrodyellow;
-  right: 18px;
-  font-family: Comic Sans MS;
-}
-
-.timerController {
-  height: 48px;
-  position: absolute;
-  text-align: left;
-  top: 48px;
-  left: 0;
-}
-
-.timerController button {
-  color: $mdc-theme-secondary;
-}
 
 .backgroundMonth {
   position: absolute;
-  line-height: 120px;
-  font-size: 120px;
-  top: 20px;
-  padding-left: 155px;
+  line-height: 60px;
+  font-size: 60px;
+  top: 75px;
+  padding-left: 165px;
   // display: block;
   color: $mdc-theme-secondary;
   // width: 100%;
@@ -187,6 +112,82 @@ body {
 }
 
 .timerBar {
+  .monthWrapper, .progressBar {
+    position: relative;
+    display: inline-block;
+    left: 110px;
+    width: 280px;
+    height: 48px;
+    background-color: rgba(113, 145, 39, 0.85);
+    line-height: 48px;
+    text-align: center;
+    font-size: 28px;
+    color: $mdc-theme-secondary
+  }
+
+  .monthWrapper a {
+    color: lightgoldenrodyellow;
+    font-family: Comic Sans MS;
+    text-transform: uppercase;
+  }
+
+  .progressBar {
+    text-align: left;
+    font-weight: 100;
+    position: absolute;
+    top: 0;
+    height: 48px;
+    z-index: 0;
+  }
+
+  #previousMonth, #nextMonth {
+    position: absolute;
+    color: $mdc-theme-secondary;
+    height: 48px;
+    width: 110px;
+  }
+
+  #nextMonth {
+    right: 0;
+  }
+
+  .displayedMonth {
+    height: 48px;
+  }
+
+  .timeSliderWrapper {
+    padding: 0 110px 0 160px;
+    height: 48px;
+  }
+
+  .timeSlier {
+    position: absolute;
+  }
+
+  .displayedTime {
+    height: 48px;
+    line-height: 48px;
+    width: 75px;
+    position: absolute;
+    text-align: center;
+    font-size: 14px;
+    color: lightgoldenrodyellow;
+    right: 18px;
+    font-family: Comic Sans MS;
+  }
+
+  .timerController {
+    height: 48px;
+    position: absolute;
+    text-align: left;
+    top: 48px;
+    left: 0;
+  }
+
+  .timerController button {
+    color: $mdc-theme-secondary;
+  }
+
   .mdc-icon-button::before, .mdc-icon-button::after {
     background-color: $mdc-theme-secondary;
   }
@@ -207,7 +208,7 @@ body {
 
   .mat-progress-spinner circle, .mat-spinner circle {
     stroke: $mdc-theme-secondary;
-    opacity: 0.75;
+    opacity: 0.6;
     transform: scaleY(-1);
   }
 
@@ -217,5 +218,33 @@ body {
 
   .progress-spinner-wrapper {
     margin: 20px;
+  }
+}
+
+.progress-indicator-wrapper {
+  display: block;
+  width: 100%;
+  position: absolute;
+
+  .monthProgressWrapper {
+    background-color: $mdc-theme-primary;
+
+    .progressMonth {
+      display: inline-block;
+      height: 24px;
+      width: 1/8 * 100%;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .currentMonth {
+      color: $mdc-theme-secondary;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .monthProgress {
+      height: 4px;
+    }
   }
 }
