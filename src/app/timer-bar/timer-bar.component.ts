@@ -117,6 +117,7 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
   }
 
   prevMonth() {
+    this.paused = true;
     if (this.currentTime <= 0 || this.currentMonth === this.months[0]) {
       this.setTimer(-3);
     } else if (this.currentTime === this.gameLength) {
@@ -127,6 +128,7 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
   }
 
   nextMonth() {
+    this.paused = true;
     this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
   }
 
@@ -141,6 +143,7 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
 
   onInput(event: MdcSliderChange): void {
     this.sliding = true;
+    this.paused = true;
     this.currentTime = event.value;
     this.updateMonth();
     this.linearProgress.close();
