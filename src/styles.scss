@@ -245,6 +245,9 @@ body {
 
     .monthProgress {
       height: 4px;
+      .mdc-linear-progress__buffer {
+        background-color: $mdc-theme-primary;
+      }
     }
   }
 }
