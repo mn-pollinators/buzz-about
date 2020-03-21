@@ -6,4 +6,5 @@ export interface Bee {
   live: boolean;
   currentFlower: string;
   health: number;
+  visible: boolean;
 }
