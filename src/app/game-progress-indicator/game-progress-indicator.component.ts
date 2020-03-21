@@ -27,4 +27,22 @@ export class GameProgressIndicatorComponent implements OnInit {
     return this.gameTime / this.gameLength;
   }
 
+  parseSeason() {
+    switch (this.gameMonth) {
+      case 'April':
+      case 'May':
+        return 'Spring';
+      case 'June':
+      case 'July':
+      case 'August':
+        return 'Summer';
+      case 'September':
+      case 'October':
+      case 'November':
+        return 'Fall';
+      case '':
+        return '';
+    }
+  }
+
 }
