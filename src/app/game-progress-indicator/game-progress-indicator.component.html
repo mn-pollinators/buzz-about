@@ -6,10 +6,12 @@
     </a>
     <mdc-linear-progress class='monthProgress' determinate [progress]='this.linearProgress()' [buffer]='1' secondary='false'></mdc-linear-progress>
   </div>
+
+  <div class="backgroundMonth">
+    {{this.gameMonth.toLocaleUpperCase()}}
+  </div>
+
   <div class='progress-spinner-wrapper'>
     <mat-progress-spinner *ngIf='this.gameMonth' mode='determinate' value='{{this.spinnerProgress()}}' strokeWidth='60'></mat-progress-spinner>
   </div>
-
 </div>
-
-<!-- {{this.gameLength + ' ' + this.gameTime + ' ' + this.gameMonth}} -->
