@@ -3,5 +3,5 @@ export interface Bee {
   name: string;
   imgSrc: string;
   active: boolean;
-  displayed: boolean;
+  visible: boolean;
 }

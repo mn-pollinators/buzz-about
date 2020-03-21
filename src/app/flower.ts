@@ -2,8 +2,8 @@ export interface FLower {
   _id: string;
   species: string;
   imgSrc: string;
-  active: boolean;
+  blooming: boolean;
   openMonths: string[];
-  displayed: boolean;
+  visible: boolean;
   occupied: boolean;
 }
