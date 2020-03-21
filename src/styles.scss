@@ -107,7 +107,7 @@ body {
 }
 
 .monthWrapper a {
-  color: rgb(228, 223, 198);
+  color: lightgoldenrodyellow;
   font-family: Comic Sans MS;
   text-transform: uppercase;
 }
@@ -137,7 +137,7 @@ body {
 }
 
 .timeSliderWrapper {
-  padding: 0 110px 0 110px;
+  padding: 0 110px 0 160px;
   height: 48px;
 }
 
@@ -152,8 +152,9 @@ body {
   position: absolute;
   text-align: center;
   font-size: 14px;
-  color: $mdc-theme-secondary;
+  color: lightgoldenrodyellow;
   right: 18px;
+  font-family: Comic Sans MS;
 }
 
 .timerController {
@@ -161,7 +162,7 @@ body {
   position: absolute;
   text-align: left;
   top: 48px;
-  left: 6px;
+  left: 0;
 }
 
 .timerController button {

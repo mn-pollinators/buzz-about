@@ -69,6 +69,13 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
     this.updateMonth();
   }
 
+  end() {
+    this.linearProgress.close();
+    this.paused = true;
+    this.currentTime = this.gameLength;
+    this.updateMonth();
+  }
+
   updateMonth() {
     switch (this.currentTime) {
       case -3:
@@ -126,8 +133,13 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   onChange(): void {
     this.sliding = false;
     if (this.currentTime !== this.gameLength) {
+      this.startAtMonth();
       this.linearProgress.open();
     }
+  }
+
+  startAtMonth() {
+    this.currentTime = this.months.indexOf(this.currentMonth) * this.monthLength;
   }
 
   getCurrentProgress() {
