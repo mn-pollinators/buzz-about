@@ -41,8 +41,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.timerBar.open();
-
     setInterval(() => {
       this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
