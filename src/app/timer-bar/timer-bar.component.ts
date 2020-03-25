@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MdcSliderChange } from '@angular-mdc/web';
 import { MDCLinearProgress } from '@material/linear-progress';
 
@@ -8,7 +8,7 @@ import { MDCLinearProgress } from '@material/linear-progress';
   styleUrls: ['./timer-bar.component.scss']
 })
 
-export class TimerBarComponent implements OnInit, AfterViewChecked {
+export class TimerBarComponent implements OnInit {
 
   @Input() gameLength = 0;
 
@@ -30,12 +30,11 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
 
   linearProgress: MDCLinearProgress;
 
+  clock;
+
   constructor() { }
 
-  ngOnInit() { }
-
-  ngAfterViewChecked() {
-  }
+  ngOnInit() { this.open(); }
 
   initialize() {
     this.monthLength = this.gameLength / this.months.length;
@@ -47,12 +46,17 @@ export class TimerBarComponent implements OnInit, AfterViewChecked {
   }
 
   open() {
-    this.isOpened = true;
-    this.initialize();
+    if (!this.isOpened) {
+      this.isOpened = true;
+      this.initialize();
+    }
   }
 
   close() {
-    this.isOpened = false;
+    if (this.isOpened) {
+      this.isOpened = false;
+      clearInterval(this.clock);
+    }
   }
 
   runClock() {
