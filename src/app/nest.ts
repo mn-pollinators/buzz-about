@@ -1,5 +1,5 @@
 export interface Bee {
-  _id: string;
+  id: string;
   name: string;
   imgSrc: string;
   active: boolean;

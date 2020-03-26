@@ -1,5 +1,5 @@
-export interface FLower {
-  _id: string;
+export interface Flower {
+  id: string;
   species: string;
   imgSrc: string;
   blooming: boolean;
