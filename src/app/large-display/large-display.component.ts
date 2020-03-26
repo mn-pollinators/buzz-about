@@ -57,70 +57,70 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   initializeTestFlowers() {
 
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 6, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 6, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 7, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'a',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 25, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'c', 'assets/images/1000w-8bit/flowers/solidago rigida.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 18, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'd', 'assets/images/1000w-8bit/flowers/sunflower.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'e', 'assets/images/1000w-8bit/flowers/black raspberry.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 12, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'f', 'assets/images/1000w-8bit/flowers/trifolium repens.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowers.push(new Flower(
+    this.flowers.push(new DisplayFlower(
       'g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 22,
       false));
 
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 6, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 6, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 7, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'a',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 25, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'c', 'assets/images/1000w-8bit/flowers/solidago rigida.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 18, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'd', 'assets/images/1000w-8bit/flowers/sunflower.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'e', 'assets/images/1000w-8bit/flowers/black raspberry.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 12, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'f', 'assets/images/1000w-8bit/flowers/trifolium repens.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 14, false));
-    this.flowersA.push(new Flower(
+    this.flowersA.push(new DisplayFlower(
       'g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png', 0.5 * this.componentWidth, 0.5 * this.componentHeight, 22,
       false));
 
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png', 0.8 * this.componentWidth, 0.735 * this.componentHeight, 6,
       true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png', 0.8 * this.componentWidth, 0.63 * this.componentHeight, 6, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png', 0.8 * this.componentWidth, 0.55 * this.componentHeight, 7, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'a', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png', 0.6 * this.componentWidth, 0.75 * this.componentHeight, 25, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png', 0.4 * this.componentWidth, 0.7 * this.componentHeight, 14, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'c', 'assets/images/1000w-8bit/flowers/solidago rigida.png', 0.2 * this.componentWidth, 0.7 * this.componentHeight, 18, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'd', 'assets/images/1000w-8bit/flowers/sunflower.png', 0.8 * this.componentWidth, 0.25 * this.componentHeight, 14, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'e', 'assets/images/1000w-8bit/flowers/black raspberry.png', 0.6 * this.componentWidth, 0.25 * this.componentHeight, 12, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'f', 'assets/images/1000w-8bit/flowers/trifolium repens.png', 0.4 * this.componentWidth, 0.3 * this.componentHeight, 14, true));
-    this.flowersB.push(new Flower(
+    this.flowersB.push(new DisplayFlower(
       'g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png', 0.2 * this.componentWidth, 0.3 * this.componentHeight, 22,
       true));
   }
