@@ -59,6 +59,6 @@ export class GameReviewPageComponent implements OnInit {
       id: 'b_3',
       species: 'colletes simulans',
       imgSrc: 'assets/images/1000w-8bit/bees/colletes simulans.png',
-      buzzingPeriods: [{from: 'May', to: 'May'}]} as Bee);
+      buzzingPeriods: [{from: 'May', to: 'June'}]} as Bee);
   }
 }
