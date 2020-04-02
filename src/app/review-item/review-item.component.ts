@@ -21,8 +21,6 @@ export class ReviewItemComponent implements OnInit {
 
   species: string;
 
-  precision = 48;
-
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   periods: {from: number, to: number}[] = new Array<{from: number, to: number}>();
@@ -51,12 +49,18 @@ export class ReviewItemComponent implements OnInit {
   }
 
   calculatePeriods() {
+    let activePeriods;
+    if (this.reviewFlower) {
+      activePeriods = this.reviewFlower.openPeriods;
+    }
     if (this.reviewBee) {
-      for (const p of this.reviewBee.buzzingPeriods) {
-
-      }
+      activePeriods = this.reviewBee.buzzingPeriods;
     }
 
+    for (const p of activePeriods) {
+      const f = this.months.indexOf(p.from) / this.months.length;
+      const t = (this.months.indexOf(p.to) + 1) / this.months.length;
+      this.periods.push({from: f, to: t});
+    }
   }
-
 }
