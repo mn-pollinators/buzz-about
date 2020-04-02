@@ -1,3 +1,8 @@
-<p>
-  game-review-page works!
-</p>
+<div class='reviewPage'>
+  <div *ngFor='let f of this.flowers' class='FlowersWrapper'>
+    <app-review-item [toReview]='f'></app-review-item>
+  </div>
+  <div *ngFor='let b of this.bees' class='BeesWrapper'>
+    <app-review-item [toReview]='b'></app-review-item>
+  </div>
+</div>

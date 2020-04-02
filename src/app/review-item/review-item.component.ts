@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Flower } from '../flower';
+import { Bee } from '../bee';
 
 @Component({
   selector: 'app-review-item',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReviewItemComponent implements OnInit {
 
+  @Input()
+  toReview: Flower | Bee;
+
   constructor() { }
 
   ngOnInit() {
   }
+
+
 
 }
