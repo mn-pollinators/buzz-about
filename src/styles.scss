@@ -40,9 +40,9 @@ body {
   }
 }
 
-////////////////////////////////
-// styles to the large display//
-////////////////////////////////
+/////////////////////////////////
+// styles to the large display //
+/////////////////////////////////
 
 .flowers {
   position: absolute;
@@ -217,5 +217,84 @@ body {
 
   .progress-spinner-wrapper {
     margin: 20px;
+  }
+}
+
+///////////////////////////////
+// styles to the review page //
+///////////////////////////////
+
+.reviewPage {
+  padding: 18px;
+  // background-color: $mdc-theme-primary;
+
+  .reviewItem {
+    // background-color: white;
+    height: 80px;
+    border-color: $mdc-theme-primary;;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+
+    .reviewImgWrapper {
+      padding: 5px;
+      min-width: 70px;
+      justify-content: center;
+      display: flex;
+      border-radius: 40px;
+
+      img {
+        margin: auto;
+        height: 70px;
+        max-width: 70px;
+      }
+    }
+
+    .reviewSpecies {
+      min-width: 230px;
+      display: block;
+      padding: 30px 0;
+      margin: 0 18px;
+      text-transform: capitalize;
+      font-size: large;
+    }
+
+    .reviewActivePeriodGroup {
+      width: 100%;
+      flex-direction: column;
+      margin: auto;
+
+      .activePeriodWrapper {
+
+        .activeMonthsWrapper {
+          height: 15px;
+          margin-left: 5px;
+        }
+
+        .linearProgressWrapper {
+          margin: 5px 0;
+          margin-right: 12px;
+          padding: 0 6px;
+          border-radius: 6px;
+          background-color: lightgrey;
+
+          mdc-linear-progress {
+            height: 12px;
+
+            .mdc-linear-progress__bar-inner {
+              background-color: lightgrey;
+            }
+
+            .mdc-linear-progress__buffer {
+              background-color: $mdc-theme-secondary;
+            }
+
+            .mdc-linear-progress__buffering-dots {
+              display: none;
+            }
+          }
+        }
+      }
+    }
   }
 }
