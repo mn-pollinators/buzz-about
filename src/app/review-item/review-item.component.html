@@ -2,12 +2,12 @@
   <div class='reviewImgWrapper'><img src="{{this.imgSrc}}"></div>
 
   <div class='reviewSpecies'>{{this.species}}</div>
-
-  <div class='reviewActivePeriodGroup' *ngFor='let p of this.periods'>
-    <div class='activePeriodWrapper'>
-      <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
+  <div class='reviewActivePeriodGroup'>
+    <div class='activePeriodWrapper'  *ngFor='let p of this.periods'>
+      <div class='activeMonthsWrapper'>Active from {{p.begin}} to {{p.end}}</div>
+      <div class='linearProgressWrapper'>
+        <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
+      </div>
     </div>
   </div>
 </div>
-
-{{this.id}}: {{this.species}}

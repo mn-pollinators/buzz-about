@@ -23,7 +23,7 @@ export class ReviewItemComponent implements OnInit {
 
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  periods: {from: number, to: number}[] = new Array<{from: number, to: number}>();
+  periods: {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
 
   constructor() { }
 
@@ -60,7 +60,7 @@ export class ReviewItemComponent implements OnInit {
     for (const p of activePeriods) {
       const f = this.months.indexOf(p.from) / this.months.length;
       const t = (this.months.indexOf(p.to) + 1) / this.months.length;
-      this.periods.push({from: f, to: t});
+      this.periods.push({from: f, to: t, begin: p.from, end: p.to});
     }
   }
 }
