@@ -14,6 +14,8 @@ export class TimerBarComponent implements OnInit {
 
   currentTime = -3;
 
+  initialTime = -3;
+
   isOpened = false;
 
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
@@ -61,8 +63,10 @@ export class TimerBarComponent implements OnInit {
 
   runClock() {
     const clock = setInterval(() => {
+      console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
       if (!this.paused && !this.sliding) {
         this.currentTime = Math.min(this.currentTime + 1, this.gameLength);
+        this.syncCurrentProgress();
         this.updateMonth();
         if (this.currentTime >= this.gameLength) {
           this.paused = true;
@@ -75,25 +79,49 @@ export class TimerBarComponent implements OnInit {
   }
 
   clickPausePlay() {
-    if (this.currentTime === this.gameLength) {
-      this.currentTime = -3;
-      this.updateMonth();
+    if (!this.paused) {
+      this.paused = true;
+    } else {
+      if (!this.confirmChange()) {
+        this.setTimer(this.initialTime);
+        console.log('Restore game at time: ' + this.initialTime);
+      } else {
+        console.log('Restart game at time: ' + this.currentTime);
+      }
+      if (this.currentTime === this.gameLength) {
+        this.currentTime = -3;
+        this.syncCurrentProgress();
+        this.updateMonth();
+      }
+      this.paused = false;
     }
-    this.paused = !this.paused;
+  }
+
+  confirmChange(): boolean {
+    return true;
   }
 
   reset() {
     this.linearProgress.close();
     this.paused = true;
-    this.currentTime = -3;
-    this.updateMonth();
+    if (this.confirmChange()) {
+      this.setTimer(-3);
+      this.syncCurrentProgress();
+    }
   }
 
   end() {
     this.linearProgress.close();
     this.paused = true;
-    this.currentTime = this.gameLength;
-    this.updateMonth();
+    if (this.confirmChange()) {
+      this.setTimer(this.gameLength);
+      this.syncCurrentProgress();
+    }
+  }
+
+  syncCurrentProgress() {
+    console.log('sync');
+    this.initialTime = this.currentTime;
   }
 
   updateMonth() {
@@ -116,8 +144,12 @@ export class TimerBarComponent implements OnInit {
         break;
       default:
         if (this.linearProgress) { this.linearProgress.open(); }
-        this.currentMonth = this.months[Math.min(12, Math.floor(this.currentTime / this.monthLength))];
+        this.currentMonth = this.calculateMonth();
     }
+  }
+
+  calculateMonth(time = this.currentTime) {
+    return this.months[Math.min(12, Math.floor(time / this.monthLength))];
   }
 
   prevMonth() {
@@ -148,8 +180,7 @@ export class TimerBarComponent implements OnInit {
   onInput(event: MdcSliderChange): void {
     this.sliding = true;
     this.paused = true;
-    this.currentTime = event.value;
-    this.updateMonth();
+    this.setTimer(event.value);
     this.linearProgress.close();
   }
 
@@ -176,13 +207,13 @@ export class TimerBarComponent implements OnInit {
   }
 
   getMonth(): string {
-    if (this.currentTime < 0) {return this.months[0]; }
-    if (this.currentTime === this.gameLength) {return ''; }
-    return this.currentMonth;
+    if (this.initialTime < 0) {return this.months[0]; }
+    if (this.initialTime === this.gameLength) {return ''; }
+    return this.calculateMonth(this.initialTime);
   }
 
   getTime(): number {
-    return Math.min(this.gameLength, Math.max(0, this.currentTime));
+    return Math.min(this.gameLength, Math.max(0, this.initialTime));
   }
 
   getStatus(): boolean {
