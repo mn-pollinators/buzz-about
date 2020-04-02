@@ -5,6 +5,7 @@ export interface Bee {
   active: boolean;
   live: boolean;
   currentFlower: string;
+  buzzingPeriods: {from: string, to: string}[];
   health: number;
   visible: boolean;
 }

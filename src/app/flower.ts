@@ -3,7 +3,7 @@ export interface Flower {
   species: string;
   imgSrc: string;
   blooming: boolean;
-  openMonths: string[];
+  openPeriods: {from: string, to: string}[];
   visible: boolean;
   occupied: boolean;
 }
