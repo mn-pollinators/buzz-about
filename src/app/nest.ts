@@ -1,4 +1,4 @@
-export interface Bee {
+export interface Nest {
   id: string;
   name: string;
   imgSrc: string;
