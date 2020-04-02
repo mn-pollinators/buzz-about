@@ -1,3 +1,11 @@
 <div class='reviewItem'>
-  {{this.toReview.id}}: {{this.toReview.species}}
+  <div class='reviewImgWrapper'><img src="{{this.imgSrc}}"></div>
+
+  <div class='reviewSpecies'>{{this.species}}</div>
+
+  <div class='reviewActivePeriodGroup' *ngFor='let p of this.periods'>
+    <mdc-linear-progress></mdc-linear-progress>
+  </div>
 </div>
+
+{{this.id}}: {{this.species}}
