@@ -4,7 +4,9 @@
   <div class='reviewSpecies'>{{this.species}}</div>
 
   <div class='reviewActivePeriodGroup' *ngFor='let p of this.periods'>
-    <mdc-linear-progress></mdc-linear-progress>
+    <div class='activePeriodWrapper'>
+      <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
+    </div>
   </div>
 </div>
 
