@@ -63,7 +63,6 @@ export class TimerBarComponent implements OnInit {
 
   runClock() {
     const clock = setInterval(() => {
-      console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
       if (!this.paused && !this.sliding) {
         this.currentTime = Math.min(this.currentTime + 1, this.gameLength);
         this.syncCurrentProgress();
@@ -82,12 +81,6 @@ export class TimerBarComponent implements OnInit {
     if (!this.paused) {
       this.paused = true;
     } else {
-      if (!this.confirmChange()) {
-        this.setTimer(this.initialTime);
-        console.log('Restore game at time: ' + this.initialTime);
-      } else {
-        console.log('Restart game at time: ' + this.currentTime);
-      }
       if (this.currentTime === this.gameLength) {
         this.currentTime = -3;
         this.syncCurrentProgress();
@@ -97,23 +90,34 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  confirmChange(): boolean {
-    return true;
+  confirmChange(month: string): boolean {
+    this.paused = true;
+    switch (month) {
+      case 'begin':
+        return confirm('Reset this game?');
+      case 'end':
+        return confirm('End this game?');
+      default:
+        console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
+        if (this.currentTime !== this.initialTime) {
+          return confirm('Set game progress to \'' + month + '\'?');
+        }
+    }
   }
 
   reset() {
-    this.linearProgress.close();
     this.paused = true;
-    if (this.confirmChange()) {
+    this.linearProgress.close();
+    if (this.confirmChange('begin')) {
       this.setTimer(-3);
       this.syncCurrentProgress();
     }
   }
 
   end() {
-    this.linearProgress.close();
     this.paused = true;
-    if (this.confirmChange()) {
+    this.linearProgress.close();
+    if (this.confirmChange('end')) {
       this.setTimer(this.gameLength);
       this.syncCurrentProgress();
     }
@@ -161,11 +165,17 @@ export class TimerBarComponent implements OnInit {
     } else {
       this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) - 1));
     }
+    if (!this.confirmChange(this.currentMonth)) {
+      this.setTimer(this.initialTime);
+    }
   }
 
   nextMonth() {
     this.paused = true;
     this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
+    if (!this.confirmChange(this.currentMonth)) {
+      this.setTimer(this.initialTime);
+    }
   }
 
   setTimer(s: number) {
@@ -186,8 +196,15 @@ export class TimerBarComponent implements OnInit {
 
   onChange(): void {
     this.sliding = false;
+    if (!this.confirmChange(this.currentMonth)) {
+      this.setTimer(this.initialTime);
+    } else {
+      if (this.currentTime !== this.gameLength) {
+        this.startAtMonth();
+      }
+      this.syncCurrentProgress();
+    }
     if (this.currentTime !== this.gameLength) {
-      this.startAtMonth();
       this.linearProgress.open();
     }
   }
