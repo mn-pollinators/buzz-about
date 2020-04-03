@@ -226,71 +226,77 @@ body {
 
 .reviewPage {
   padding: 18px;
-  // background-color: $mdc-theme-primary;
+  min-width: min-content;
 
-  .reviewItem {
-    // background-color: white;
-    height: 80px;
-    border-color: $mdc-theme-primary;;
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 5px;
+  .reviewItemGroup {
+    box-shadow: 0 1px 15px 1px lightgray;
 
-    .reviewImgWrapper {
-      padding: 5px;
-      min-width: 70px;
-      justify-content: center;
+    .reviewItem {
+      padding: 0 20px 0 5px;
+      min-height: 50px;
       display: flex;
-      border-radius: 40px;
+      flex-direction: row;
+      margin-bottom: 1px;
+      box-shadow: 0 0 1px lightgray;
+      min-width: min-content;
 
-      img {
-        margin: auto;
-        height: 70px;
-        max-width: 70px;
-      }
-    }
+      .reviewImgWrapper {
+        padding: 10px;
+        min-width: 60px;
+        justify-content: center;
+        display: flex;
 
-    .reviewSpecies {
-      min-width: 230px;
-      display: block;
-      padding: 30px 0;
-      margin: 0 18px;
-      text-transform: capitalize;
-      font-size: large;
-    }
-
-    .reviewActivePeriodGroup {
-      width: 100%;
-      flex-direction: column;
-      margin: auto;
-
-      .activePeriodWrapper {
-
-        .activeMonthsWrapper {
-          height: 15px;
-          margin-left: 5px;
+        img {
+          margin: auto;
+          height: 60px;
+          max-width: 60px;
         }
+      }
 
-        .linearProgressWrapper {
-          margin: 5px 0;
-          margin-right: 12px;
-          padding: 0 6px;
-          border-radius: 6px;
-          background-color: lightgrey;
+      .reviewSpecies {
+        min-width: 220px;
+        display: block;
+        padding: 30px 0;
+        margin: 0 18px;
+        text-transform: capitalize;
+        font-size: large;
+      }
 
-          mdc-linear-progress {
-            height: 12px;
+      .reviewActivePeriodGroup {
+        width: 100%;
+        flex-direction: column;
+        margin: auto;
 
-            .mdc-linear-progress__bar-inner {
-              background-color: lightgrey;
-            }
+        .activePeriodWrapper {
 
-            .mdc-linear-progress__buffer {
-              background-color: $mdc-theme-secondary;
-            }
+          .activeMonthsWrapper {
+            height: 14px;
+            font-size: 14px;
+            margin-left: 2px;
+            color: grey;
+            min-width: 220px;
+          }
 
-            .mdc-linear-progress__buffering-dots {
-              display: none;
+          .linearProgressWrapper {
+            margin: 5px 0;
+            padding: 0 5px;
+            border-radius: 5px;
+            background-color: lightgrey;
+
+            mdc-linear-progress {
+              height: 10px;
+
+              .mdc-linear-progress__bar-inner {
+                background-color: lightgrey;
+              }
+
+              .mdc-linear-progress__buffer {
+                background-color: $mdc-theme-secondary;
+              }
+
+              .mdc-linear-progress__buffering-dots {
+                display: none;
+              }
             }
           }
         }
