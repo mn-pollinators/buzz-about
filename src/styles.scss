@@ -261,9 +261,17 @@ body {
         text-transform: capitalize;
         font-size: large;
 
-        .reviewType {
+        .reviewType-flower, .reviewType-bee {
           font-size: 15px;
+          font-style: italic;
+        }
+
+        .reviewType-flower {
           color: $mdc-theme-primary;
+        }
+
+        .reviewType-bee {
+          color: darken($mdc-theme-secondary, 7%);
         }
       }
 
@@ -281,7 +289,7 @@ body {
             min-width: 220px;
           }
 
-          .linearProgressWrapper {
+          .linearProgressWrapper-bee, .linearProgressWrapper-flower {
             margin: 5px 0;
             padding: 0 5px;
             border-radius: 5px;
@@ -300,6 +308,22 @@ body {
 
               .mdc-linear-progress__buffering-dots {
                 display: none;
+              }
+            }
+          }
+
+          .linearProgressWrapper-flower {
+            mdc-linear-progress {
+              .mdc-linear-progress__buffer {
+                background-color: lighten( $mdc-theme-primary, 12% );
+              }
+            }
+          }
+
+          .linearProgressWrapper-bee {
+            mdc-linear-progress {
+              .mdc-linear-progress__buffer {
+                background-color: $mdc-theme-secondary;
               }
             }
           }
