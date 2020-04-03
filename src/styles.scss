@@ -256,10 +256,15 @@ body {
       .reviewSpecies {
         min-width: 220px;
         display: block;
-        padding: 30px 0;
+        padding: 20px 0;
         margin: 0 18px;
         text-transform: capitalize;
         font-size: large;
+
+        .reviewType {
+          font-size: 15px;
+          color: $mdc-theme-primary;
+        }
       }
 
       .reviewActivePeriodGroup {
@@ -268,7 +273,6 @@ body {
         margin: auto;
 
         .activePeriodWrapper {
-
           .activeMonthsWrapper {
             height: 14px;
             font-size: 14px;

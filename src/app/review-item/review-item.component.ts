@@ -15,6 +15,8 @@ export class ReviewItemComponent implements OnInit {
   @Input()
   reviewFlower: Flower;
 
+  type: string;
+
   id: string;
 
   imgSrc: string;
@@ -37,12 +39,14 @@ export class ReviewItemComponent implements OnInit {
       this.id = this.reviewBee.id;
       this.imgSrc = this.reviewBee.imgSrc;
       this.species = this.reviewBee.species;
+      this.type = 'bee';
     }
     if (this.reviewFlower) {
       console.log(this.id);
       this.id = this.reviewFlower.id;
       this.imgSrc = this.reviewFlower.imgSrc;
       this.species = this.reviewFlower.species;
+      this.type = 'flower';
     }
 
     this.calculatePeriods();
