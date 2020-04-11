@@ -194,7 +194,7 @@ export class TimerBarComponent implements OnInit {
     this.linearProgress.close();
   }
 
-  onChange(): void {
+  onChange(event: MdcSliderChange): void {
     this.sliding = false;
     if (!this.confirmChange(this.currentMonth)) {
       this.setTimer(this.initialTime);
