@@ -167,6 +167,8 @@ export class TimerBarComponent implements OnInit {
     }
     if (!this.confirmChange(this.currentMonth)) {
       this.setTimer(this.initialTime);
+    } else {
+      this.syncCurrentProgress();
     }
   }
 
@@ -175,6 +177,8 @@ export class TimerBarComponent implements OnInit {
     this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
     if (!this.confirmChange(this.currentMonth)) {
       this.setTimer(this.initialTime);
+    } else {
+      this.syncCurrentProgress();
     }
   }
 
