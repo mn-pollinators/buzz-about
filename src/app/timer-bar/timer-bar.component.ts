@@ -123,7 +123,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
     this.linearProgress.close();
   }
 
-  onChange(): void {
+  onChange(event: MdcSliderChange): void {
     this.sliding = false;
     if (this.currentTime !== this.gameLength) {
       this.linearProgress.open();
