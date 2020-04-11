@@ -17,6 +17,8 @@ export class ReviewItemComponent implements OnInit {
 
   type: string;
 
+  sciName: string;
+
   id: string;
 
   imgSrc: string;
@@ -25,7 +27,11 @@ export class ReviewItemComponent implements OnInit {
 
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  periods: {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
+  periods:
+    {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
+
+  periodsRev:
+    {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
 
   constructor() { }
 
@@ -39,6 +45,7 @@ export class ReviewItemComponent implements OnInit {
       this.id = this.reviewBee.id;
       this.imgSrc = this.reviewBee.imgSrc;
       this.species = this.reviewBee.species;
+      this.sciName = this.reviewBee.scientificName;
       this.type = 'bee';
     }
     if (this.reviewFlower) {
@@ -46,6 +53,7 @@ export class ReviewItemComponent implements OnInit {
       this.id = this.reviewFlower.id;
       this.imgSrc = this.reviewFlower.imgSrc;
       this.species = this.reviewFlower.species;
+      this.sciName = this.reviewFlower.scientificName;
       this.type = 'flower';
     }
 
@@ -66,5 +74,7 @@ export class ReviewItemComponent implements OnInit {
       const t = (this.months.indexOf(p.to) + 1) / this.months.length;
       this.periods.push({from: f, to: t, begin: p.from, end: p.to});
     }
+
+    this.periodsRev = this.periods.reverse();
   }
 }

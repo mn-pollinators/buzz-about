@@ -280,15 +280,15 @@ body {
         flex-direction: column;
         margin: auto;
 
-        .activePeriodWrapper {
-          .activeMonthsWrapper {
-            height: 14px;
-            font-size: 14px;
-            margin-left: 2px;
-            color: grey;
-            min-width: 220px;
-          }
+        .activeMonthsText, .activeMonthsWrapper {
+          height: 14px;
+          font-size: 14px;
+          margin-left: 2px;
+          color: grey;
+          min-width: 220px;
+        }
 
+        .activePeriodWrapper {
           .linearProgressWrapper-bee, .linearProgressWrapper-flower {
             margin: 5px 0;
             padding: 0 5px;
