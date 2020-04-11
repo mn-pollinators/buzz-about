@@ -55,10 +55,10 @@ export class ReviewItemComponent implements OnInit {
   calculatePeriods() {
     let activePeriods;
     if (this.reviewFlower) {
-      activePeriods = this.reviewFlower.openPeriods;
+      activePeriods = this.reviewFlower.activePeriods;
     }
     if (this.reviewBee) {
-      activePeriods = this.reviewBee.buzzingPeriods;
+      activePeriods = this.reviewBee.activePeriods;
     }
 
     for (const p of activePeriods) {

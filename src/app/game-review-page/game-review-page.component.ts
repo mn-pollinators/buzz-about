@@ -27,38 +27,44 @@ export class GameReviewPageComponent implements OnInit {
   initializeDemoElements() {
     this.flowers.push({
       id: 'f_1',
-      species: 'rudbeckia hirta',
+      species: 'black-eyed susan',
+      scientificName: 'rudbeckia hirta',
       imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      openPeriods: [{from: 'March', to: 'July'}]} as Flower);
+      activePeriods: [{from: 'March', to: 'July'}]} as Flower);
 
     this.flowers.push({
       id: 'f_2',
-      species: 'taraxacum officinale',
+      species: 'common dandelion',
+      scientificName: 'taraxacum officinale',
       imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      openPeriods: [{from: 'April', to: 'October'}]} as Flower);
+      activePeriods: [{from: 'April', to: 'October'}]} as Flower);
 
     this.flowers.push({
       id: 'f_3',
-      species: 'solidago rigida',
+      species: 'stiff goldenrod',
+      scientificName: 'solidago rigida',
       imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      openPeriods: [{from: 'June', to: 'August'}]} as Flower);
+      activePeriods: [{from: 'June', to: 'August'}]} as Flower);
 
     this.bees.push({
       id: 'b_1',
-      species: 'rusty patch bumblebee',
+      species: 'rusty patch bumble bee',
+      scientificName: 'Bombus affinis',
       imgSrc: 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
-      buzzingPeriods: [{from: 'April', to: 'August'}]} as Bee);
+      activePeriods: [{from: 'April', to: 'August'}]} as Bee);
 
     this.bees.push({
       id: 'b_2',
-      species: 'megachile pugnata',
+      species: 'pugnacious leafcutter bee',
+      scientificName: 'megachile pugnata',
       imgSrc: 'assets/images/1000w-8bit/bees/megachile pugnata.png',
-      buzzingPeriods: [{from: 'March', to: 'May'}, {from: 'August', to: 'September'}]} as Bee);
+      activePeriods: [{from: 'March', to: 'May'}, {from: 'August', to: 'September'}]} as Bee);
 
     this.bees.push({
       id: 'b_3',
-      species: 'colletes simulans',
+      species: 'spine-shouldered cellophane bee',
+      scientificName: 'colletes simulans',
       imgSrc: 'assets/images/1000w-8bit/bees/colletes simulans.png',
-      buzzingPeriods: [{from: 'May', to: 'June'}]} as Bee);
+      activePeriods: [{from: 'May', to: 'June'}]} as Bee);
   }
 }
