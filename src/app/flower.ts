@@ -1,9 +1,11 @@
 export interface Flower {
   id: string;
   species: string;
-  imgSrc: string;
-  blooming: boolean;
-  openPeriods: {from: string, to: string}[];
-  visible: boolean;
-  occupied: boolean;
+  scientificName?: string;
+  imgSrc?: string;
+  imgSrc_inactive?: string;
+  blooming?: boolean;
+  activePeriods?: {from: string, to: string}[];
+  visible?: boolean;
+  occupied?: boolean;
 }
