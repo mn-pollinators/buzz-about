@@ -1,10 +1,11 @@
 <div class='progress-indicator-wrapper'>
   <div class='monthProgressWrapper'>
+    <mdc-linear-progress class='monthProgress' determinate [progress]='this.linearProgress()' [buffer]='1'></mdc-linear-progress>
     <a class='progressMonth' *ngFor='let month of this.months'>
       <a *ngIf='month !== this.gameMonth'>{{month}}</a>
       <a *ngIf='month === this.gameMonth' class='currentMonth'>{{month}}</a>
+      <a class='separator' *ngIf='month !== this.months[this.months.length - 1]'></a>
     </a>
-    <mdc-linear-progress class='monthProgress' determinate [progress]='this.linearProgress()' [buffer]='1' secondary='false'></mdc-linear-progress>
   </div>
 
   <div class="backgroundMonth">
