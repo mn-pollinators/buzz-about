@@ -10,7 +10,7 @@
     <a class='activeMonthsWrapper' *ngFor="let p of this.periods">{{p.begin}} - {{p.end}};&nbsp;</a>
 
     <div class='linearProgressContainer'>
-      <div class='activePeriodWrapper' *ngFor="let p of this.periodsRev">
+      <div class='activePeriodWrapper' *ngFor="let p of this.periods.slice().reverse()">
         <div class='linearProgressWrapper-{{this.type}}'>
           <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
         </div>

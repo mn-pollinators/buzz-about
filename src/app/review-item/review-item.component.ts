@@ -30,9 +30,6 @@ export class ReviewItemComponent implements OnInit {
   periods:
     {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
 
-  periodsRev:
-    {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
-
   constructor() { }
 
   ngOnInit() {
@@ -74,7 +71,5 @@ export class ReviewItemComponent implements OnInit {
       const t = (this.months.indexOf(p.to) + 1) / this.months.length;
       this.periods.push({from: f, to: t, begin: p.from, end: p.to});
     }
-
-    this.periodsRev = this.periods.reverse();
   }
 }
