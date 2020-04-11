@@ -9,9 +9,11 @@
     <a class='activeMonthsText' *ngIf='this.type === "flower"'>Blooming: &nbsp;</a>
     <a class='activeMonthsWrapper' *ngFor="let p of this.periods">{{p.begin}} - {{p.end}}; &nbsp;</a>
 
-    <div class='activePeriodWrapper' *ngFor="let p of this.periodsRev">
-      <div class='linearProgressWrapper-{{this.type}}'>
-        <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
+    <div class='linearProgressContainer'>
+      <div class='activePeriodWrapper' *ngFor="let p of this.periodsRev">
+        <div class='linearProgressWrapper-{{this.type}}'>
+          <mdc-linear-progress determinate [progress]="p.from" [buffer]="p.to"></mdc-linear-progress>
+        </div>
       </div>
     </div>
   </div>

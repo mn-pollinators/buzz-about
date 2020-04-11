@@ -279,6 +279,7 @@ body {
         width: 100%;
         flex-direction: column;
         margin: auto;
+        padding-bottom: 15px;
 
         .activeMonthsText, .activeMonthsWrapper {
           height: 14px;
@@ -288,34 +289,43 @@ body {
           min-width: 220px;
         }
 
-        .activePeriodWrapper {
-          .linearProgressWrapper-bee, .linearProgressWrapper-flower {
-            margin: 5px 0;
-            padding: 0 5px;
-            border-radius: 5px;
-            background-color: lightgrey;
+        .linearProgressContainer {
+          width: 500px;
 
-            mdc-linear-progress {
-              height: 10px;
+          .activePeriodWrapper {
+            position: absolute;
+            width: inherit;
 
-              .mdc-linear-progress__bar-inner {
-                background-color: lightgrey;
-              }
+            .linearProgressWrapper-bee, .linearProgressWrapper-flower {
+              margin: 5px 0;
+              padding: 0 5px;
+              border-radius: 5px;
+              top: 5px;
+              background-color: lightgrey;
 
-              .mdc-linear-progress__buffer {
-                background-color: $mdc-theme-secondary;
-              }
+              mdc-linear-progress {
+                height: 10px;
+                z-index: 1;
 
-              .mdc-linear-progress__buffering-dots {
-                display: none;
+                .mdc-linear-progress__bar-inner {
+                  background-color: lightgrey;
+                }
+
+                .mdc-linear-progress__buffer {
+                  background-color: $mdc-theme-secondary;
+                }
+
+                .mdc-linear-progress__buffering-dots {
+                  display: none;
+                }
               }
             }
-          }
 
-          .linearProgressWrapper-flower {
-            mdc-linear-progress {
-              .mdc-linear-progress__buffer {
-                background-color: lighten( $mdc-theme-primary, 12% );
+            .linearProgressWrapper-flower {
+              mdc-linear-progress {
+                .mdc-linear-progress__buffer {
+                  background-color: lighten( $mdc-theme-primary, 12% );
+                }
               }
             }
           }
