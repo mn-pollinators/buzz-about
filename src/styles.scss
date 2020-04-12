@@ -225,8 +225,11 @@ body {
 ///////////////////////////////
 
 .reviewPage {
+  margin-left: auto;
+  margin-right: auto;
+
   padding: 18px;
-  min-width: min-content;
+  width: min-content;
 
   .reviewItemGroup {
     box-shadow: 0 1px 15px 1px lightgray;
@@ -238,7 +241,7 @@ body {
       flex-direction: row;
       margin-bottom: 1px;
       box-shadow: 0 0 1px lightgray;
-      min-width: min-content;
+      width: min-content;
 
       .reviewImgWrapper {
         padding: 10px;
@@ -290,7 +293,7 @@ body {
         }
 
         .linearProgressContainer {
-          width: 600px;
+          width: 500px;
 
           .activePeriodWrapper {
             position: absolute;
