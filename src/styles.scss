@@ -40,9 +40,9 @@ body {
   }
 }
 
-////////////////////////////////
-// styles to the large display//
-////////////////////////////////
+/////////////////////////////////
+// styles to the large display //
+/////////////////////////////////
 
 .flowers {
   position: absolute;
@@ -263,6 +263,132 @@ body {
 
       .mdc-linear-progress__buffer {
         background-color: lighten($mdc-theme-primary, 35%);
+      }
+    }
+  }
+}
+
+///////////////////////////////
+// styles to the review page //
+///////////////////////////////
+
+.reviewPage {
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 18px;
+  width: min-content;
+
+  .reviewItemGroup {
+    box-shadow: 0 1px 15px 1px lightgray;
+
+    .reviewItem {
+      padding: 0 20px 0 5px;
+      min-height: 50px;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1px;
+      box-shadow: 0 0 1px lightgray;
+      width: min-content;
+
+      .reviewImgWrapper {
+        padding: 10px;
+        min-width: 60px;
+        justify-content: center;
+        display: flex;
+
+        img {
+          margin: auto;
+          height: 60px;
+          max-width: 60px;
+        }
+      }
+
+      .reviewSpecies {
+        min-width: 220px;
+        display: block;
+        padding: 20px 0;
+        margin: 0 18px;
+        text-transform: capitalize;
+        font-size: large;
+
+        .reviewType-flower, .reviewType-bee {
+          font-size: 15px;
+          font-style: italic;
+        }
+
+        .reviewType-flower {
+          color: $mdc-theme-primary;
+        }
+
+        .reviewType-bee {
+          color: darken($mdc-theme-secondary, 7%);
+        }
+      }
+
+      .reviewActivePeriodGroup {
+        width: 100%;
+        flex-direction: column;
+        margin: auto;
+        padding-bottom: 15px;
+
+        .activeMonthsText, .activeMonthsWrapper {
+          height: 14px;
+          font-size: 14px;
+          margin-left: 2px;
+          color: grey;
+          min-width: 220px;
+        }
+
+        .linearProgressContainer {
+          width: 500px;
+
+          .activePeriodWrapper {
+            position: absolute;
+            width: inherit;
+
+            .linearProgressWrapper-bee, .linearProgressWrapper-flower {
+              margin: 5px 0;
+              padding: 0 5px;
+              border-radius: 5px;
+              top: 5px;
+              background-color: lightgrey;
+
+              mdc-linear-progress {
+                height: 10px;
+                z-index: 1;
+
+                .mdc-linear-progress__bar-inner {
+                  background-color: lightgrey;
+                }
+
+                .mdc-linear-progress__buffer {
+                  background-color: $mdc-theme-secondary;
+                }
+
+                .mdc-linear-progress__buffering-dots {
+                  display: none;
+                }
+              }
+            }
+
+            .linearProgressWrapper-flower {
+              mdc-linear-progress {
+                .mdc-linear-progress__buffer {
+                  background-color: lighten( $mdc-theme-primary, 12% );
+                }
+              }
+            }
+          }
+
+          .linearProgressWrapper-bee {
+            mdc-linear-progress {
+              .mdc-linear-progress__buffer {
+                background-color: $mdc-theme-secondary;
+              }
+            }
+          }
+        }
       }
     }
   }

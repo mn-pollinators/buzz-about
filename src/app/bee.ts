@@ -1,3 +1,5 @@
+import { GameMonth } from 'src/app/month';
+
 export interface Bee {
   id: string;
   species: string;
@@ -7,7 +9,7 @@ export interface Bee {
   active?: boolean;
   live?: boolean;
   currentFlower?: string;
-  activePeriods?: {from: string, to: string}[];
+  activePeriods?: {from: GameMonth, to: GameMonth}[];
   health?: number;
   visible?: boolean;
 }

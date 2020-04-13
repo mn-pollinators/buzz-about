@@ -30,6 +30,8 @@ import { TimerBarComponent } from './timer-bar/timer-bar.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
 import { DisplayItemComponent } from './display-item/display-item.component';
 import { GameProgressIndicatorComponent } from './game-progress-indicator/game-progress-indicator.component';
+import { GameReviewPageComponent } from './game-review-page/game-review-page.component';
+import { ReviewItemComponent } from './review-item/review-item.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -53,6 +55,8 @@ const MDC_MODULES: any[] = [
     FullscreenButtonComponent,
     DisplayItemComponent,
     GameProgressIndicatorComponent,
+    GameReviewPageComponent,
+    ReviewItemComponent,
   ],
   imports: [
     BrowserModule,
