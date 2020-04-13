@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { GameMonth } from '../month';
 
 @Component({
   selector: 'app-game-progress-indicator',
@@ -11,7 +12,7 @@ export class GameProgressIndicatorComponent implements OnInit {
 
   @Input() gameLength: number;
 
-  @Input() gameMonth: string;
+  @Input() gameMonth: GameMonth;
 
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
@@ -28,19 +29,27 @@ export class GameProgressIndicatorComponent implements OnInit {
   }
 
   parseSeason() {
-    switch (this.gameMonth) {
+    switch (this.gameMonth.main) {
       case 'April':
       case 'May':
         return 'Spring';
       case 'June':
+        if (this.gameMonth.sub === '' || this.gameMonth.sub === 'early-') {
+            return 'Spring';
+        }
+        return 'Summer';
       case 'July':
       case 'August':
         return 'Summer';
       case 'September':
+        if (this.gameMonth.sub === '' || this.gameMonth.sub === 'early-') {
+            return 'Summer';
+        }
+        return 'Fall';
       case 'October':
       case 'November':
         return 'Fall';
-      case '':
+      default:
         return '';
     }
   }
