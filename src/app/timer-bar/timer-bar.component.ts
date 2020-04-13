@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MdcSliderChange } from '@angular-mdc/web';
 import { MDCLinearProgress } from '@material/linear-progress';
+import { GameMonth } from '../month';
 
 @Component({
   selector: 'app-timer-bar',
@@ -227,10 +228,21 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  getMonth(): string {
-    if (this.initialTime < 0) {return this.months[0]; }
-    if (this.initialTime === this.gameLength) {return ''; }
-    return this.calculateMonth(this.initialTime);
+  getMonth(): GameMonth {
+    if (this.initialTime < 0) {return {sub: '', main: this.months[0]}; }
+    if (this.initialTime === this.gameLength) {return {sub: '', main: ''}; }
+    const m = this.calculateMonth(this.initialTime);
+    const s = this.initialTime % this.monthLength / this.monthLength;
+    switch (Math.floor(s / 0.25)) {
+      case 0:
+        return {sub: '', main: m};
+      case 1:
+        return {sub: 'early-', main: m};
+      case 2:
+        return {sub: 'mid-', main: m};
+      case 3:
+        return {sub: 'late-', main: m};
+    }
   }
 
   getTime(): number {
