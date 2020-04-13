@@ -262,12 +262,12 @@ body {
         margin-top: auto;
         margin-bottom: auto;
         text-transform: capitalize;
-        font-size: large;
+        // font-size: large;
         padding: 10px;
         padding-bottom: 15px;
 
         .reviewType-flower, .reviewType-bee {
-          font-size: 15px;
+          font-size: 14px;
           font-style: italic;
         }
 
@@ -289,7 +289,7 @@ body {
         .activeMonthsText, .activeMonthsWrapper {
           height: 14px;
           font-size: 14px;
-          margin-left: 2px;
+          // margin-left: 2px;
           color: grey;
           min-width: 220px;
         }
@@ -302,18 +302,18 @@ body {
             width: inherit;
 
             .linearProgressWrapper-bee, .linearProgressWrapper-flower {
-              margin: 5px 0;
-              padding: 0 5px;
-              border-radius: 5px;
+              margin: 2px 0;
+              // padding: 0 4px;
+              // border-radius: 4px;
               top: 5px;
-              background-color: lightgrey;
+              background-color: lighten(lightgrey, 3%);
 
               mdc-linear-progress {
-                height: 10px;
+                height: 8px;
                 z-index: 1;
 
                 .mdc-linear-progress__bar-inner {
-                  background-color: lightgrey;
+                  background-color: lighten(lightgrey, 3%);
                 }
 
                 .mdc-linear-progress__buffer {
