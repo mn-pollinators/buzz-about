@@ -21,7 +21,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   gameLength = 120;
   gameTime = 0;
   gameRunning = false;
-  gameMonth = '';
+  gameMonth = {sub: '', main: ''};
 
   constructor() { }
 
