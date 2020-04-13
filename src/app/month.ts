@@ -1,4 +1,4 @@
 export interface GameMonth {
-  sub: string;
+  sub: '' | 'early-' | 'mid-' | 'late-';
   main: string;
 }
