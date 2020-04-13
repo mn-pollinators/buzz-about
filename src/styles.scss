@@ -259,10 +259,12 @@ body {
         min-width: 220px;
         display: block;
         margin: 0 18px;
-        margin-top: auto;;
-        margin-bottom: auto;;
+        margin-top: auto;
+        margin-bottom: auto;
         text-transform: capitalize;
         font-size: large;
+        padding: 10px;
+        padding-bottom: 15px;
 
         .reviewType-flower, .reviewType-bee {
           font-size: 15px;
