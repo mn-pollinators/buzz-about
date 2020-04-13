@@ -5,9 +5,9 @@
     {{this.species}}
   </div>
   <div class='reviewActivePeriodGroup'>
-    <a class='activeMonthsText' *ngIf='this.type === "bee"'>Buzzing:&nbsp;</a>
-    <a class='activeMonthsText' *ngIf='this.type === "flower"'>Blooming:&nbsp;</a>
-    <a class='activeMonthsWrapper' *ngFor="let p of this.periods">{{p.begin}} - {{p.end}};&nbsp;</a>
+    <a class='activeMonthsText' *ngIf='this.type === "bee"'>Buzzing from </a>
+    <a class='activeMonthsText' *ngIf='this.type === "flower"'>Blooming from</a>
+    <a class='activeMonthsWrapper' *ngFor="let p of this.periods">{{p.begin}} to {{p.end}}; </a>
 
     <div class='linearProgressContainer'>
       <div class='activePeriodWrapper' *ngFor="let p of this.periods.slice().reverse()">

@@ -273,11 +273,10 @@ body {
 ///////////////////////////////
 
 .reviewPage {
-  margin-left: auto;
-  margin-right: auto;
-
   padding: 18px;
   width: min-content;
+  margin-left: auto;
+  margin-right: auto;
 
   .reviewItemGroup {
     box-shadow: 0 1px 15px 1px lightgray;
@@ -307,8 +306,9 @@ body {
       .reviewSpecies {
         min-width: 220px;
         display: block;
-        padding: 20px 0;
         margin: 0 18px;
+        margin-top: auto;;
+        margin-bottom: auto;;
         text-transform: capitalize;
         font-size: large;
 
@@ -341,7 +341,7 @@ body {
         }
 
         .linearProgressContainer {
-          width: 500px;
+          width: 450px;
 
           .activePeriodWrapper {
             position: absolute;

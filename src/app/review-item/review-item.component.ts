@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Flower } from '../flower';
 import { Bee } from '../bee';
+import { GameMonth } from '../month';
 
 @Component({
   selector: 'app-review-item',
@@ -38,7 +39,6 @@ export class ReviewItemComponent implements OnInit {
 
   initializeParams() {
     if (this.reviewBee) {
-      console.log(this.id);
       this.id = this.reviewBee.id;
       this.imgSrc = this.reviewBee.imgSrc;
       this.species = this.reviewBee.species;
@@ -46,7 +46,6 @@ export class ReviewItemComponent implements OnInit {
       this.type = 'bee';
     }
     if (this.reviewFlower) {
-      console.log(this.id);
       this.id = this.reviewFlower.id;
       this.imgSrc = this.reviewFlower.imgSrc;
       this.species = this.reviewFlower.species;
@@ -67,9 +66,34 @@ export class ReviewItemComponent implements OnInit {
     }
 
     for (const p of activePeriods) {
-      const f = this.months.indexOf(p.from) / this.months.length;
-      const t = (this.months.indexOf(p.to) + 1) / this.months.length;
-      this.periods.push({from: f, to: t, begin: p.from, end: p.to});
+      let f = this.months.indexOf(p.from.main) / this.months.length + this.interpretSubMonth(p.from);
+      let t = (this.months.indexOf(p.to.main)) / this.months.length + this.interpretSubMonth(p.to);
+
+      if (p.from.sub === 'early-') {
+        f -= 0.25 / this.months.length;
+      }
+
+      if (p.to.sub === '') {
+        t += 1 / this.months.length;
+      } else if (p.to.sub === 'late-') {
+        t += 0.25 / this.months.length;
+      }
+
+      this.periods.push({from: f, to: t, begin: p.from.sub + p.from.main, end: p.to.sub + p.to.main});
+    }
+  }
+
+  interpretSubMonth(month: GameMonth): number {
+    const monthLength = 1 / this.months.length;
+    switch (month.sub) {
+      case '':
+        return 0 * monthLength;
+      case 'early-':
+        return 0.25 * monthLength;
+      case 'mid-':
+        return 0.5 * monthLength;
+      case 'late-':
+        return 0.75 * monthLength;
     }
   }
 }
