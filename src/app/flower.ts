@@ -1,3 +1,5 @@
+import { GameMonth } from 'src/app/month';
+
 export interface Flower {
   id: string;
   species: string;
@@ -5,7 +7,7 @@ export interface Flower {
   imgSrc?: string;
   imgSrc_inactive?: string;
   blooming?: boolean;
-  activePeriods?: {from: string, to: string}[];
+  activePeriods?: {from: GameMonth, to: GameMonth}[];
   visible?: boolean;
   occupied?: boolean;
 }
