@@ -1,0 +1,9 @@
+<div class='progress-indicator-wrapper'>
+
+  <div class='progress-spinner-wrapper'>
+    <mat-progress-spinner *ngIf='this.gameMonth' mode='determinate' value='{{this.spinnerProgress()}}' strokeWidth='60'></mat-progress-spinner>
+  </div>
+
+</div>
+
+{{this.gameLength + ' ' + this.gameTime + ' ' + this.gameMonth}}

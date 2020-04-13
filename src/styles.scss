@@ -40,9 +40,9 @@ body {
   }
 }
 
-////////////////////////////////
-// styles to the large display//
-////////////////////////////////
+/////////////////////////////////
+// styles to the large display //
+/////////////////////////////////
 
 .flowers {
   position: absolute;
@@ -77,7 +77,7 @@ body {
   position: absolute;
   display: block;
   right: 0;
-  bottom: 48px; // minimum: 16px
+  bottom: 0;
   z-index: 2;
   width: 500px;
   justify-self: center;
@@ -107,7 +107,7 @@ body {
 }
 
 .monthWrapper a {
-  color: rgb(228, 223, 198);
+  color: lightgoldenrodyellow;
   font-family: Comic Sans MS;
   text-transform: uppercase;
 }
@@ -137,7 +137,7 @@ body {
 }
 
 .timeSliderWrapper {
-  padding: 0 110px 0 110px;
+  padding: 0 110px 0 160px;
   height: 48px;
 }
 
@@ -152,8 +152,9 @@ body {
   position: absolute;
   text-align: center;
   font-size: 14px;
-  color: $mdc-theme-secondary;
+  color: lightgoldenrodyellow;
   right: 18px;
+  font-family: Comic Sans MS;
 }
 
 .timerController {
@@ -161,7 +162,7 @@ body {
   position: absolute;
   text-align: left;
   top: 48px;
-  left: 6px;
+  left: 0;
 }
 
 .timerController button {
@@ -170,13 +171,14 @@ body {
 
 .backgroundMonth {
   position: absolute;
-  line-height: 200px;
-  font-size: 200px;
-  top: 0;
-  display: block;
+  line-height: 120px;
+  font-size: 120px;
+  top: 20px;
+  padding-left: 155px;
+  // display: block;
   color: $mdc-theme-secondary;
-  width: 100%;
-  text-align: center;
+  // width: 100%;
+  text-align: left;
   z-index: 0;
   text-shadow:  0 0 5px $mdc-theme-secondary;
   overflow: hidden;
@@ -192,5 +194,154 @@ body {
   .mdc-button:disabled, .mdc-icon-button:disabled {
     color: $mdc-theme-secondary;
     opacity: 0.38;
+  }
+
+  .mdc-slider__thumb-container {
+    height: 23px;
+  }
+}
+
+.progress-indicator-wrapper {
+  position: absolute;
+  top: 0;
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $mdc-theme-secondary;
+    opacity: 0.75;
+    transform: scaleY(-1);
+  }
+
+  .mat-progress-spinner svg {
+    padding: 10px;
+  }
+
+  .progress-spinner-wrapper {
+    margin: 20px;
+  }
+}
+
+///////////////////////////////
+// styles to the review page //
+///////////////////////////////
+
+.reviewPage {
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 18px;
+  width: min-content;
+
+  .reviewItemGroup {
+    box-shadow: 0 1px 15px 1px lightgray;
+
+    .reviewItem {
+      padding: 0 20px 0 5px;
+      min-height: 50px;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1px;
+      box-shadow: 0 0 1px lightgray;
+      width: min-content;
+
+      .reviewImgWrapper {
+        padding: 10px;
+        min-width: 60px;
+        justify-content: center;
+        display: flex;
+
+        img {
+          margin: auto;
+          height: 60px;
+          max-width: 60px;
+        }
+      }
+
+      .reviewSpecies {
+        min-width: 220px;
+        display: block;
+        padding: 20px 0;
+        margin: 0 18px;
+        text-transform: capitalize;
+        font-size: large;
+
+        .reviewType-flower, .reviewType-bee {
+          font-size: 15px;
+          font-style: italic;
+        }
+
+        .reviewType-flower {
+          color: $mdc-theme-primary;
+        }
+
+        .reviewType-bee {
+          color: darken($mdc-theme-secondary, 7%);
+        }
+      }
+
+      .reviewActivePeriodGroup {
+        width: 100%;
+        flex-direction: column;
+        margin: auto;
+        padding-bottom: 15px;
+
+        .activeMonthsText, .activeMonthsWrapper {
+          height: 14px;
+          font-size: 14px;
+          margin-left: 2px;
+          color: grey;
+          min-width: 220px;
+        }
+
+        .linearProgressContainer {
+          width: 500px;
+
+          .activePeriodWrapper {
+            position: absolute;
+            width: inherit;
+
+            .linearProgressWrapper-bee, .linearProgressWrapper-flower {
+              margin: 5px 0;
+              padding: 0 5px;
+              border-radius: 5px;
+              top: 5px;
+              background-color: lightgrey;
+
+              mdc-linear-progress {
+                height: 10px;
+                z-index: 1;
+
+                .mdc-linear-progress__bar-inner {
+                  background-color: lightgrey;
+                }
+
+                .mdc-linear-progress__buffer {
+                  background-color: $mdc-theme-secondary;
+                }
+
+                .mdc-linear-progress__buffering-dots {
+                  display: none;
+                }
+              }
+            }
+
+            .linearProgressWrapper-flower {
+              mdc-linear-progress {
+                .mdc-linear-progress__buffer {
+                  background-color: lighten( $mdc-theme-primary, 12% );
+                }
+              }
+            }
+          }
+
+          .linearProgressWrapper-bee {
+            mdc-linear-progress {
+              .mdc-linear-progress__buffer {
+                background-color: $mdc-theme-secondary;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

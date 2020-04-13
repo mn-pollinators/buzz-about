@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewChecked } from '@angular/core';
 import { MdcSliderChange } from '@angular-mdc/web';
 import { MDCLinearProgress } from '@material/linear-progress';
 
@@ -8,15 +8,17 @@ import { MDCLinearProgress } from '@material/linear-progress';
   styleUrls: ['./timer-bar.component.scss']
 })
 
-export class TimerBarComponent implements OnInit, AfterViewInit {
+export class TimerBarComponent implements OnInit, AfterViewChecked {
 
-  @Input() gameLength: number;
+  @Input() gameLength = 0;
 
-  @Output() currentTime: number;
+  currentTime = -3;
 
-  @Output() currentMonth: string;
+  isOpened = false;
 
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
+
+  currentMonth = 'Ready?';
 
   paused = true;
 
@@ -30,26 +32,40 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ngAfterViewChecked() {
+  }
+
+  initialize() {
     this.monthLength = this.gameLength / this.months.length;
     this.currentTime = -3;
     this.updateMonth();
-  }
-
-  ngAfterViewInit() {
     this.runClock();
     this.linearProgress = new MDCLinearProgress(document.querySelector('.mdc-linear-progress'));
     this.linearProgress.close();
   }
 
+  open() {
+    this.isOpened = true;
+    this.initialize();
+  }
+
+  close() {
+    this.isOpened = false;
+  }
+
   runClock() {
-    setInterval(() => {
+    const clock = setInterval(() => {
       if (!this.paused && !this.sliding) {
         this.currentTime = Math.min(this.currentTime + 1, this.gameLength);
         this.updateMonth();
         if (this.currentTime >= this.gameLength) {
           this.paused = true;
         }
+      }
+      if (!this.isOpened) {
+        clearInterval(clock);
       }
     }, 1000);
   }
@@ -66,6 +82,13 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
     this.linearProgress.close();
     this.paused = true;
     this.currentTime = -3;
+    this.updateMonth();
+  }
+
+  end() {
+    this.linearProgress.close();
+    this.paused = true;
+    this.currentTime = this.gameLength;
     this.updateMonth();
   }
 
@@ -94,6 +117,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   }
 
   prevMonth() {
+    this.paused = true;
     if (this.currentTime <= 0 || this.currentMonth === this.months[0]) {
       this.setTimer(-3);
     } else if (this.currentTime === this.gameLength) {
@@ -104,6 +128,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   }
 
   nextMonth() {
+    this.paused = true;
     this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
   }
 
@@ -118,6 +143,7 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
 
   onInput(event: MdcSliderChange): void {
     this.sliding = true;
+    this.paused = true;
     this.currentTime = event.value;
     this.updateMonth();
     this.linearProgress.close();
@@ -126,16 +152,37 @@ export class TimerBarComponent implements OnInit, AfterViewInit {
   onChange(event: MdcSliderChange): void {
     this.sliding = false;
     if (this.currentTime !== this.gameLength) {
+      this.startAtMonth();
       this.linearProgress.open();
     }
   }
 
+  startAtMonth() {
+    this.currentTime = this.months.indexOf(this.currentMonth) * this.monthLength;
+  }
+
   getCurrentProgress() {
-    if (this.currentTime !== this.gameLength) {
-      return this.currentTime % this.monthLength / (this.monthLength - 1);
+    if (!this.isOpened) {
+      return 0;
+    } else if (this.currentTime !== this.gameLength) {
+      return Math.max(0, this.currentTime % this.monthLength / (this.monthLength - 1));
     } else {
       return 1;
     }
+  }
+
+  getMonth(): string {
+    if (this.currentTime < 0) {return this.months[0]; }
+    if (this.currentTime === this.gameLength) {return ''; }
+    return this.currentMonth;
+  }
+
+  getTime(): number {
+    return Math.min(this.gameLength, Math.max(0, this.currentTime));
+  }
+
+  getStatus(): boolean {
+    return !this.paused;
   }
 
 }

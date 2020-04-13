@@ -7,5 +7,11 @@
     <img class="displayBackground" src="assets/images/large-display/hill.png">
   </div>
 
-  <app-timer-bar #timerBar [gameLength]='120'></app-timer-bar>
+  <app-timer-bar #timerBar [gameLength]='this.gameLength'></app-timer-bar>
+
+  <div class="backgroundMonth">
+    {{this.gameMonth.toLocaleUpperCase()}}
+  </div>
+
+  <app-game-progress-indicator [gameTime]='this.gameTime' [gameLength]='this.gameLength' [gameMonth]='this.gameMonth'></app-game-progress-indicator>
 </div>
