@@ -21,6 +21,8 @@ export class DisplaySpecies implements DisplayItem {
   displayed = true;
   displayState = 'normal';
   screenRatio = 16 / 9;
+  initialX = 0;
+  initialY = 0;
 
   constructor(name: string, imgSrc: string, x: number, y: number, scale: number, active: boolean, componentWidth: number) {
     this.name = name;
@@ -30,6 +32,8 @@ export class DisplaySpecies implements DisplayItem {
     this.active = active;
     this.scale = scale;
     this.offset = scale / 2;
+    this.initialX = x;
+    this.initialY = y;
   }
 
   moveTo(x: number, y: number, componentWidth: number) {
@@ -39,6 +43,8 @@ export class DisplaySpecies implements DisplayItem {
       this.displayState = 'normal';
     }
 
+    this.initialX = x;
+    this.initialY = y;
     this.x = x * componentWidth;
     this.y = y * componentWidth / this.screenRatio;
   }
@@ -61,5 +67,13 @@ export class DisplaySpecies implements DisplayItem {
 
   hide() {
     this.displayed = false;
+  }
+
+  getX() {
+    return this.initialX;
+  }
+
+  getY() {
+    return this.initialY;
   }
 }
