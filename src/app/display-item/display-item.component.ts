@@ -37,8 +37,8 @@ import { trigger, animate, transition, style, state} from '@angular/animations';
         left: '{{left}}px',
         top: '{{top}}px',
       }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
-      transition('normal <=> normal_2', [
-        animate('300ms ease')
+      transition('normal <=> normal_', [
+        animate('1000ms ease')
       ])
     ]),
   ],

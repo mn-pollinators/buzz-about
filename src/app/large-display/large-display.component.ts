@@ -35,8 +35,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
     this.componentWidth = window.innerWidth;
     this.componentHeight = window.innerHeight;
-    // document.getElementById('largeDisplayContent').style.paddingTop =
-      // Math.max(0, (window.innerHeight - this.componentHeight) / 2) + 'px';
   }
 
   ngOnInit() {
@@ -47,13 +45,13 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     // this.flowers = this.demo1;
     this.flowers = this.demo2;
     // this.flowers = this.demo3;
-
-    for (const f of this.flowers) {
-      this.updateDiscrepancy(f);
-    }
   }
 
   ngAfterViewInit() {
+    for (const f of this.flowers) {
+      this.updateDiscrepancy(f);
+    }
+
     setInterval(() => {
       this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
@@ -84,7 +82,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
         s.moveTo(s.initialX, s.initialY - currentD + 0.25, this.componentWidth);
         currentD = 0.25;
       }
-    }, 500);
+    }, 1000);
   }
 
   updatePositions(flowers: DisplaySpecies[]) {
