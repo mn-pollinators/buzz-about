@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DisplayFlower } from '../item';
-import { trigger, animate, transition, style, keyframes, state} from '@angular/animations';
+import { DisplaySpecies } from '../item';
+import { trigger, animate, transition, style, state} from '@angular/animations';
 
 @Component({
   selector: 'app-display-item',
@@ -46,5 +46,5 @@ import { trigger, animate, transition, style, keyframes, state} from '@angular/a
 
 export class DisplayItemComponent {
 
-  @Input() flower: DisplayFlower;
+  @Input() flower: DisplaySpecies;
 }

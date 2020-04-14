@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
-import { DisplayFlower } from 'src/app/item';
+import { DisplaySpecies } from 'src/app/item';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 import { GameMonth } from '../month';
 
@@ -17,7 +17,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   componentWidth: number;
   component: LargeDisplayComponent;
 
-  flowers: DisplayFlower[] = new Array<DisplayFlower>();
+  flowers: DisplaySpecies[] = new Array<DisplaySpecies>();
 
   gameLength = 120;
   gameTime = 0;
@@ -49,7 +49,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
 
-  updatePositions(flowers: DisplayFlower[]) {
+  updatePositions(flowers: DisplaySpecies[]) {
     for (const f of flowers) {
       f.x = f.x / this.componentWidth * window.innerWidth;
       f.y = f.y / this.componentWidth * window.innerWidth;
@@ -71,13 +71,13 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     // this.flowers.push(new DisplayFlower(
     //   'c', 'assets/images/1000w-8bit/flowers/solidago rigida.png', 0.5, 0.5 , 18, false, this.componentWidth));
 
-    this.flowers.push(new DisplayFlower(
+    this.flowers.push(new DisplaySpecies(
       'd', 'assets/images/1000w-8bit/flowers/sunflower.png', 0.8, 0.6, 18, true, this.componentWidth));
-    this.flowers.push(new DisplayFlower(
+    this.flowers.push(new DisplaySpecies(
       'e', 'assets/images/1000w-8bit/flowers/black raspberry.png', 0.6, 0.55, 17, true, this.componentWidth));
-    this.flowers.push(new DisplayFlower(
+    this.flowers.push(new DisplaySpecies(
       'f', 'assets/images/1000w-8bit/flowers/trifolium repens.png', 0.4, 0.65, 20, true, this.componentWidth));
-    this.flowers.push(new DisplayFlower(
+    this.flowers.push(new DisplaySpecies(
       'g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png', 0.2, 0.65, 29, true, this.componentWidth));
   }
 
