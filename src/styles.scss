@@ -226,6 +226,7 @@ body {
   display: block;
   width: 100%;
   position: absolute;
+  color: darken($mdc-theme-primary, 35%);
 
   .monthProgressWrapper {
     .progressMonth {
@@ -242,13 +243,14 @@ body {
     .currentMonth {
       font-weight: 600;
       text-transform: uppercase;
+      color: black;
     }
 
     .separator {
       margin-top: 7px;
       height: 10px;
       width: 1px;
-      background-color: black;
+      background-color: darken($mdc-theme-primary, 30%);
       position: absolute;
       right: 0;
     }
