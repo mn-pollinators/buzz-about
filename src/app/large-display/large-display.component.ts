@@ -111,7 +111,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.demo2.push(new DisplaySpecies('c', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
       0.32, 0.37, 13, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('d', 'assets/images/1000w-8bit/flowers/sunflower.png',
-      0.44, 0.32, 10, true, this.componentWidth));
+      0.45, 0.3, 10, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('e', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.54, 0.4, 10, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('f', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
@@ -130,7 +130,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.demo2.push(new DisplaySpecies('l', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.08, 0.58, 9, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('m', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      0.48, 0.7, 11, true, this.componentWidth));
+      0.5, 0.7, 11, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('n', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.4, 0.59, 15, true, this.componentWidth));
 
@@ -142,7 +142,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
 
     this.demo3.push(new DisplaySpecies('bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
-       0.5, 0.5 , 6, false, this.componentWidth));
+      0.5, 0.5 , 6, false, this.componentWidth));
     this.demo3.push(new DisplaySpecies('bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
       0.5, 0.5 , 6, false, this.componentWidth));
     this.demo3.push(new DisplaySpecies('bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png',
