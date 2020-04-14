@@ -99,7 +99,7 @@ export class TimerBarComponent implements OnInit {
       case 'end':
         return confirm('End this game?');
       default:
-        console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
+        // console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
         if (this.currentTime !== this.initialTime) {
           return confirm('Set game progress to \'' + month + '\'?');
         }
@@ -125,7 +125,7 @@ export class TimerBarComponent implements OnInit {
   }
 
   syncCurrentProgress() {
-    console.log('sync');
+    // console.log('sync');
     this.initialTime = this.currentTime;
   }
 
