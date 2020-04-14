@@ -18,6 +18,8 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   component: LargeDisplayComponent;
 
   flowers: DisplaySpecies[] = new Array<DisplaySpecies>();
+  demo1: DisplaySpecies[] = new Array<DisplaySpecies>();
+  demo2: DisplaySpecies[] = new Array<DisplaySpecies>();
 
   gameLength = 120;
   gameTime = 0;
@@ -38,7 +40,8 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.componentWidth = window.innerWidth;
-    this.initializeTestFlowers();
+    this.initializeDemoFlowers();
+    this.flowers = this.demo1;
   }
 
   ngAfterViewInit() {
@@ -56,28 +59,28 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     }
   }
 
-  initializeTestFlowers() {
+  initializeDemoFlowers() {
 
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png', 0.5, 0.5 , 6, false, this.componentWidth));
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png', 0.5, 0.5 , 6, false, this.componentWidth));
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png', 0.5, 0.5 , 7, false, this.componentWidth));
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'a',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png', 0.5, 0.5 , 25, false, this.componentWidth));
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png', 0.5, 0.5 , 14, false, this.componentWidth));
-    // this.flowers.push(new DisplayFlower(
+    // this.flowers.push(new DisplaySpecies(
     //   'c', 'assets/images/1000w-8bit/flowers/solidago rigida.png', 0.5, 0.5 , 18, false, this.componentWidth));
 
-    this.flowers.push(new DisplaySpecies(
+    this.demo1.push(new DisplaySpecies(
       'd', 'assets/images/1000w-8bit/flowers/sunflower.png', 0.8, 0.6, 18, true, this.componentWidth));
-    this.flowers.push(new DisplaySpecies(
+    this.demo1.push(new DisplaySpecies(
       'e', 'assets/images/1000w-8bit/flowers/black raspberry.png', 0.6, 0.55, 17, true, this.componentWidth));
-    this.flowers.push(new DisplaySpecies(
+    this.demo1.push(new DisplaySpecies(
       'f', 'assets/images/1000w-8bit/flowers/trifolium repens.png', 0.4, 0.65, 20, true, this.componentWidth));
-    this.flowers.push(new DisplaySpecies(
+    this.demo1.push(new DisplaySpecies(
       'g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png', 0.2, 0.65, 29, true, this.componentWidth));
   }
 
