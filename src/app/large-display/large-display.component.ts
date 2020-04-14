@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
 import { DisplayFlower } from 'src/app/item';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
+import { GameMonth } from '../month';
 
 @Component({
   selector: 'app-large-display',
@@ -21,7 +22,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   gameLength = 120;
   gameTime = 0;
   gameRunning = false;
-  gameMonth = {sub: '', main: ''};
+  gameMonth = {sub: '', main: ''} as GameMonth;
 
   constructor() { }
 
