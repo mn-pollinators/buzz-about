@@ -136,9 +136,9 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.demo2.push(new DisplaySpecies('n', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.4, 0.59, 15, true, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('k', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo2.push(new DisplaySpecies('o', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.19, 0.665, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('l', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo2.push(new DisplaySpecies('p', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.3, 0.62, 9, true, this.componentWidth));
 
 
