@@ -45,7 +45,7 @@ export class GameReviewPageComponent implements OnInit {
       species: 'stiff goldenrod',
       scientificName: 'solidago rigida',
       imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      activePeriods: [{from: {sub: 'early-', main: 'June'} as GameMonth, to: {sub: 'late-', main: 'June'} as GameMonth}]} as Flower);
+      activePeriods: [{from: {sub: 'early-', main: 'June'} as GameMonth, to: {sub: 'late-', main: 'August'} as GameMonth}]} as Flower);
 
     this.bees.push({
       id: 'b_1',
@@ -68,6 +68,6 @@ export class GameReviewPageComponent implements OnInit {
       species: 'spine-shouldered cellophane bee',
       scientificName: 'colletes simulans',
       imgSrc: 'assets/images/1000w-8bit/bees/colletes simulans.png',
-      activePeriods: [{from: {sub: '', main: 'May'} as GameMonth, to: {sub: 'mid-', main: 'June'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: 'mid-', main: 'March'} as GameMonth, to: {sub: 'early-', main: 'June'} as GameMonth}]} as Bee);
   }
 }
