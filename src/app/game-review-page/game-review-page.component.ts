@@ -52,16 +52,16 @@ export class GameReviewPageComponent implements OnInit {
       species: 'rusty patch bumble bee',
       scientificName: 'Bombus affinis',
       imgSrc: 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
-      activePeriods: [{from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'late-', main: 'August'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: '', main: 'April'} as GameMonth, to: {sub: 'early-', main: 'August'} as GameMonth}]} as Bee);
 
     this.bees.push({
       id: 'b_2',
       species: 'pugnacious leafcutter bee',
       scientificName: 'megachile pugnata',
       imgSrc: 'assets/images/1000w-8bit/bees/megachile pugnata.png',
-      activePeriods: [{from: {sub: 'mid-', main: 'March'} as GameMonth,   to: {sub: 'early-', main: 'April'} as GameMonth},
-                      {from: {sub: 'mid-', main: 'May'} as GameMonth,   to: {sub: 'late-', main: 'June'} as GameMonth},
-                      {from: {sub: 'late-', main: 'August'} as GameMonth, to: {sub: '', main: 'October'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: '', main: 'March'} as GameMonth,   to: {sub: 'early-', main: 'April'} as GameMonth},
+                      {from: {sub: '', main: 'May'} as GameMonth,   to: {sub: '', main: 'June'} as GameMonth},
+                      {from: {sub: 'late-', main: 'July'} as GameMonth, to: {sub: '', main: 'October'} as GameMonth}]} as Bee);
 
     this.bees.push({
       id: 'b_3',
