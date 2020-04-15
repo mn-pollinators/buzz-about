@@ -35,7 +35,7 @@ import { trigger, animate, transition, style, state} from '@angular/animations';
         top: '{{top}}px',
       }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
       transition('normal <=> normal_', [
-        animate('495ms ease')
+        animate('300ms ease')
       ])
     ]),
   ],
@@ -64,9 +64,6 @@ export class DisplayItemComponent implements OnInit {
   }
 
   updateDiscrepancy(s: DisplaySpecies) {
-    if (s.name === 'bee_a') {
-      alert('bee');
-    }
     let currentD = 0;
     setInterval(() => {
       const r = this.componentWidth / this.componentHeight;
