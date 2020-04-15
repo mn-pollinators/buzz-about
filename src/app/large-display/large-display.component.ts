@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { DisplaySpecies } from 'src/app/item';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 import { GameMonth } from '../month';
