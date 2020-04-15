@@ -13,7 +13,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   @ViewChild(TimerBarComponent, {static: false}) private timerBar: TimerBarComponent;
 
-  flowers: DisplaySpecies[] = new Array<DisplaySpecies>();
+  currentDisplayed: DisplaySpecies[] = new Array<DisplaySpecies>();
   demo1: DisplaySpecies[]   = new Array<DisplaySpecies>();
   demo2: DisplaySpecies[]   = new Array<DisplaySpecies>();
   demo3: DisplaySpecies[]   = new Array<DisplaySpecies>();
@@ -28,7 +28,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.initializeDemoFlowers();
-    this.flowers = this.demo2;
+    this.currentDisplayed = this.demo2;
   }
 
   ngAfterViewInit() {
@@ -95,12 +95,12 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   public testReactivate(name: string) {
-    const current = this.flowers.filter(f => f.name === name)[0];
+    const s = this.currentDisplayed.filter(f => f.name === name)[0];
 
-    if (current.active) {
-      current.deactivate();
+    if (s.active) {
+      s.deactivate();
     } else {
-      current.activate();
+      s.activate();
     }
   }
 }
