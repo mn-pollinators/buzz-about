@@ -1,6 +1,6 @@
 <div class="largeDisplayContent">
-  <a class="flowers" *ngFor="let flower of this.flowers">
-    <app-display-item class="flower" [flower]="flower" (click)="testReactivate(flower.name)"></app-display-item>
+  <a class="flowers" *ngFor="let species of this.flowers">
+    <app-display-item class="flower" [species]="species" (click)="testReactivate(species.name)"></app-display-item>
   </a>
 
   <div class="backgroundWrapper">

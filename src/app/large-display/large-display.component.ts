@@ -13,83 +13,30 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   @ViewChild(TimerBarComponent, {static: false}) private timerBar: TimerBarComponent;
 
-  componentHeight: number;
-  componentWidth: number;
-  component: LargeDisplayComponent;
-
   flowers: DisplaySpecies[] = new Array<DisplaySpecies>();
-  demo1: DisplaySpecies[] = new Array<DisplaySpecies>();
-  demo2: DisplaySpecies[] = new Array<DisplaySpecies>();
-  demo3: DisplaySpecies[] = new Array<DisplaySpecies>();
+  demo1: DisplaySpecies[]   = new Array<DisplaySpecies>();
+  demo2: DisplaySpecies[]   = new Array<DisplaySpecies>();
+  demo3: DisplaySpecies[]   = new Array<DisplaySpecies>();
 
   gameLength = 120;
   gameTime = 0;
   gameRunning = false;
   gameMonth = {sub: '', main: ''} as GameMonth;
+  componentWidth = window.innerWidth;
 
   constructor() { }
 
-  // resize the component height with the window
-  @HostListener('window:resize', ['$event']) onResize() {
-    this.updatePositions(this.flowers);
-
-    this.componentWidth = window.innerWidth;
-    this.componentHeight = window.innerHeight;
-  }
-
   ngOnInit() {
-    this.componentWidth = window.innerWidth;
-    this.componentHeight = window.innerHeight;
     this.initializeDemoFlowers();
-
-    // this.flowers = this.demo1;
     this.flowers = this.demo2;
-    // this.flowers = this.demo3;
   }
 
   ngAfterViewInit() {
-    for (const f of this.flowers) {
-      this.updateDiscrepancy(f);
-    }
-
     setInterval(() => {
       this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
       this.gameTime = this.timerBar.getTime();
     }, 1000);
-  }
-
-  updateDiscrepancy(s: DisplaySpecies) {
-    let currentD = 0;
-    setInterval(() => {
-      const r = this.componentWidth / this.componentHeight;
-      if (r > 1.8 && currentD !== 0) {
-        s.moveTo(s.initialX, s.initialY - currentD, this.componentWidth);
-        currentD = 0;
-      } else if (r <= 1.8 && r > 1.68 && currentD !== 0.05) {
-        s.moveTo(s.initialX, s.initialY - currentD + 0.05, this.componentWidth);
-        currentD = 0.05;
-      } else if (r <= 1.68 && r > 1.56 && currentD !== 0.1) {
-        s.moveTo(s.initialX, s.initialY - currentD + 0.1, this.componentWidth);
-        currentD = 0.1;
-      } else if (r <= 1.56 && r > 1.44 && currentD !== 0.15) {
-        s.moveTo(s.initialX, s.initialY - currentD + 0.15, this.componentWidth);
-        currentD = 0.15;
-      } else if (r <= 1.44 && r > 1.32 && currentD !== 0.2) {
-        s.moveTo(s.initialX, s.initialY - currentD + 0.2, this.componentWidth);
-        currentD = 0.2;
-      } else if (r <= 1.32 && currentD !== 0.2) {
-        s.moveTo(s.initialX, s.initialY - currentD + 0.25, this.componentWidth);
-        currentD = 0.25;
-      }
-    }, 1000);
-  }
-
-  updatePositions(flowers: DisplaySpecies[]) {
-    for (const f of flowers) {
-      f.x = f.x / this.componentWidth * window.innerWidth;
-      f.y = f.y / this.componentWidth * window.innerWidth;
-    }
   }
 
   initializeDemoFlowers() {
@@ -101,7 +48,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       0.4, 0.65, 20, true, this.componentWidth));
     this.demo1.push(new DisplaySpecies('g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.2, 0.65, 29, true, this.componentWidth));
-
 
 
     this.demo2.push(new DisplaySpecies('a',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
@@ -140,17 +86,12 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       0.3, 0.62, 9, true, this.componentWidth));
 
 
-
     this.demo3.push(new DisplaySpecies('bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
       0.5, 0.5 , 6, false, this.componentWidth));
     this.demo3.push(new DisplaySpecies('bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
       0.5, 0.5 , 6, false, this.componentWidth));
     this.demo3.push(new DisplaySpecies('bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png',
       0.5, 0.5 , 7, false, this.componentWidth));
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   public testReactivate(name: string) {
