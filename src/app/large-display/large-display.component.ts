@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { DisplaySpecies } from 'src/app/item';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
+import { DisplaySpecies } from 'src/app/item';
 import { GameMonth } from '../month';
 
 @Component({
@@ -14,9 +14,9 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   @ViewChild(TimerBarComponent, {static: false}) private timerBar: TimerBarComponent;
 
   currentDisplayed: DisplaySpecies[] = new Array<DisplaySpecies>();
-  demo1: DisplaySpecies[]   = new Array<DisplaySpecies>();
-  demo2: DisplaySpecies[]   = new Array<DisplaySpecies>();
-  demo3: DisplaySpecies[]   = new Array<DisplaySpecies>();
+  demo1: DisplaySpecies[] = new Array<DisplaySpecies>();
+  demo2: DisplaySpecies[] = new Array<DisplaySpecies>();
+  demo3: DisplaySpecies[] = new Array<DisplaySpecies>();
 
   gameLength = 120;
   gameTime = 0;
@@ -40,17 +40,17 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   initializeDemoFlowers() {
-    this.demo1.push(new DisplaySpecies('d', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo1.push(new DisplaySpecies('a', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.8, 0.6, 18, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('e', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo1.push(new DisplaySpecies('b', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.6, 0.55, 17, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('f', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    this.demo1.push(new DisplaySpecies('c', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
       0.4, 0.65, 20, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    this.demo1.push(new DisplaySpecies('d', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.2, 0.65, 29, true, this.componentWidth));
 
 
-    this.demo2.push(new DisplaySpecies('a',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+    this.demo2.push(new DisplaySpecies('a', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
       0.08, 0.4, 19, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
       0.2, 0.34, 11, true, this.componentWidth));
@@ -65,12 +65,12 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.demo2.push(new DisplaySpecies('g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.77, 0.4, 15, true, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('h',  'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      0.87, 0.46, 21, true, this.componentWidth));
+    this.demo2.push(new DisplaySpecies('h', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+      0.73, 0.63, 21, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('i', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      0.87, 0.68, 11, true, this.componentWidth));
+      0.88, 0.68, 11, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('j', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      0.73, 0.63, 13, true, this.componentWidth));
+      0.90, 0.45, 13, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('k', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.62, 0.62, 10, true, this.componentWidth));
     this.demo2.push(new DisplaySpecies('l', 'assets/images/1000w-8bit/flowers/black raspberry.png',
