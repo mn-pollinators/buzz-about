@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, AfterViewInit } from '@angular/core';
-import { DisplaySpecies } from '../item';
 import { trigger, animate, transition, style, state} from '@angular/animations';
+import { DisplaySpecies } from '../item';
 
 @Component({
   selector: 'app-display-item',
@@ -53,10 +53,7 @@ export class DisplayItemComponent implements AfterViewInit {
   screenRatio = 1;
 
   @HostListener('window:resize', ['$event']) onResize() {
-    this.updatePositions();
-    this.componentWidth = window.innerWidth;
-    this.componentHeight = window.innerHeight;
-
+    this.updatePosition();
     this.discrepancyChangeCounter++;
     setTimeout(() => {
       this.discrepancyChangeCounter--;
@@ -67,12 +64,14 @@ export class DisplayItemComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateDiscrepancy(), 800);
+    setTimeout(() => this.updateDiscrepancy(), 1000);
   }
 
-  updatePositions() {
+  updatePosition() {
     this.species.x = this.species.x / this.componentWidth * window.innerWidth;
     this.species.y = this.species.y / this.componentWidth * window.innerWidth;
+    this.componentWidth = window.innerWidth;
+    this.componentHeight = window.innerHeight;
   }
 
   updateDiscrepancy() {
@@ -92,7 +91,7 @@ export class DisplayItemComponent implements AfterViewInit {
     } else if (this.screenRatio <= 1.44 && this.screenRatio > 1.32 && this.currentDiscrepancy !== 0.2) {
       this.species.moveTo(this.species.initialX, this.species.initialY - this.currentDiscrepancy + 0.2, this.componentWidth);
       this.currentDiscrepancy = 0.2;
-    } else if (this.screenRatio <= 1.32 && this.currentDiscrepancy !== 0.2) {
+    } else if (this.screenRatio <= 1.32 && this.currentDiscrepancy !== 0.25) {
       this.species.moveTo(this.species.initialX, this.species.initialY - this.currentDiscrepancy + 0.25, this.componentWidth);
       this.currentDiscrepancy = 0.25;
     }
