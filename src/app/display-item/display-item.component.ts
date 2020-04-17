@@ -60,7 +60,6 @@ export class DisplayItemComponent implements AfterViewInit {
     this.discrepancyChangeCounter++;
     setTimeout(() => {
       this.discrepancyChangeCounter--;
-      console.log(this.discrepancyChangeCounter);
       if (this.discrepancyChangeCounter === 0) {
         this.updateDiscrepancy();
       }
