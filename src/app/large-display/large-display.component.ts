@@ -54,7 +54,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   suggestResize() {
-    if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1) {
+    if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1.25) {
       this.rotationSuggestionCounter++;
       const snackbarRef = this.snackbar.open('Please fullscreen or rotate this device', 'IGNORE', {
         timeoutMs: 6000, leading: true, classes: 'suggest-resize-snackbar'
