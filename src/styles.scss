@@ -93,6 +93,11 @@ body {
   }
 }
 
+.suggest-resize-snackbar {
+  .mdc-button.mdc-snackbar__action {
+    color: darken($mdc-theme-secondary, 10%);
+  }
+}
 
 .backgroundMonth {
   position: absolute;
