@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angular/core';
+import { MdcSnackbar } from '@angular-mdc/web';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 import { DisplaySpecies } from 'src/app/item';
 import { GameMonth } from '../month';
@@ -23,8 +24,20 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   gameRunning = false;
   gameMonth = {sub: '', main: ''} as GameMonth;
   componentWidth = window.innerWidth;
+  rotationSuggestionCounter = 0;
+  ignoreTallScreen = false;
 
-  constructor() { }
+  constructor(private snackbar: MdcSnackbar) { }
+
+  @HostListener('window:resize', ['$event']) onResize() {
+    this.rotationSuggestionCounter++;
+    setTimeout(() => {
+      this.rotationSuggestionCounter--;
+      if (this.rotationSuggestionCounter === 0) {
+        this.suggestResize();
+      }
+    }, 3000);
+  }
 
   ngOnInit() {
     this.initializeDemoFlowers();
@@ -32,11 +45,25 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    setTimeout(() => this.suggestResize(), 3000);
     setInterval(() => {
       this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
       this.gameTime = this.timerBar.getTime();
     }, 1000);
+  }
+
+  suggestResize() {
+    if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1) {
+      this.rotationSuggestionCounter++;
+      const snackbarRef = this.snackbar.open('Horizontalize your window for better experience', 'IGNORE', {
+        dismiss: true, timeoutMs: 5000, leading: true, classes: 'suggest-resize-snackbar'
+      });
+      snackbarRef.afterDismiss().subscribe(r => {
+        this.ignoreTallScreen = r === 'action';
+        setTimeout(() => this.rotationSuggestionCounter--, 30000);
+      });
+    }
   }
 
   initializeDemoFlowers() {

@@ -20,7 +20,8 @@ import {
   MdcLinearProgressModule,
   MdcElevationModule,
   MdcSliderModule,
-  MdcIconButtonModule
+  MdcIconButtonModule,
+  MdcSnackbarModule
 } from '@angular-mdc/web';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArViewComponent } from './ar-view/ar-view.component';
@@ -42,7 +43,8 @@ const MDC_MODULES: any[] = [
   MdcLinearProgressModule,
   MdcElevationModule,
   MdcSliderModule,
-  MdcIconButtonModule
+  MdcIconButtonModule,
+  MdcSnackbarModule
 ];
 
 @NgModule({
