@@ -24,16 +24,16 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   gameRunning = false;
   gameMonth = {sub: '', main: ''} as GameMonth;
   componentWidth = window.innerWidth;
-  rotationSuggestionCounter = 0;
+  suggestResizeCounter = 0;
   ignoreTallScreen = false;
 
   constructor(private snackbar: MdcSnackbar) { }
 
   @HostListener('window:resize', ['$event']) onResize() {
-    this.rotationSuggestionCounter++;
+    this.suggestResizeCounter++;
     setTimeout(() => {
-      this.rotationSuggestionCounter--;
-      if (this.rotationSuggestionCounter === 0) {
+      this.suggestResizeCounter--;
+      if (this.suggestResizeCounter === 0) {
         this.suggestResize();
       }
     }, 3000);
@@ -54,14 +54,14 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   suggestResize() {
-    if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1.25) {
-      this.rotationSuggestionCounter++;
+    if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1.1) {
+      this.suggestResizeCounter++;
       const snackbarRef = this.snackbar.open('Please fullscreen or rotate this device', 'IGNORE', {
-        timeoutMs: 6000, leading: true, classes: 'suggest-resize-snackbar'
+        timeoutMs: 7500, leading: true, classes: 'suggest-resize-snackbar'
       });
       snackbarRef.afterDismiss().subscribe(r => {
         this.ignoreTallScreen = r === 'action';
-        setTimeout(() => this.rotationSuggestionCounter--, 30000);
+        setTimeout(() => this.suggestResizeCounter--, 15000);
       });
     }
   }
