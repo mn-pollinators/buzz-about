@@ -10,6 +10,7 @@ export interface Bee {
   live?: boolean;
   currentFlower?: string;
   activePeriods?: {from: GameMonth, to: GameMonth}[];
+  path?: {type: 'Flower' | 'Nest', id: string, name?: string}[];
   health?: number;
   visible?: boolean;
 }
