@@ -12,10 +12,10 @@ import { DisplaySpecies } from '../item';
         opacity: 1,
       })),
       state('false', style({
-        opacity: 0.2,
+        opacity: 0.67,
       })),
       transition('true <=> false', [
-        animate('300ms ease')
+        animate('500ms ease')
       ])
     ]),
 
