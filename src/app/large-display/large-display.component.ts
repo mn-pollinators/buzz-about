@@ -67,67 +67,68 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   initializeDemoFlowers() {
-    this.demo1.push(new DisplaySpecies('a', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo1.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.8, 0.6, 18, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('b', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo1.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.6, 0.55, 17, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('c', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    this.demo1.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
       0.4, 0.65, 20, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('d', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    this.demo1.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.2, 0.65, 29, true, this.componentWidth));
 
 
-    this.demo2.push(new DisplaySpecies('a', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+    this.demo2.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
       0.08, 0.4, 19, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('b', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+    this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
       0.2, 0.34, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('c', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+    this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
       0.32, 0.37, 13, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('d', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.45, 0.3, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('e', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.54, 0.4, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('f', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
       0.65, 0.34, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('g', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.77, 0.4, 15, true, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('h', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+    this.demo2.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
       0.73, 0.63, 21, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('i', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+    this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
       0.88, 0.68, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('j', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+    this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
       0.90, 0.45, 13, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('k', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.62, 0.62, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('l', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.08, 0.58, 9, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('m', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
       0.5, 0.7, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('n', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
       0.4, 0.59, 15, true, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('o', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
       0.19, 0.665, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('p', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
       0.3, 0.62, 9, true, this.componentWidth));
 
 
-    this.demo3.push(new DisplaySpecies('bee_a', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
+    this.demo3.push(new DisplaySpecies('rusty patch bumblebee', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
       0.5, 0.5 , 6, false, this.componentWidth));
-    this.demo3.push(new DisplaySpecies('bee_b', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
+    this.demo3.push(new DisplaySpecies('rmegachile pugnata', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
       0.5, 0.5 , 6, false, this.componentWidth));
-    this.demo3.push(new DisplaySpecies('bee_c', 'assets/images/1000w-8bit/bees/colletes simulans.png',
+    this.demo3.push(new DisplaySpecies('colletes simulans', 'assets/images/1000w-8bit/bees/colletes simulans.png',
       0.5, 0.5 , 7, false, this.componentWidth));
   }
 
   public testReactivate(name: string) {
-    const s = this.currentDisplayed.filter(f => f.name === name)[0];
+    for (const s of this.currentDisplayed.filter(f => f.name === name)) {
 
-    if (s.active) {
-      s.deactivate();
-    } else {
-      s.activate();
+      if (s.active) {
+        s.deactivate();
+      } else {
+        s.activate();
+      }
     }
   }
 }
