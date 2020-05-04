@@ -6,6 +6,7 @@ export interface Bee {
   id: string;
   species: string;
   scientificName?: string;
+  customName?: string;
   imgSrc?: string;
   imgSrc_inactive?: string;
   active?: boolean;
