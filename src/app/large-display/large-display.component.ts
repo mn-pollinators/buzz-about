@@ -122,13 +122,12 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   public testReactivate(name: string) {
-    for (const s of this.currentDisplayed.filter(f => f.name === name)) {
-
+    this.currentDisplayed.filter(s => s.name === name).forEach(s => {
       if (s.active) {
         s.deactivate();
       } else {
         s.activate();
       }
-    }
+    });
   }
 }

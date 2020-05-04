@@ -59,6 +59,7 @@ body {
   }
 
   img.active_false {
+    -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
   }
 }
