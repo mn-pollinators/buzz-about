@@ -92,15 +92,10 @@ body {
   width: 500px;
   justify-self: center;
   height: 96px;
-  background-color: $large-display-background;
-  // box-shadow: 0 15px 75px darken( $large-display-background, 20% );
-}
-
-@media screen and (max-width: 500px) {
-  .timerBar {
-    margin-left: -250px;
-    left: 50%;
-  }
+  background-color: darken($mdc-theme-primary, 2%);
+  left: 50%;
+  margin-left: -250px;
+  margin-bottom: 10px;
 }
 
 .suggest-resize-snackbar {
@@ -115,15 +110,12 @@ body {
   font-size: 60px;
   top: 80px;
   padding-left: 165px;
-  // display: block;
   color: $mdc-theme-secondary;
-  // width: 100%;
   text-align: left;
   z-index: 0;
   text-shadow:  0 0 5px $mdc-theme-secondary;
   overflow: hidden;
   opacity: 0.75;
-  // font-family: Comic Sans MS;
 }
 
 .timerBar {
@@ -133,7 +125,7 @@ body {
     left: 110px;
     width: 280px;
     height: 48px;
-    background-color: rgba(113, 145, 39, 0.85);
+    background-color: rgba(darken($mdc-theme-primary, 5%), 0.85);
     line-height: 48px;
     text-align: center;
     font-size: 28px;
@@ -142,7 +134,6 @@ body {
 
   .monthWrapper a {
     color: lightgoldenrodyellow;
-    // font-family: Comic Sans MS;
     text-transform: uppercase;
   }
 
@@ -188,7 +179,6 @@ body {
     font-size: 14px;
     color: lightgoldenrodyellow;
     right: 18px;
-    // font-family: Comic Sans MS;
   }
 
   .timerController {
