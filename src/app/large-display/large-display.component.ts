@@ -91,7 +91,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       {id: 'b', species: 'taraxacum officinale',
         imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
         activePeriods: [
-          {from: {sub: '', main: 'March'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+          {from: {sub: '', main: 'March'} as GameMonth, to: {sub: '', main: 'April'} as GameMonth}
         ]} as Flower,
       0.2, 0.34, 11, this.componentWidth));
     this.demo2.push(new DisplaySpecies(
@@ -105,7 +105,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       {id: 'd', species: 'sunflower',
         imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
         activePeriods: [
-          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
+          {from: {sub: 'mid-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
         ]} as Flower,
       0.45, 0.3, 10, this.componentWidth));
     this.demo2.push(new DisplaySpecies(
@@ -142,7 +142,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       {id: 'i', species: 'taraxacum officinale',
         imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
         activePeriods: [
-          {from: {sub: '', main: 'March'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+          {from: {sub: '', main: 'March'} as GameMonth, to: {sub: '', main: 'April'} as GameMonth}
         ]} as Flower,
       0.88, 0.68, 11, this.componentWidth));
     this.demo2.push(new DisplaySpecies(
@@ -156,7 +156,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       {id: 'k', species: 'sunflower',
         imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
         activePeriods: [
-          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
+          {from: {sub: 'mid-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
         ]} as Flower,
       0.62, 0.62, 10, this.componentWidth));
     this.demo2.push(new DisplaySpecies(
@@ -186,7 +186,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       {id: 'o', species: 'sunflower',
         imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
         activePeriods: [
-          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
+          {from: {sub: 'mid-', main: 'April'} as GameMonth, to: {sub: '', main: 'May'} as GameMonth}
         ]} as Flower,
       0.19, 0.665, 10, this.componentWidth));
     this.demo2.push(new DisplaySpecies(
