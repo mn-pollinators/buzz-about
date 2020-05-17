@@ -66,17 +66,11 @@ export class ReviewItemComponent implements OnInit {
     }
 
     for (const p of activePeriods) {
-      let f = this.months.indexOf(p.from.main) / this.months.length + this.interpretSubMonth(p.from);
+      const f = this.months.indexOf(p.from.main) / this.months.length + this.interpretSubMonth(p.from);
       let t = (this.months.indexOf(p.to.main)) / this.months.length + this.interpretSubMonth(p.to);
-
-      if (p.from.sub === 'early-') {
-        f -= 0.25 / this.months.length;
-      }
 
       if (p.to.sub === '') {
         t += 1 / this.months.length;
-      } else if (p.to.sub === 'late-') {
-        t += 0.25 / this.months.length;
       }
 
       this.periods.push({from: f, to: t, begin: p.from.sub + p.from.main, end: p.to.sub + p.to.main});
