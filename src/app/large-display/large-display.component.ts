@@ -3,6 +3,7 @@ import { MdcSnackbar } from '@angular-mdc/web';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 import { DisplaySpecies } from 'src/app/item';
 import { GameMonth } from '../month';
+import { Flower } from '../flower';
 
 @Component({
   selector: 'app-large-display',
@@ -47,10 +48,20 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => this.suggestResize(), 3000);
     setInterval(() => {
+      const newMonth = this.timerBar.getMonth();
+      if (this.gameMonth.main !== newMonth.main || this.gameMonth.sub !== newMonth.sub) {
+        this.updateActiveness(newMonth);
+      }
       this.gameRunning = this.timerBar.getStatus();
       this.gameMonth = this.timerBar.getMonth();
       this.gameTime = this.timerBar.getTime();
     }, 1000);
+  }
+
+  updateActiveness(month: GameMonth) {
+    this.currentDisplayed.forEach(s => {
+      s.updateActiveness(month);
+    });
   }
 
   suggestResize() {
@@ -67,67 +78,180 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   }
 
   initializeDemoFlowers() {
-    this.demo1.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/sunflower.png',
-      0.8, 0.6, 18, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      0.6, 0.55, 17, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      0.4, 0.65, 20, true, this.componentWidth));
-    this.demo1.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      0.2, 0.65, 29, true, this.componentWidth));
+    // this.demo1.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    //   0.8, 0.6, 18, true, this.componentWidth));
+    // this.demo1.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    //   0.6, 0.55, 17, true, this.componentWidth));
+    // this.demo1.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    //   0.4, 0.65, 20, true, this.componentWidth));
+    // this.demo1.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    //   0.2, 0.65, 29, true, this.componentWidth));
 
 
-    this.demo2.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      0.08, 0.4, 19, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      0.2, 0.34, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      0.32, 0.37, 13, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
-      0.45, 0.3, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      0.54, 0.4, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      0.65, 0.34, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      0.77, 0.4, 15, true, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'a', species: 'rudbeckia hirta',
+        imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.08, 0.4, 19, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'b', species: 'taraxacum officinale',
+        imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.2, 0.34, 11, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'c', species: 'solidago rigida',
+        imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.32, 0.37, 13, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'd', species: 'sunflower',
+        imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.45, 0.3, 10, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'e', species: 'black raspberry',
+        imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.54, 0.4, 10, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'f', species: 'trifolium repens',
+        imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.65, 0.34, 11, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'g', species: 'vaccinium angustifolium',
+        imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.77, 0.4, 15, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      0.73, 0.63, 21, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      0.88, 0.68, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      0.90, 0.45, 13, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
-      0.62, 0.62, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      0.08, 0.58, 9, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      0.5, 0.7, 11, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      0.4, 0.59, 15, true, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'h', species: 'rudbeckia hirta',
+        imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.73, 0.63, 21, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'i', species: 'taraxacum officinale',
+        imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.88, 0.68, 11, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'j', species: 'solidago rigida',
+        imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.90, 0.45, 13, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'k', species: 'sunflower',
+        imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.62, 0.62, 10, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'l', species: 'black raspberry',
+        imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.08, 0.58, 9, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'm', species: 'trifolium repens',
+        imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.5, 0.7, 11, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'n', species: 'vaccinium angustifolium',
+        imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.4, 0.59, 15, this.componentWidth));
 
-    this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
-      0.19, 0.665, 10, true, this.componentWidth));
-    this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      0.3, 0.62, 9, true, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'o', species: 'sunflower',
+        imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.19, 0.665, 10, this.componentWidth));
+    this.demo2.push(new DisplaySpecies(
+      {id: 'p', species: 'black raspberry',
+        imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
+        activePeriods: [
+          {from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'mid-', main: 'May'} as GameMonth}
+        ]} as Flower,
+      0.3, 0.62, 9, this.componentWidth));
+
+    // this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+    //   0.2, 0.34, 11, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+    //   0.32, 0.37, 13, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    //   0.45, 0.3, 10, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    //   0.54, 0.4, 10, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    //   0.65, 0.34, 11, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    //   0.77, 0.4, 15, true, this.componentWidth));
+
+    // this.demo2.push(new DisplaySpecies('rudbeckia hirta', 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
+    //   0.73, 0.63, 21, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('taraxacum officinale', 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
+    //   0.88, 0.68, 11, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('solidago rigida', 'assets/images/1000w-8bit/flowers/solidago rigida.png',
+    //   0.90, 0.45, 13, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    //   0.62, 0.62, 10, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    //   0.08, 0.58, 9, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('trifolium repens', 'assets/images/1000w-8bit/flowers/trifolium repens.png',
+    //   0.5, 0.7, 11, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('vaccinium angustifolium', 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
+    //   0.4, 0.59, 15, true, this.componentWidth));
+
+    // this.demo2.push(new DisplaySpecies('sunflower', 'assets/images/1000w-8bit/flowers/sunflower.png',
+    //   0.19, 0.665, 10, true, this.componentWidth));
+    // this.demo2.push(new DisplaySpecies('black raspberry', 'assets/images/1000w-8bit/flowers/black raspberry.png',
+    //   0.3, 0.62, 9, true, this.componentWidth));
 
 
-    this.demo3.push(new DisplaySpecies('rusty patch bumblebee', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
-      0.5, 0.5 , 6, false, this.componentWidth));
-    this.demo3.push(new DisplaySpecies('rmegachile pugnata', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
-      0.5, 0.5 , 6, false, this.componentWidth));
-    this.demo3.push(new DisplaySpecies('colletes simulans', 'assets/images/1000w-8bit/bees/colletes simulans.png',
-      0.5, 0.5 , 7, false, this.componentWidth));
+    // this.demo3.push(new DisplaySpecies('rusty patch bumblebee', 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
+    //   0.5, 0.5 , 6, false, this.componentWidth));
+    // this.demo3.push(new DisplaySpecies('rmegachile pugnata', 'assets/images/1000w-8bit/bees/megachile pugnata.png',
+    //   0.5, 0.5 , 6, false, this.componentWidth));
+    // this.demo3.push(new DisplaySpecies('colletes simulans', 'assets/images/1000w-8bit/bees/colletes simulans.png',
+    //   0.5, 0.5 , 7, false, this.componentWidth));
   }
 
-  public testReactivate(name: string) {
-    this.currentDisplayed.filter(s => s.name === name).forEach(s => {
-      if (s.active) {
-        s.deactivate();
-      } else {
-        s.activate();
-      }
-    });
-  }
+  // public testReactivate(name: string) {
+  //   this.currentDisplayed.filter(s => s.name === name).forEach(s => {
+  //     if (s.active) {
+  //       s.deactivate();
+  //     } else {
+  //       s.activate();
+  //     }
+  //   });
+  // }
 }
