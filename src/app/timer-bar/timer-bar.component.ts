@@ -13,6 +13,8 @@ export class TimerBarComponent implements OnInit {
 
   @Input() gameLength = 0;
 
+  skipConfirmation = true;
+
   currentTime = -3;
 
   initialTime = -3;
@@ -93,6 +95,9 @@ export class TimerBarComponent implements OnInit {
 
   confirmChange(month: string): boolean {
     this.paused = true;
+    if (this.skipConfirmation === true) {
+      return true;
+    }
     switch (month) {
       case 'begin':
         return confirm('Reset this game?');
