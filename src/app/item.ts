@@ -96,8 +96,11 @@ export class DisplaySpecies implements DisplayItem {
     for (const p of this.activeMonths) {
       const fm = months.indexOf(p.from.main);
       const fs = subMonths.indexOf(p.from.sub);
-      const tm = months.indexOf(p.to.main);
+      let tm = months.indexOf(p.to.main);
       const ts = subMonths.indexOf(p.to.sub);
+      if (ts === 0) {
+        tm++;
+      }
 
       if (fm < tm) {
         subMonths.slice(fs).forEach(s => {
