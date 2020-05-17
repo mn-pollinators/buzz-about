@@ -77,7 +77,6 @@ export class DisplaySpecies implements DisplayItem {
   }
 
   updateActiveness(currentMonth: GameMonth) {
-    // console.log(currentMonth.sub + ' ' + currentMonth.main);
     let newActiveness = false;
     this.periods.forEach(p => {
       if (currentMonth.main === p.main && currentMonth.sub === p.sub) {
@@ -119,9 +118,6 @@ export class DisplaySpecies implements DisplayItem {
           this.periods.push({main: p.to.main, sub: s} as GameMonth);
         });
       }
-      // this.periods.forEach(period => {
-        // console.log(period.sub + ' ' + period.main);
-      // });
     }
   }
 }
