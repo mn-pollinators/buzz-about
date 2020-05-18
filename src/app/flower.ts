@@ -5,9 +5,7 @@ export interface Flower {
   species: string;
   scientificName?: string;
   imgSrc?: string;
-  imgSrc_inactive?: string;
-  blooming?: boolean;
+  active?: boolean;
   activePeriods?: {from: GameMonth, to: GameMonth}[];
-  visible?: boolean;
   occupied?: boolean;
 }
