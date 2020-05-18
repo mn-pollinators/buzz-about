@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, AfterViewInit } from '@angular/core';
 import { trigger, animate, transition, style, state} from '@angular/animations';
-import { DisplaySpecies } from '../item';
+import { DisplayFlowers } from '../display';
 
 @Component({
   selector: 'app-display-item',
@@ -43,7 +43,7 @@ import { DisplaySpecies } from '../item';
 
 export class DisplayItemComponent implements AfterViewInit {
 
-  @Input() species: DisplaySpecies;
+  @Input() species: DisplayFlowers;
 
   componentWidth = window.innerWidth;
   componentHeight = window.innerHeight;

@@ -1,8 +1,7 @@
 import { GameMonth } from './month';
 import { Flower } from './flower';
-import { Bee } from './bee';
 
-export interface DisplayItem {
+export interface Display {
   name: string;
   imgSrc: string;
   active: boolean;
@@ -14,7 +13,7 @@ export interface DisplayItem {
   displayState: string;
 }
 
-export class DisplaySpecies implements DisplayItem {
+export class DisplayFlowers implements Display {
   name = '';
   imgSrc = '';
   active = false;
@@ -27,20 +26,18 @@ export class DisplaySpecies implements DisplayItem {
   screenRatio = 16 / 9;
   initialX = 0;
   initialY = 0;
-  periods = new Array<GameMonth>();
-  activeMonths: {from: GameMonth, to: GameMonth}[];
+  activeMonths = new Array<GameMonth>();
 
-  constructor(species: Bee | Flower, x: number, y: number, scale: number, componentWidth: number) {
-    this.name = species.species;
-    this.imgSrc = species.imgSrc;
+  constructor(flower: Flower, x: number, y: number, scale: number, componentWidth: number) {
+    this.name = flower.species;
+    this.imgSrc = flower.imgSrc;
     this.x = x * componentWidth;
     this.y = y * componentWidth / this.screenRatio;
     this.scale = scale;
     this.offset = scale / 2;
     this.initialX = x;
     this.initialY = y;
-    this.activeMonths = species.activePeriods;
-    this.calculateActivePeriods();
+    this.initializeActiveMonths(flower.activePeriods);
   }
 
   moveTo(x: number, y: number, componentWidth: number) {
@@ -56,31 +53,11 @@ export class DisplaySpecies implements DisplayItem {
     this.y = y * componentWidth / this.screenRatio;
   }
 
-  resize(scale: number) {
-    this.scale = scale;
-  }
-
-  show() {
-    this.displayed = true;
-  }
-
-  hide() {
-    this.displayed = false;
-  }
-
-  getX() {
-    return this.initialX;
-  }
-
-  getY() {
-    return this.initialY;
-  }
-
   updateActiveness(currentMonth: GameMonth, forcedInactive?: boolean) {
     if (forcedInactive) {
       this.active = false;
     } else {
-      for (const p of this.periods) {
+      for (const p of this.activeMonths) {
         if (currentMonth.main === p.main && currentMonth.sub === p.sub) {
           this.active = true;
           return;
@@ -90,13 +67,13 @@ export class DisplaySpecies implements DisplayItem {
     }
   }
 
-  calculateActivePeriods() {
+  initializeActiveMonths(activePeriods) {
     const months =
       ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const subMonths =
       ['', 'early-', 'mid-', 'late-'];
 
-    for (const p of this.activeMonths) {
+    for (const p of activePeriods) {
       const fm = months.indexOf(p.from.main);
       const fs = subMonths.indexOf(p.from.sub);
       let tm = months.indexOf(p.to.main);
@@ -107,19 +84,19 @@ export class DisplaySpecies implements DisplayItem {
 
       if (fm < tm) {
         subMonths.slice(fs).forEach(s => {
-          this.periods.push({main: p.from.main, sub: s} as GameMonth);
+          this.activeMonths.push({main: p.from.main, sub: s} as GameMonth);
         });
         for (const m of months.slice(fm + 1, tm)) {
           subMonths.forEach(s => {
-            this.periods.push({main: m, sub: s} as GameMonth);
+            this.activeMonths.push({main: m, sub: s} as GameMonth);
           });
         }
         subMonths.slice(0, ts + 1).forEach(s => {
-          this.periods.push({main: p.to.main, sub: s} as GameMonth);
+          this.activeMonths.push({main: p.to.main, sub: s} as GameMonth);
         });
       } else if (fm === tm) {
         subMonths.slice(fs, ts + 1).forEach(s => {
-          this.periods.push({main: p.to.main, sub: s} as GameMonth);
+          this.activeMonths.push({main: p.to.main, sub: s} as GameMonth);
         });
       }
     }
