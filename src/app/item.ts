@@ -76,14 +76,18 @@ export class DisplaySpecies implements DisplayItem {
     return this.initialY;
   }
 
-  updateActiveness(currentMonth: GameMonth) {
-    for (const p of this.periods) {
-      if (currentMonth.main === p.main && currentMonth.sub === p.sub) {
-        this.active = true;
-        return;
+  updateActiveness(currentMonth: GameMonth, forcedInactive?: boolean) {
+    if (forcedInactive) {
+      this.active = false;
+    } else {
+      for (const p of this.periods) {
+        if (currentMonth.main === p.main && currentMonth.sub === p.sub) {
+          this.active = true;
+          return;
+        }
       }
+      this.active = false;
     }
-    this.active = false;
   }
 
   calculateActivePeriods() {
