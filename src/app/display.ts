@@ -1,6 +1,7 @@
 import { GameMonth } from './month';
 import { Flower } from './flower';
 
+// Used to store and calculate parameters for the display item component
 export interface Display {
   name: string;
   imgSrc: string;
@@ -13,6 +14,7 @@ export interface Display {
   displayState: string;
 }
 
+// Used to store and calculate the display-related parameters of a flower
 export class DisplayFlowers implements Display {
   name = '';
   imgSrc = '';
@@ -28,6 +30,7 @@ export class DisplayFlowers implements Display {
   initialY = 0;
   activeMonths = new Array<GameMonth>();
 
+  // The constructor takes a flower, and positioning and scaling parameters
   constructor(flower: Flower, x: number, y: number, scale: number, componentWidth: number) {
     this.name = flower.species;
     this.imgSrc = flower.imgSrc;
@@ -40,7 +43,9 @@ export class DisplayFlowers implements Display {
     this.initializeActiveMonths(flower.activePeriods);
   }
 
-  moveTo(x: number, y: number, componentWidth: number) {
+  // Used to shift flowers vertically from the display item component
+  public moveTo(x: number, y: number, componentWidth: number) {
+    // shift the state to create animation in the display item component
     if (this.displayState === 'normal') {
       this.displayState = 'normal_';
     } else {
@@ -53,6 +58,8 @@ export class DisplayFlowers implements Display {
     this.y = y * componentWidth / this.screenRatio;
   }
 
+  // Update the activeness of the flower depending on its active months and the input month
+  // The flower is set inactive if forcedInactive is true
   updateActiveness(currentMonth: GameMonth, forcedInactive?: boolean) {
     if (forcedInactive) {
       this.active = false;
@@ -67,6 +74,7 @@ export class DisplayFlowers implements Display {
     }
   }
 
+  // Initialize active (game) months by the active periods from the flower interface
   initializeActiveMonths(activePeriods) {
     const months =
       ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

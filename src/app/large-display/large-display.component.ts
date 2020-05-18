@@ -11,13 +11,18 @@ import { Flower } from '../flower';
   styleUrls: ['./large-display.component.scss']
 })
 
+// Used to display the flowers, the time progress, and show activeness of flowers
 export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
+  // The large display only reads a game running status, a numerical game time, and a current game month from the timer bar
+  // The view child is used because the timer bar is 'read-only' at this moment
   @ViewChild(TimerBarComponent, {static: false}) private timerBar: TimerBarComponent;
 
-  currentDisplayed: DisplayFlowers[] = new Array<DisplayFlowers>();
+  // The 'currentDisplayed' is the flowers to be shown within the large display, which is the demo flowers at this moment
+  currentDisplayed: DisplayFlowers[];
   demoFlowers: DisplayFlowers[] = new Array<DisplayFlowers>();
 
+  // The current game time is set to 120 seconds
   gameLength = 120;
   gameTime = 0;
   gameRunning = false;
@@ -28,6 +33,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   constructor(private snackbar: MdcSnackbar) { }
 
+  // Identify if window resize should be suggested after resize
   @HostListener('window:resize', ['$event']) onResize() {
     this.suggestResizeCounter++;
     setTimeout(() => {
@@ -38,17 +44,21 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     }, 3000);
   }
 
+  // The flowers displayed are essentially the demoFlowers at this moment
   ngOnInit() {
     this.initializeDemoFlowers();
     this.currentDisplayed = this.demoFlowers;
   }
 
   ngAfterViewInit() {
+    // Identify if window resize should be suggested after initialization
     setTimeout(() => this.suggestResize(), 3000);
+    // Read the game time, running status, and current month from the timer bar
     setTimeout(() => {
       setInterval(() => {
         const newMonth = this.timerBar.getMonth();
         if (this.gameMonth.main !== newMonth.main || this.gameMonth.sub !== newMonth.sub) {
+          // Update the activeness of currently displayed flowers
           this.currentDisplayed.forEach(s => s.updateActiveness(newMonth));
         }
         this.gameMonth = newMonth;
@@ -58,6 +68,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     }, 1000);
   }
 
+  // Pop up a resize suggestion when the window ratio is not ideal after a delay
   suggestResize() {
     if (!this.ignoreTallScreen && window.innerWidth / window.innerHeight < 1.1) {
       this.suggestResizeCounter++;
@@ -65,12 +76,21 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
         timeoutMs: 7500, leading: true, classes: 'suggest-resize-snackbar'
       });
       snackbarRef.afterDismiss().subscribe(r => {
+        // The suggestion is turned off when click on the ignore button
         this.ignoreTallScreen = r === 'action';
+        // The pop up does not appear twice every 15 seconds
         setTimeout(() => this.suggestResizeCounter--, 15000);
       });
     }
   }
 
+  // Add demo species (flowers) to display within the large display
+  // Each displayed species (DisplayFlowers) should have the following required parameters
+  //    the species (Flower),
+  //    a relative x position (0.0 - 1.0),
+  //    a relative y position (0.0 - 1.0),
+  //    a scaling parameter depending on the size of its img,
+  //    the width of the component (window)
   initializeDemoFlowers() {
     this.demoFlowers.push(new DisplayFlowers(
       {id: 'a', species: 'rudbeckia hirta',

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GameMonth } from '../month';
 
 @Component({
@@ -6,28 +6,29 @@ import { GameMonth } from '../month';
   templateUrl: './game-progress-indicator.component.html',
   styleUrls: ['./game-progress-indicator.component.scss']
 })
-export class GameProgressIndicatorComponent implements OnInit {
+export class GameProgressIndicatorComponent {
 
+  // The length of the game, the current game time, and the current game month are the required inputs
   @Input() gameTime: number;
-
   @Input() gameLength: number;
-
   @Input() gameMonth: GameMonth;
 
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
 
   constructor() { }
 
-  ngOnInit() { }
-
+  // Used in the game time count down spinner
   spinnerProgress(): number {
     return 100 * (1 - this.gameTime / this.gameLength);
   }
 
+  // Used in linear progress of months
   linearProgress(): number {
     return this.gameTime / this.gameLength;
   }
 
+  // Calculates the current season from the current game month input
+  // Summer starts in the middle of June and fall starts in the middle of September (by KK)
   parseSeason() {
     switch (this.gameMonth.main) {
       case 'April':
@@ -53,5 +54,4 @@ export class GameProgressIndicatorComponent implements OnInit {
         return '';
     }
   }
-
 }

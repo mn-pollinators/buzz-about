@@ -9,32 +9,29 @@ import { GameMonth } from '../month';
   styleUrls: ['./timer-bar.component.scss']
 })
 
+// The timer bar component is used to controls the time in a game (round)
+// Its parameters are designed to be read-only from other components
+// Use getStatus(), getTime(), and getMonth() to access the timer bar values
 export class TimerBarComponent implements OnInit {
 
+  // An input of the game length is required
   @Input() gameLength = 0;
 
+  // Set to false to turn on time change confirmation
   skipConfirmation = true;
 
+  // Negative time is used to display hints before the game actually starts
   currentTime = -3;
-
   initialTime = -3;
 
   isOpened = false;
-
   months = ['April', 'May', 'June', 'July', 'August', 'September', 'October', 'November'];
-
   currentMonth = 'Ready?';
-
   paused = true;
-
   sliding = false;
-
   monthLength: number;
-
   displayedRemainingTime: string;
-
   linearProgress: MDCLinearProgress;
-
   clock;
 
   constructor() { }
@@ -50,6 +47,7 @@ export class TimerBarComponent implements OnInit {
     this.linearProgress.close();
   }
 
+  // Initialize the timer and runs the clock
   open() {
     if (!this.isOpened) {
       this.isOpened = true;
@@ -57,6 +55,7 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
+  // Stop the clock
   close() {
     if (this.isOpened) {
       this.isOpened = false;
@@ -64,7 +63,8 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  runClock() {
+  // Update parameters once a second
+  private runClock() {
     const clock = setInterval(() => {
       if (!this.paused && !this.sliding) {
         this.currentTime = Math.min(this.currentTime + 1, this.gameLength);
@@ -80,6 +80,7 @@ export class TimerBarComponent implements OnInit {
     }, 1000);
   }
 
+  // Change the game running status on click
   clickPausePlay() {
     if (!this.paused) {
       this.paused = true;
@@ -93,6 +94,8 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
+  // Evoke a browser confirmation for the change of game time
+  // We may replace it with a confirmation dialog
   confirmChange(month: string): boolean {
     this.paused = true;
     if (this.skipConfirmation === true) {
@@ -104,13 +107,13 @@ export class TimerBarComponent implements OnInit {
       case 'end':
         return confirm('End this game?');
       default:
-        // console.log('init: ' + this.initialTime + ' curr: ' + this.currentTime);
         if (this.currentTime !== this.initialTime) {
           return confirm('Set game progress to \'' + month + '\'?');
         }
     }
   }
 
+  // Used to reset the game on click
   reset() {
     this.paused = true;
     this.linearProgress.close();
@@ -120,6 +123,7 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
+  // Used to end the game on click
   end() {
     this.paused = true;
     this.linearProgress.close();
@@ -129,12 +133,11 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  syncCurrentProgress() {
-    // console.log('sync');
+  private syncCurrentProgress() {
     this.initialTime = this.currentTime;
   }
 
-  updateMonth() {
+  private updateMonth() {
     switch (this.currentTime) {
       case -3:
         this.currentMonth = 'Ready?';
@@ -158,10 +161,12 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  calculateMonth(time = this.currentTime) {
+  // return a complete month wrt the input game time
+  private calculateMonth(time = this.currentTime) {
     return this.months[Math.min(12, Math.floor(time / this.monthLength))];
   }
 
+  // Used to go to the previous month on click
   prevMonth() {
     this.paused = true;
     if (this.currentTime <= 0 || this.currentMonth === this.months[0]) {
@@ -178,6 +183,7 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
+  // Used to skip to the next month on click
   nextMonth() {
     this.paused = true;
     this.setTimer(this.monthLength * (this.months.indexOf(this.currentMonth) + 1));
@@ -188,15 +194,17 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  setTimer(s: number) {
+  private setTimer(s: number) {
     this.currentTime = s;
     this.updateMonth();
   }
 
+  // Used to display a time count down
   timeRemaining() {
     return Math.max(0, Math.min(this.gameLength, this.gameLength - this.currentTime - 1));
   }
 
+  // Called in the linear progress
   onInput(event: MdcSliderChange): void {
     this.sliding = true;
     this.paused = true;
@@ -204,6 +212,7 @@ export class TimerBarComponent implements OnInit {
     this.linearProgress.close();
   }
 
+  // Called in the linear progress
   onChange(event: MdcSliderChange): void {
     this.sliding = false;
     if (!this.confirmChange(this.currentMonth)) {
@@ -219,10 +228,12 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  startAtMonth() {
+  // Pull the game time to the beginning of the current month
+  private startAtMonth() {
     this.currentTime = this.months.indexOf(this.currentMonth) * this.monthLength;
   }
 
+  // Used in the linear progress
   getCurrentProgress() {
     if (!this.isOpened) {
       return 0;
@@ -233,7 +244,8 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  getMonth(): GameMonth {
+  // return the game month, an empty sub month is returned during the first quarter of the current month
+  public getMonth(): GameMonth {
     if (this.initialTime < 0) {return {sub: '', main: this.months[0]}; }
     if (this.initialTime === this.gameLength) {return {sub: '', main: ''}; }
     const m = this.calculateMonth(this.initialTime);
@@ -250,12 +262,14 @@ export class TimerBarComponent implements OnInit {
     }
   }
 
-  getTime(): number {
+  // return the current game time in the range between -1 and the input game length
+  // -1 mean the game has not started yet
+  public getTime(): number {
     return Math.min(this.gameLength, Math.max(-1, this.initialTime));
   }
 
-  getStatus(): boolean {
+  // return if the game should be running
+  public getStatus(): boolean {
     return !this.paused;
   }
-
 }
