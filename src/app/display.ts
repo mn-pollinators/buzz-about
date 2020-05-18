@@ -82,28 +82,29 @@ export class DisplayFlowers implements Display {
       ['', 'early-', 'mid-', 'late-'];
 
     for (const p of activePeriods) {
-      const fm = months.indexOf(p.from.main);
-      const fs = subMonths.indexOf(p.from.sub);
-      let tm = months.indexOf(p.to.main);
-      const ts = subMonths.indexOf(p.to.sub);
-      if (ts === 0) {
-        tm++;
+      const fromMain = months.indexOf(p.from.main);
+      const fromSub = subMonths.indexOf(p.from.sub);
+      let toMain = months.indexOf(p.to.main);
+      const toSub = subMonths.indexOf(p.to.sub);
+      // if the end of an active period is a complete month (empty sub month), we assume it is active by the end of that month
+      if (toSub === 0) {
+        toMain++;
       }
 
-      if (fm < tm) {
-        subMonths.slice(fs).forEach(s => {
+      if (fromMain < toMain) {
+        subMonths.slice(fromSub).forEach(s => {
           this.activeMonths.push({main: p.from.main, sub: s} as GameMonth);
         });
-        for (const m of months.slice(fm + 1, tm)) {
+        for (const m of months.slice(fromMain + 1, toMain)) {
           subMonths.forEach(s => {
             this.activeMonths.push({main: m, sub: s} as GameMonth);
           });
         }
-        subMonths.slice(0, ts + 1).forEach(s => {
+        subMonths.slice(0, toSub + 1).forEach(s => {
           this.activeMonths.push({main: p.to.main, sub: s} as GameMonth);
         });
-      } else if (fm === tm) {
-        subMonths.slice(fs, ts + 1).forEach(s => {
+      } else if (fromMain === toMain) {
+        subMonths.slice(fromSub, toSub + 1).forEach(s => {
           this.activeMonths.push({main: p.to.main, sub: s} as GameMonth);
         });
       }
