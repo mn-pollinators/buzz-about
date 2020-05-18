@@ -251,7 +251,7 @@ export class TimerBarComponent implements OnInit {
   }
 
   getTime(): number {
-    return Math.min(this.gameLength, Math.max(0, this.initialTime));
+    return Math.min(this.gameLength, Math.max(-1, this.initialTime));
   }
 
   getStatus(): boolean {
