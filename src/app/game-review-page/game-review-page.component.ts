@@ -8,6 +8,8 @@ import { GameMonth } from '../month';
   templateUrl: './game-review-page.component.html',
   styleUrls: ['./game-review-page.component.scss']
 })
+
+// A review page to show the active time lines of bees and flowers when a game (round) finishes
 export class GameReviewPageComponent implements OnInit {
 
   @Input()
@@ -16,9 +18,6 @@ export class GameReviewPageComponent implements OnInit {
   @Input()
   bees: Bee[] = new Array<Bee>();
 
-  @Input()
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
   constructor() { }
 
   ngOnInit() {
@@ -26,6 +25,8 @@ export class GameReviewPageComponent implements OnInit {
   }
 
   initializeDemoElements() {
+    // each review item takes a flower or a bee as its input with the following required params
+    // a review item can have multiple active periods
     this.flowers.push({
       id: 'f_1',
       species: 'black-eyed susan',

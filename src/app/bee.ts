@@ -6,7 +6,7 @@ export interface Bee {
   id: string;
   species: string;
   scientificName?: string;
-  customName?: string;
+  customName?: string;      // may be used in reviewing particular visiting paths
   imgSrc?: string;
   imgSrc_inactive?: string;
   active?: boolean;
