@@ -12,6 +12,9 @@ import { Flower } from '../flower';
 })
 
 // Used to display the flowers, the time progress, and show activeness of flowers
+//    The month linear progress, the count down spinner, and the season belong to the game progress indicator component
+//    The flowers belong to the display item component
+//    The time controller belong to the timer bar component
 export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   // The large display only reads a game running status, a numerical game time, and a current game month from the timer bar

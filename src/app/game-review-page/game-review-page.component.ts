@@ -10,6 +10,8 @@ import { GameMonth } from '../month';
 })
 
 // A review page to show the active time lines of bees and flowers when a game (round) finishes
+//    The review species with active periods belong to the game review item component
+//    We implement visiting paths of particular bees in the review path component and add it here
 export class GameReviewPageComponent implements OnInit {
 
   @Input()
