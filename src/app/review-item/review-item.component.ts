@@ -8,28 +8,25 @@ import { GameMonth } from '../month';
   templateUrl: './review-item.component.html',
   styleUrls: ['./review-item.component.scss']
 })
+
+// Used to display bee or flower within the review page
 export class ReviewItemComponent implements OnInit {
 
+  // An input of a Bee or a Flower is required
   @Input()
   reviewBee: Bee;
-
   @Input()
   reviewFlower: Flower;
 
   type: string;
-
   sciName: string;
-
   id: string;
-
   imgSrc: string;
-
   species: string;
-
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  periods:
-    {from: number, to: number, begin: string, end: string}[] = new Array<{from: number, to: number, begin: string, end: string}>();
+  // 'from' and 'to' are the numerical value of the active periods wrt the time range of a whole year (0 - 13)
+  periods = new Array<{from: number, to: number, begin: string, end: string}>();
 
   constructor() { }
 
@@ -37,7 +34,7 @@ export class ReviewItemComponent implements OnInit {
     this.initializeParams();
   }
 
-  initializeParams() {
+  private initializeParams() {
     if (this.reviewBee) {
       this.id = this.reviewBee.id;
       this.imgSrc = this.reviewBee.imgSrc;
@@ -56,7 +53,7 @@ export class ReviewItemComponent implements OnInit {
     this.calculatePeriods();
   }
 
-  calculatePeriods() {
+  private calculatePeriods() {
     let activePeriods;
     if (this.reviewFlower) {
       activePeriods = this.reviewFlower.activePeriods;
@@ -66,24 +63,21 @@ export class ReviewItemComponent implements OnInit {
     }
 
     for (const p of activePeriods) {
-      let f = this.months.indexOf(p.from.main) / this.months.length + this.interpretSubMonth(p.from);
+      // set the index of a month to its numerical begin and end time value
+      // if a period begin or end with a quarter, set the precision with 0.25 gradient from the integer index of that month
+      const f = this.months.indexOf(p.from.main) / this.months.length + this.interpretSubMonth(p.from);
       let t = (this.months.indexOf(p.to.main)) / this.months.length + this.interpretSubMonth(p.to);
 
-      if (p.from.sub === 'early-') {
-        f -= 0.25 / this.months.length;
-      }
-
+      // if a period ends with a complete month (ie. March), we assume it actually ends by the end of that month
       if (p.to.sub === '') {
         t += 1 / this.months.length;
-      } else if (p.to.sub === 'late-') {
-        t += 0.25 / this.months.length;
       }
 
       this.periods.push({from: f, to: t, begin: p.from.sub + p.from.main, end: p.to.sub + p.to.main});
     }
   }
 
-  interpretSubMonth(month: GameMonth): number {
+  private interpretSubMonth(month: GameMonth): number {
     const monthLength = 1 / this.months.length;
     switch (month.sub) {
       case '':

@@ -312,14 +312,14 @@ body {
       .reviewSpecies {
         min-width: 220px;
         display: block;
-        margin: 0 18px;
-        margin-top: auto;;
-        margin-bottom: auto;;
+        margin-top: auto;
+        margin-bottom: auto;
         text-transform: capitalize;
-        font-size: large;
+        padding: 10px;
+        padding-top: 8px;
 
         .reviewType-flower, .reviewType-bee {
-          font-size: 15px;
+          font-size: 14px;
           font-style: italic;
         }
 
@@ -336,13 +336,12 @@ body {
         width: 100%;
         flex-direction: column;
         margin: auto;
-        padding-bottom: 15px;
+        padding-bottom: 31px;
 
         .activeMonthsText, .activeMonthsWrapper {
           height: 14px;
           font-size: 14px;
-          margin-left: 2px;
-          color: grey;
+          color: lighten(grey, 5%);
           min-width: 220px;
         }
 
@@ -354,18 +353,18 @@ body {
             width: inherit;
 
             .linearProgressWrapper-bee, .linearProgressWrapper-flower {
-              margin: 5px 0;
-              padding: 0 5px;
-              border-radius: 5px;
+              margin: 2px 0;
+              padding: 0 4px;
+              border-radius: 4px;
               top: 5px;
-              background-color: lightgrey;
+              background-color: lighten(lightgrey, 8%);
 
               mdc-linear-progress {
-                height: 10px;
+                height: 8px;
                 z-index: 1;
 
                 .mdc-linear-progress__bar-inner {
-                  background-color: lightgrey;
+                  background-color: lighten(lightgrey, 8%);
                 }
 
                 .mdc-linear-progress__buffer {

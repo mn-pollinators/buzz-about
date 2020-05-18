@@ -8,6 +8,8 @@ import { GameMonth } from '../month';
   templateUrl: './game-review-page.component.html',
   styleUrls: ['./game-review-page.component.scss']
 })
+
+// A review page to show the active time lines of bees and flowers when a game (round) finishes
 export class GameReviewPageComponent implements OnInit {
 
   @Input()
@@ -16,9 +18,6 @@ export class GameReviewPageComponent implements OnInit {
   @Input()
   bees: Bee[] = new Array<Bee>();
 
-  @Input()
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
   constructor() { }
 
   ngOnInit() {
@@ -26,6 +25,8 @@ export class GameReviewPageComponent implements OnInit {
   }
 
   initializeDemoElements() {
+    // each review item takes a flower or a bee as its input with the following required params
+    // a review item can have multiple active periods
     this.flowers.push({
       id: 'f_1',
       species: 'black-eyed susan',
@@ -45,29 +46,29 @@ export class GameReviewPageComponent implements OnInit {
       species: 'stiff goldenrod',
       scientificName: 'solidago rigida',
       imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      activePeriods: [{from: {sub: 'early-', main: 'June'} as GameMonth, to: {sub: 'late-', main: 'June'} as GameMonth}]} as Flower);
+      activePeriods: [{from: {sub: 'early-', main: 'June'} as GameMonth, to: {sub: 'late-', main: 'August'} as GameMonth}]} as Flower);
 
     this.bees.push({
       id: 'b_1',
       species: 'rusty patch bumble bee',
       scientificName: 'Bombus affinis',
       imgSrc: 'assets/images/1000w-8bit/bees/rusty patch bumblebee.png',
-      activePeriods: [{from: {sub: 'early-', main: 'April'} as GameMonth, to: {sub: 'late-', main: 'August'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: '', main: 'April'} as GameMonth, to: {sub: 'early-', main: 'August'} as GameMonth}]} as Bee);
 
     this.bees.push({
       id: 'b_2',
       species: 'pugnacious leafcutter bee',
       scientificName: 'megachile pugnata',
       imgSrc: 'assets/images/1000w-8bit/bees/megachile pugnata.png',
-      activePeriods: [{from: {sub: 'mid-', main: 'March'} as GameMonth,   to: {sub: 'early-', main: 'April'} as GameMonth},
-                      {from: {sub: 'mid-', main: 'May'} as GameMonth,   to: {sub: 'late-', main: 'June'} as GameMonth},
-                      {from: {sub: 'late-', main: 'August'} as GameMonth, to: {sub: '', main: 'October'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: '', main: 'March'} as GameMonth,   to: {sub: 'early-', main: 'April'} as GameMonth},
+                      {from: {sub: '', main: 'May'} as GameMonth,   to: {sub: '', main: 'June'} as GameMonth},
+                      {from: {sub: 'late-', main: 'July'} as GameMonth, to: {sub: '', main: 'October'} as GameMonth}]} as Bee);
 
     this.bees.push({
       id: 'b_3',
       species: 'spine-shouldered cellophane bee',
       scientificName: 'colletes simulans',
       imgSrc: 'assets/images/1000w-8bit/bees/colletes simulans.png',
-      activePeriods: [{from: {sub: '', main: 'May'} as GameMonth, to: {sub: 'mid-', main: 'June'} as GameMonth}]} as Bee);
+      activePeriods: [{from: {sub: 'mid-', main: 'March'} as GameMonth, to: {sub: 'early-', main: 'June'} as GameMonth}]} as Bee);
   }
 }

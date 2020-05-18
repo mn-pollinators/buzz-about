@@ -33,6 +33,7 @@ import { DisplayItemComponent } from './display-item/display-item.component';
 import { GameProgressIndicatorComponent } from './game-progress-indicator/game-progress-indicator.component';
 import { GameReviewPageComponent } from './game-review-page/game-review-page.component';
 import { ReviewItemComponent } from './review-item/review-item.component';
+import { ReviewPathComponent } from './review-path/review-path.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -59,6 +60,7 @@ const MDC_MODULES: any[] = [
     GameProgressIndicatorComponent,
     GameReviewPageComponent,
     ReviewItemComponent,
+    ReviewPathComponent,
   ],
   imports: [
     BrowserModule,
