@@ -77,9 +77,9 @@ describe('TimePeriod', () => {
 
 
 
-  describe('The constructor creates the correct object', () => {
+  describe('The fromMonthAndQuarter() method', () => {
     it('Correctly creates the initial time period', () => {
-      const timePeriod = new TimePeriod(0, 0);
+      const timePeriod = TimePeriod.fromMonthAndQuarter(0, 0);
       expect(timePeriod.time).toEqual(0);
       expect(timePeriod.month).toEqual(0);
       expect(timePeriod.quarter).toEqual(0);
@@ -87,7 +87,7 @@ describe('TimePeriod', () => {
     });
 
     it('Correctly creates a time period (2,1)', () => {
-      const timePeriod = new TimePeriod(2, 1);
+      const timePeriod = TimePeriod.fromMonthAndQuarter(2, 1);
       expect(timePeriod.time).toEqual(9);
       expect(timePeriod.month).toEqual(2);
       expect(timePeriod.quarter).toEqual(1);

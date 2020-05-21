@@ -35,8 +35,13 @@ export class TimePeriod {
    */
   readonly time: number;
 
-  constructor(month: Month, quarter: Quarter) {
-    this.time = (month * 4) + quarter;
+
+  private constructor(time: number) {
+    this.time = time;
+  }
+
+  static fromMonthAndQuarter(month: Month, quarter: Quarter) {
+    return new TimePeriod((month * 4) + quarter);
   }
 
   /**
@@ -59,7 +64,7 @@ export class TimePeriod {
       throw new TypeError('invalid date');
     }
 
-    return new TimePeriod(month as Month, Math.floor(day * 4 / 31) as Quarter);
+    return TimePeriod.fromMonthAndQuarter(month as Month, Math.floor(day * 4 / 31) as Quarter);
   }
 
   /**
