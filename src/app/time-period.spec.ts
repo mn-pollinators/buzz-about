@@ -76,7 +76,6 @@ describe('TimePeriod', () => {
   });
 
 
-
   describe('The fromMonthAndQuarter() method', () => {
     it('Correctly creates the initial time period', () => {
       const timePeriod = TimePeriod.fromMonthAndQuarter(0, 0);
@@ -95,4 +94,29 @@ describe('TimePeriod', () => {
     });
   });
 
+  describe('The next() method', () => {
+    it('Correctly increments the initial time period', () => {
+      const nextTimePeriod = TimePeriod.fromMonthAndQuarter(0, 0).next();
+      expect(nextTimePeriod.time).toEqual(1);
+      expect(nextTimePeriod.month).toEqual(0);
+      expect(nextTimePeriod.quarter).toEqual(1);
+      expect(nextTimePeriod.monthString).toEqual('January');
+    });
+
+    it('Correctly increments the last quarter of January', () => {
+      const nextTimePeriod = TimePeriod.fromMonthAndQuarter(0, 3).next();
+      expect(nextTimePeriod.time).toEqual(4);
+      expect(nextTimePeriod.month).toEqual(1);
+      expect(nextTimePeriod.quarter).toEqual(0);
+      expect(nextTimePeriod.monthString).toEqual('February');
+    });
+
+    it('Correctly wraps the last quarter of December', () => {
+      const nextTimePeriod = TimePeriod.fromMonthAndQuarter(11, 3).next();
+      expect(nextTimePeriod.time).toEqual(0);
+      expect(nextTimePeriod.month).toEqual(0);
+      expect(nextTimePeriod.quarter).toEqual(0);
+      expect(nextTimePeriod.monthString).toEqual('January');
+    });
+  });
 });

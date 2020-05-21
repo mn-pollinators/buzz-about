@@ -85,6 +85,17 @@ export class TimePeriod {
     return this.time % 4 as Quarter;
   }
 
+  /**
+   * Return the time period immediately following this one. (That is, the
+   * next quarter-month.)
+   *
+   * If we get to the last quarter of December, this method will loop around to
+   * the first quarter of January.
+   */
+  next(): TimePeriod {
+    return new TimePeriod((this.time + 1) % 48);
+  }
+
   equals(other: TimePeriod): boolean {
     return this.time === other.time;
   }
