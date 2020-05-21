@@ -1,4 +1,4 @@
-// Used for component communication with a month at a precision of quarters
+// TODO: Remove this
 export interface GameMonth {
   sub: '' | 'early-' | 'mid-' | 'late-' | string;
   main: string;

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GameMonth } from '../month';
+import { GameMonth } from '../time-period';
 
 @Component({
   selector: 'app-game-progress-indicator',

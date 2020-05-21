@@ -1,4 +1,4 @@
-import { GameMonth } from './month';
+import { GameMonth } from './time-period';
 import { Flower } from './flower';
 
 // Used to store and calculate parameters for the display item component

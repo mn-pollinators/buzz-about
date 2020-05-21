@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MdcSliderChange } from '@angular-mdc/web';
 import { MDCLinearProgress } from '@material/linear-progress';
-import { GameMonth } from '../month';
+import { GameMonth } from '../time-period';
 
 @Component({
   selector: 'app-timer-bar',

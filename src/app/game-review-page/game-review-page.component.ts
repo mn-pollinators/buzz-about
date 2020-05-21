@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Flower } from '../flower';
 import { Bee } from '../bee';
-import { GameMonth } from '../month';
+import { GameMonth } from '../time-period';
 
 @Component({
   selector: 'app-game-review-page',

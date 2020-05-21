@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, HostListener, ViewChild } from '@angu
 import { MdcSnackbar } from '@angular-mdc/web';
 import { TimerBarComponent } from 'src/app/timer-bar/timer-bar.component';
 import { DisplayFlowers } from 'src/app/display';
-import { GameMonth } from '../month';
+import { GameMonth } from '../time-period';
 import { Flower } from '../flower';
 
 @Component({
