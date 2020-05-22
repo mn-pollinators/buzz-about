@@ -1,6 +1,6 @@
 import { ExampleRound } from "./example.round";
 
-describe('Example .Round', () => {
+xdescribe('Example .Round', () => {
   it('should create an instance', () => {
     expect(new ExampleRound("test", [])).toBeTruthy();
   });
