@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 $mdc-theme-primary: #4CAF50; // primary color
 $mdc-theme-secondary: #FFC107; // secondary color
+$large-display-background: #84aa4c; // a color picked from background image
 
 @import "~@angular-mdc/theme/material";
 
@@ -11,5 +12,389 @@ $mdc-theme-secondary: #FFC107; // secondary color
         top: none !important;
         left: none !important;
     }
+}
 
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.main-content {
+  display: block;
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  top:56px;
+  left: 0;
+  right: 0;
+}
+
+// adapt to auto tool bar height
+@media screen and (min-width: 600px) {
+  .main-content {
+    top:64px;
+  }
+}
+
+/////////////////////////////////
+// styles to the large display //
+/////////////////////////////////
+
+.flowers {
+  position: absolute;
+  z-index: 1;
+}
+
+.flower {
+  -webkit-filter: drop-shadow(0 -5px 15px#f0f1eb);
+  filter: drop-shadow(0 -5px 15px #f0f1eb);
+
+  img {
+    -webkit-transition: 500ms filter ease-out;
+    transition: 500ms filter ease-out;
+  }
+
+  img.active_false {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+}
+
+.largeDisplayContent {
+  height: 100%;
+  background-color: $large-display-background;
+}
+
+.backgroundWrapper {
+  position: relative;
+  top: 0;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.displayBackground {
+  position: absolute;
+  width: 100%;
+  opacity: 1
+}
+
+.timerBar {
+  position: absolute;
+  display: block;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 500px;
+  justify-self: center;
+  height: 96px;
+  background-color: darken($mdc-theme-primary, 2%);
+  left: 50%;
+  margin-left: -250px;
+}
+
+.suggest-resize-snackbar {
+  .mdc-button.mdc-snackbar__action {
+    color: darken($mdc-theme-secondary, 10%);
+  }
+}
+
+.backgroundMonth {
+  position: absolute;
+  line-height: 60px;
+  font-size: 60px;
+  top: 80px;
+  padding-left: 165px;
+  color: $mdc-theme-secondary;
+  text-align: left;
+  z-index: 0;
+  text-shadow:  0 0 5px $mdc-theme-secondary;
+  overflow: hidden;
+  opacity: 0.75;
+}
+
+.timerBar {
+  .monthWrapper, .progressBar {
+    position: relative;
+    display: inline-block;
+    left: 110px;
+    width: 280px;
+    height: 48px;
+    background-color: rgba(darken($mdc-theme-primary, 5%), 0.85);
+    line-height: 48px;
+    text-align: center;
+    font-size: 28px;
+    color: $mdc-theme-secondary
+  }
+
+  .monthWrapper a {
+    color: lightgoldenrodyellow;
+    text-transform: uppercase;
+  }
+
+  .progressBar {
+    text-align: left;
+    font-weight: 100;
+    position: absolute;
+    top: 0;
+    height: 48px;
+    z-index: 0;
+  }
+
+  #previousMonth, #nextMonth {
+    position: absolute;
+    color: $mdc-theme-secondary;
+    height: 48px;
+    width: 110px;
+  }
+
+  #nextMonth {
+    right: 0;
+  }
+
+  .displayedMonth {
+    height: 48px;
+  }
+
+  .timeSliderWrapper {
+    padding: 0 110px 0 160px;
+    height: 48px;
+  }
+
+  .timeSlier {
+    position: absolute;
+  }
+
+  .displayedTime {
+    height: 48px;
+    line-height: 48px;
+    width: 75px;
+    position: absolute;
+    text-align: center;
+    font-size: 14px;
+    color: lightgoldenrodyellow;
+    right: 18px;
+  }
+
+  .timerController {
+    height: 48px;
+    position: absolute;
+    text-align: left;
+    top: 48px;
+    left: 0;
+  }
+
+  .timerController button {
+    color: $mdc-theme-secondary;
+  }
+
+  .mdc-icon-button::before, .mdc-icon-button::after {
+    background-color: $mdc-theme-secondary;
+  }
+
+  .mdc-button:disabled, .mdc-icon-button:disabled {
+    color: $mdc-theme-secondary;
+    opacity: 0.38;
+  }
+
+  .mdc-slider__thumb-container {
+    height: 23px;
+  }
+}
+
+.progress-indicator-wrapper {
+  position: absolute;
+  top: 0;
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: $mdc-theme-secondary;
+    opacity: 0.6;
+    transform: scaleY(-1);
+  }
+
+  .mat-progress-spinner svg {
+    padding: 10px;
+  }
+
+  .progress-spinner-wrapper {
+    margin: 20px;
+    margin-top: -1px;
+  }
+}
+
+.progress-indicator-wrapper {
+  display: block;
+  width: 100%;
+  position: absolute;
+  color: darken($mdc-theme-primary, 35%);
+
+  .monthProgressWrapper {
+    .progressMonth {
+      display: inline-block;
+      height: 24px;
+      line-height: 24px;
+      top: -24px;
+      width: 1/8 * 100%;
+      text-align: center;
+      font-size: 16px;
+      position: relative;
+    }
+
+    .currentMonth {
+      font-weight: 600;
+      text-transform: uppercase;
+      color: black;
+    }
+
+    .separator {
+      margin-top: 7px;
+      height: 10px;
+      width: 1px;
+      background-color: darken($mdc-theme-primary, 30%);
+      position: absolute;
+      right: 0;
+    }
+
+    .monthProgress {
+      position: relative;
+      height: 24px;
+
+      .mdc-linear-progress__bar-inner {
+        background-color: lighten($mdc-theme-primary, 15%);
+      }
+
+      .mdc-linear-progress__buffer {
+        background-color: lighten($mdc-theme-primary, 35%);
+      }
+    }
+  }
+}
+
+///////////////////////////////
+// styles to the review page //
+///////////////////////////////
+
+.reviewPage {
+  padding: 18px;
+  width: min-content;
+  margin-left: auto;
+  margin-right: auto;
+
+  .reviewItemGroup {
+    box-shadow: 0 1px 15px 1px lightgray;
+
+    .reviewItem {
+      padding: 0 20px 0 5px;
+      min-height: 50px;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 1px;
+      box-shadow: 0 0 1px lightgray;
+      width: min-content;
+
+      .reviewImgWrapper {
+        padding: 10px;
+        min-width: 60px;
+        justify-content: center;
+        display: flex;
+
+        img {
+          margin: auto;
+          height: 60px;
+          max-width: 60px;
+        }
+      }
+
+      .reviewSpecies {
+        min-width: 220px;
+        display: block;
+        margin-top: auto;
+        margin-bottom: auto;
+        text-transform: capitalize;
+        padding: 10px;
+        padding-top: 8px;
+
+        .reviewType-flower, .reviewType-bee {
+          font-size: 14px;
+          font-style: italic;
+        }
+
+        .reviewType-flower {
+          color: $mdc-theme-primary;
+        }
+
+        .reviewType-bee {
+          color: darken($mdc-theme-secondary, 7%);
+        }
+      }
+
+      .reviewActivePeriodGroup {
+        width: 100%;
+        flex-direction: column;
+        margin: auto;
+        padding-bottom: 31px;
+
+        .activeMonthsText, .activeMonthsWrapper {
+          height: 14px;
+          font-size: 14px;
+          color: lighten(grey, 5%);
+          min-width: 220px;
+        }
+
+        .linearProgressContainer {
+          width: 450px;
+
+          .activePeriodWrapper {
+            position: absolute;
+            width: inherit;
+
+            .linearProgressWrapper-bee, .linearProgressWrapper-flower {
+              margin: 2px 0;
+              padding: 0 4px;
+              border-radius: 4px;
+              top: 5px;
+              background-color: lighten(lightgrey, 8%);
+
+              mdc-linear-progress {
+                height: 8px;
+                z-index: 1;
+
+                .mdc-linear-progress__bar-inner {
+                  background-color: lighten(lightgrey, 8%);
+                }
+
+                .mdc-linear-progress__buffer {
+                  background-color: $mdc-theme-secondary;
+                }
+
+                .mdc-linear-progress__buffering-dots {
+                  display: none;
+                }
+              }
+            }
+
+            .linearProgressWrapper-flower {
+              mdc-linear-progress {
+                .mdc-linear-progress__buffer {
+                  background-color: lighten( $mdc-theme-primary, 12% );
+                }
+              }
+            }
+          }
+
+          .linearProgressWrapper-bee {
+            mdc-linear-progress {
+              .mdc-linear-progress__buffer {
+                background-color: $mdc-theme-secondary;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

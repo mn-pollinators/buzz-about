@@ -1,0 +1,24 @@
+<div class="timerBar">
+
+  <div class="displayedMonth">
+    <button disabled="{{this.currentTime < 0}}" id="previousMonth" mdc-button (click)="this.prevMonth()">Prev</button>
+    <mdc-linear-progress class="progressBar" determinate [progress]="this.getCurrentProgress()" [buffer]="1"></mdc-linear-progress>
+    <div class="monthWrapper">
+      <a>{{this.currentMonth}}</a>
+    </div>
+    <button disabled="{{this.currentTime === this.gameLength}}" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
+  </div>
+
+  <div class="timeSliderWrapper">
+    <div class="timerController">
+      <button mdcIconButton [on]="this.paused" (click)="this.clickPausePlay()">
+        <mdc-icon mdcIconOn>play_arrow</mdc-icon>
+        <mdc-icon>pause</mdc-icon>
+      </button>
+      <button disabled="{{this.currentTime === this.gameLength}}" mdc-icon-button icon="stop" (click)="this.end()"></button>
+      <button disabled="{{this.currentTime < 0}}" mdc-icon-button icon="replay" (click)="this.reset()"></button>
+    </div>
+    <mdc-slider class="timeSlider" [min]="0" [max]="this.gameLength" value="{{this.currentTime}}" (input)="onInput($event)" (change)="onChange($event)"></mdc-slider>
+    <a id='toEnd' class='displayedTime'>{{this.timeRemaining()}}s left</a>
+  </div>
+</div>

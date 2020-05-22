@@ -1,0 +1,13 @@
+<div class="largeDisplayContent">
+  <a class="flowers" *ngFor="let species of this.currentDisplayed" style="width: 100%;">
+    <app-display-item class="flower" [species]="species"></app-display-item>
+  </a>
+
+  <div class="backgroundWrapper">
+    <img class="displayBackground" src="assets/images/large-display/hill-compressed.jpg" alt="a background of a hill">
+  </div>
+
+  <app-timer-bar #timerBar [gameLength]='this.gameLength'></app-timer-bar>
+
+  <app-game-progress-indicator [gameTime]='this.gameTime' [gameLength]='this.gameLength' [gameMonth]='this.gameMonth'></app-game-progress-indicator>
+</div>
