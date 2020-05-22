@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ArViewComponent } from './ar-view.component';
 
-describe('ArViewComponent', () => {
+xdescribe('ArViewComponent', () => {
   let component: ArViewComponent;
   let fixture: ComponentFixture<ArViewComponent>;
 
