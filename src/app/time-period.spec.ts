@@ -29,41 +29,22 @@ describe('TimePeriod', () => {
     });
 
     describe('When you pass in an invalid input', () => {
-      it('Rejects --00-01', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('--00-01');
-        }).toThrow();
-      });
+      const invalidInputs = [
+        '--00-01',
+        '--13-01',
+        '--01-00',
+        '--01-32',
+        '1995-01-01',
+        'HI EVERYBODY',
+      ];
 
-      it('Rejects --13-01', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('--13-01');
-        }).toThrow();
-      });
-
-      it('Rejects --01-00', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('--01-00');
-        }).toThrow();
-      });
-
-      it('Rejects --01-32', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('--01-32');
-        }).toThrow();
-      });
-
-      it('Rejects 1995-01-01', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('1995-01-01');
-        }).toThrow();
-      });
-
-      it('Rejects HI EVERYBODY', () => {
-        expect(() => {
-          TimePeriod.fromIsoDate('HI EVERYBODY');
-        }).toThrow();
-      });
+      for (const invalidInput of invalidInputs) {
+        it(`Rejects ${invalidInput}`, () => {
+          expect(() => {
+            TimePeriod.fromIsoDate(invalidInput);
+          }).toThrow();
+        });
+      }
 
       it('Throws a TypeError', () => {
         try {
