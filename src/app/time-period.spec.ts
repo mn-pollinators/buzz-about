@@ -47,7 +47,7 @@ describe('TimePeriod', () => {
         }).toThrow();
       });
 
-      it('Rejects --13-32', () => {
+      it('Rejects --01-32', () => {
         expect(() => {
           TimePeriod.fromIsoDate('--01-32');
         }).toThrow();
