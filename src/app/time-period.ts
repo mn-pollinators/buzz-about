@@ -1,31 +1,47 @@
-export type Month = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
-export type Quarter = 0 | 1 | 2 | 3;
+/**
+ * Each value of this enum represents a particular month of the year, from
+ * January to December.
+ *
+ * These values are integers: 1 is January, 2 is February, and so on.
+ */
+export enum Month {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+/**
+ * Each value of this type represents a quarter-of-the-month: 1 is the first
+ * quarter, 2 is the second quarter, and so on.
+ */
+export type Quarter = 1 | 2 | 3 | 4;
 
 
-// TODO: Remove this
+// TODO: Remove this.
+// (This is the old unit of time in the game--we're in the middle of
+// refactoring it away as we revamp the game timer.)
+// (Use TimePeriod instead.)
 export interface GameMonth {
   sub: '' | 'early-' | 'mid-' | 'late-' | string;
   main: string;
 }
 
-
-export const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 /**
+ * TimePeriod represents a single unit of time in the game. It's used to keep
+ * track of the progression through the year as flowers bloom and pollinators
+ * pollinate.
  *
+ * TimePeriod takes the form of a month and a quarter--for example, the second
+ * quarter of March, or the last quarter of June.
  */
 export class TimePeriod {
 
@@ -41,14 +57,15 @@ export class TimePeriod {
   }
 
   static fromMonthAndQuarter(month: Month, quarter: Quarter) {
-    return new TimePeriod((month * 4) + quarter);
+    return new TimePeriod(4 * (month - 1) + (quarter - 1));
   }
 
   /**
    * Given a date in the format '--MM-DD', return the time period in which
    * that date falls.
    *
-   * Note that this conversion may lose precision.
+   * Note that this conversion may lose precision, since TimePeriod is only
+   * precise to the quarter-month, not the day.
    *
    * @throws TypeError if `isoDate` is not in the format '--MM-DD'.
    */
@@ -58,31 +75,42 @@ export class TimePeriod {
       throw new TypeError('invalid date');
     }
 
-    const month = Number(match[1]) - 1;
-    const day = Number(match[2]) - 1;
-    if (month < 0 || month >= 12 || day < 0 || day >= 31) {
+    const month: Month = Number(match[1]);
+    const day = Number(match[2]);
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
       throw new TypeError('invalid date');
     }
 
-    return TimePeriod.fromMonthAndQuarter(month as Month, Math.floor(day * 4 / 31) as Quarter);
+    // This is a bit of an unwieldy formula, but it should divide the days of
+    // the month about evenly into integers from 1 to 4.
+    const quarter = Math.floor((day - 1) * 4 / 31) + 1 as Quarter;
+
+    return TimePeriod.fromMonthAndQuarter(month, quarter);
   }
 
   /**
-   * Return the month, zero-indexed, starting from January.
+   * Return the month of this TimePeriod (ignoring what
+   * quarter-of-the-month it is).
+   *
+   * Months are indexed from one, so January is 1, February is 2, and so on.
    */
   get month(): Month {
-    return Math.floor(this.time / 4) as Month;
+    return Math.floor(this.time / 4) + 1;
   }
 
   get monthString(): string {
-    return monthNames[this.month];
+    return Month[this.month];
   }
 
   /**
-   * Return the quarter an integer from 0 to 3.
+   * Return the quarter-of-the-month of this TimePeriod (ignoring what month
+   * it is).
+   *
+   * Quarters are indexed from one, so the first quarter is 1,
+   * the second quarter is 2, and so on.
    */
   get quarter(): Quarter {
-    return this.time % 4 as Quarter;
+    return this.time % 4 + 1 as Quarter;
   }
 
   /**
