@@ -100,4 +100,105 @@ describe('TimePeriod', () => {
       expect(nextTimePeriod.monthString).toEqual('January');
     });
   });
+
+  describe('The fallsBetween() method', () => {
+    const trueCases = [
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.February, 4),
+        end: TimePeriod.fromMonthAndQuarter(Month.November, 4),
+        moment: TimePeriod.fromMonthAndQuarter(Month.June, 1),
+      },
+
+      // Make sure that each endpoint is inclusive
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+      },
+
+
+      // These are the cases that wrap around New Year's
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.October, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.March, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.October, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.March, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.December, 1),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 4),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.October, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.March, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.October, 1),
+      },
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.October, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.March, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.March, 1),
+      },
+    ];
+
+    const falseCases = [
+      // between but not in order
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+      },
+
+      // falls after
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 4),
+      },
+
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 3),
+      },
+
+      {
+        start: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        end: TimePeriod.fromMonthAndQuarter(Month.January, 2),
+        moment: TimePeriod.fromMonthAndQuarter(Month.January, 1),
+      },
+    ];
+
+    for(const {start, end, moment} of trueCases) {
+      it(`Accepts start: ${start.time} end: ${end.time} moment: ${moment.time}`, () => {
+        expect(moment.fallsWithin(start, end)).toEqual(true);
+      });
+    }
+
+    for(const {start, end, moment} of falseCases) {
+      it(`Rejects start: ${start.time} end: ${end.time} moment: ${moment.time}`, () => {
+        expect(moment.fallsWithin(start, end)).toEqual(false);
+      });
+    }
+
+  });
 });

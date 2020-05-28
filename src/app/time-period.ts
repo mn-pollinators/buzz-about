@@ -127,5 +127,24 @@ export class TimePeriod {
   equals(other: TimePeriod): boolean {
     return this.time === other.time;
   }
+
+  /**
+   * Return whether a moment occurs within a given interval.
+   *
+   * @param start The beginning of the interval (inclusive).
+   *
+   * @param end The end of the interval (exclusive).
+   *
+   * Note that this method loops around New Year's;
+   * the first quarter of January is considered to fall within
+   * the first quarter of December and the first quarter of February.
+   */
+  fallsWithin(start: TimePeriod, end: TimePeriod): boolean {
+    if (end.time < start.time) {
+      return this.time <= end.time || start.time <= this.time;
+    }
+
+    return start.time <= this.time && this.time <= end.time;
+  }
 }
 
