@@ -1,0 +1,15 @@
+<p>
+  Time: {{ (timer.currentTime$ | async)?.time }}
+</p>
+<p>
+  Running: {{ timer.running$ | async }}
+</p>
+<p>
+  <button (click)="initTimerButton()">init timer</button>
+  <button (click)="pauseButton()">pause</button>
+  <button (click)="unPauseButton()">play</button>
+</p>
+<p>
+    <input type="number" step="1" min="0" max="47" [(ngModel)]="newTime">
+    <button (click)="setTimeButton()">Set Time</button>
+</p>

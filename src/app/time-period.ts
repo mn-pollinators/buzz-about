@@ -52,7 +52,7 @@ export class TimePeriod {
   readonly time: number;
 
 
-  private constructor(time: number) {
+  public constructor(time: number) {
     this.time = time;
   }
 

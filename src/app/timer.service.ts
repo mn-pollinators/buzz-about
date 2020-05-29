@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, interval, NEVER } from 'rxjs';
-import { startWith, scan, tap, share, switchMap, mapTo } from 'rxjs/operators';
+import { Subject, Observable, interval, NEVER, of, timer } from 'rxjs';
+import { startWith, scan, tap, share, switchMap, mapTo, map, distinctUntilChanged } from 'rxjs/operators';
 import { TimePeriod } from './time-period';
 
 
@@ -21,14 +21,19 @@ export class TimerService {
 
   timerState$: Observable<TimerState>;
 
+  currentTime$: Observable<TimePeriod>;
+
+  running$: Observable<boolean>;
+
+
   // Start with a dummy value. (It doesn't really matter as long
   // as it's paused--nobody is going to read from the timer until
   // you call initialize().)
   readonly DUMMY_INITIAL_TIMER_STATE: TimerState = {
     running: false,
-    tickSpeed: null,
-    currentTime: null,
-    endTime: null,
+    tickSpeed: 1,
+    currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+    endTime: TimePeriod.fromMonthAndQuarter(1, 1),
   };
 
   constructor() {
@@ -37,20 +42,32 @@ export class TimerService {
       scan((state: TimerState, nextEvent: Partial<TimerState>): TimerState => ({ ...state, ...nextEvent })),
       switchMap((state: TimerState) =>
         state.running
-          ? interval(state.tickSpeed).pipe(
+          ? timer(0, state.tickSpeed).pipe(
               tap(() => {
-                state.currentTime = state.currentTime.next();
                 if (state.currentTime.equals(state.endTime)) {
-                  state.running = false;
+                  this.setRunning(false);
+                } else {
+                  state.currentTime = state.currentTime.next();
                 }
               }),
               mapTo(state),
             )
-          : NEVER
+          : of(state)
       ),
       share()
-    )
+    );
     this.timerState$.subscribe();
+
+    this.currentTime$ = this.timerState$.pipe(
+      map(state => state.currentTime),
+      distinctUntilChanged((prev, curr) => prev.equals(curr))
+    );
+
+    this.running$ = this.timerState$.pipe(
+      map(state => state.running),
+      distinctUntilChanged((prev, curr) => prev === curr)
+    );
+
   }
 
   initialize(startState: TimerState) {
@@ -61,8 +78,8 @@ export class TimerService {
     this.events$.next({running});
   }
 
-  getTime() {
-    return this.timerState$.pipe()
+  setTime(newTime: TimePeriod) {
+    this.events$.next({currentTime: newTime});
   }
 
 }
