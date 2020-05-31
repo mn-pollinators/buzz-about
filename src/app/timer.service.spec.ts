@@ -36,7 +36,7 @@ describe('TimerService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('the timerState$ observable', () => {
+  describe('The timerState$ observable', () => {
     it('Does not emit the initial state when subscribed to', async(() => {
       const testScheduler = new TestScheduler((actual, expected) => {
         expect(actual).toEqual(expected);
@@ -227,7 +227,7 @@ describe('TimerService', () => {
     }));
   });
 
-  describe('the currentTime$ observable', () => {
+  describe('The currentTime$ observable', () => {
     it('Does not emit the initial state when subscribed to', async(() => {
       const testScheduler = new TestScheduler((actual, expected) => {
         expect(actual).toEqual(expected);
@@ -588,7 +588,7 @@ describe('TimerService', () => {
     }));
   });
 
-  describe('the running$ observable', () => {
+  describe('The running$ observable', () => {
     it('Does not emit the initial state when subscribed to', async(() => {
       const testScheduler = new TestScheduler((actual, expected) => {
         expect(actual).toEqual(expected);

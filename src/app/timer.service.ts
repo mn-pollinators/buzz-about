@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, interval, NEVER, of, timer, concat } from 'rxjs';
-import { startWith, scan, tap, share, switchMap, mapTo, map, distinctUntilChanged } from 'rxjs/operators';
+import { Subject, Observable, interval, of, concat } from 'rxjs';
+import { startWith, scan, share, switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { TimePeriod } from './time-period';
 
 
@@ -79,21 +79,21 @@ export class TimerService {
       switchMap((state: TimerState) =>
         state.running
           ? concat(
-              // We're going to be mutating state, so emit a copy, not the real
-              // thing.
-              of(Object.assign({}, state)),
-              interval(state.tickSpeed).pipe(
-                // Use map instead of tap to make sure that the pipe waits for
-                // the callback to complete.
-                map(() => {
-                  if (state.endTime !== null && state.currentTime.equals(state.endTime)) {
-                    this.setRunning(false);
-                  } else {
-                    state.currentTime = state.currentTime.next();
-                  }
-                }),
-                map(() => Object.assign({}, state)),
-              )
+            // We're going to be mutating state, so emit a copy, not the real
+            // thing.
+            of(Object.assign({}, state)),
+            interval(state.tickSpeed).pipe(
+              // Use map instead of tap to make sure that the pipe waits for
+              // the callback to complete.
+              map(() => {
+                if (state.endTime !== null && state.currentTime.equals(state.endTime)) {
+                  this.setRunning(false);
+                } else {
+                  state.currentTime = state.currentTime.next();
+                }
+              }),
+              map(() => Object.assign({}, state)),
+            )
           ) : of(Object.assign({}, state))
       ),
       share()
