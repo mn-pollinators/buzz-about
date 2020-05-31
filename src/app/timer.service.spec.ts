@@ -506,5 +506,117 @@ describe('TimerService', () => {
       expect(emittedTimes.length).toEqual(0);
     }));
   });
+
+  describe('the running$ observable', () => {
+    it('Does not emit the initial state when subscribed to', async(() => {
+      const testScheduler = new TestScheduler((actual, expected) => {
+        expect(actual).toEqual(expected);
+      });
+      testScheduler.run(({expectObservable}) => {
+        expectObservable(service.running$).toBe('-');
+      });
+    }));
+
+    describe('Emits if you change the state from paused to unpaused', () => {
+      it('...using initialize()', fakeAsync(() => {
+        const initialState = {
+          running: true,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+        const emittedValues: boolean[] = [];
+        service.running$.subscribe(running => {
+          emittedValues.push(running);
+        });
+
+        service.initialize(initialState);
+        tick(0);
+        expect(emittedValues.pop()).toEqual(true);
+
+        discardPeriodicTasks();
+      }));
+
+      it('...using setRunnning()', fakeAsync(() => {
+        const previousState = {
+          running: false,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+        const initialState = {
+          running: true,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+
+        service.initialize(previousState);
+
+        const emittedValues: boolean[] = [];
+        service.running$.subscribe(running => {
+          emittedValues.push(running);
+        });
+
+        service.initialize(initialState);
+        tick(0);
+        expect(emittedValues.pop()).toEqual(true);
+
+        discardPeriodicTasks();
+      }));
+    });
+
+    describe('Emits if you change the state from unpaused to paused', () => {
+      it('...using initialize()', fakeAsync(() => {
+        const previousState = {
+          running: true,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+        const initialState = {
+          running: false,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+        service.initialize(previousState);
+
+        const emittedValues: boolean[] = [];
+        service.running$.subscribe(running => {
+          emittedValues.push(running);
+        });
+
+        service.initialize(initialState);
+        tick(0);
+        expect(emittedValues.pop()).toEqual(false);
+      }));
+
+      it('...using setRunning()', fakeAsync(() => {
+        const previousState = {
+          running: true,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
+        service.initialize(previousState);
+
+        const emittedValues: boolean[] = [];
+        service.running$.subscribe(running => {
+          emittedValues.push(running);
+        });
+
+        service.setRunning(false);
+        tick(0);
+        expect(emittedValues.pop()).toEqual(false);
+      }));
+    });
+  });
 });
 
