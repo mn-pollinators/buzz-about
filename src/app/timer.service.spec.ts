@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { TimerService, TimerState } from './timer.service';
 import { TimePeriod } from './time-period';
 import { TestScheduler } from 'rxjs/testing';
@@ -225,6 +225,188 @@ describe('TimerService', () => {
         tick(tickSpeed);
         expect(lastEmittedTimerState).toEqual(state);
       }
+    }));
+  });
+
+  describe('the currentTime$ observable', () => {
+    it('Does not emit the initial state when subscribed to', async(() => {
+      const testScheduler = new TestScheduler((actual, expected) => {
+        expect(actual).toEqual(expected);
+      });
+      testScheduler.run(({expectObservable}) => {
+        expectObservable(service.currentTime$).toBe('-');
+      });
+    }));
+
+    it('Works fine if you start the timer before calling initialize()', fakeAsync(() => {
+      // The time should emit once when you press play, and not after that.
+      // (Because INITIAL_TIMER_STATE has identical start and end times.)
+      const timeAfterPressingPlay = TimePeriod.fromMonthAndQuarter(1, 1);
+
+      const tickSpeed = TimerService.INITIAL_TIMER_STATE.tickSpeed;
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.setRunning(true);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(timeAfterPressingPlay);
+
+      tick(tickSpeed);
+      expect(emittedTimes.length).toEqual(0);
+
+      discardPeriodicTasks();
+    }));
+
+    it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
+      const previousState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      const initialState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 2),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialState.currentTime);
+    }));
+
+    it('Emits the value passed to initialize(), if that value is the same as the previous value, but initialState unpauses the timer',
+        fakeAsync(() => {
+      const previousState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      const initialState = {
+        running: true,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialState.currentTime);
+
+      discardPeriodicTasks();
+    }));
+
+    it('Does not emit the value passed to initialize(), if that value is the same as the previous value, and the timer stays paused',
+        fakeAsync(() => {
+      const previousState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      const initialState = {
+        running: false,
+        tickSpeed: 3,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(5, 1),
+      };
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.length).toEqual(0);
+    }));
+
+    it('Does not emit the value passed to initialize(), if that value is the same as the previous value, and the timer becomes paused',
+        fakeAsync(() => {
+      const previousState = {
+        running: true,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      const initialState = {
+        running: false,
+        tickSpeed: 3,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(5, 1),
+      };
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.length).toEqual(0);
+    }));
+
+    it('Does not emit the value passed to initialize(), if that value is the same as the previous value, and the timer stays running',
+        fakeAsync(() => {
+      const previousState = {
+        running: true,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+      };
+
+      const initialState = {
+        running: true,
+        tickSpeed: 3,
+        currentTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(5, 1),
+      };
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.length).toEqual(0);
+      console.log(emittedTimes);
+
+      discardPeriodicTasks();
     }));
   });
 });

@@ -42,6 +42,9 @@ export class TimerService {
    * It's important that it begins paused, but other than that, the exact
    * values don't really matter--whoever uses TimerService will call
    * initialize() to configure whatever settings they need.
+   *
+   * (Preferably, the endTime should be the same as the currentTime, so that
+   * if you start the timer running, it will stop without incrementing.)
    */
   static readonly INITIAL_TIMER_STATE: TimerState = {
     running: false,
@@ -55,9 +58,10 @@ export class TimerService {
   timerState$: Observable<TimerState>;
 
   /**
-   * What the TimePeriod is right now.
+   * This is a stream of all of the times emitted by the timer.
    *
-   * This Observable emits whenever the TimePeriod changes.
+   * It emits whenever the time changes, or whenever the timer is
+   * unpaused.
    */
   currentTime$: Observable<TimePeriod>;
 
@@ -90,18 +94,28 @@ export class TimerService {
       ),
       share()
     );
-    this.timerState$.subscribe();
+    this.timerState$.subscribe(() => {});
 
     this.currentTime$ = this.timerState$.pipe(
+      tap(state => { console.log(`Current state: ${JSON.stringify(state)}`); }),
+      // Don't emit if
+      distinctUntilChanged((previousState, currentState) =>
+        // the time didn't change
+        previousState.currentTime.equals(currentState.currentTime)
+          // and the timer wasn't just unpaused.
+          && !(!previousState.running && currentState.running)
+      ),
       map(state => state.currentTime),
-      distinctUntilChanged((prev, curr) => prev.equals(curr))
+      share(),
     );
+    this.currentTime$.subscribe(() => {});
 
     this.running$ = this.timerState$.pipe(
       map(state => state.running),
-      distinctUntilChanged((prev, curr) => prev === curr)
+      distinctUntilChanged((prev, curr) => prev === curr),
+      share(),
     );
-
+    this.running$.subscribe(() => {});
   }
 
   initialize(startState: TimerState) {
