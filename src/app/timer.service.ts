@@ -97,7 +97,6 @@ export class TimerService {
     this.timerState$.subscribe(() => {});
 
     this.currentTime$ = this.timerState$.pipe(
-      tap(state => { console.log(`Current state: ${JSON.stringify(state)}`); }),
       // Don't emit if
       distinctUntilChanged((previousState, currentState) =>
         // the time didn't change

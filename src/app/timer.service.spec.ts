@@ -404,7 +404,6 @@ describe('TimerService', () => {
       service.initialize(initialState);
       tick(0);
       expect(emittedTimes.length).toEqual(0);
-      console.log(emittedTimes);
 
       discardPeriodicTasks();
     }));
