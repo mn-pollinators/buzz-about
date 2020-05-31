@@ -434,6 +434,8 @@ describe('TimerService', () => {
         expect(emittedTimes.pop()).toEqual(nextExpectedTime);
         nextExpectedTime = nextExpectedTime.next();
       }
+
+      discardPeriodicTasks();
     }));
 
     it('Runs for 2 ticks', fakeAsync(() => {

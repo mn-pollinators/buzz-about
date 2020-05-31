@@ -86,12 +86,11 @@ export class TimerService {
                 // Use map instead of tap to make sure that the pipe waits for
                 // the callback to complete.
                 map(() => {
-                  if (state.currentTime !== null && state.currentTime.equals(state.endTime)) {
+                  if (state.endTime !== null && state.currentTime.equals(state.endTime)) {
                     this.setRunning(false);
                   } else {
                     state.currentTime = state.currentTime.next();
                   }
-                  return void(0);
                 }),
                 map(() => Object.assign({}, state)),
               )
