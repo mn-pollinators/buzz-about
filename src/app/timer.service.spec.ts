@@ -139,7 +139,6 @@ describe('TimerService', () => {
       }
     }));
 
-
     it('Emits twice if the start and the end are the same', fakeAsync(() => {
       const tickSpeed = 2;
 
@@ -503,6 +502,88 @@ describe('TimerService', () => {
       }
 
       tick(tickSpeed);
+      expect(emittedTimes.length).toEqual(0);
+    }));
+
+    describe('Emits when setTime() changes the time', () => {
+      it('...when running', fakeAsync(() => {
+        const tickSpeed = 10;
+        const previousState = {
+          running: true,
+          tickSpeed,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: null,
+        };
+
+        const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
+
+
+        service.initialize(previousState);
+        tick(0);
+
+        const emittedTimes: TimePeriod[] = [];
+        service.currentTime$.subscribe(currentTime => {
+          emittedTimes.push(currentTime);
+        });
+
+        tick(Math.floor(tickSpeed / 2));
+        service.setTime(newTime);
+        tick(0);
+        expect(emittedTimes.pop()).toEqual(newTime);
+
+        expect(emittedTimes.length).toEqual(0);
+
+        discardPeriodicTasks();
+      }));
+
+      it('...when paused', fakeAsync(() => {
+        const previousState = {
+          running: false,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: null,
+        };
+
+        const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
+
+
+        service.initialize(previousState);
+        tick(0);
+
+        const emittedTimes: TimePeriod[] = [];
+        service.currentTime$.subscribe(currentTime => {
+          emittedTimes.push(currentTime);
+        });
+
+        service.setTime(newTime);
+        tick(0);
+        expect(emittedTimes.pop()).toEqual(newTime);
+
+        expect(emittedTimes.length).toEqual(0);
+      }));
+    });
+
+    it('Doesn\'t emit when setTime() is called, but the new time is identical to the old one', fakeAsync(() => {
+      const previousState = {
+        running: false,
+        tickSpeed: 1,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: null,
+      };
+
+      const previousTime = previousState.currentTime;
+      const newTime = previousTime;
+
+      service.initialize(previousState);
+      tick(0);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.setTime(newTime);
+      tick(0);
       expect(emittedTimes.length).toEqual(0);
     }));
   });
