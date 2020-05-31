@@ -35,6 +35,20 @@ export interface TimerState {
   providedIn: 'root'
 })
 export class TimerService {
+  /**
+   * This is the initial state of the timer. It's never actually emitted,
+   * but it's the point from which the timer starts counting.
+   *
+   * It's important that it begins paused, but other than that, the exact
+   * values don't really matter--whoever uses TimerService will call
+   * initialize() to configure whatever settings they need.
+   */
+  static readonly INITIAL_TIMER_STATE: TimerState = {
+    running: false,
+    tickSpeed: 1,
+    currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+    endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+  };
 
   events$: Subject<Partial<TimerState>> = new Subject();
 
@@ -54,25 +68,9 @@ export class TimerService {
    */
   running$: Observable<boolean>;
 
-
-  /**
-   * This is the initial state of the timer. It's never actually emitted,
-   * but it's the point from which the timer starts counting.
-   *
-   * It's important that it begins paused, but other than that, the exact
-   * values don't really matter--whoever uses TimerService will call
-   * initialize() to configure whatever settings they need.
-   */
-  readonly INITIAL_TIMER_STATE: TimerState = {
-    running: false,
-    tickSpeed: 1,
-    currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
-    endTime: TimePeriod.fromMonthAndQuarter(1, 1),
-  };
-
   constructor() {
     this.timerState$ = this.events$.pipe(
-      startWith(this.INITIAL_TIMER_STATE),
+      startWith(TimerService.INITIAL_TIMER_STATE),
       scan((state: TimerState, nextEvent: Partial<TimerState>): TimerState => ({ ...state, ...nextEvent })),
       switchMap((state: TimerState) =>
         state.running

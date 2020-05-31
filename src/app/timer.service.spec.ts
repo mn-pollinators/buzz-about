@@ -1,5 +1,4 @@
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing';
-
 import { TimerService, TimerState } from './timer.service';
 import { TimePeriod } from './time-period';
 import { TestScheduler } from 'rxjs/testing';
@@ -47,8 +46,40 @@ describe('TimerService', () => {
       });
     }));
 
+    it('Works if you start the timer running before calling initialize()', fakeAsync(() => {
+      const tickSpeed = TimerService.INITIAL_TIMER_STATE.tickSpeed;
 
-    it('Emits initial values', fakeAsync(() => {
+      const stateAfterPressingPlay = {
+        ...TimerService.INITIAL_TIMER_STATE,
+        running: true,
+      };
+
+      // Since INITIAL_TIMER_STATE has identical start and end times, it will
+      // pause right away.
+      const subsequentStates = [
+        {
+          ...stateAfterPressingPlay,
+          running: false,
+        }
+      ];
+
+      let lastEmittedTimerState: TimerState;
+
+      service.timerState$.subscribe(state => {
+        lastEmittedTimerState = state;
+      });
+
+      service.setRunning(true);
+      tick(0);
+      expect(lastEmittedTimerState).toEqual(stateAfterPressingPlay);
+
+      for (const state of subsequentStates) {
+        tick(tickSpeed);
+        expect(lastEmittedTimerState).toEqual(state);
+      }
+    }));
+
+    it('Emits the value passed to initialize()', fakeAsync(() => {
       const initialState = {
         running: false,
         tickSpeed: 2,
