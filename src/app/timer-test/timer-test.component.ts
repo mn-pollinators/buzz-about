@@ -20,8 +20,8 @@ export class TimerTestComponent implements OnInit {
     this.timer.initialize({
       running: false,
       tickSpeed: 1000,
-      currentTime: TimePeriod.fromMonthAndQuarter(1,1),
-      endTime: TimePeriod.fromMonthAndQuarter(12,4)
+      currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+      endTime: null
     });
   }
 

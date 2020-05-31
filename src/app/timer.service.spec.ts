@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick, discardPeriodicTasks, flushMicrotasks } from '@angular/core/testing';
 import { TimerService, TimerState } from './timer.service';
 import { TimePeriod } from './time-period';
 import { TestScheduler } from 'rxjs/testing';
@@ -406,6 +406,102 @@ describe('TimerService', () => {
       expect(emittedTimes.length).toEqual(0);
 
       discardPeriodicTasks();
+    }));
+
+    it('Runs for a really long time if you set endTime to null', fakeAsync(() => {
+      const tickSpeed = 3;
+      const initialTime = TimePeriod.fromMonthAndQuarter(1, 1);
+
+      const initialState = {
+        running: true,
+        tickSpeed,
+        currentTime: initialTime,
+        endTime: null,
+      };
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialTime);
+
+      let nextExpectedTime = initialTime.next();
+      for (let count = 0; count < 1000; count++) {
+        tick(tickSpeed);
+        expect(emittedTimes.pop()).toEqual(nextExpectedTime);
+        nextExpectedTime = nextExpectedTime.next();
+      }
+    }));
+
+    it('Runs for 2 ticks', fakeAsync(() => {
+      const tickSpeed = 7;
+
+      const initialState = {
+        running: true,
+        tickSpeed,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2),
+      };
+
+      const initialTime = initialState.currentTime;
+      const subsequentTimes = [
+        TimePeriod.fromMonthAndQuarter(1, 2),
+      ];
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialTime);
+
+      for (const time of subsequentTimes) {
+        tick(tickSpeed);
+        expect(emittedTimes.pop()).toEqual(time);
+      }
+
+      tick(tickSpeed);
+      expect(emittedTimes.length).toEqual(0);
+    }));
+
+    it('Works fine if you initialize it as paused and then set running to true', fakeAsync(() => {
+      const tickSpeed = 7;
+
+      const initialState = {
+        running: false,
+        tickSpeed,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2),
+      };
+
+      const initialTime = initialState.currentTime;
+      const subsequentTimes = [
+        TimePeriod.fromMonthAndQuarter(1, 2),
+      ];
+
+      service.initialize(initialState);
+
+      const emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.setRunning(true);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialTime);
+
+      for (const time of subsequentTimes) {
+        tick(tickSpeed);
+        expect(emittedTimes.pop()).toEqual(time);
+      }
+
+      tick(tickSpeed);
+      expect(emittedTimes.length).toEqual(0);
     }));
   });
 });

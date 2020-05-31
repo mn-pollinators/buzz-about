@@ -79,18 +79,23 @@ export class TimerService {
       switchMap((state: TimerState) =>
         state.running
           ? concat(
-              of(state),
+              // We're going to be mutating state, so emit a copy, not the real
+              // thing.
+              of(Object.assign({}, state)),
               interval(state.tickSpeed).pipe(
-                tap(() => {
-                  if (state.currentTime.equals(state.endTime)) {
+                // Use map instead of tap to make sure that the pipe waits for
+                // the callback to complete.
+                map(() => {
+                  if (state.currentTime !== null && state.currentTime.equals(state.endTime)) {
                     this.setRunning(false);
                   } else {
                     state.currentTime = state.currentTime.next();
                   }
+                  return void(0);
                 }),
-                mapTo(state),
+                map(() => Object.assign({}, state)),
               )
-          ) : of(state)
+          ) : of(Object.assign({}, state))
       ),
       share()
     );
