@@ -11,13 +11,13 @@ describe('Sanity Tests', () => {
   });
 
   it('tests of() correctly', async(() => {
-    testScheduler.run(({expectObservable}) => {
+    testScheduler.run(({ expectObservable }) => {
       expectObservable(of('a')).toBe('(a|)');
     });
   }));
 
   it('tests NEVER correctly', async(() => {
-    testScheduler.run(({expectObservable}) => {
+    testScheduler.run(({ expectObservable }) => {
       expectObservable(NEVER).toBe('-');
     });
   }));
@@ -28,7 +28,7 @@ describe('TimerService', () => {
   let service: TimerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({providers: [TimerService]});
+    TestBed.configureTestingModule({ providers: [TimerService] });
     service = TestBed.get(TimerService); // TODO change to inject when we update to Angular 9
   });
 
@@ -41,7 +41,7 @@ describe('TimerService', () => {
       const testScheduler = new TestScheduler((actual, expected) => {
         expect(actual).toEqual(expected);
       });
-      testScheduler.run(({expectObservable}) => {
+      testScheduler.run(({ expectObservable }) => {
         expectObservable(service.timerState$).toBe('-');
       });
     }));

@@ -2,6 +2,9 @@
   Time: {{ (timer.currentTime$ | async)?.time }}
 </p>
 <p>
+  Month: {{ (timer.currentTime$ | async)?.monthString }}
+</p>
+<p>
   Running: {{ timer.running$ | async }}
 </p>
 <p>
@@ -13,3 +16,5 @@
     <input type="number" step="1" min="0" max="47" [(ngModel)]="newTime">
     <button (click)="setTimeButton()">Set Time</button>
 </p>
+
+<app-timer-progress-bar [currentTime]="timer.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>

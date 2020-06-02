@@ -1,7 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-$mdc-theme-primary: #4CAF50; // primary color
-$mdc-theme-secondary: #FFC107; // secondary color
-$large-display-background: #84aa4c; // a color picked from background image
+@import "variables";
 
 @import "~@angular-mdc/theme/material";
 
@@ -206,73 +203,73 @@ body {
   }
 }
 
-.progress-indicator-wrapper {
-  position: absolute;
-  top: 0;
+// .progress-indicator-wrapper {
+//   position: absolute;
+//   top: 0;
 
-  .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: $mdc-theme-secondary;
-    opacity: 0.6;
-    transform: scaleY(-1);
-  }
+//   .mat-progress-spinner circle, .mat-spinner circle {
+//     stroke: $mdc-theme-secondary;
+//     opacity: 0.6;
+//     transform: scaleY(-1);
+//   }
 
-  .mat-progress-spinner svg {
-    padding: 10px;
-  }
+//   .mat-progress-spinner svg {
+//     padding: 10px;
+//   }
 
-  .progress-spinner-wrapper {
-    margin: 20px;
-    margin-top: -1px;
-  }
-}
+//   .progress-spinner-wrapper {
+//     margin: 20px;
+//     margin-top: -1px;
+//   }
+// }
 
-.progress-indicator-wrapper {
-  display: block;
-  width: 100%;
-  position: absolute;
-  color: darken($mdc-theme-primary, 35%);
+// .progress-indicator-wrapper {
+//   display: block;
+//   width: 100%;
+//   position: absolute;
+//   color: darken($mdc-theme-primary, 35%);
 
-  .monthProgressWrapper {
-    .progressMonth {
-      display: inline-block;
-      height: 24px;
-      line-height: 24px;
-      top: -24px;
-      width: 1/8 * 100%;
-      text-align: center;
-      font-size: 16px;
-      position: relative;
-    }
+//   .monthProgressWrapper {
+//     .progressMonth {
+//       display: inline-block;
+//       height: 24px;
+//       line-height: 24px;
+//       top: -24px;
+//       width: 1/8 * 100%;
+//       text-align: center;
+//       font-size: 16px;
+//       position: relative;
+//     }
 
-    .currentMonth {
-      font-weight: 600;
-      text-transform: uppercase;
-      color: black;
-    }
+//     .currentMonth {
+//       font-weight: 600;
+//       text-transform: uppercase;
+//       color: black;
+//     }
 
-    .separator {
-      margin-top: 7px;
-      height: 10px;
-      width: 1px;
-      background-color: darken($mdc-theme-primary, 30%);
-      position: absolute;
-      right: 0;
-    }
+//     .separator {
+//       margin-top: 7px;
+//       height: 10px;
+//       width: 1px;
+//       background-color: darken($mdc-theme-primary, 30%);
+//       position: absolute;
+//       right: 0;
+//     }
 
-    .monthProgress {
-      position: relative;
-      height: 24px;
+//     .monthProgress {
+//       position: relative;
+//       height: 24px;
 
-      .mdc-linear-progress__bar-inner {
-        background-color: lighten($mdc-theme-primary, 15%);
-      }
+//       .mdc-linear-progress__bar-inner {
+//         background-color: lighten($mdc-theme-primary, 15%);
+//       }
 
-      .mdc-linear-progress__buffer {
-        background-color: lighten($mdc-theme-primary, 35%);
-      }
-    }
-  }
-}
+//       .mdc-linear-progress__buffer {
+//         background-color: lighten($mdc-theme-primary, 35%);
+//       }
+//     }
+//   }
+// }
 
 ///////////////////////////////
 // styles to the review page //

@@ -35,6 +35,7 @@ import { GameReviewPageComponent } from './game-review-page/game-review-page.com
 import { ReviewItemComponent } from './review-item/review-item.component';
 import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
+import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -63,6 +64,7 @@ const MDC_MODULES: any[] = [
     ReviewItemComponent,
     ReviewPathComponent,
     TimerTestComponent,
+    TimerProgressBarComponent,
   ],
   imports: [
     BrowserModule,
