@@ -19,6 +19,13 @@ export enum Month {
   December,
 }
 
+export enum Season {
+  Winter = 'Winter',
+  Spring = 'Spring',
+  Summer = 'Summer',
+  Fall = 'Fall'
+}
+
 /**
  * Each value of this type represents a quarter-of-the-month: 1 is the first
  * quarter, 2 is the second quarter, and so on.
@@ -111,6 +118,27 @@ export class TimePeriod {
    */
   get quarter(): Quarter {
     return this.time % 4 + 1 as Quarter;
+  }
+
+  get season(): Season {
+    switch (this.month) {
+      case Month.December:
+      case Month.January:
+      case Month.February:
+        return Season.Winter;
+      case Month.March:
+      case Month.April:
+      case Month.May:
+        return Season.Spring;
+      case Month.June:
+      case Month.July:
+      case Month.August:
+        return Season.Summer;
+      case Month.September:
+      case Month.October:
+      case Month.November:
+        return Season.Fall;
+    }
   }
 
   /**
