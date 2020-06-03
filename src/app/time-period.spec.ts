@@ -1,4 +1,4 @@
-import { TimePeriod, Month } from './time-period';
+import { TimePeriod, Month, Season } from './time-period';
 
 describe('TimePeriod', () => {
   describe('The fromIsoDate() method', () => {
@@ -188,17 +188,38 @@ describe('TimePeriod', () => {
       },
     ];
 
-    for(const {start, end, moment} of trueCases) {
+    for (const {start, end, moment} of trueCases) {
       it(`Accepts start: ${start.time} end: ${end.time} moment: ${moment.time}`, () => {
         expect(moment.fallsWithin(start, end)).toEqual(true);
       });
     }
 
-    for(const {start, end, moment} of falseCases) {
+    for (const {start, end, moment} of falseCases) {
       it(`Rejects start: ${start.time} end: ${end.time} moment: ${moment.time}`, () => {
         expect(moment.fallsWithin(start, end)).toEqual(false);
       });
     }
+  });
 
+  describe('the .season getter', () => {
+    const cases: [TimePeriod, Season][] = [
+      [TimePeriod.fromMonthAndQuarter(1, 1), Season.Winter],
+      [TimePeriod.fromMonthAndQuarter(1, 3), Season.Winter],
+      [TimePeriod.fromMonthAndQuarter(2, 4), Season.Winter],
+      [TimePeriod.fromMonthAndQuarter(3, 1), Season.Spring],
+      [TimePeriod.fromMonthAndQuarter(5, 4), Season.Spring],
+      [TimePeriod.fromMonthAndQuarter(6, 1), Season.Summer],
+      [TimePeriod.fromMonthAndQuarter(8, 4), Season.Summer],
+      [TimePeriod.fromMonthAndQuarter(9, 1), Season.Fall],
+      [TimePeriod.fromMonthAndQuarter(11, 4), Season.Fall],
+      [TimePeriod.fromMonthAndQuarter(12, 1), Season.Winter],
+      [TimePeriod.fromMonthAndQuarter(12, 4), Season.Winter],
+    ];
+
+    for (const [timePeriod, season] of cases) {
+      it(`Assigns the season ${season} to quarter ${timePeriod.quarter} of ${timePeriod.monthString}`, () => {
+        expect(timePeriod.season).toEqual(season);
+      });
+    }
   });
 });
