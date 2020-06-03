@@ -1,21 +1,30 @@
 @import "../../variables";
 
 .timer-progress-bar-container {
-  // display: block;
   width: 100%;
   position: absolute;
-  color: darken($mdc-theme-primary, 35%);
   top: 0;
+  color: darken($mdc-theme-primary, 35%);
+
+  .monthProgress {
+    height: 24px;
+
+    .mdc-linear-progress__bar-inner {
+      background-color: lighten($mdc-theme-primary, 15%);
+    }
+
+    .mdc-linear-progress__buffer {
+      background-color: lighten($mdc-theme-primary, 35%);
+    }
+  }
 
   .progressMonths {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    width: 100%;
 
     .progressMonth {
       flex: 1;
-      display: inline-block;
       height: 24px;
       line-height: 24px;
       top: -24px;
@@ -26,25 +35,11 @@
       &:not(:last-child) {
         border-right: 1px solid white;
       }
-    }
 
-    .currentMonth {
-      font-weight: 600;
-      color: black;
-    }
-  }
-
-
-  .monthProgress {
-    position: relative;
-    height: 24px;
-
-    .mdc-linear-progress__bar-inner {
-      background-color: lighten($mdc-theme-primary, 15%);
-    }
-
-    .mdc-linear-progress__buffer {
-      background-color: lighten($mdc-theme-primary, 35%);
+      &.currentMonth {
+        font-weight: 600;
+        color: black;
+      }
     }
   }
 }
