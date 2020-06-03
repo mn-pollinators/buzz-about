@@ -1,7 +1,10 @@
 <div class="timer-progress-bar-container">
   <mdc-linear-progress class='monthProgress' determinate [progress]='this.currentTimeFraction()'></mdc-linear-progress>
-  <div class='progressMonth' *ngFor='let month of getMonths()'>
-    <span [ngClass]="{'currentMonth': this.currentTime?.month === month}">{{Month[month]}}</span>
-    <span class='separator' *ngIf='month !== this.getMonths()[this.getMonths().length - 1]'></span>
+  <div class="progressMonths">
+    <span *ngFor='let month of getMonths()'
+          class='progressMonth'
+          [ngClass]="{'currentMonth': this.currentTime?.month === month}">
+      {{Month[month]}}
+    </span>
   </div>
 </div>

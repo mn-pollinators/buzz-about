@@ -1,36 +1,39 @@
 @import "../../variables";
 
 .timer-progress-bar-container {
-  display: block;
+  // display: block;
   width: 100%;
   position: absolute;
   color: darken($mdc-theme-primary, 35%);
   top: 0;
 
-  .progressMonth {
-    display: inline-block;
-    height: 24px;
-    line-height: 24px;
-    top: -24px;
-    width: 1/9 * 100%;
-    text-align: center;
-    font-size: 16px;
-    position: relative;
+  .progressMonths {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+
+    .progressMonth {
+      flex: 1;
+      display: inline-block;
+      height: 24px;
+      line-height: 24px;
+      top: -24px;
+      text-align: center;
+      font-size: 16px;
+      position: relative;
+
+      &:not(:last-child) {
+        border-right: 1px solid white;
+      }
+    }
+
+    .currentMonth {
+      font-weight: 600;
+      color: black;
+    }
   }
 
-  .currentMonth {
-    font-weight: 600;
-    color: black;
-  }
-
-  .separator {
-    margin-top: 7px;
-    height: 10px;
-    width: 1px;
-    background-color: darken($mdc-theme-primary, 30%);
-    position: absolute;
-    right: 0;
-  }
 
   .monthProgress {
     position: relative;

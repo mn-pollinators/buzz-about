@@ -22,8 +22,8 @@ export class TimerTestComponent implements OnInit {
     })
   }
 
-  public startTime = TimePeriod.fromMonthAndQuarter(3, 3);
-  public endTime = TimePeriod.fromMonthAndQuarter(11, 2);
+  public startTime = TimePeriod.fromMonthAndQuarter(6, 1);
+  public endTime = TimePeriod.fromMonthAndQuarter(8, 4);
 
   initTimerButton() {
     this.timer.initialize({
