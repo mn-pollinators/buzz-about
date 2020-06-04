@@ -174,5 +174,13 @@ export class TimePeriod {
 
     return start.time <= this.time && this.time <= end.time;
   }
+
+  /**
+   * Return a string representation of this time period useful for debugging,
+   * but not great for display to the user.
+   */
+  toString() {
+    return `quarter ${this.quarter} of ${this.monthString}`
+  }
 }
 
