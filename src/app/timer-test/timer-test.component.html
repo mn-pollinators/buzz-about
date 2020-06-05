@@ -1,8 +1,9 @@
+<br>
 <p>
   Time: {{ (timer.currentTime$ | async)?.time }}
 </p>
 <p>
-  Month: {{ (timer.currentTime$ | async)?.monthString }}
+  {{timer.currentTime$ | async}}
 </p>
 <p>
   Running: {{ timer.running$ | async }}
