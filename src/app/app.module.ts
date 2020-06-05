@@ -37,6 +37,7 @@ import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
+import { TimerControlComponent } from './timer-control/timer-control.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -67,6 +68,7 @@ const MDC_MODULES: any[] = [
     TimerTestComponent,
     TimerProgressBarComponent,
     TimerProgressSpinnerComponent,
+    TimerControlComponent,
   ],
   imports: [
     BrowserModule,

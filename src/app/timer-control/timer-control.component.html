@@ -1,0 +1,22 @@
+<div class="timer-control">
+  <div class="displayedMonth">
+    <button disabled="{{this.currentTime === undefined || this.currentTime.time < 0}}" id="previousMonth" mdc-button (click)="this.prevMonth()">Prev</button>
+    <mdc-linear-progress class="progressBar" determinate [progress]="this.currentTime === undefined ? 0 : this.currentTime.quarter * 0.25" [buffer]="1"></mdc-linear-progress>
+    <div class="monthWrapper">
+      <a>{{this.currentTime === undefined ? '' : this.currentTime.monthString}}</a>
+    </div>
+    <button disabled="{{this.currentTime === undefined || this.currentTime.equals(this.endTime)}}" id="nextMonth" mdc-button (click)="this.nextMonth()">Next</button>
+  </div>
+
+  <div class="timeSliderWrapper">
+    <div class="timerController">
+      <button mdcIconButton [on]="this.running" (click)="this.clickPausePlay()" [disabled]="this.running === undefined">
+        <mdc-icon mdcIconOn>paused</mdc-icon>
+        <mdc-icon>play_arrow</mdc-icon>
+      </button>
+      <button [disabled]="this.currentTime === undefined || this.currentTime.equals(this.endTime)" mdc-icon-button icon="stop" (click)="this.end()"></button>
+      <button [disabled]="this.currentTime === undefined || !this.currentTime.fallsWithin(this.startTime, this.endTime)" mdc-icon-button icon="replay" (click)="this.reset()"></button>
+    </div>
+    <mdc-slider class="timeSlider" [disabled]="this.currentTime === undefined" [min]="this.endTime.time" [max]="this.startTime.time" value="{{this.currentTime}}" (input)="onSliderInput($event)" (change)="onSliderChange($event)"></mdc-slider>
+  </div>
+</div>

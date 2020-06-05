@@ -1,0 +1,102 @@
+@import "../../variables";
+
+.timer-control {
+  position: absolute;
+  display: block;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 500px;
+  justify-self: center;
+  height: 96px;
+  background-color: darken($mdc-theme-primary, 2%);
+  left: 50%;
+  margin-left: -250px;
+
+  .monthWrapper, .progressBar {
+    position: relative;
+    display: inline-block;
+    left: 110px;
+    width: 280px;
+    height: 48px;
+    background-color: rgba(darken($mdc-theme-primary, 5%), 0.85);
+    line-height: 48px;
+    text-align: center;
+    font-size: 28px;
+    color: $mdc-theme-secondary
+  }
+
+  .monthWrapper a {
+    color: lightgoldenrodyellow;
+    text-transform: uppercase;
+  }
+
+  .progressBar {
+    text-align: left;
+    font-weight: 100;
+    position: absolute;
+    top: 0;
+    height: 48px;
+    z-index: 0;
+  }
+
+  #previousMonth, #nextMonth {
+    position: absolute;
+    color: $mdc-theme-secondary;
+    height: 48px;
+    width: 110px;
+  }
+
+  #nextMonth {
+    right: 0;
+  }
+
+  .displayedMonth {
+    height: 48px;
+  }
+
+  .timeSliderWrapper {
+    padding: 0 110px 0 160px;
+    height: 48px;
+  }
+
+  .timeSlier {
+    position: absolute;
+  }
+
+  .displayedTime {
+    height: 48px;
+    line-height: 48px;
+    width: 75px;
+    position: absolute;
+    text-align: center;
+    font-size: 14px;
+    color: lightgoldenrodyellow;
+    right: 18px;
+  }
+
+  .timerController {
+    height: 48px;
+    position: absolute;
+    text-align: left;
+    top: 48px;
+    left: 0;
+  }
+
+  .timerController button {
+    color: $mdc-theme-secondary;
+  }
+
+  .mdc-icon-button::before, .mdc-icon-button::after {
+    background-color: $mdc-theme-secondary;
+  }
+
+  .mdc-button:disabled, .mdc-icon-button:disabled {
+    color: $mdc-theme-secondary;
+    opacity: 0.38;
+  }
+
+  .mdc-slider__thumb-container {
+    height: 23px;
+  }
+}
