@@ -1,0 +1,8 @@
+<img
+  [ngClass]="{'flower-inactive' : !item.active}"
+  [@active]="item.active"
+  [@position]="{value: species.displayState, params: {left: position.x, top: position.y, scale: species.scale, offset: species.offset }}"
+  class="displayItem"
+  [src]="item.imgSrc"
+  style="position: relative; display: inline" [alt]="item.alt"
+>

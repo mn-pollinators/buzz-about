@@ -1,0 +1,17 @@
+:host {
+  position: absolute;
+  z-index: 1;
+
+  -webkit-filter: drop-shadow(0 -5px 15px#f0f1eb);
+  filter: drop-shadow(0 -5px 15px #f0f1eb);
+
+  img {
+    -webkit-transition: 500ms filter ease-out;
+    transition: 500ms filter ease-out;
+  }
+
+  img.active_false {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+}
