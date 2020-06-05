@@ -30,56 +30,56 @@ describe('TimerProgressSpinnerComponent', () => {
     const cases = [
       {
         currentTime: TimePeriod.fromMonthAndQuarter(4, 1),
-        startMonth: Month.April,
-        endMonth: Month.June,
+        startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 100,
       },
       {
         currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
-        startMonth: Month.April,
-        endMonth: Month.June,
+        startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 0,
       },
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(1, 2),
-        startMonth: Month.January,
-        endMonth: Month.January,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 4),
+        startTime: TimePeriod.fromMonthAndQuarter(1, 3),
+        endTime: TimePeriod.fromMonthAndQuarter(2, 2),
         expectedSpinnerPercent: 100 * 2 / 3,
       },
       {
         currentTime: undefined,
-        startMonth: Month.April,
-        endMonth: Month.June,
-        expectedSpinnerPercent: 100,
+        startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(6, 4),
+        expectedSpinnerPercent: 0,
       },
       {
         currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
-        startMonth: undefined,
-        endMonth: Month.June,
-        expectedSpinnerPercent: 100,
+        startTime: undefined,
+        endTime: TimePeriod.fromMonthAndQuarter(6, 4),
+        expectedSpinnerPercent: 0,
       },
       {
         currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
-        startMonth: Month.April,
-        endMonth: undefined,
-        expectedSpinnerPercent: 100,
+        startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: undefined,
+        expectedSpinnerPercent: 0,
       },
       {
         currentTime: undefined,
-        startMonth: undefined,
-        endMonth: undefined,
-        expectedSpinnerPercent: 100,
+        startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: undefined,
+        expectedSpinnerPercent: 0,
       },
     ];
 
-    for (const {currentTime, startMonth, endMonth, expectedSpinnerPercent} of cases) {
+    for (const {currentTime, startTime, endTime, expectedSpinnerPercent} of cases) {
       it(`Returns roughly ${Math.round(expectedSpinnerPercent)} given
-          startMonth: ${Month[startMonth]},
-          endMonth: ${Month[endMonth]},
+          startTime: ${startTime},
+          endTime: ${endTime},
           and currentTime: ${currentTime}`, () => {
         component.currentTime = currentTime;
-        component.startMonth = startMonth;
-        component.endMonth = endMonth;
+        component.startTime = startTime;
+        component.endTime = endTime;
 
         expect(component.spinnerPercent()).toBeCloseTo(expectedSpinnerPercent);
       });

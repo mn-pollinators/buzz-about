@@ -19,31 +19,32 @@ export class TimerProgressSpinnerComponent implements OnInit {
    * the time in-game is.
    *
    * currentTime is allowed to be undefined, in which case the spinner will
-   * display as a full circle.
+   * display as an empty circle. (Which is probably completely invisible.)
    */
   @Input() currentTime: TimePeriod;
 
   /**
-   * The first month of the round.
+   * The first time period of the round.
    *
-   * If startMonth is undefined--maybe it's waiting to load or something like
-   * that--then the spinner will display as a full circle.
+   * If startTime is undefined--maybe it's waiting to load or something like
+   * that--then the spinner will display as an empty circle.
    */
-  @Input() startMonth: Month;
+  @Input() startTime: TimePeriod;
 
   /**
-   * The last month of the round.
+   * The last time period of the round.
    *
-   * It's important that startMonth <= endMonth; as an example, if
-   * startMonth is `Month.November`, endMonth cannot be `Month.January`.
+   * It's important that startTime comes strictly before startTime in the same
+   * calendar year; as an example, if startTime is the first quarter of
+   * December, endTime cannot be the last quarter of January.
    *
    * This is an inclusive endpoint; that is to say, the round will keep going
-   * all the way through the last quarter of this month.
+   * all the way through this time period.
    *
-   * If endMonth is undefined, then the spinner will always display as a full
+   * If endTime is undefined, then the spinner will always display as an empty
    * circle.
    */
-  @Input() endMonth: Month;
+  @Input() endTime: TimePeriod;
 
   constructor() { }
 
@@ -59,11 +60,9 @@ export class TimerProgressSpinnerComponent implements OnInit {
    * should be filled in.
    */
   spinnerPercent(): number {
-    if (!this.currentTime || !this.startMonth || !this.endMonth) {
-      return 100;
+    if (!this.currentTime || !this.startTime || !this.endTime) {
+      return 0;
     }
-    const startTime = TimePeriod.fromMonthAndQuarter(this.startMonth, 1);
-    const endTime = TimePeriod.fromMonthAndQuarter(this.endMonth, 4);
-    return 100 * (endTime.time - this.currentTime.time) / (endTime.time - startTime.time);
+    return 100 * (this.endTime.time - this.currentTime.time) / (this.endTime.time - this.startTime.time);
   }
 }

@@ -180,7 +180,7 @@ export class TimePeriod {
    * but not great for display to the user.
    */
   toString() {
-    return `quarter ${this.quarter} of ${this.monthString}`
+    return `${this.monthString} quarter ${this.quarter}`;
   }
 }
 
