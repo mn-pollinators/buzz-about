@@ -8,53 +8,27 @@ export interface FlowerLayoutItem {
   alt: string;
 }
 
-export interface FlowerLayoutItemPosition {
-  x: number;
-  y: number;
-}
 
 @Component({
   selector: 'app-flower-layout-item',
   templateUrl: './flower-layout-item.component.html',
   styleUrls: ['./flower-layout-item.component.scss'],
   animations: [
-    // Make the flower and transparent when it is inactive (whose active state is false)
+    // Make the flower greyscale & transparent when it is inactive (whose active state is false)
     // It creates the animation when the active state changes
-    // The grey out effect is done within the style.scss
     trigger('active', [
       state('true', style({
         opacity: 1,
       })),
       state('false', style({
         opacity: 0.67,
+        filter: 'grayscale(100%)'
       })),
       transition('true <=> false', [
         animate('500ms ease')
       ])
-    ]),
-
-    // A repositioning animation is created when the position state is changed between  'normal' and 'normal_'
-    // The state change is done by the moveTo() method within the DisplayFlower class in display.ts
-    trigger('position', [
-      state('normal', style({
-        marginTop: '-{{scale}}%',
-        marginLeft: '-{{offset}}%',
-        width: '{{scale}}%',
-        left: '{{left}}px',
-        top: '{{top}}px',
-      }), {params: {left: 0, top: 0, scale: 10, offset: 50}}),
-      state('normal_', style({
-        marginTop: '-{{scale}}%',
-        marginLeft: '-{{offset}}%',
-        width: '{{scale}}%',
-        left: '{{left}}px',
-        top: '{{top}}px',
-      }), {params: {left: 0, top: 0, width: 10, offset: 50}}),
-      transition('normal <=> normal_', [
-        animate('495ms ease-out')
-      ])
-    ]),
-  ],
+    ])
+  ]
 })
 export class FlowerLayoutItemComponent implements OnInit, OnChanges {
 
@@ -67,10 +41,9 @@ export class FlowerLayoutItemComponent implements OnInit, OnChanges {
    *
    * Then, other flowers will have their widths calculated based on this value.
    */
-  static readonly averageFlowerWidth = 15;
+  static readonly averageFlowerWidthPercent = 15;
 
   @Input() item: FlowerLayoutItem;
-  @Input() position: FlowerLayoutItemPosition;
 
   constructor() { }
 
@@ -79,6 +52,11 @@ export class FlowerLayoutItemComponent implements OnInit, OnChanges {
   // TODO look at Angular Animations, do we need to pass in variables in the template or can we set them in the animations stuff above?
   // Can we just call a function to trigger the change?
   // We need to make sure that when the x/y input changes we reposition the item.
+
+  get currentFlowerWidthPercent(): number {
+    return FlowerLayoutItemComponent.averageFlowerWidthPercent * this.item.scale;
+  }
+
 
   ngOnInit() {
   }

@@ -7,15 +7,15 @@ import { DisplayFlowers } from '../display';
   templateUrl: './display-item.component.html',
   styleUrls: ['./display-item.component.scss'],
   animations: [
-    // Make the flower and transparent when it is inactive (whose active state is false)
+    // Make the flower greyscale & transparent when it is inactive (whose active state is false)
     // It creates the animation when the active state changes
-    // The grey out effect is done within the style.scss
     trigger('active', [
       state('true', style({
         opacity: 1,
       })),
       state('false', style({
         opacity: 0.67,
+        filter: 'grayscale(100%)'
       })),
       transition('true <=> false', [
         animate('500ms ease')

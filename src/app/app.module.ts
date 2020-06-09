@@ -40,6 +40,7 @@ import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-pr
 import { TimerControlComponent } from './timer-control/timer-control.component';
 import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
+import { FlowerTestComponent } from './flower-test/flower-test.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -73,6 +74,7 @@ const MDC_MODULES: any[] = [
     TimerControlComponent,
     FlowerLayoutComponent,
     FlowerLayoutItemComponent,
+    FlowerTestComponent,
   ],
   imports: [
     BrowserModule,
