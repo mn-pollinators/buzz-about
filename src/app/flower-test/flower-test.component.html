@@ -3,7 +3,7 @@
     <select [(ngModel)]="flower.imgSrc">
       <option *ngFor="let image of images" [value]="image.imgSrc">{{image.name}}</option>
     </select>
-    <input type="number" [(ngModel)]="flower.scale" style="width: 50px">
+    <input type="number" step="0.1" [(ngModel)]="flower.scale" style="width: 50px">
     <input type="checkbox" [(ngModel)]="flower.active">
   </div>
 </div>
