@@ -19,6 +19,7 @@ export interface FlowerLayoutItem {
     trigger('active', [
       state('true', style({
         opacity: 1,
+        filter: 'grayscale(0%)'
       })),
       state('false', style({
         opacity: 0.67,
