@@ -36,18 +36,20 @@ $positions: (
   }
 
   app-flower-layout-item {
+    // Base width of each flower is 10%, flowers may have their own scaling
     width: 10%;
+
     position: absolute;
-    transform: translate(-50%, -50%);
+
     // Measure from the center the flower, not the corner.
-    //transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 }
 
 
 :host {
   display: block;
-  width: 100%;
+  //width: 100%;
   position: relative;
   overflow: hidden;
 }
