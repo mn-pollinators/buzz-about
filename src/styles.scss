@@ -38,28 +38,6 @@ body {
 }
 
 
-.backgroundWrapper {
-  position: relative;
-  top: 0;
-  height: 100%;
-  overflow: hidden;
-  z-index: 0;
-}
-
-
-.backgroundMonth {
-  position: absolute;
-  line-height: 60px;
-  font-size: 60px;
-  top: 80px;
-  padding-left: 165px;
-  color: $mdc-theme-secondary;
-  text-align: left;
-  z-index: 0;
-  text-shadow:  0 0 5px $mdc-theme-secondary;
-  overflow: hidden;
-  opacity: 0.75;
-}
 
 ///////////////////////////////
 // styles to the review page //
