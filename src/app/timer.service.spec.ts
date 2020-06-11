@@ -37,48 +37,6 @@ describe('TimerService', () => {
   });
 
   describe('The timerState$ observable', () => {
-    it('Does not emit the initial state when subscribed to', async(() => {
-      const testScheduler = new TestScheduler((actual, expected) => {
-        expect(actual).toEqual(expected);
-      });
-      testScheduler.run(({ expectObservable }) => {
-        expectObservable(service.timerState$).toBe('-');
-      });
-    }));
-
-    it('Works if you start the timer running before calling initialize()', fakeAsync(() => {
-      const tickSpeed = TimerService.INITIAL_TIMER_STATE.tickSpeed;
-
-      const stateAfterPressingPlay = {
-        ...TimerService.INITIAL_TIMER_STATE,
-        running: true,
-      };
-
-      // Since INITIAL_TIMER_STATE has identical start and end times, it will
-      // pause right away.
-      const subsequentStates = [
-        {
-          ...stateAfterPressingPlay,
-          running: false,
-        }
-      ];
-
-      let lastEmittedTimerState: TimerState;
-
-      service.timerState$.subscribe(state => {
-        lastEmittedTimerState = state;
-      });
-
-      service.setRunning(true);
-      tick(0);
-      expect(lastEmittedTimerState).toEqual(stateAfterPressingPlay);
-
-      for (const state of subsequentStates) {
-        tick(tickSpeed);
-        expect(lastEmittedTimerState).toEqual(state);
-      }
-    }));
-
     it('Emits the value passed to initialize()', fakeAsync(() => {
       const initialState = {
         running: false,
@@ -228,37 +186,6 @@ describe('TimerService', () => {
   });
 
   describe('The currentTime$ observable', () => {
-    it('Does not emit the initial state when subscribed to', async(() => {
-      const testScheduler = new TestScheduler((actual, expected) => {
-        expect(actual).toEqual(expected);
-      });
-      testScheduler.run(({expectObservable}) => {
-        expectObservable(service.currentTime$).toBe('-');
-      });
-    }));
-
-    it('Works fine if you start the timer before calling initialize()', fakeAsync(() => {
-      // The time should emit once when you press play, and not after that.
-      // (Because INITIAL_TIMER_STATE has identical start and end times.)
-      const timeAfterPressingPlay = TimePeriod.fromMonthAndQuarter(1, 1);
-
-      const tickSpeed = TimerService.INITIAL_TIMER_STATE.tickSpeed;
-
-      const emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
-        emittedTimes.push(currentTime);
-      });
-
-      service.setRunning(true);
-      tick(0);
-      expect(emittedTimes.pop()).toEqual(timeAfterPressingPlay);
-
-      tick(tickSpeed);
-      expect(emittedTimes.length).toEqual(0);
-
-      discardPeriodicTasks();
-    }));
-
     it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
       const previousState = {
         running: false,
@@ -589,23 +516,24 @@ describe('TimerService', () => {
   });
 
   describe('The running$ observable', () => {
-    it('Does not emit the initial state when subscribed to', async(() => {
-      const testScheduler = new TestScheduler((actual, expected) => {
-        expect(actual).toEqual(expected);
-      });
-      testScheduler.run(({expectObservable}) => {
-        expectObservable(service.running$).toBe('-');
-      });
-    }));
-
     describe('Emits if you change the state from paused to unpaused', () => {
       it('...using initialize()', fakeAsync(() => {
+        const previousState = {
+          running: false,
+          tickSpeed: 1,
+          currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+          endTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        };
+
         const initialState = {
           running: true,
           tickSpeed: 1,
           currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
         };
+
+        service.initialize(initialState);
+        tick(0);
 
         const emittedValues: boolean[] = [];
         service.running$.subscribe(running => {

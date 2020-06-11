@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, interval, of, concat } from 'rxjs';
-import { startWith, scan, share, switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { startWith, scan, share, switchMap, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { TimePeriod } from './time-period';
 
 
@@ -35,24 +35,6 @@ export interface TimerState {
   providedIn: 'root'
 })
 export class TimerService {
-  /**
-   * This is the initial state of the timer. It's never actually emitted,
-   * but it's the point from which the timer starts counting.
-   *
-   * It's important that it begins paused, but other than that, the exact
-   * values don't really matter--whoever uses TimerService will call
-   * initialize() to configure whatever settings they need.
-   *
-   * (Preferably, the endTime should be the same as the currentTime, so that
-   * if you start the timer running, it will stop without incrementing.)
-   */
-  static readonly INITIAL_TIMER_STATE: TimerState = {
-    running: false,
-    tickSpeed: 1,
-    currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
-    endTime: TimePeriod.fromMonthAndQuarter(1, 1),
-  };
-
   events$: Subject<Partial<TimerState>> = new Subject();
 
   timerState$: Observable<TimerState>;
@@ -74,7 +56,6 @@ export class TimerService {
 
   constructor() {
     this.timerState$ = this.events$.pipe(
-      startWith(TimerService.INITIAL_TIMER_STATE),
       scan((state: TimerState, nextEvent: Partial<TimerState>): TimerState => ({ ...state, ...nextEvent })),
       switchMap((state: TimerState) =>
         state.running
@@ -96,7 +77,7 @@ export class TimerService {
             )
           ) : of(Object.assign({}, state))
       ),
-      share()
+      shareReplay(1)
     );
     this.timerState$.subscribe(() => {});
 
@@ -109,26 +90,53 @@ export class TimerService {
           && !(!previousState.running && currentState.running)
       ),
       map(state => state.currentTime),
-      share(),
+      shareReplay(1)
     );
     this.currentTime$.subscribe(() => {});
 
     this.running$ = this.timerState$.pipe(
       map(state => state.running),
       distinctUntilChanged((prev, curr) => prev === curr),
-      share(),
+      shareReplay(1),
     );
     this.running$.subscribe(() => {});
   }
 
+  /**
+   * Give the timer an initial state.
+   *
+   * Some notes:
+   *
+   * - You can't call `setRunning()` or `setTime()` before initializing the
+   *   timer.
+   *
+   * - If you initialize the timer to the running state, it will start ticking
+   *   right away.
+   *
+   * - You can re-initialize the timer if you want to completely override its
+   *   state.
+   */
   initialize(startState: TimerState) {
     this.events$.next(startState);
   }
 
+  /**
+   * Play or pause the timer.
+   *
+   * You *must* initialize the timer before calling this method.
+   */
   setRunning(running: boolean) {
     this.events$.next({running});
   }
 
+  /**
+   * Set the current time.
+   *
+   * You *must* initialize the timer before calling this method.
+   *
+   * This method does not pause the timer; if you call `setTime()` while the
+   * timer is running, it will stay running.
+   */
   setTime(newTime: TimePeriod) {
     this.events$.next({currentTime: newTime});
   }
