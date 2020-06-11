@@ -2,26 +2,24 @@
 
 :host {
   display: block;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
   background-color: $large-display-background;
 
-  .largeDisplayContent {
-    height: 100%;
+  .flower-layout-container {
+    position: relative;
 
-    .flower-layout-container {
-      position: relative;
+    app-flower-layout {
+      display: block;
+      width: 100%;
+    }
 
-      app-flower-layout {
-        display: block;
-        height: 100%;
-      }
-
-      app-timer-progress-spinner {
-        position: absolute;
-        display: block;
-        left: 40px;
-        top: 40px;
-      }
+    app-timer-progress-spinner {
+      position: absolute;
+      display: block;
+      left: 40px;
+      top: 40px;
     }
   }
 }
