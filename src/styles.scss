@@ -37,27 +37,6 @@ body {
   }
 }
 
-/////////////////////////////////
-// styles to the large display //
-/////////////////////////////////
-
-.flowers {
-  position: absolute;
-  z-index: 1;
-}
-
-.flower {
-  -webkit-filter: drop-shadow(0 -5px 15px#f0f1eb);
-  filter: drop-shadow(0 -5px 15px #f0f1eb);
-}
-
-
-
-
-.largeDisplayContent {
-  height: 100%;
-  background-color: $large-display-background;
-}
 
 .backgroundWrapper {
   position: relative;
@@ -67,17 +46,6 @@ body {
   z-index: 0;
 }
 
-.displayBackground {
-  position: absolute;
-  width: 100%;
-  opacity: 1
-}
-
-.suggest-resize-snackbar {
-  .mdc-button.mdc-snackbar__action {
-    color: darken($mdc-theme-secondary, 10%);
-  }
-}
 
 .backgroundMonth {
   position: absolute;

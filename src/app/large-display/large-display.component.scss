@@ -1,0 +1,27 @@
+@import "../../variables";
+
+:host {
+  display: block;
+  height: 100%;
+  background-color: $large-display-background;
+
+  .largeDisplayContent {
+    height: 100%;
+
+    .flower-layout-container {
+      position: relative;
+
+      app-flower-layout {
+        display: block;
+        height: 100%;
+      }
+
+      app-timer-progress-spinner {
+        position: absolute;
+        display: block;
+        left: 40px;
+        top: 40px;
+      }
+    }
+  }
+}
