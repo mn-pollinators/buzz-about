@@ -41,6 +41,7 @@ import { TimerControlComponent } from './timer-control/timer-control.component';
 import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
+import { HomeComponent } from './home/home.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -75,6 +76,7 @@ const MDC_MODULES: any[] = [
     FlowerLayoutComponent,
     FlowerLayoutItemComponent,
     FlowerTestComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
