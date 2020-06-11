@@ -1,4 +1,4 @@
-import { TestBed, async, fakeAsync, tick, discardPeriodicTasks, flushMicrotasks } from '@angular/core/testing';
+import { TestBed, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { TimerService, TimerState } from './timer.service';
 import { TimePeriod } from './time-period';
 import { TestScheduler } from 'rxjs/testing';
@@ -55,6 +55,26 @@ describe('TimerService', () => {
       tick(0);
       expect(lastEmittedTimerState).toEqual(initialState);
     }));
+
+    it('Saves the last value and emits it to any new subscribers', fakeAsync(() => {
+      const initialState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2)
+      };
+
+      let lastEmittedTimerState: TimerState;
+
+      service.initialize(initialState);
+      tick(0);
+
+      service.timerState$.subscribe(state => {
+        lastEmittedTimerState = state;
+      });
+      expect(lastEmittedTimerState).toEqual(initialState);
+    }));
+
 
     it('Runs for 2 ticks', fakeAsync(() => {
       const tickSpeed = 2;
@@ -201,16 +221,35 @@ describe('TimerService', () => {
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
       };
 
+      let emittedTimes: TimePeriod[] = [];
+      service.currentTime$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
       service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
+      service.initialize(initialState);
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialState.currentTime);
+    }));
+
+    it('Saves the last value and emits it to any new subscribers', fakeAsync(() => {
+      const initialState = {
+        running: false,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2)
+      };
+
+      service.initialize(initialState);
       tick(0);
 
       const emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
-
-      service.initialize(initialState);
-      tick(0);
       expect(emittedTimes.pop()).toEqual(initialState.currentTime);
     }));
 
@@ -230,14 +269,15 @@ describe('TimerService', () => {
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
       };
 
-      service.initialize(previousState);
-      tick(0);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
       service.initialize(initialState);
       tick(0);
       expect(emittedTimes.pop()).toEqual(initialState.currentTime);
@@ -261,14 +301,15 @@ describe('TimerService', () => {
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
       };
 
-      service.initialize(previousState);
-      tick(0);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
       service.initialize(initialState);
       tick(0);
       expect(emittedTimes.length).toEqual(0);
@@ -290,14 +331,15 @@ describe('TimerService', () => {
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
       };
 
-      service.initialize(previousState);
-      tick(0);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
       service.initialize(initialState);
       tick(0);
       expect(emittedTimes.length).toEqual(0);
@@ -319,14 +361,15 @@ describe('TimerService', () => {
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
       };
 
-      service.initialize(previousState);
-      tick(0);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
       service.initialize(initialState);
       tick(0);
       expect(emittedTimes.length).toEqual(0);
@@ -412,13 +455,15 @@ describe('TimerService', () => {
         TimePeriod.fromMonthAndQuarter(1, 2),
       ];
 
-      service.initialize(initialState);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(initialState);
+      tick(0);
+
+      emittedTimes = [];
       service.setRunning(true);
       tick(0);
       expect(emittedTimes.pop()).toEqual(initialTime);
@@ -444,15 +489,15 @@ describe('TimerService', () => {
 
         const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
 
-
-        service.initialize(previousState);
-        tick(0);
-
-        const emittedTimes: TimePeriod[] = [];
+        let emittedTimes: TimePeriod[] = [];
         service.currentTime$.subscribe(currentTime => {
           emittedTimes.push(currentTime);
         });
 
+        service.initialize(previousState);
+        tick(0);
+
+        emittedTimes = [];
         tick(Math.floor(tickSpeed / 2));
         service.setTime(newTime);
         tick(0);
@@ -473,15 +518,15 @@ describe('TimerService', () => {
 
         const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
 
-
-        service.initialize(previousState);
-        tick(0);
-
-        const emittedTimes: TimePeriod[] = [];
+        let emittedTimes: TimePeriod[] = [];
         service.currentTime$.subscribe(currentTime => {
           emittedTimes.push(currentTime);
         });
 
+        service.initialize(previousState);
+        tick(0);
+
+        emittedTimes = [];
         service.setTime(newTime);
         tick(0);
         expect(emittedTimes.pop()).toEqual(newTime);
@@ -501,14 +546,15 @@ describe('TimerService', () => {
       const previousTime = previousState.currentTime;
       const newTime = previousTime;
 
-      service.initialize(previousState);
-      tick(0);
-
-      const emittedTimes: TimePeriod[] = [];
+      let emittedTimes: TimePeriod[] = [];
       service.currentTime$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
+      service.initialize(previousState);
+      tick(0);
+
+      emittedTimes = [];
       service.setTime(newTime);
       tick(0);
       expect(emittedTimes.length).toEqual(0);
@@ -516,6 +562,25 @@ describe('TimerService', () => {
   });
 
   describe('The running$ observable', () => {
+    it('Saves the last value and emits it to any new subscribers', fakeAsync(() => {
+      const initialState = {
+        running: true,
+        tickSpeed: 2,
+        currentTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2)
+      };
+
+      service.initialize(initialState);
+      tick(0);
+
+      const emittedValues: boolean[] = [];
+      service.running$.subscribe(running => {
+        emittedValues.push(running);
+      });
+      expect(emittedValues.pop()).toEqual(initialState.running);
+      discardPeriodicTasks();
+    }));
+
     describe('Emits if you change the state from paused to unpaused', () => {
       it('...using initialize()', fakeAsync(() => {
         const previousState = {
@@ -532,14 +597,15 @@ describe('TimerService', () => {
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
         };
 
-        service.initialize(initialState);
-        tick(0);
-
-        const emittedValues: boolean[] = [];
+        let emittedValues: boolean[] = [];
         service.running$.subscribe(running => {
           emittedValues.push(running);
         });
 
+        service.initialize(previousState);
+        tick(0);
+
+        emittedValues = [];
         service.initialize(initialState);
         tick(0);
         expect(emittedValues.pop()).toEqual(true);
@@ -562,14 +628,15 @@ describe('TimerService', () => {
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
         };
 
-
-        service.initialize(previousState);
-
-        const emittedValues: boolean[] = [];
+        let emittedValues: boolean[] = [];
         service.running$.subscribe(running => {
           emittedValues.push(running);
         });
 
+        service.initialize(previousState);
+        tick(0);
+
+        emittedValues = [];
         service.initialize(initialState);
         tick(0);
         expect(emittedValues.pop()).toEqual(true);
@@ -614,13 +681,15 @@ describe('TimerService', () => {
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
         };
 
-        service.initialize(previousState);
-
-        const emittedValues: boolean[] = [];
+        let emittedValues: boolean[] = [];
         service.running$.subscribe(running => {
           emittedValues.push(running);
         });
 
+        service.initialize(previousState);
+        tick(0);
+
+        emittedValues = [];
         service.setRunning(false);
         tick(0);
         expect(emittedValues.pop()).toEqual(false);
