@@ -5,6 +5,8 @@ import { TimePeriod, Month } from '../time-period';
   selector: 'app-timer-progress-bar',
   templateUrl: './timer-progress-bar.component.html',
   styleUrls: ['./timer-progress-bar.component.scss'],
+  // View encapsulation disabled because we are styling
+  // sub elements of other components that are created dynamically
   encapsulation: ViewEncapsulation.None
 })
 export class TimerProgressBarComponent implements OnInit {

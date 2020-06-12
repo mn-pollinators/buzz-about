@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
   selector: 'app-timer-control',
   templateUrl: './timer-control.component.html',
   styleUrls: ['./timer-control.component.scss'],
+  // View encapsulation disabled because we are styling
+  // sub elements of other components that are created dynamically
   encapsulation: ViewEncapsulation.None,
 })
 export class TimerControlComponent implements OnInit, OnDestroy {

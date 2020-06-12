@@ -10,6 +10,8 @@ import { TimePeriod, Month } from '../time-period';
   selector: 'app-timer-progress-spinner',
   templateUrl: './timer-progress-spinner.component.html',
   styleUrls: ['./timer-progress-spinner.component.scss'],
+  // View encapsulation disabled because we are styling
+  // sub elements of other components that are created dynamically
   encapsulation: ViewEncapsulation.None,
 })
 export class TimerProgressSpinnerComponent implements OnInit {
