@@ -27,13 +27,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
-import { TimerBarComponent } from './timer-bar/timer-bar.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
-import { DisplayItemComponent } from './display-item/display-item.component';
-import { GameProgressIndicatorComponent } from './game-progress-indicator/game-progress-indicator.component';
 import { GameReviewPageComponent } from './game-review-page/game-review-page.component';
 import { ReviewItemComponent } from './review-item/review-item.component';
 import { ReviewPathComponent } from './review-path/review-path.component';
+import { TimerTestComponent } from './timer-test/timer-test.component';
+import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
+import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
+import { TimerControlComponent } from './timer-control/timer-control.component';
+import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
+import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
+import { FlowerTestComponent } from './flower-test/flower-test.component';
+import { HomeComponent } from './home/home.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -54,13 +59,18 @@ const MDC_MODULES: any[] = [
     ArViewComponent,
     PlayRoundComponent,
     LargeDisplayComponent,
-    TimerBarComponent,
     FullscreenButtonComponent,
-    DisplayItemComponent,
-    GameProgressIndicatorComponent,
     GameReviewPageComponent,
     ReviewItemComponent,
     ReviewPathComponent,
+    TimerTestComponent,
+    TimerProgressBarComponent,
+    TimerProgressSpinnerComponent,
+    TimerControlComponent,
+    FlowerLayoutComponent,
+    FlowerLayoutItemComponent,
+    FlowerTestComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

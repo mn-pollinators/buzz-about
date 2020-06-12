@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimerBarComponent } from './timer-bar.component';
+import { FlowerLayoutItemComponent } from './flower-layout-item.component';
 
-xdescribe('TimerBarComponent', () => {
-  let component: TimerBarComponent;
-  let fixture: ComponentFixture<TimerBarComponent>;
+describe('FlowerLayoutItemComponent', () => {
+  let component: FlowerLayoutItemComponent;
+  let fixture: ComponentFixture<FlowerLayoutItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimerBarComponent ]
+      declarations: [ FlowerLayoutItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimerBarComponent);
+    fixture = TestBed.createComponent(FlowerLayoutItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

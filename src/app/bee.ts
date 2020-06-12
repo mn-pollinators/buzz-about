@@ -1,4 +1,4 @@
-import { GameMonth } from 'src/app/month';
+import { GameMonth } from 'src/app/time-period';
 import { Flower } from './flower';
 import { Nest } from './nest';
 

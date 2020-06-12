@@ -1,18 +1,47 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
-import { TimerService } from '../timer.service';
-import { TimePeriod } from '../time-period';
 
 @Component({
-  selector: 'app-large-display',
-  templateUrl: './large-display.component.html',
-  styleUrls: ['./large-display.component.scss']
+  selector: 'app-flower-test',
+  templateUrl: './flower-test.component.html',
+  styleUrls: ['./flower-test.component.scss']
 })
-export class LargeDisplayComponent implements OnInit, AfterViewInit {
+export class FlowerTestComponent implements OnInit {
 
-  // TODO: These values are only here fore testing. Eventually, we'll get this
-  // information from the round service.
-  demoFlowers: FlowerLayoutItem[] = [
+
+  images = [
+    {
+      name: 'rudbekia hirta',
+      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png'
+    },
+    {
+      name: 'taraxacum officinale',
+      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png'
+    },
+    {
+      name: 'solidago rigida',
+      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png'
+    },
+    {
+      name: 'sunflower',
+      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png'
+    },
+    {
+      name: 'black raspberry',
+      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png'
+    },
+    {
+      name: 'vaccinium angustifolium',
+      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png'
+    },
+    {
+      name: 'trifolium repens',
+      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png'
+    }
+  ]
+
+
+  flowers: FlowerLayoutItem[] = [
     {
       imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
       alt: 'test',
@@ -111,26 +140,10 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     }
   ]
 
+  constructor() { }
 
-  constructor(public timerService: TimerService) { }
-
-  // TODO: These values are only here for testing. Eventually, we'll get this
-  // information from the round service.
-  public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
-  public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
-
-  // The flowers displayed are essentially the demoFlowers at this moment
   ngOnInit() {
-    this.timerService.initialize({
-      running: false,
-      tickSpeed: 1000,
-      currentTime: this.startTime,
-      endTime: this.endTime
-    });
   }
 
-  ngAfterViewInit() {
-
-  }
 
 }
