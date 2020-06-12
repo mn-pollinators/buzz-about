@@ -15,8 +15,17 @@
         <mdc-icon>play_arrow</mdc-icon>
       </button>
       <button [disabled]="this.currentTime === undefined || this.currentTime.equals(this.endTime)" mdc-icon-button icon="stop" (click)="this.end()"></button>
-      <button [disabled]="this.currentTime === undefined || !this.currentTime.fallsWithin(this.startTime, this.endTime)" mdc-icon-button icon="replay" (click)="this.reset()"></button>
+      <button [disabled]="this.currentTime === undefined || this.startTime === undefined || this.endTime === undefined || !this.currentTime.fallsWithin(this.startTime, this.endTime)" mdc-icon-button icon="replay" (click)="this.reset()"></button>
     </div>
-    <mdc-slider class="timeSlider" [disabled]="this.currentTime === undefined" [min]="this.endTime.time" [max]="this.startTime.time" value="{{this.currentTime}}" (input)="onSliderInput($event)" (change)="onSliderChange($event)"></mdc-slider>
+    <mdc-slider
+        class="timeSlider"
+        *ngIf="this.startTime !== undefined && this.endTime !== undefined"
+        [disabled]="this.currentTime === undefined"
+        [min]="this.endTime.time"
+        [max]="this.startTime.time"
+        value="{{this.currentTime}}"
+        (input)="onSliderInput($event)"
+        (change)="onSliderChange($event)"
+    ></mdc-slider>
   </div>
 </div>
