@@ -1,12 +1,8 @@
-<app-top-menu-bar [contents]="contents"></app-top-menu-bar>
+<app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
 
-<div #contents>
-  <app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
-
-  <div class="flower-layout-container">
-    <app-flower-layout [items]="demoFlowers"></app-flower-layout>
-    <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
-  </div>
-
-  <app-timer-control [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-control>
+<div class="flower-layout-container">
+  <app-flower-layout [items]="demoFlowers"></app-flower-layout>
+  <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
 </div>
+
+<app-timer-control [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-control>
