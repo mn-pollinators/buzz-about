@@ -1,3 +1,5 @@
+<app-top-menu-bar></app-top-menu-bar>
+
 <div *ngIf="this.roundReady">
   <button mdc-button raised (click)="this.round.interactButton.onClick()" *ngIf="this.round.interactButton && this.round.interactButton.display">{{this.round.interactButton.text}}</button>
   <button mdc-button (click)="this.testMarkerChange()">test add marker</button>

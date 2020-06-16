@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LargeDisplayComponent } from './large-display.component';
-import { MdcIconButtonModule, MdcLinearProgressModule, MdcSliderModule } from '@angular-mdc/web';
+import { MdcIconButtonModule, MdcLinearProgressModule, MdcSliderModule, MdcIconModule, MdcTopAppBarModule } from '@angular-mdc/web';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { TimerTestComponent } from '../timer-test/timer-test.component';
@@ -12,6 +12,8 @@ import { FlowerLayoutComponent } from '../flower-layout/flower-layout.component'
 import { FlowerLayoutItemComponent } from '../flower-layout-item/flower-layout-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimerService } from '../timer.service';
+import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
+import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
@@ -20,9 +22,11 @@ describe('LargeDisplayComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        MdcIconModule,
         MdcIconButtonModule,
         MdcLinearProgressModule,
         MdcSliderModule,
+        MdcTopAppBarModule,
         MatProgressSpinnerModule,
         BrowserAnimationsModule,
         FormsModule,
@@ -35,6 +39,8 @@ describe('LargeDisplayComponent', () => {
         TimerControlComponent,
         FlowerLayoutComponent,
         FlowerLayoutItemComponent,
+        TopMenuBarComponent,
+        FullscreenButtonComponent,
       ],
       providers: [
         TimerService,

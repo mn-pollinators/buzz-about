@@ -39,6 +39,7 @@ import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
+import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 
 const MDC_MODULES: any[] = [
   MdcButtonModule,
@@ -71,6 +72,7 @@ const MDC_MODULES: any[] = [
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
+    TopMenuBarComponent,
   ],
   imports: [
     BrowserModule,
