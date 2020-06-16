@@ -21,23 +21,8 @@ body {
 }
 
 .main-content {
-  display: block;
-  position: absolute;
-  height: auto;
-  bottom: 0;
-  top:56px;
-  left: 0;
-  right: 0;
+  height: 100%;
 }
-
-// adapt to auto tool bar height
-@media screen and (min-width: 600px) {
-  .main-content {
-    top:64px;
-  }
-}
-
-
 
 ///////////////////////////////
 // styles to the review page //

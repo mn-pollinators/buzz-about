@@ -1,6 +1,6 @@
-<app-top-menu-bar></app-top-menu-bar>
+<app-top-menu-bar [contents]="contents"></app-top-menu-bar>
 
-<nav>
+<nav #contents>
   <ul>
     <li><a routerLink="/ar">ar</a></li>
     <li><a routerLink="/teacher">teacher</a></li>

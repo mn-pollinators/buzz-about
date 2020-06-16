@@ -1,9 +1,8 @@
 @import "../../variables";
 
 .timer-progress-bar-container {
+  position: relative;
   width: 100%;
-  position: absolute;
-  top: 0;
   color: darken($mdc-theme-primary, 35%);
 
   .monthProgress {
@@ -19,6 +18,9 @@
   }
 
   .progressMonths {
+    position: absolute;
+    top: 0;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -27,7 +29,6 @@
       flex: 1;
       height: 24px;
       line-height: 24px;
-      top: -24px;
       text-align: center;
       font-size: 16px;
       position: relative;

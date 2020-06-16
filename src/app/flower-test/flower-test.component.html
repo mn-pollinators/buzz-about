@@ -1,16 +1,17 @@
-<app-top-menu-bar></app-top-menu-bar>
+<app-top-menu-bar [contents]="contents"></app-top-menu-bar>
 
-<div class="flower-settings">
-  <div *ngFor="let flower of flowers">
-    <select [(ngModel)]="flower.imgSrc">
-      <option *ngFor="let image of images" [value]="image.imgSrc">{{image.name}}</option>
-    </select>
-    <input type="number" step="0.1" [(ngModel)]="flower.scale" style="width: 50px">
-    <input type="checkbox" [(ngModel)]="flower.active">
+<div #contents>
+  <div class="flower-settings">
+    <div *ngFor="let flower of flowers">
+      <select [(ngModel)]="flower.imgSrc">
+        <option *ngFor="let image of images" [value]="image.imgSrc">{{image.name}}</option>
+      </select>
+      <input type="number" step="0.1" [(ngModel)]="flower.scale" style="width: 50px">
+      <input type="checkbox" [(ngModel)]="flower.active">
+    </div>
+  </div>
+
+  <div class="test-container">
+    <app-flower-layout [items]="flowers"></app-flower-layout>
   </div>
 </div>
-
-<div class="test-container">
-  <app-flower-layout [items]="flowers"></app-flower-layout>
-</div>
-
