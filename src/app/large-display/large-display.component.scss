@@ -68,12 +68,6 @@
   }
 
   button {
-    // By default, Angular MDC sets margins on mdc-icons inside of buttons
-    // (which we don't want here.)
-    mdc-icon {
-      margin: 0;
-    }
-
     background-color: $mdc-theme-secondary;
     // This is the same text color that Angular MDC uses this for its
     // mdc-top-app-bar.
