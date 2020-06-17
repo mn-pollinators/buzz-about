@@ -82,7 +82,7 @@
       // Also, I'm scaling them up a bit because the default mdc-fab just
       // doesn't look big enough on a desktop browser window.
       align-self: flex-start;
-      transform: translate(0, -50%) scale(1.35);
+      transform: translate(0, -50%) scale(1.2);
 
       // Also, since the other buttons in the toolbar don't have shadows, we
       // should probably turn of the shadow on FABs--otherwise, it'll clash.
