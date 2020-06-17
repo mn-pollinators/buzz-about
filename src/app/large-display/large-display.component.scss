@@ -1,13 +1,20 @@
 @import "../../variables";
 
 :host {
-  display: block;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background-color: $large-display-background;
+}
 
-  .flower-layout-container {
+.large-display-content {
+  // Fill the rest of the screen. (The parts not covered by the toolbar.)
+  flex: 1;
+  // Crop the contents if they're too big.
+  overflow: hidden;
+
+  .during-a-round {
     position: relative;
 
     app-flower-layout {
@@ -21,5 +28,55 @@
       left: 40px;
       top: 40px;
     }
+  }
+}
+
+.bottom-bar {
+  // Use 64px as a height, because that's how tall the mdc-top-app-bar is.
+  // (Actually, on small screens it shrinks to 56px, but that complexity
+  // probably isn't worth building into the bottom bar right now.)
+  height: 64px;
+  background-color: $mdc-theme-primary;
+  display: flex;
+  flex-direction: row;
+
+  & > div {
+    // The child divs (the left, center, and right thirds of the toolbar) should
+    // stretch to fill the entire bar.
+    flex: 1;
+    // But give them a bit of padding so that their contents aren't right up
+    // against the edge.
+    padding: 16px;
+
+    // Each subsection of the toolbar should also be a flex-box.
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  // Within the left third, all items should be left-justified. (Which is the
+  // default.)
+
+  .center {
+    // Within the center third, all items should be centered.
+    justify-content: center;
+  }
+
+  .right {
+    // And within the right third, all items should be right-justified.
+    justify-content: flex-end;
+  }
+
+  button {
+    // By default, Angular MDC sets margins on mdc-icons inside of buttons
+    // (which we don't want here.)
+    mdc-icon {
+      margin: 0;
+    }
+
+    background-color: $mdc-theme-secondary;
+    // This is the same text color that Angular MDC uses this for its
+    // mdc-top-app-bar.
+    color: rgba(0, 0, 0, 0.87);
   }
 }

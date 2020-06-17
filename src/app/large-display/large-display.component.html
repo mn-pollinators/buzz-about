@@ -1,8 +1,22 @@
-<app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
-
-<div class="flower-layout-container">
-  <app-flower-layout [items]="demoFlowers"></app-flower-layout>
-  <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
+<div class="large-display-content">
+  <div class="during-a-round">
+    <app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
+    <app-flower-layout [items]="demoFlowers"></app-flower-layout>
+    <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
+  </div>
 </div>
 
-<app-timer-control [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-control>
+<div class="bottom-bar">
+  <div class="left">
+    <button mdc-button>Quit Game</button>
+  </div>
+  <div class="center">
+    <button mdc-button>
+      <!-- TODO: switch between play and pause -->
+      <mdc-icon>paused</mdc-icon>
+    </button>
+  </div>
+  <div class="right">
+    <button mdc-button>Skip Round</button>
+  </div>
+</div>
