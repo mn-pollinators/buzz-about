@@ -14,9 +14,9 @@
   // Crop the contents if they're too big.
   overflow: hidden;
 
-  .during-a-round {
-    position: relative;
+  position: relative;
 
+  .during-a-round {
     app-flower-layout {
       display: block;
       width: 100%;
@@ -27,6 +27,13 @@
       display: block;
       left: 40px;
       top: 40px;
+    }
+
+    app-timer-progress-bar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      z-index: 1;
     }
   }
 }
