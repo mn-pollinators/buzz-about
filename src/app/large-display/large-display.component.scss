@@ -75,17 +75,8 @@
     color: rgba(0, 0, 0, 0.87);
 
     &[mdc-fab] {
-      // Floating-action-buttons should be moved up a little bit so that
-      // they're bisected by the top edge of the bottom-bar.
-      // (That way, half of the FAB juts out into the .large-display-content
-      // div.)
-      // Also, I'm scaling them up a bit because the default mdc-fab just
-      // doesn't look big enough on a desktop browser window.
-      align-self: flex-start;
-      transform: translate(0, -50%) scale(1.2);
-
-      // Also, since the other buttons in the toolbar don't have shadows, we
-      // should probably turn of the shadow on FABs--otherwise, it'll clash.
+      // Since the other buttons in the toolbar don't have shadows, we
+      // should probably turn off the shadow on FABs--otherwise, it'll clash.
       box-shadow: none;
     }
   }
