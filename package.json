@@ -17,6 +17,7 @@
     "@angular/common": "~8.2.13",
     "@angular/compiler": "~8.2.13",
     "@angular/core": "~8.2.13",
+    "@angular/fire": "^5.4.2",
     "@angular/flex-layout": "^8.0.0-beta.26",
     "@angular/forms": "~8.2.13",
     "@angular/material": "^8.2.3",
@@ -31,7 +32,8 @@
     "three": "^0.106.2",
     "threear": "^1.0.0-alpha.5",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "firebase": ">= 5.5.7 <8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.18",
@@ -52,6 +54,11 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0",
+    "firebase-tools": "^7.12.0",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^6.2.2",
+    "inquirer-autocomplete-prompt": "^1.0.1"
   }
 }
