@@ -6,6 +6,7 @@ import { GameReviewPageComponent } from './game-review-page/game-review-page.com
 import { TimerTestComponent } from './timer-test/timer-test.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
+import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path: 'teacher', component: LargeDisplayComponent},
   {path: 'review', component: GameReviewPageComponent},
   {path: 'timer-test', component: TimerTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent}
+  {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'firebase-test', component: FirebaseTestComponent}
 ];
 
 @NgModule({

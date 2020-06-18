@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -39,8 +41,9 @@ import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
+import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 
-const MDC_MODULES: any[] = [
+const MDC_MODULES = [
   MdcButtonModule,
   MdcFabModule,
   MdcIconModule,
@@ -52,6 +55,11 @@ const MDC_MODULES: any[] = [
   MdcIconButtonModule,
   MdcSnackbarModule
 ];
+
+const FIREBASE_MODULES = [
+  AngularFireModule.initializeApp(environment.firebase),
+  AngularFirestoreModule
+]
 
 @NgModule({
   declarations: [
@@ -71,12 +79,14 @@ const MDC_MODULES: any[] = [
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
+    FirebaseTestComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    FIREBASE_MODULES,
     HttpClientModule,
     FlexLayoutModule,
     FormsModule,
