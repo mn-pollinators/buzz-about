@@ -11,12 +11,22 @@
     <button mdc-button>Quit Game</button>
   </div>
   <div class="center">
-    <button mdc-button>
-      <!-- TODO: switch between play and pause -->
-      <mdc-icon>paused</mdc-icon>
+    <button mdc-fab
+      [disabled]="running === undefined"
+      (click)="toggleTimerRunning()"
+    >
+      <div *ngIf="running; then pauseIcon else playIcon"></div>
     </button>
   </div>
   <div class="right">
     <button mdc-button>Skip Round</button>
   </div>
 </div>
+
+<ng-template #playIcon>
+  <mdc-icon>play_arrow</mdc-icon>
+</ng-template>
+
+<ng-template #pauseIcon>
+  <mdc-icon>pause</mdc-icon>
+</ng-template>

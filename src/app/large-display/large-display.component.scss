@@ -53,7 +53,8 @@
     flex: 1;
     // But give them a bit of padding so that their contents aren't right up
     // against the edge.
-    padding: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
 
     // Each subsection of the toolbar should also be a flex-box.
     display: flex;
@@ -75,15 +76,15 @@
   }
 
   button {
-    // By default, Angular MDC sets margins on mdc-icons inside of buttons
-    // (which we don't want here.)
-    mdc-icon {
-      margin: 0;
-    }
-
     background-color: $mdc-theme-secondary;
     // This is the same text color that Angular MDC uses this for its
     // mdc-top-app-bar.
     color: rgba(0, 0, 0, 0.87);
+
+    &[mdc-fab] {
+      // Since the other buttons in the toolbar don't have shadows, we
+      // should probably turn off the shadow on FABs--otherwise, it'll clash.
+      box-shadow: none;
+    }
   }
 }
