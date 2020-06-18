@@ -82,6 +82,8 @@
     color: rgba(0, 0, 0, 0.87);
 
     &[mdc-fab] {
+      transform: scale(0.9);
+
       // Since the other buttons in the toolbar don't have shadows, we
       // should probably turn off the shadow on FABs--otherwise, it'll clash.
       box-shadow: none;
