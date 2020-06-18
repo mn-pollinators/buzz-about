@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FirebaseTestComponent } from './firebase-test.component';
 
-describe('FirebaseTestComponent', () => {
+xdescribe('FirebaseTestComponent', () => {
   let component: FirebaseTestComponent;
   let fixture: ComponentFixture<FirebaseTestComponent>;
 
