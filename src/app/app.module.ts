@@ -21,7 +21,6 @@ import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
-import { GameReviewPageComponent } from './game-review-page/game-review-page.component';
 import { ReviewItemComponent } from './review-item/review-item.component';
 import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
@@ -77,7 +76,6 @@ const FIREBASE_MODULES = [
     PlayRoundComponent,
     LargeDisplayComponent,
     FullscreenButtonComponent,
-    GameReviewPageComponent,
     ReviewItemComponent,
     ReviewPathComponent,
     TimerTestComponent,
