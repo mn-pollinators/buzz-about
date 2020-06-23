@@ -20,10 +20,6 @@
 @use '@material/fab/mdc-fab';
 @use '@material/fab';
 
-@use '@material/menu/mdc-menu';
-@use '@material/menu/_index.scss' as menu;
-@use '@material/list/mdc-list';
-@use '@material/menu-surface/mdc-menu-surface';
 
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar/_index.scss' as top-app-bar;
@@ -38,7 +34,7 @@
 @use '@material/snackbar/_index.scss' as snackbar;
 
 // Set up a theme for angular material.
-@import '~@angular/material/theming';
+@import '@angular/material/theming';
 @include mat-core();
 
 $primary: mat-palette($mat-green);

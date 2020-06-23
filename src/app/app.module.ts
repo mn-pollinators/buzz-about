@@ -36,7 +36,6 @@ import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import {MdcButtonModule} from '@angular-mdc/web/button';
 import {MdcFabModule} from '@angular-mdc/web/fab';
 import {MdcIconModule} from '@angular-mdc/web/icon';
-import {MdcMenuModule} from '@angular-mdc/web/menu';
 import {MdcTopAppBarModule} from '@angular-mdc/web/top-app-bar';
 import {MdcLinearProgressModule} from '@angular-mdc/web/linear-progress';
 import {MdcElevationModule} from '@angular-mdc/web/elevation';
@@ -50,7 +49,6 @@ const MDC_MODULES = [
   MdcButtonModule,
   MdcFabModule,
   MdcIconModule,
-  MdcMenuModule,
   MdcTopAppBarModule,
   MdcLinearProgressModule,
   MdcElevationModule,
