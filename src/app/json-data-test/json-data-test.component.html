@@ -1,0 +1,48 @@
+<p>flowers:</p>
+<ul>
+  <li *ngFor="let flower of flowers">
+    {{flower.name}} - {{flower.sci_name}}
+    <ul>
+      <li>
+        Blooming Periods:
+        <ul>
+          <li *ngFor="let bloomingPeriod of flower.blooming_period">{{bloomingPeriod[0]}} - {{bloomingPeriod[1]}}</li>
+        </ul>
+      </li>
+      <li>File: {{flower.art_file}}</li>
+    </ul>
+  </li>
+</ul>
+
+<p>bees:</p>
+<ul>
+  <li *ngFor="let bee of bees">
+    {{bee.name}} - {{bee.sci_name}}
+    <ul>
+      <li>File: {{bee.art_file}}</li>
+      <li>Nest: {{bee.nest_type.name}}</li>
+      <li>
+        Active Periods:
+        <ul>
+          <li *ngFor="let activePeriod of bee.active_period">{{activePeriod[0]}} - {{activePeriod[1]}}</li>
+        </ul>
+      </li>
+      <li>
+        Flowers Accepted:
+        <ul>
+          <li *ngFor="let beeFlower of bee.flowers_accepted">{{beeFlower.name}}</li>
+        </ul>
+      </li>
+  </ul>
+  </li>
+</ul>
+
+<p>nests:</p>
+<ul>
+  <li *ngFor="let nest of nests">
+    {{nest.name}}
+    <ul>
+      <li>File: {{nest.art_file}}</li>
+    </ul>
+  </li>
+</ul>
