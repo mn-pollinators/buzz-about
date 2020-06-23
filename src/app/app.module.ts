@@ -21,8 +21,6 @@ import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
-import { ReviewItemComponent } from './review-item/review-item.component';
-import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
@@ -74,8 +72,6 @@ const FIREBASE_MODULES = [
     PlayRoundComponent,
     LargeDisplayComponent,
     FullscreenButtonComponent,
-    ReviewItemComponent,
-    ReviewPathComponent,
     TimerTestComponent,
     TimerProgressBarComponent,
     TimerProgressSpinnerComponent,

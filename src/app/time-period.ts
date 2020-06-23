@@ -32,16 +32,6 @@ export enum Season {
  */
 export type Quarter = 1 | 2 | 3 | 4;
 
-
-// TODO: Remove this.
-// (This is the old unit of time in the game--we're in the middle of
-// refactoring it away as we revamp the game timer.)
-// (Use TimePeriod instead.)
-export interface GameMonth {
-  sub: '' | 'early-' | 'mid-' | 'late-' | string;
-  main: string;
-}
-
 /**
  * TimePeriod represents a single unit of time in the game. It's used to keep
  * track of the progression through the year as flowers bloom and pollinators
