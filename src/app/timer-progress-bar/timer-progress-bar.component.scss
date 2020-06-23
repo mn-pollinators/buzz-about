@@ -1,4 +1,5 @@
-@import "../../variables";
+@use "../../variables" as *;
+@use '@material/linear-progress/_index' as linear-progress;
 
 .timer-progress-bar-container {
   width: 100%;
@@ -6,15 +7,11 @@
   top: 0;
   color: darken($mdc-theme-primary, 35%);
 
-  .monthProgress {
+  mat-progress-bar.monthProgress {
     height: 24px;
 
-    .mdc-linear-progress__bar-inner {
+    .mat-progress-bar-fill::after {
       background-color: lighten($mdc-theme-primary, 15%);
-    }
-
-    .mdc-linear-progress__buffer {
-      background-color: lighten($mdc-theme-primary, 35%);
     }
   }
 

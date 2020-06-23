@@ -13,7 +13,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
+
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
@@ -57,6 +60,11 @@ const MDC_MODULES = [
   MdcSnackbarModule
 ];
 
+const ANGULAR_MATERIAL_MODULES = [
+  MatProgressSpinnerModule,
+  MatProgressBarModule,
+];
+
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
   AngularFirestoreModule
@@ -91,7 +99,7 @@ const FIREBASE_MODULES = [
     HttpClientModule,
     FlexLayoutModule,
     FormsModule,
-    MatProgressSpinnerModule,
+    ANGULAR_MATERIAL_MODULES,
     MDC_MODULES,
   ],
   providers: [],
