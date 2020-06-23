@@ -1,6 +1,48 @@
-@import "variables";
+@use "variables" as *;
 
-@import "~@angular-mdc/theme/material";
+//@import "~@angular-mdc/theme/material";
+
+@use '@material/theme' with (
+  $primary: $mdc-theme-primary,
+  $secondary: $mdc-theme-secondary,
+  $background: #fff,
+);
+
+// MDC Typography
+@use '@material/typography/mdc-typography';
+
+// Angular MDC
+@use '@angular-mdc/theme/material';
+
+@use '@material/button/mdc-button';
+@use '@material/button';
+
+@use '@material/fab/mdc-fab';
+@use '@material/fab';
+
+
+@use '@material/top-app-bar/mdc-top-app-bar';
+@use '@material/top-app-bar/_index.scss' as top-app-bar;
+@use '@material/icon-button/mdc-icon-button';
+
+@use '@material/elevation/mdc-elevation';
+
+@use '@material/slider/mdc-slider';
+@use '@material/slider/_index.scss' as slider;
+
+@use '@material/snackbar/mdc-snackbar';
+@use '@material/snackbar/_index.scss' as snackbar;
+
+// Set up a theme for angular material.
+@import '@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-green);
+$accent: mat-palette($mat-amber);
+$warn: mat-palette($mat-deep-orange);
+$angular-material-theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($angular-material-theme);
 
 .debug {
     margin-top: 60px;
@@ -34,132 +76,5 @@ body {
 @media screen and (min-width: 600px) {
   .main-content {
     top:64px;
-  }
-}
-
-
-
-///////////////////////////////
-// styles to the review page //
-///////////////////////////////
-
-.reviewPage {
-  padding: 18px;
-  width: min-content;
-  margin-left: auto;
-  margin-right: auto;
-
-  .reviewItemGroup {
-    box-shadow: 0 1px 15px 1px lightgray;
-
-    .reviewItem {
-      padding: 0 20px 0 5px;
-      min-height: 50px;
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 1px;
-      box-shadow: 0 0 1px lightgray;
-      width: min-content;
-
-      .reviewImgWrapper {
-        padding: 10px;
-        min-width: 60px;
-        justify-content: center;
-        display: flex;
-
-        img {
-          margin: auto;
-          height: 60px;
-          max-width: 60px;
-        }
-      }
-
-      .reviewSpecies {
-        min-width: 220px;
-        display: block;
-        margin-top: auto;
-        margin-bottom: auto;
-        text-transform: capitalize;
-        padding: 10px;
-        padding-top: 8px;
-
-        .reviewType-flower, .reviewType-bee {
-          font-size: 14px;
-          font-style: italic;
-        }
-
-        .reviewType-flower {
-          color: $mdc-theme-primary;
-        }
-
-        .reviewType-bee {
-          color: darken($mdc-theme-secondary, 7%);
-        }
-      }
-
-      .reviewActivePeriodGroup {
-        width: 100%;
-        flex-direction: column;
-        margin: auto;
-        padding-bottom: 31px;
-
-        .activeMonthsText, .activeMonthsWrapper {
-          height: 14px;
-          font-size: 14px;
-          color: lighten(grey, 5%);
-          min-width: 220px;
-        }
-
-        .linearProgressContainer {
-          width: 450px;
-
-          .activePeriodWrapper {
-            position: absolute;
-            width: inherit;
-
-            .linearProgressWrapper-bee, .linearProgressWrapper-flower {
-              margin: 2px 0;
-              padding: 0 4px;
-              border-radius: 4px;
-              top: 5px;
-              background-color: lighten(lightgrey, 8%);
-
-              mdc-linear-progress {
-                height: 8px;
-                z-index: 1;
-
-                .mdc-linear-progress__bar-inner {
-                  background-color: lighten(lightgrey, 8%);
-                }
-
-                .mdc-linear-progress__buffer {
-                  background-color: $mdc-theme-secondary;
-                }
-
-                .mdc-linear-progress__buffering-dots {
-                  display: none;
-                }
-              }
-            }
-
-            .linearProgressWrapper-flower {
-              mdc-linear-progress {
-                .mdc-linear-progress__buffer {
-                  background-color: lighten( $mdc-theme-primary, 12% );
-                }
-              }
-            }
-          }
-
-          .linearProgressWrapper-bee {
-            mdc-linear-progress {
-              .mdc-linear-progress__buffer {
-                background-color: $mdc-theme-secondary;
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }

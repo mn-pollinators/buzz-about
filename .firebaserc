@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "buzz-about"
+  },
+  "targets": {
+    "buzz-about": {
+      "hosting": {
+        "buzz-about": [
+          "buzz-about"
+        ]
+      }
+    }
+  }
+}

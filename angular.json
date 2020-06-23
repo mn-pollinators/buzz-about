@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/buzz-about",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -30,8 +31,12 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-            ]
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            },
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -55,6 +60,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ],
               "serviceWorker": true,
@@ -94,6 +103,11 @@
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            },
             "scripts": []
           }
         },
@@ -121,6 +135,10 @@
               "devServerTarget": "buzz-about:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
