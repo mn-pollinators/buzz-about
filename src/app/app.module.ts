@@ -42,6 +42,7 @@ import {MdcElevationModule} from '@angular-mdc/web/elevation';
 import {MdcSliderModule} from '@angular-mdc/web/slider';
 import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
 import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
+import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 
 
 
@@ -85,6 +86,7 @@ const FIREBASE_MODULES = [
     FlowerTestComponent,
     HomeComponent,
     FirebaseTestComponent,
+    SessionPageTestComponent,
   ],
   imports: [
     BrowserModule,
