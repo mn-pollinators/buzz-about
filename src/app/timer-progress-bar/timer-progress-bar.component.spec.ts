@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerProgressBarComponent } from './timer-progress-bar.component';
-import { MdcLinearProgressModule } from '@angular-mdc/web';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 describe('TimerProgressBarComponent', () => {
   let component: TimerProgressBarComponent;
@@ -10,7 +10,7 @@ describe('TimerProgressBarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TimerProgressBarComponent],
-      imports: [MdcLinearProgressModule],
+      imports: [MatProgressBarModule],
     })
     .compileComponents();
   }));
