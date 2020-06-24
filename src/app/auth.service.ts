@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,21 @@ export class AuthService {
 
   userCredential: Promise<void | firebase.auth.UserCredential>;
 
-  constructor() { }
+  constructor(public auth: AngularFireAuth) { }
 
   logStudentIn() {
-    this.userCredential = firebase.auth().signInAnonymously().catch(function(error) {
-        console.error(error);
-    });
+    this.userCredential = this.auth.auth.signInAnonymously().catch((error) => {
+      console.error(error);
+  });
   }
 
-  getCurrentUser() {
-    return firebase.auth().currentUser;
+  getCurrentUser(): Observable<firebase.User> {
+    let user;
+    this.userCredential.then((userCred) => {
+      if (userCred) {
+        user = userCred.user;
+      }
+    });
+    return this.auth.user;
   }
 }

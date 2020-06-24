@@ -43,6 +43,7 @@ import {MdcSliderModule} from '@angular-mdc/web/slider';
 import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
 import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 
 
@@ -65,7 +66,8 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
-  AngularFirestoreModule
+  AngularFirestoreModule,
+  AngularFireAuthModule
 ]
 
 @NgModule({

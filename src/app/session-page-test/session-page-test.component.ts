@@ -8,9 +8,15 @@ import { AuthService } from '../auth.service';
 })
 export class SessionPageTestComponent implements OnInit {
 
+  userID;
+
   constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.logStudentIn();
+    this.authService.getCurrentUser().subscribe((user) => {
+      this.userID = user.uid;
+    });
   }
 
 }
