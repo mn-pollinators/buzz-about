@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {flowers} from '../flowers';
-import {bees} from '../bees';
+import {flowerSpecies} from '../flowers';
+import {beeSpecies} from '../bees';
 import {nests} from '../nests';
 
 @Component({
@@ -12,8 +12,8 @@ export class JsonDataTestComponent implements OnInit {
 
   constructor() { }
 
-  flowers = Object.values(flowers);
-  bees = Object.values(bees);
+  flowerSpecies = Object.values(flowerSpecies);
+  beeSpecies = Object.values(beeSpecies);
   nests = Object.values(nests);
 
   ngOnInit(): void {

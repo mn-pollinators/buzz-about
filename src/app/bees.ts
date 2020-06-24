@@ -1,14 +1,14 @@
 import { bees as beesFromJson } from '@mn-pollinators/assets/bees.json';
 import { TimePeriod } from './time-period';
-import { Flower, flowers } from './flowers';
+import { FlowerSpecies, flowerSpecies } from './flowers';
 import { Nest, nests } from './nests';
 
-export interface Bee {
+export interface BeeSpecies {
   id: string;
   name: string;
   sci_name: string;
   relative_size: number;
-  flowers_accepted: Flower[];
+  flowers_accepted: FlowerSpecies[];
   art_file: string;
   photo_files: {
     filename: string;
@@ -42,7 +42,7 @@ export enum BeeSociality {
   communal,
 }
 
-const beesConverted: {[id: string]: Bee} = {};
+const beesConverted: {[id: string]: BeeSpecies} = {};
 
 for (const [key, beeFromJson] of Object.entries(beesFromJson)) {
   beesConverted[key] = {
@@ -50,8 +50,8 @@ for (const [key, beeFromJson] of Object.entries(beesFromJson)) {
     id: key,
     flowers_accepted: beeFromJson.flowers_accepted
       // Ignore unknown flower names
-      .filter(id => flowers[id] !== undefined)
-      .map(id => flowers[id]),
+      .filter(id => flowerSpecies[id] !== undefined)
+      .map(id => flowerSpecies[id]),
     nest_type: nests[beeFromJson.nest_type],
     active_period: beeFromJson.active_period.map(interval =>
       [
@@ -63,6 +63,5 @@ for (const [key, beeFromJson] of Object.entries(beesFromJson)) {
   };
 }
 
-const bees = beesConverted as {[id in keyof typeof beesFromJson]: Bee};
-
-export { bees };
+export const beeSpecies =
+  beesConverted as {[id in keyof typeof beesFromJson]: BeeSpecies};

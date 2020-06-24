@@ -1,6 +1,6 @@
 <p>flowers:</p>
 <ul>
-  <li *ngFor="let flower of flowers">
+  <li *ngFor="let flower of flowerSpecies">
     {{flower.name}} - {{flower.sci_name}}
     <ul>
       <li>
@@ -16,7 +16,7 @@
 
 <p>bees:</p>
 <ul>
-  <li *ngFor="let bee of bees">
+  <li *ngFor="let bee of beeSpecies">
     {{bee.name}} - {{bee.sci_name}}
     <ul>
       <li>File: {{bee.art_file}}</li>
@@ -33,7 +33,7 @@
           <li *ngFor="let beeFlower of bee.flowers_accepted">{{beeFlower.name}}</li>
         </ul>
       </li>
-  </ul>
+    </ul>
   </li>
 </ul>
 

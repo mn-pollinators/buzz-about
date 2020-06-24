@@ -1,7 +1,7 @@
 import { flowers as flowersFromJson } from '@mn-pollinators/assets/flowers.json';
 import { TimePeriod } from './time-period';
 
-export interface Flower{
+export interface FlowerSpecies {
   id: string;
   name: string;
   sci_name: string;
@@ -17,7 +17,7 @@ export interface Flower{
   description: string;
 }
 
-const flowersConverted: {[id: string]: Flower} = {};
+const flowersConverted: {[id: string]: FlowerSpecies} = {};
 
 for (const [key, flowerFromJson] of Object.entries(flowersFromJson)) {
   flowersConverted[key] = {
@@ -32,6 +32,5 @@ for (const [key, flowerFromJson] of Object.entries(flowersFromJson)) {
   };
 }
 
-const flowers = flowersConverted as {[id in keyof typeof flowersFromJson]: Flower};
-
-export { flowers };
+export const flowerSpecies =
+  flowersConverted as {[id in keyof typeof flowersFromJson]: FlowerSpecies};
