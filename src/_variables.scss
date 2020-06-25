@@ -1,4 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
 $mdc-theme-primary: #4CAF50; // primary color
 $mdc-theme-secondary: #FFC107; // secondary color
-$large-display-background: #84aa4c; // a color picked from background image
+$large-display-background: $mdc-theme-primary; // The background of the large display page (set to the primary color to blend in with the bottom bar.)
