@@ -1,4 +1,4 @@
-import { nests as nestsFromJson } from '@mn-pollinators/assets/nests.json';
+import { nests as allNestsFromJson } from '@mn-pollinators/assets/nests.json';
 
 export interface Nest {
   id: string;
@@ -13,14 +13,14 @@ export interface Nest {
   description: string;
 }
 
-const nestsConverted: {[id: string]: Nest} = {};
+const allNestsConverted: {[id: string]: Nest} = {};
 
-for (const [key, nestFromJson] of Object.entries(nestsFromJson)) {
-  nestsConverted[key] = {
+for (const [key, nestFromJson] of Object.entries(allNestsFromJson)) {
+  allNestsConverted[key] = {
     ...nestFromJson,
     id: key,
   };
 }
 
-export const nests =
-  nestsConverted as {[id in keyof typeof nestsFromJson]: Nest};
+export const allNests =
+  allNestsConverted as {[id in keyof typeof allNestsFromJson]: Nest};

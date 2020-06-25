@@ -1,4 +1,4 @@
-import { flowers as flowersFromJson } from '@mn-pollinators/assets/flowers.json';
+import { flowers as allFlowersFromJson } from '@mn-pollinators/assets/flowers.json';
 import { TimePeriod } from './time-period';
 
 export interface FlowerSpecies {
@@ -17,10 +17,10 @@ export interface FlowerSpecies {
   description: string;
 }
 
-const flowersConverted: {[id: string]: FlowerSpecies} = {};
+const allFlowersConverted: {[id: string]: FlowerSpecies} = {};
 
-for (const [key, flowerFromJson] of Object.entries(flowersFromJson)) {
-  flowersConverted[key] = {
+for (const [key, flowerFromJson] of Object.entries(allFlowersFromJson)) {
+  allFlowersConverted[key] = {
     ...flowerFromJson,
     id: key,
     blooming_period: flowerFromJson.blooming_period.map(interval =>
@@ -32,5 +32,5 @@ for (const [key, flowerFromJson] of Object.entries(flowersFromJson)) {
   };
 }
 
-export const flowerSpecies =
-  flowersConverted as {[id in keyof typeof flowersFromJson]: FlowerSpecies};
+export const allFlowerSpecies =
+  allFlowersConverted as {[id in keyof typeof allFlowersFromJson]: FlowerSpecies};

@@ -1,7 +1,7 @@
-import { bees as beesFromJson } from '@mn-pollinators/assets/bees.json';
+import { bees as allBeesFromJson } from '@mn-pollinators/assets/bees.json';
 import { TimePeriod } from './time-period';
-import { FlowerSpecies, flowerSpecies } from './flowers';
-import { Nest, nests } from './nests';
+import { FlowerSpecies, allFlowerSpecies } from './flowers';
+import { Nest, allNests } from './nests';
 
 export interface BeeSpecies {
   id: string;
@@ -42,17 +42,17 @@ export enum BeeSociality {
   communal,
 }
 
-const beesConverted: {[id: string]: BeeSpecies} = {};
+const allBeesConverted: {[id: string]: BeeSpecies} = {};
 
-for (const [key, beeFromJson] of Object.entries(beesFromJson)) {
-  beesConverted[key] = {
+for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
+  allBeesConverted[key] = {
     ...beeFromJson,
     id: key,
     flowers_accepted: beeFromJson.flowers_accepted
       // Ignore unknown flower names
-      .filter(id => flowerSpecies[id] !== undefined)
-      .map(id => flowerSpecies[id]),
-    nest_type: nests[beeFromJson.nest_type],
+      .filter(flowerId => flowerId in allFlowerSpecies)
+      .map(flowerId => allFlowerSpecies[flowerId]),
+    nest_type: allNests[beeFromJson.nest_type],
     active_period: beeFromJson.active_period.map(interval =>
       [
         TimePeriod.fromIsoDate(interval.split('/')[0]),
@@ -63,5 +63,5 @@ for (const [key, beeFromJson] of Object.entries(beesFromJson)) {
   };
 }
 
-export const beeSpecies =
-  beesConverted as {[id in keyof typeof beesFromJson]: BeeSpecies};
+export const allBeeSpecies =
+  allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
