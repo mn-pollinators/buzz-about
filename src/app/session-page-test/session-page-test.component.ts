@@ -15,12 +15,6 @@ export class SessionPageTestComponent implements OnInit {
 
    ngOnInit(): void {
     this.authService.logStudentIn();
-    this.authService.getCurrentUser().subscribe((user) => {
-      this.userID = of(user.uid);
-    });
-    this.authService.getCurrentUser$.subscribe((user) => {
-      console.log(user);
-    });
   }
 
 }

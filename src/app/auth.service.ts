@@ -24,14 +24,4 @@ export class AuthService {
       console.error(error);
      });
   }
-
-  getCurrentUser(): Observable<firebase.User> {
-    let user;
-    this.userCredential.then((userCred) => {
-      if (userCred) {
-        user = userCred.user;
-      }
-    });
-    return this.auth.user;
-  }
 }
