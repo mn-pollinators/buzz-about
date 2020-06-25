@@ -1,2 +1,3 @@
 <p>session-page-test works!</p>
-<p>User ID: {{userID}}</p>
+<p>User ID: {{userID | async}}</p>
+<p>Test: {{this.authService.getCurrentUserID$ | async}}</p>

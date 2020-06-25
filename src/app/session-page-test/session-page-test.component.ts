@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { of, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-session-page-test',
@@ -8,14 +9,17 @@ import { AuthService } from '../auth.service';
 })
 export class SessionPageTestComponent implements OnInit {
 
-  userID;
+  userID: Observable<string>;
 
   constructor(public authService: AuthService) { }
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.authService.logStudentIn();
     this.authService.getCurrentUser().subscribe((user) => {
-      this.userID = user.uid;
+      this.userID = of(user.uid);
+    });
+    this.authService.getCurrentUser$.subscribe((user) => {
+      console.log(user);
     });
   }
 
