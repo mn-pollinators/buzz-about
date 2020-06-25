@@ -41,6 +41,7 @@ import {MdcSliderModule} from '@angular-mdc/web/slider';
 import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
 import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
+import { SessionTestComponent } from './session-test/session-test.component';
 
 
 
@@ -83,6 +84,7 @@ const FIREBASE_MODULES = [
     TopMenuBarComponent,
     FirebaseTestComponent,
     JsonDataTestComponent,
+    SessionTestComponent,
   ],
   imports: [
     BrowserModule,
