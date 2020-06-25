@@ -26,11 +26,11 @@ import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
-import { TimerControlComponent } from './timer-control/timer-control.component';
 import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
+import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 
 import {MdcButtonModule} from '@angular-mdc/web/button';
@@ -79,11 +79,11 @@ const FIREBASE_MODULES = [
     TimerTestComponent,
     TimerProgressBarComponent,
     TimerProgressSpinnerComponent,
-    TimerControlComponent,
     FlowerLayoutComponent,
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
+    TopMenuBarComponent,
     FirebaseTestComponent,
   ],
   imports: [

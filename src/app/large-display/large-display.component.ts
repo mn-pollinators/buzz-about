@@ -109,8 +109,9 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       active: true,
       scale: 0.9
     }
-  ]
+  ];
 
+  running: boolean;
 
   constructor(public timerService: TimerService) { }
 
@@ -127,10 +128,17 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
       currentTime: this.startTime,
       endTime: this.endTime
     });
+
+    this.timerService.running$.subscribe(running => {
+      this.running = running;
+    });
   }
 
   ngAfterViewInit() {
 
   }
 
+  toggleTimerRunning() {
+    this.timerService.setRunning(!this.running);
+  }
 }
