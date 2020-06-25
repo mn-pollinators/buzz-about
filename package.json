@@ -32,7 +32,8 @@
     "three": "^0.110.0",
     "threear": "github:mn-pollinators/THREEAR#ts-fixes-2",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "@mn-pollinators/assets": "github:mn-pollinators/assets#npm-package"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.9",
