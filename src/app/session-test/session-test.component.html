@@ -1,1 +1,17 @@
-<p>session-test works!</p>
+<button (click)="joinSession()">Join Session</button>
+<button (click)="leaveSession()">Leave Session</button>
+<p>Session: {{JSON.stringify(sessionService.currentSession$ | async)}}</p>
+
+<h2>Round</h2>
+<p>running: {{roundService.currentRunning$ | async}}</p>
+<p>time: {{roundService.currentTime$ | async}}</p>
+
+<h3>Flowers</h3>
+<ul>
+  <li *ngFor="let flower of roundService.currentFlowers$ | async">
+    {{flower.species.name}}: {{flower.isBlooming ? "🌷 blooming" : "🥀 not blooming"}}
+  </li>
+</ul>
+
+
+<p>round: {{JSON.stringify(roundService.currentRound$ | async)}}</p>

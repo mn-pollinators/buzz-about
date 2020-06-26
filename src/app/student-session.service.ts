@@ -3,7 +3,7 @@ import { Session, SessionWithId } from './session';
 import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import { switchMap, shareReplay, map, distinctUntilKeyChanged, distinctUntilChanged } from 'rxjs/operators';
-import { Round } from './round';
+import { FirebaseRound } from './round';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,9 @@ export class StudentSessionService {
   currentSession$: Observable<SessionWithId | null> = this.sessionId$.pipe(
     switchMap(sessionId =>
       sessionId
-        ? this.firestore.collection('session').doc<Session>(sessionId).snapshotChanges().pipe(
-          map(action => ({id: action.payload.id , ...action.payload.data}))
-        )
+        ? this.firestore.collection('sessions').doc<Session>(sessionId).snapshotChanges().pipe(
+            map(action => ({id: action.payload.id , ...action.payload.data()}))
+          )
         : of(null)
     ),
     shareReplay(1),
@@ -42,7 +42,7 @@ export class StudentSessionService {
         : null
     ),
     distinctUntilChanged((prev, curr) =>
-      prev.roundId === curr.roundId && prev.sessionId === curr.sessionId
+      prev?.roundId === curr?.roundId && prev?.sessionId === curr?.sessionId
     ),
     shareReplay(1),
   );

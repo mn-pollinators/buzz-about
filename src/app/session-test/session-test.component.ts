@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { StudentSessionService } from '../student-session.service';
+import { StudentRoundService } from '../student-round.service';
 
 @Component({
   selector: 'app-session-test',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SessionTestComponent implements OnInit {
 
-  constructor() { }
+  JSON = JSON;
+
+  constructor(public sessionService: StudentSessionService, public roundService: StudentRoundService) { }
 
   ngOnInit(): void {
+  }
+
+  joinSession() {
+    this.sessionService.joinSession('demo-session');
+  }
+
+  leaveSession() {
+    this.sessionService.leaveSession();
   }
 
 }
