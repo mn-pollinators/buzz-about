@@ -7,12 +7,20 @@ import { Observable } from 'rxjs';
 })
 export class FirebaseService {
 
-  constructor(public firestore: AngularFirestore) { }
+  currentSession: string;
+
+  constructor(public firestore: AngularFirestore) {
+    this.currentSession = 'kugTpWqJyrXaJZ4ZB6zE';
+  }
 
   allSessions$: Observable<any[]> = this.firestore.collection('sessions').valueChanges();
 
+  /**
+   * Adds student to firestore
+   * @param id Student' id
+   * @param studentInfo map of student's information including name
+   */
   addStudent(id: string, studentInfo: { name?: string}) {
-    this.firestore.collection('sessions/kugTpWqJyrXaJZ4ZB6zE/students').doc(id).set(studentInfo);
-    console.log(id);
+    this.firestore.collection('sessions/' + this.currentSession + '/students').doc(id).set(studentInfo);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { of, Observable } from 'rxjs';
 import { FirebaseService } from '../firebase.service';
 
 @Component({
@@ -18,6 +17,10 @@ export class SessionPageTestComponent implements OnInit {
     this.authService.logStudentIn();
   }
 
+  /**
+   * Calls firebase service to add currently logged in user and their preferred name to the database
+   * @param name Student's name
+   */
   addStudentToDatabase(name) {
     this.authService.getCurrentUser$.subscribe( user => {
       this.userID = user.uid;

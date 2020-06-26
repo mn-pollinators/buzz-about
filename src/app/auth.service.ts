@@ -11,8 +11,14 @@ export class AuthService {
 
   constructor(public auth: AngularFireAuth, public firebaseService: FirebaseService) { }
 
+  /**
+   * Observable that emits the currently logged in firebase.User. Is undefined if no one is logged in.
+   */
   getCurrentUser$ = this.auth.authState;
 
+  /**
+   * Checks to see if the user is already logged in. If they aren't, it will create a new anonymous account.
+   */
   logStudentIn() {
     this.userCredential =  this.auth.auth.signInAnonymously().catch((error) => {
       console.error(error);
