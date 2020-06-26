@@ -43,7 +43,9 @@ import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
-
+import { StudentLoginComponent } from './student-login/student-login.component';
+import { MdcCardModule } from '@angular-mdc/web/card';
+// import { MdcTextFieldModule } from '@angular-mdc/web/textfield';
 
 
 const MDC_MODULES = [
@@ -55,7 +57,9 @@ const MDC_MODULES = [
   MdcElevationModule,
   MdcSliderModule,
   MdcIconButtonModule,
-  MdcSnackbarModule
+  MdcSnackbarModule,
+  MdcCardModule,
+  // MdcTextFieldModule
 ];
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -87,6 +91,7 @@ const FIREBASE_MODULES = [
     FirebaseTestComponent,
     SessionPageTestComponent,
     JsonDataTestComponent,
+    StudentLoginComponent,
   ],
   imports: [
     BrowserModule,

@@ -20,6 +20,8 @@
 @use '@material/fab/mdc-fab';
 @use '@material/fab';
 
+@use "@material/card";
+
 
 @use '@material/top-app-bar/mdc-top-app-bar';
 @use '@material/top-app-bar/_index.scss' as top-app-bar;
@@ -43,6 +45,8 @@ $warn: mat-palette($mat-deep-orange);
 $angular-material-theme: mat-light-theme($primary, $accent, $warn);
 
 @include angular-material-theme($angular-material-theme);
+
+@include card.core-styles;
 
 .debug {
     margin-top: 60px;
