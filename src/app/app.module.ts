@@ -21,16 +21,14 @@ import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
 import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
-import { ReviewItemComponent } from './review-item/review-item.component';
-import { ReviewPathComponent } from './review-path/review-path.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
-import { TimerControlComponent } from './timer-control/timer-control.component';
 import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
+import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 
 import {MdcButtonModule} from '@angular-mdc/web/button';
@@ -44,6 +42,7 @@ import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
 import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 
 
 
@@ -77,18 +76,17 @@ const FIREBASE_MODULES = [
     PlayRoundComponent,
     LargeDisplayComponent,
     FullscreenButtonComponent,
-    ReviewItemComponent,
-    ReviewPathComponent,
     TimerTestComponent,
     TimerProgressBarComponent,
     TimerProgressSpinnerComponent,
-    TimerControlComponent,
     FlowerLayoutComponent,
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
+    TopMenuBarComponent,
     FirebaseTestComponent,
     SessionPageTestComponent,
+    JsonDataTestComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,23 +1,26 @@
-<br>
-<p>
-  Time: {{ (timer.currentTime$ | async)?.time }}
-</p>
-<p>
-  {{timer.currentTime$ | async}}
-</p>
-<p>
-  Running: {{ timer.running$ | async }}
-</p>
-<p>
-  <button (click)="initTimerButton()">init timer</button>
-  <button (click)="pauseButton()">pause</button>
-  <button (click)="unPauseButton()">play</button>
-</p>
-<p>
-    <input type="number" step="1" min="0" max="47" [(ngModel)]="newTime">
-    <button (click)="setTimeButton()">Set Time</button>
-</p>
+<app-top-menu-bar [contents]="contents"></app-top-menu-bar>
 
-<app-timer-progress-bar [currentTime]="timer.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
-<app-timer-progress-spinner [currentTime]="timer.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
-<app-timer-control [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-control>
+<div #contents>
+  <br>
+  <p>
+    Time: {{ (timer.currentTime$ | async)?.time }}
+  </p>
+  <p>
+    {{timer.currentTime$ | async}}
+  </p>
+  <p>
+    Running: {{ timer.running$ | async }}
+  </p>
+  <p>
+    <button (click)="initTimerButton()">init timer</button>
+    <button (click)="pauseButton()">pause</button>
+    <button (click)="unPauseButton()">play</button>
+  </p>
+  <p>
+      <input type="number" step="1" min="0" max="47" [(ngModel)]="newTime">
+      <button (click)="setTimeButton()">Set Time</button>
+  </p>
+
+  <app-timer-progress-bar [currentTime]="timer.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
+  <app-timer-progress-spinner [currentTime]="timer.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
+</div>
