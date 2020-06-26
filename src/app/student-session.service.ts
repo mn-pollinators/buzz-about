@@ -35,6 +35,10 @@ export class StudentSessionService {
     shareReplay(1),
   );
 
+  /**
+   * An observable of the current round's session ID and round ID.
+   * Emits null if the student is not in a session or the round is not set on the session.
+   */
   currentRoundId$: Observable<{sessionId: string, roundId: string} | null> = this.currentSession$.pipe(
     map(session =>
       session && session.currentRoundId
