@@ -14,7 +14,11 @@ export class SessionPageTestComponent implements OnInit {
   constructor(public authService: AuthService) { }
 
    ngOnInit(): void {
-    this.authService.logStudentIn();
+    // this.authService.logStudentIn();
+  }
+
+  logStudentIn(name) {
+    this.authService.logStudentIn(name);
   }
 
 }

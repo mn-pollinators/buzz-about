@@ -12,4 +12,8 @@ export class FirebaseService {
 
   allSessions$: Observable<any[]> = this.firestore.collection('sessions').valueChanges();
 
+  addStudent(id: string, studentInfo: { name?: string}) {
+    this.firestore.collection('sessions/kugTpWqJyrXaJZ4ZB6zE/students').doc(id).set(studentInfo);
+    console.log(id);
+  }
 }
