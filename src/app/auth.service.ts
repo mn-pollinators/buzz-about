@@ -14,16 +14,6 @@ export class AuthService {
 
   getCurrentUser$ = this.auth.authState;
 
-  getCurrentUserID$ = this.auth.authState.pipe(
-    skipWhile(user => user === null),
-    map(user => user.uid)
-  );
-
-  getCurrentUserDisplayName$ = this.auth.authState.pipe(
-    skipWhile(user => user === null),
-    map(user => user.displayName)
-  );
-
   logStudentIn(name?: string) {
     this.userCredential =  this.auth.auth.signInAnonymously().catch((error) => {
       console.error(error);

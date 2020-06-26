@@ -1,5 +1,5 @@
 <p>session-page-test works!</p>
 <input #name>
 <button (click)="logStudentIn(name.value)">Log In</button>
-<p>UserID: {{this.authService.getCurrentUserID$ | async}}</p>
-<p>User Display Name: {{this.authService.getCurrentUserDisplayName$ | async}}</p>
+<p>UserID: {{ (this.authService.getCurrentUser$ | async)?.uid }}</p>
+<p>User Display Name: {{ (this.authService.getCurrentUser$ | async)?.displayName }}</p>
