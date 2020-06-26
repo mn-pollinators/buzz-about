@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-session-page-test',
@@ -10,8 +9,11 @@ import { FirebaseService } from '../firebase.service';
 export class SessionPageTestComponent implements OnInit {
 
   userID: string;
+  testSession: string;
 
-  constructor(public authService: AuthService, public firebaseService: FirebaseService) { }
+  constructor(public authService: AuthService) {
+    this.testSession = 'kugTpWqJyrXaJZ4ZB6zE';
+  }
 
    ngOnInit(): void {
     this.authService.logStudentIn();
@@ -22,10 +24,7 @@ export class SessionPageTestComponent implements OnInit {
    * @param name Student's name
    */
   addStudentToDatabase(name) {
-    this.authService.getCurrentUser$.subscribe( user => {
-      this.userID = user.uid;
-      this.firebaseService.addStudent(this.userID, {name});
-    });
+    this.authService.addStudentToDatabase(name, this.testSession);
   }
 
 }

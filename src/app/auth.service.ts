@@ -23,4 +23,15 @@ export class AuthService {
       console.error(error);
      });
   }
+
+  /**
+   *
+   * @param name preferred name of the student
+   * @param session ID of the session the student should be added to
+   */
+  addStudentToDatabase(name: string, sessionID: string) {
+    this.getCurrentUser$.subscribe( user => {
+      this.firebaseService.addStudentToSession(user.uid, sessionID, {name});
+    });
+  }
 }
