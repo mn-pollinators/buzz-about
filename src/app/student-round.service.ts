@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of, combineLatest } from 'rxjs';
 import { FirebaseRound, RoundFlower } from './round';
-import { switchMap, shareReplay, map, distinctUntilChanged, distinctUntilKeyChanged, share } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
+import { FirebaseService } from './firebase.service';
 
 /**
  * This service lets you read to and write from the rounds in Firebase as a student.
@@ -17,7 +17,7 @@ export class StudentRoundService {
 
   constructor(
     private sessionService: StudentSessionService,
-    private firestore: AngularFirestore,
+    private firebaseService: FirebaseService,
   ) {}
 
   /**
@@ -25,10 +25,10 @@ export class StudentRoundService {
    * It emits when the currentRound on the current session changes and when initially subscribed to.
    * It emits null if there is no current round or there is no current session.
    */
-  currentRound$: Observable<FirebaseRound | null> = this.sessionService.currentRoundId$.pipe(
-    switchMap(round =>
-      round
-        ? this.firestore.collection('sessions').doc(round.sessionId).collection('rounds').doc<FirebaseRound>(round.roundId).valueChanges()
+  currentRound$: Observable<FirebaseRound | null> = this.sessionService.currentRoundPath$.pipe(
+    switchMap(roundPath =>
+      roundPath
+        ? this.firebaseService.getRound(roundPath)
         : of(null)
     ),
     shareReplay(1),

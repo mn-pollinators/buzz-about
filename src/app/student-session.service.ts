@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Session, SessionWithId } from './session';
-import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilKeyChanged, distinctUntilChanged } from 'rxjs/operators';
-import { FirebaseRound } from './round';
+import { SessionWithId } from './session';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentSessionService {
 
-  constructor(private firestore: AngularFirestore) {
+  constructor(private firebaseService: FirebaseService) {
   }
 
   sessionId$ = new BehaviorSubject<string | null>(null);
@@ -27,9 +26,7 @@ export class StudentSessionService {
   currentSession$: Observable<SessionWithId | null> = this.sessionId$.pipe(
     switchMap(sessionId =>
       sessionId
-        ? this.firestore.collection('sessions').doc<Session>(sessionId).snapshotChanges().pipe(
-            map(action => ({id: action.payload.id , ...action.payload.data()}))
-          )
+        ? this.firebaseService.getSession(sessionId)
         : of(null)
     ),
     shareReplay(1),
@@ -39,7 +36,7 @@ export class StudentSessionService {
    * An observable of the current round's session ID and round ID.
    * Emits null if the student is not in a session or the round is not set on the session.
    */
-  currentRoundId$: Observable<{sessionId: string, roundId: string} | null> = this.currentSession$.pipe(
+  currentRoundPath$: Observable<{sessionId: string, roundId: string} | null> = this.currentSession$.pipe(
     map(session =>
       session && session.currentRoundId
         ? {sessionId: session.id , roundId: session.currentRoundId}
