@@ -7,8 +7,9 @@
 <p>time: {{roundService.currentTime$ | async}}</p>
 
 <h3>Flowers</h3>
-<ul>
-  <li *ngFor="let flower of roundService.currentFlowers$ | async">
-    {{flower.species.name}}: {{flower.isBlooming ? "🌷 blooming" : "🥀 not blooming"}}
-  </li>
-</ul>
+<table>
+  <tr *ngFor="let flower of roundService.currentFlowers$ | async">
+    <td>{{flower.species.name}}:</td>
+    <td>{{flower.isBlooming ? "🌷 blooming" : "🥀 not blooming"}}</td>
+  </tr>
+</table>
