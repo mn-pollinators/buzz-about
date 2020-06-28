@@ -11,17 +11,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 
 /**
- * This is an RxJS test environment designed to let you compare observables.
- *
- * Given two observables, it checks to make sure that the same values are
- * emitted at the same times (using Jasmine's `expect().toEqual()` to check
- * equality).
- */
-const deepEqualityTestScheduler = new TestScheduler((actual, expected) => {
-  expect(actual).toEqual(expected);
-});
-
-/**
  * Create a test spec using RxJS's test scheduler. This lets you use marble
  * testing to compare observables.
  *
@@ -37,12 +26,18 @@ const deepEqualityTestScheduler = new TestScheduler((actual, expected) => {
  *   expect(typeof helpers.cold).toEqual('function');
  * });
  * ```
+ *
+ * This function compares the values emitted by observables using deep
+ * equality (Jasmine's `expect().toEqual()`).
  */
 export function scheduledIt(
   specMessage: string,
   spec: (helperFunctions: RunHelpers) => void,
 ): void {
   it(specMessage, async(() => {
+    const deepEqualityTestScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
     deepEqualityTestScheduler.run(spec);
   }));
 }
