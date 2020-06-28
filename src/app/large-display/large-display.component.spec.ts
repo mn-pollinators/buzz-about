@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, inject, tick, discardPeriodicTasks } from '@angular/core/testing';
 
 import { LargeDisplayComponent } from './large-display.component';
-import { MdcSliderModule, MdcIconModule, MdcTopAppBarModule } from '@angular-mdc/web';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { TimerTestComponent } from '../timer-test/timer-test.component';
@@ -14,6 +13,8 @@ import { TimerService } from '../timer.service';
 import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
@@ -22,9 +23,8 @@ describe('LargeDisplayComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MdcIconModule,
-        MdcSliderModule,
-        MdcTopAppBarModule,
+        MatButtonModule,
+        MatIconModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
         BrowserAnimationsModule,

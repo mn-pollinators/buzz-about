@@ -1,7 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TopMenuBarComponent } from './top-menu-bar.component';
-import { MdcTopAppBarModule, MdcIconModule } from '@angular-mdc/web';
 import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 describe('TopMenuBarComponent', () => {
   let component: TopMenuBarComponent;
@@ -10,8 +12,9 @@ describe('TopMenuBarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MdcIconModule,
-        MdcTopAppBarModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule
       ],
       declarations: [
         TopMenuBarComponent,
