@@ -2,36 +2,36 @@
 
 //@import "~@angular-mdc/theme/material";
 
-@use '@material/theme' with (
-  $primary: $mdc-theme-primary,
-  $secondary: $mdc-theme-secondary,
-  $background: #fff,
-);
+// @use '@material/theme' with (
+//   $primary: $mdc-theme-primary,
+//   $secondary: $mdc-theme-secondary,
+//   $background: #fff,
+// );
 
-// MDC Typography
-@use '@material/typography/mdc-typography';
+// // MDC Typography
+// @use '@material/typography/mdc-typography';
 
-// Angular MDC
-@use '@angular-mdc/theme/material';
+// // Angular MDC
+// @use '@angular-mdc/theme/material';
 
-@use '@material/button/mdc-button';
-@use '@material/button';
+// @use '@material/button/mdc-button';
+// @use '@material/button';
 
-@use '@material/fab/mdc-fab';
-@use '@material/fab';
+// @use '@material/fab/mdc-fab';
+// @use '@material/fab';
 
 
-@use '@material/top-app-bar/mdc-top-app-bar';
-@use '@material/top-app-bar/_index.scss' as top-app-bar;
-@use '@material/icon-button/mdc-icon-button';
+// @use '@material/top-app-bar/mdc-top-app-bar';
+// @use '@material/top-app-bar/_index.scss' as top-app-bar;
+// @use '@material/icon-button/mdc-icon-button';
 
-@use '@material/elevation/mdc-elevation';
+// @use '@material/elevation/mdc-elevation';
 
-@use '@material/slider/mdc-slider';
-@use '@material/slider/_index.scss' as slider;
+// @use '@material/slider/mdc-slider';
+// @use '@material/slider/_index.scss' as slider;
 
-@use '@material/snackbar/mdc-snackbar';
-@use '@material/snackbar/_index.scss' as snackbar;
+// @use '@material/snackbar/mdc-snackbar';
+// @use '@material/snackbar/_index.scss' as snackbar;
 
 // Set up a theme for angular material.
 @import '@angular/material/theming';
