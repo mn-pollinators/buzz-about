@@ -1,48 +1,30 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService } from './firebase.service';
 import { SessionWithId } from './session';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { TestScheduler } from 'rxjs/testing';
-
-// It kind of sucks that we have to import this type from RxJS's internals;
-// That should be fixed when they release RxJS version 7.
-// See https://github.com/ReactiveX/rxjs/issues/5319
-import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
-
-const testScheduler = new TestScheduler((actual, expected) => {
-  // When comparing observables, check if values are equal using deep
-  // equality.
-  expect(actual).toEqual(expected);
-});
-
-/**
- * Create a test spec using RxJS's test scheduler.
- *
- * I'm factoring this out into its own function because it involves quite a lot
- * of boilerplate; I don't want to retype that every time. (Also, this way I
- * can save a level of indentation.)
- */
-function scheduledIt(
-  specMessage: string,
-  spec: (helperFunctions: RunHelpers) => void,
-): void {
-  it(specMessage, async(() => {
-    testScheduler.run(spec);
-  }));
-}
+import { scheduledIt } from './utils/karma-utils';
 
 describe('StudentSessionService', () => {
   let service: StudentSessionService;
 
-  // This observable pretends to be the session data coming from Firebase.
-  // You can assign whatever you want to it.
-  let mockSessionStream$: Observable<SessionWithId>;
+  // These observables pretend to be the session data coming from Firebase.
+  // You can assign whatever values you want to them.
+  let mockSession1Stream$: Observable<SessionWithId>;
+  let mockSession2Stream$: Observable<SessionWithId>;
 
   beforeEach(() => {
     const mockFirebaseService: Partial<FirebaseService> = {
-      getSession() { return mockSessionStream$; },
+      getSession(id: string) {
+        switch (id) {
+          case '1':
+            return mockSession1Stream$;
+          case '2':
+            return mockSession2Stream$;
+          default:
+            throw new Error('FirebaseService.getSession(): Bad session id!');
+        }
+      },
     };
 
     TestBed.configureTestingModule({
