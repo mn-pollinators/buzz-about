@@ -13,10 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
-
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
 import { LargeDisplayComponent } from './large-display/large-display.component';
@@ -30,34 +26,15 @@ import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
 import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
-
-import {MdcButtonModule} from '@angular-mdc/web/button';
-import {MdcFabModule} from '@angular-mdc/web/fab';
-import {MdcIconModule} from '@angular-mdc/web/icon';
-import {MdcTopAppBarModule} from '@angular-mdc/web/top-app-bar';
-import {MdcLinearProgressModule} from '@angular-mdc/web/linear-progress';
-import {MdcElevationModule} from '@angular-mdc/web/elevation';
-import {MdcSliderModule} from '@angular-mdc/web/slider';
-import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
-import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 
 
-const MDC_MODULES = [
-  MdcButtonModule,
-  MdcFabModule,
-  MdcIconModule,
-  MdcTopAppBarModule,
-  MdcLinearProgressModule,
-  MdcElevationModule,
-  MdcSliderModule,
-  MdcIconButtonModule,
-  MdcSnackbarModule
-];
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -100,7 +77,6 @@ const FIREBASE_MODULES = [
     FlexLayoutModule,
     FormsModule,
     ANGULAR_MATERIAL_MODULES,
-    MDC_MODULES,
   ],
   providers: [],
   bootstrap: [AppComponent]
