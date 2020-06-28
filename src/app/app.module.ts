@@ -42,6 +42,9 @@ import {MdcIconButtonModule} from '@angular-mdc/web/icon-button';
 import {MdcSnackbarModule} from '@angular-mdc/web/snackbar';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 
 const MDC_MODULES = [
@@ -59,6 +62,9 @@ const MDC_MODULES = [
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
+  MatToolbarModule,
+  MatButtonModule,
+  MatIconModule,
 ];
 
 const FIREBASE_MODULES = [
