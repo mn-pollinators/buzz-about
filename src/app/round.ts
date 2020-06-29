@@ -24,4 +24,8 @@ export class RoundFlower {
   constructor(public readonly species: FlowerSpecies, currentTime: TimePeriod) {
     this.isBlooming = species.blooming_period.some(interval => currentTime.fallsWithin(...interval));
   }
+
+  equals(other: RoundFlower): boolean {
+    return this.species === other.species && this.isBlooming === other.isBlooming;
+  }
 }

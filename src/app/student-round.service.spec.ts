@@ -7,6 +7,7 @@ import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from './utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
+import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
 
 describe('StudentRoundService', () => {
   const values: {
@@ -43,19 +44,19 @@ describe('StudentRoundService', () => {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
-        currentTime: 26,
+        currentTime: 47,
       },
       s: {
         flowerSpeciesIds: ['asclepias_syriaca'],
         status: 'fine',
         running: true,
-        currentTime: 26,
+        currentTime: 47,
       },
       t: {
         flowerSpeciesIds: [],
         status: 'just swell',
         running: false,
-        currentTime: 26,
+        currentTime: 47,
       },
     },
 
@@ -77,11 +78,13 @@ describe('StudentRoundService', () => {
         new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(25)),
       ],
       R: [
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(26)),
-        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(26)),
+        // Note that both A. syriaca and C. palmata change their blooming
+        // status from time period 25 to time period 47.
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
+        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(47)),
       ],
       S: [
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(26)),
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
       ],
     },
 
@@ -164,7 +167,7 @@ describe('StudentRoundService', () => {
     });
 
     scheduledIt('Changes when the current round path changes', ({expectObservable, cold}) => {
-      // Give each of the rounds an initial state.
+      // Give the rounds their initial states.
       mockRound1AData$.next(values.rounds.p);
       mockRound1BData$.next(values.rounds.q);
       mockRound2ZData$.next(values.rounds.r);
@@ -181,5 +184,152 @@ describe('StudentRoundService', () => {
         values.rounds,
       );
     });
+
+    scheduledIt('Changes when the contents of the current round change', ({expectObservable, cold}) => {
+      mockRound1AData$.next(values.rounds.p);
+      mockRound1BData$.next(values.rounds.s);
+
+      const [
+        round1AData,
+        round1BData,
+        roundPaths,
+        expectedRoundData,
+      ] = [
+        '------q-r---------------p----',
+        '----------------t------------',
+        '----A-----n---B---A-n-----A-n-',
+        'n---p-q-r-n---s-t-r-n-----p-n-',
+      ];
+
+      cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+      cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+      cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+      expectObservable(service.currentRound$).toBe(
+        expectedRoundData,
+        values.rounds,
+      );
+    });
+  });
+
+  describe('The currentFlowerSpecies$ observable', () => {
+    scheduledIt('Emits an empty array initially', ({expectObservable}) => {
+      expectObservable(service.currentFlowersSpecies$).toBe(
+        'e-',
+        values.flowerSpecies,
+      );
+    });
+
+    scheduledIt('Changes when flower species change in Firebase', ({expectObservable, cold}) => {
+      mockRound1AData$.next(values.rounds.p);
+      mockRound1BData$.next(values.rounds.s);
+
+      const [
+        round1AData,
+        round1BData,
+        roundPaths,
+        expectedFlowerSpecies,
+      ] = [
+        '--------------------------',
+        '------------t-------s-----',
+        '----A-n---B---A-n-----B-n-',
+        'e---P-e---S-e-P-e-----S-e-',
+      ];
+
+      cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+      cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+      cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+      expectObservable(service.currentFlowersSpecies$).toBe(
+        expectedFlowerSpecies,
+        values.flowerSpecies,
+      );
+    });
+
+    scheduledIt(
+      'Doesn\'t change when the round info changes in Firebase in a way that doesn\'t affect the flowers',
+      ({expectObservable, cold}) => {
+        mockRound1AData$.next(values.rounds.p);
+        mockRound1BData$.next(values.rounds.r);
+
+        const [
+          round1AData,
+          round1BData,
+          roundPaths,
+          expectedFlowerSpecies,
+        ] = [
+          '------q---------',
+          '----------------',
+          '----A---B-A-A-n-',
+          'e---P---------e-',
+        ];
+
+        cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+        cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+        cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+        expectObservable(service.currentFlowersSpecies$).toBe(
+          expectedFlowerSpecies,
+          values.flowerSpecies,
+        );
+      },
+    );
+  });
+
+  describe('The currentFlowers$ observable', () => {
+    scheduledIt('Emits an empty array initially', ({expectObservable}) => {
+      expectObservable(service.currentFlowersSpecies$).toBe(
+        'e-',
+        values.roundFlowers,
+      );
+    });
+
+    scheduledIt(
+      'Changes whenever the flower species or the time changes in Firebase', ({expectObservable, cold}) => {
+        mockRound1AData$.next(values.rounds.p);
+        mockRound1BData$.next(values.rounds.s);
+
+        // I don't really mind if service.currentFlowers$ removes duplicates or
+        // not. (At the time of writing, it didn't remove duplicates.) So, in
+        // order to test its behavior in a duplication-agnostic way,
+        // I'm going to normalize currentFlowers$ by filtering duplicates
+        // myself.
+        const currentFlowersWithoutDuplicates$ = service.currentFlowers$.pipe(
+          distinctUntilChanged((prev, curr) => {
+            if (prev.length !== curr.length) {
+              return false;
+            }
+            for (let i = 0; i < prev.length; i++) {
+              if (!prev[i].equals(curr[i])) {
+                return false;
+              }
+            }
+            return true;
+          }),
+          shareReplay(1),
+        );
+
+        const [
+          round1AData,
+          round1BData,
+          roundPaths,
+          expectedRoundFlowers,
+        ] = [
+          '------r-----------------',
+          '----------t-------s-----',
+          '----A---B---A-n-----B-n-',
+          'e---P-R-S-e-R-e-----S-e-',
+        ];
+
+        cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+        cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+        cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+        expectObservable(currentFlowersWithoutDuplicates$).toBe(
+          expectedRoundFlowers,
+          values.roundFlowers,
+        );
+      },
+    );
   });
 });
