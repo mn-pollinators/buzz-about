@@ -9,10 +9,3 @@ $theme: mat-light-theme($primary, $accent, $warn);
 $foreground: map-get($theme, foreground);
 
 $background: map-get($theme, background);
-
-$mdc-theme-primary: mat-color($primary); // primary color
-$mdc-theme-secondary: mat-color($accent); // secondary color
-
- // The background of the large display page
- // (set to the primary color to blend in with the bottom bar.)
-$large-display-background: $mdc-theme-primary;
