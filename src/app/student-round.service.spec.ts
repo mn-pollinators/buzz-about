@@ -16,7 +16,7 @@ describe('StudentRoundService', () => {
     flowerSpecies: {[letterName: string]: FlowerSpecies[]},
     roundFlowers: {[letterName: string]: RoundFlower[]},
     statuses: {[letterName: string]: string},
-    times: {[letterName: string]: number},
+    times: {[letterName: string]: TimePeriod},
     booleans: {[letterName: string]: boolean},
   } = {
     roundPaths: {
@@ -97,14 +97,14 @@ describe('StudentRoundService', () => {
 
     times: {
       n: null,
-      P: 25,
-      R: 26,
+      P: new TimePeriod(25),
+      R: new TimePeriod(47),
     },
 
     booleans: {
       n: null,
-      t: true,
-      f: false,
+      0: false,
+      1: true,
     }
   };
 
@@ -276,6 +276,71 @@ describe('StudentRoundService', () => {
     );
   });
 
+  describe('The currentTime$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentTime$).toBe(
+        'n-',
+        values.times,
+      );
+    });
+
+    scheduledIt('Changes when time changes in Firebase', ({expectObservable, cold}) => {
+      mockRound1AData$.next(values.rounds.p);
+      mockRound1BData$.next(values.rounds.r);
+
+      const [
+        round1AData,
+        round1BData,
+        roundPaths,
+        expectedTimes,
+      ] = [
+        '--------------r---',
+        '------------------',
+        '----A-n---B-A---n-',
+        'n---P-n---R-P-R-n-',
+      ];
+
+      cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+      cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+      cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+      expectObservable(service.currentTime$).toBe(
+        expectedTimes,
+        values.times,
+      );
+    });
+
+    scheduledIt(
+      'Doesn\'t change when the round info changes in Firebase in a way that doesn\'t affect the time',
+      ({expectObservable, cold}) => {
+        mockRound1AData$.next(values.rounds.r);
+        mockRound1BData$.next(values.rounds.t);
+
+        const [
+          round1AData,
+          round1BData,
+          roundPaths,
+          expectedTimes,
+        ] = [
+          '------s---------',
+          '----------------',
+          '----A---B-A-A-n-',
+          'n---R---------n-',
+        ];
+
+        cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+        cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+        cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+        expectObservable(service.currentTime$).toBe(
+          expectedTimes,
+          values.times,
+        );
+      },
+    );
+  });
+
+
   describe('The currentFlowers$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -328,6 +393,70 @@ describe('StudentRoundService', () => {
         expectObservable(currentFlowersWithoutDuplicates$).toBe(
           expectedRoundFlowers,
           values.roundFlowers,
+        );
+      },
+    );
+  });
+
+  describe('The currentRunning$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentRunning$).toBe(
+        'n-',
+        values.booleans,
+      );
+    });
+
+    scheduledIt('Changes when running flag changes in Firebase', ({expectObservable, cold}) => {
+      mockRound1AData$.next(values.rounds.p);
+      mockRound1BData$.next(values.rounds.q);
+
+      const [
+        round1AData,
+        round1BData,
+        roundPaths,
+        expectedRunningValues,
+      ] = [
+        '------------------------',
+        '------------------t-----',
+        '----A-n---A-B-n-----B-n-',
+        'n---0-n---0-1-n-----0-n-',
+      ];
+
+      cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+      cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+      cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+      expectObservable(service.currentRunning$).toBe(
+        expectedRunningValues,
+        values.booleans,
+      );
+    });
+
+    scheduledIt(
+      'Doesn\'t change when the round info changes in Firebase in a way that doesn\'t affect the running flag',
+      ({expectObservable, cold}) => {
+        mockRound1AData$.next(values.rounds.q);
+        mockRound1BData$.next(values.rounds.s);
+
+        const [
+          round1AData,
+          round1BData,
+          roundPaths,
+          expectedRunningValues,
+        ] = [
+          '------r---------',
+          '----------------',
+          '----A---B-A-A-n-',
+          'n---1---------n-',
+        ];
+
+        cold(round1AData, values.rounds).subscribe(mockRound1AData$);
+        cold(round1BData, values.rounds).subscribe(mockRound1BData$);
+        cold(roundPaths, values.roundPaths).subscribe(mockCurrentRoundPath$);
+
+        expectObservable(service.currentRunning$).toBe(
+          expectedRunningValues,
+          values.booleans,
         );
       },
     );
