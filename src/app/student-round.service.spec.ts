@@ -170,7 +170,7 @@ describe('StudentRoundService', () => {
       mockRound2ZData$.next(values.rounds.r);
 
       const [roundPaths, expectedRoundData] = [
-        '----A-n---B-C-n---C-n-',
+        '----A-n---B-Z-n---Z-n-',
         'n---p-n---q-r-n---r-n-',
       ];
 
