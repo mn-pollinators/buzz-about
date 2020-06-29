@@ -41,23 +41,28 @@ describe('StudentSessionService', () => {
         hostId: 'Snowy',
         currentRoundId: 'Second Round',
       },
+      k: {
+        id: '2',
+        hostId: 'Captain Haddock',
+        currentRoundId: 'Second Round',
+      },
     },
 
     roundPaths: {
       n: null,
-      a: {
+      A: {
         sessionId: '1',
         roundId: 'First Round',
       },
-      b: {
+      B: {
         sessionId: '1',
         roundId: 'Second Round',
       },
-      i: {
+      I: {
         sessionId: '2',
         roundId: 'First Round',
       },
-      j: {
+      J: {
         sessionId: '2',
         roundId: 'Second Round',
       },
@@ -93,16 +98,16 @@ describe('StudentSessionService', () => {
     service = TestBed.inject(StudentSessionService);
   });
 
-  it('should be created', () => {
+  it('Should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  scheduledIt('should have a sessionId$ initially set to null', ({expectObservable}) => {
+  scheduledIt('Should have a sessionId$ initially set to null', ({expectObservable}) => {
     expectObservable(service.sessionId$).toBe('n-', values.sessionIds);
   });
 
   describe('The joinSession() method', () => {
-    scheduledIt('causes sessionId$ to emit the new value', ({expectObservable, cold}) => {
+    scheduledIt('Causes sessionId$ to emit the new value', ({expectObservable, cold}) => {
       const [sessionsToJoin, expectedSessionIds] = [
         '----1-2-',
         'n---1-2-',
@@ -120,7 +125,7 @@ describe('StudentSessionService', () => {
   });
 
   describe('The leaveSession() method', () => {
-    scheduledIt('causes sessionId$ to emit null', ({expectObservable, cold}) => {
+    scheduledIt('Causes sessionId$ to emit null', ({expectObservable, cold}) => {
       const [sessionsToJoin, whenToLeaveTheSession, expectedSessionIds] = [
         '----1-----1-2---',
         '------x-------x-',
@@ -142,7 +147,7 @@ describe('StudentSessionService', () => {
   });
 
   describe('The currentSession$ observable', () => {
-    scheduledIt('emits null initially', ({expectObservable}) => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentSession$).toBe('n-', values.sessions);
     });
 
@@ -197,11 +202,11 @@ describe('StudentSessionService', () => {
         // This is what service.currentSession$ should look like.
         expectedSessionData,
       ] = [
-        '------b-----a---------------------',
-        '--------------------j-------------',
-        '----1-----------1-2-------2-----1-',
-        '--------x-------------x-----x-----',
-        'n---a-b-n-------a-i-j-n---j-n---a-',
+        '------b-----a-----------------------',
+        '--------------------j---------------',
+        '----1-----------1-2---1-----2-----1-',
+        '--------x---------------x-----x-----',
+        'n---a-b-n-------a-i-j-a-n---j-n---a-',
       ];
 
       // Pipe the data from the marble strings into the FirebaseService mocks.
@@ -225,4 +230,125 @@ describe('StudentSessionService', () => {
       );
     });
   });
+
+  describe('The currentRoundPath$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentRoundPath$).toBe(
+        'n-',
+        values.roundPaths,
+      );
+    });
+
+    scheduledIt('Changes when the current session changes', ({expectObservable, cold}) => {
+      const session1Data = 'a';
+      const session2Data = 'i';
+
+      const [
+        sessionsToJoin,
+        whenToLeaveTheSession,
+        expectedRoundPaths,
+      ] = [
+        '----1-----1-2---',
+        '------x-------x-',
+        'n---A-n---A-I-n-',
+      ];
+
+      mockSession1Data$ = new BehaviorSubject(values.sessions[session1Data]);
+      mockSession2Data$ = new BehaviorSubject(values.sessions[session2Data]);
+
+      cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+        service.joinSession(id);
+      });
+      cold(whenToLeaveTheSession).subscribe(() => {
+        service.leaveSession();
+      });
+
+      expectObservable(service.currentRoundPath$).toBe(
+        expectedRoundPaths,
+        values.roundPaths,
+      );
+    });
+  });
+
+  scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
+    const session1InitialState = 'a';
+    const session2InitialState = 'i';
+
+    mockSession1Data$ =
+      new BehaviorSubject(values.sessions[session1InitialState]);
+    mockSession2Data$ =
+      new BehaviorSubject(values.sessions[session2InitialState]);
+
+    const [
+      session1Data,
+      session2Data,
+      sessionsToJoin,
+      whenToLeaveTheSession,
+      expectedRoundPaths,
+    ] = [
+      '------b-----a-----------------------',
+      '--------------------j---------------',
+      '----1-----------1-2---1-----2-----1-',
+      '--------x---------------x-----x-----',
+      'n---A-B-n-------A-I-J-A-n---J-n---A-',
+    ];
+
+    // Pipe the data from the marble strings into the FirebaseService mocks.
+    cold(session1Data, values.sessions).subscribe(
+      mockSession1Data$ as BehaviorSubject<SessionWithId>,
+    );
+    cold(session2Data, values.sessions).subscribe(
+      mockSession2Data$ as BehaviorSubject<SessionWithId>,
+    );
+
+    cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+      service.joinSession(id);
+    });
+    cold(whenToLeaveTheSession).subscribe(() => {
+      service.leaveSession();
+    });
+
+    expectObservable(service.currentRoundPath$).toBe(
+      expectedRoundPaths,
+      values.roundPaths,
+    );
+  });
+
+  scheduledIt(
+    'Doesn\'t change if the session changes in a way that doesn\'t affect the round path',
+    ({expectObservable, cold}) => {
+      const session2InitialState = 'i';
+
+      mockSession2Data$ =
+        new BehaviorSubject(values.sessions[session2InitialState]);
+
+      const [
+        session2Data,
+        sessionsToJoin,
+        whenToLeaveTheSession,
+        expectedRoundPaths,
+      ] = [
+        '------j-k---',
+        '----2-------',
+        '----------x-',
+        'n---I-J---n-',
+      ];
+
+      cold(session2Data, values.sessions).subscribe(
+        mockSession2Data$ as BehaviorSubject<SessionWithId>,
+      );
+
+      cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+        service.joinSession(id);
+      });
+      cold(whenToLeaveTheSession).subscribe(() => {
+        service.leaveSession();
+      });
+
+      expectObservable(service.currentRoundPath$).toBe(
+        expectedRoundPaths,
+        values.roundPaths,
+      );
+    },
+  );
 });
