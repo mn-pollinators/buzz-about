@@ -199,11 +199,11 @@ describe('StudentSessionService', () => {
         // This is what service.currentSession$ should look like.
         expectedSessionData,
       ] = [
-        '------b-----a-----------------------',
-        '--------------------j---------------',
-        '----1-----------1-2---1-----2-----1-',
-        '--------x---------------x-----x-----',
-        'n---a-b-n-------a-i-j-a-n---j-n---a-',
+        '------b-----a---------------------',
+        '------------------j---------------',
+        '----1---------1-2---1-----2-----1-',
+        '--------x-------------x-----x-----',
+        'n---a-b-n-----a-i-j-a-n---j-n---a-',
       ];
 
       // Pipe the data from the marble strings into the FirebaseService mocks.
@@ -258,60 +258,27 @@ describe('StudentSessionService', () => {
         values.roundPaths,
       );
     });
-  });
 
-  scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
-    mockSession1Data$.next(values.sessions.a);
-    mockSession2Data$.next(values.sessions.i);
-
-    const [
-      session1Data,
-      session2Data,
-      sessionsToJoin,
-      whenToLeaveTheSession,
-      expectedRoundPaths,
-    ] = [
-      '------b-----a-----------------------',
-      '--------------------j---------------',
-      '----1-----------1-2---1-----2-----1-',
-      '--------x---------------x-----x-----',
-      'n---A-B-n-------A-I-J-A-n---J-n---A-',
-    ];
-
-    // Pipe the data from the marble strings into the FirebaseService mocks.
-    cold(session1Data, values.sessions).subscribe(mockSession1Data$);
-    cold(session2Data, values.sessions).subscribe(mockSession2Data$);
-
-    cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-      service.joinSession(id);
-    });
-    cold(whenToLeaveTheSession).subscribe(() => {
-      service.leaveSession();
-    });
-
-    expectObservable(service.currentRoundPath$).toBe(
-      expectedRoundPaths,
-      values.roundPaths,
-    );
-  });
-
-  scheduledIt(
-    'Doesn\'t change if the session changes in a way that doesn\'t affect the round path',
-    ({expectObservable, cold}) => {
+    scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
+      mockSession1Data$.next(values.sessions.a);
       mockSession2Data$.next(values.sessions.i);
 
       const [
+        session1Data,
         session2Data,
         sessionsToJoin,
         whenToLeaveTheSession,
         expectedRoundPaths,
       ] = [
-        '------j-k---',
-        '----2-------',
-        '----------x-',
-        'n---I-J---n-',
+        '------b-----a---------------------',
+        '------------------j---------------',
+        '----1---------1-2---1-----2-----1-',
+        '--------x-------------x-----x-----',
+        'n---A-B-n-----A-I-J-A-n---J-n---A-',
       ];
 
+      // Pipe the data from the marble strings into the FirebaseService mocks.
+      cold(session1Data, values.sessions).subscribe(mockSession1Data$);
       cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
@@ -325,6 +292,39 @@ describe('StudentSessionService', () => {
         expectedRoundPaths,
         values.roundPaths,
       );
-    },
-  );
+    });
+
+    scheduledIt(
+      'Doesn\'t change if the session changes in a way that doesn\'t affect the round path',
+      ({expectObservable, cold}) => {
+        mockSession2Data$.next(values.sessions.i);
+
+        const [
+          session2Data,
+          sessionsToJoin,
+          whenToLeaveTheSession,
+          expectedRoundPaths,
+        ] = [
+          '------j-k---',
+          '----2-------',
+          '----------x-',
+          'n---I-J---n-',
+        ];
+
+        cold(session2Data, values.sessions).subscribe(mockSession2Data$);
+
+        cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+          service.joinSession(id);
+        });
+        cold(whenToLeaveTheSession).subscribe(() => {
+          service.leaveSession();
+        });
+
+        expectObservable(service.currentRoundPath$).toBe(
+          expectedRoundPaths,
+          values.roundPaths,
+        );
+      },
+    );
+  });
 });
