@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService } from './firebase.service';
 import { SessionWithId } from './session';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { scheduledIt } from './utils/karma-utils';
 
 describe('StudentSessionService', () => {
@@ -72,20 +72,25 @@ describe('StudentSessionService', () => {
   let service: StudentSessionService;
 
   // These observables pretend to be the session data coming from Firebase.
-  // You can assign whatever values you want to them.
-  let mockSession1Data$: Observable<SessionWithId>;
-  let mockSession2Data$: Observable<SessionWithId>;
+  // You can push whatever values you want to them.
+  let mockSession1Data$: BehaviorSubject<SessionWithId>;
+  let mockSession2Data$: BehaviorSubject<SessionWithId>;
+
+  beforeEach(() => {
+    mockSession1Data$ = new BehaviorSubject(null);
+    mockSession2Data$ = new BehaviorSubject(null);
+  });
 
   beforeEach(() => {
     const mockFirebaseService: Partial<FirebaseService> = {
-      getSession(id: string) {
+      getSession(id) {
         switch (id) {
           case '1':
             return mockSession1Data$;
           case '2':
             return mockSession2Data$;
           default:
-            throw new Error('FirebaseService.getSession(): Bad session id!');
+            throw new Error(`FirebaseService.getSession(): Bad session id ${id}`);
         }
       },
     };
@@ -152,8 +157,8 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when you join or leave a session', ({expectObservable, cold}) => {
-      const session1Data = 'a';
-      const session2Data = 'i';
+      mockSession1Data$.next(values.sessions.a);
+      mockSession2Data$.next(values.sessions.i);
 
       const [
         sessionsToJoin,
@@ -164,9 +169,6 @@ describe('StudentSessionService', () => {
         '------x-------x-',
         'n---a-n---a-i-n-',
       ];
-
-      mockSession1Data$ = new BehaviorSubject(values.sessions[session1Data]);
-      mockSession2Data$ = new BehaviorSubject(values.sessions[session2Data]);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
         service.joinSession(id);
@@ -182,13 +184,8 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
-      const session1InitialState = 'a';
-      const session2InitialState = 'i';
-
-      mockSession1Data$ =
-        new BehaviorSubject(values.sessions[session1InitialState]);
-      mockSession2Data$ =
-        new BehaviorSubject(values.sessions[session2InitialState]);
+      mockSession1Data$.next(values.sessions.a);
+      mockSession2Data$.next(values.sessions.i);
 
       const [
         // These two marble strings represent the sessions data changing in
@@ -210,12 +207,8 @@ describe('StudentSessionService', () => {
       ];
 
       // Pipe the data from the marble strings into the FirebaseService mocks.
-      cold(session1Data, values.sessions).subscribe(
-        mockSession1Data$ as BehaviorSubject<SessionWithId>,
-      );
-      cold(session2Data, values.sessions).subscribe(
-        mockSession2Data$ as BehaviorSubject<SessionWithId>,
-      );
+      cold(session1Data, values.sessions).subscribe(mockSession1Data$);
+      cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
         service.joinSession(id);
@@ -240,8 +233,8 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when the current session changes', ({expectObservable, cold}) => {
-      const session1Data = 'a';
-      const session2Data = 'i';
+      mockSession1Data$.next(values.sessions.a);
+      mockSession2Data$.next(values.sessions.i);
 
       const [
         sessionsToJoin,
@@ -252,9 +245,6 @@ describe('StudentSessionService', () => {
         '------x-------x-',
         'n---A-n---A-I-n-',
       ];
-
-      mockSession1Data$ = new BehaviorSubject(values.sessions[session1Data]);
-      mockSession2Data$ = new BehaviorSubject(values.sessions[session2Data]);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
         service.joinSession(id);
@@ -271,13 +261,8 @@ describe('StudentSessionService', () => {
   });
 
   scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
-    const session1InitialState = 'a';
-    const session2InitialState = 'i';
-
-    mockSession1Data$ =
-      new BehaviorSubject(values.sessions[session1InitialState]);
-    mockSession2Data$ =
-      new BehaviorSubject(values.sessions[session2InitialState]);
+    mockSession1Data$.next(values.sessions.a);
+    mockSession2Data$.next(values.sessions.i);
 
     const [
       session1Data,
@@ -294,12 +279,8 @@ describe('StudentSessionService', () => {
     ];
 
     // Pipe the data from the marble strings into the FirebaseService mocks.
-    cold(session1Data, values.sessions).subscribe(
-      mockSession1Data$ as BehaviorSubject<SessionWithId>,
-    );
-    cold(session2Data, values.sessions).subscribe(
-      mockSession2Data$ as BehaviorSubject<SessionWithId>,
-    );
+    cold(session1Data, values.sessions).subscribe(mockSession1Data$);
+    cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
     cold(sessionsToJoin, values.sessionIds).subscribe(id => {
       service.joinSession(id);
@@ -317,10 +298,7 @@ describe('StudentSessionService', () => {
   scheduledIt(
     'Doesn\'t change if the session changes in a way that doesn\'t affect the round path',
     ({expectObservable, cold}) => {
-      const session2InitialState = 'i';
-
-      mockSession2Data$ =
-        new BehaviorSubject(values.sessions[session2InitialState]);
+      mockSession2Data$.next(values.sessions.i);
 
       const [
         session2Data,
@@ -334,9 +312,7 @@ describe('StudentSessionService', () => {
         'n---I-J---n-',
       ];
 
-      cold(session2Data, values.sessions).subscribe(
-        mockSession2Data$ as BehaviorSubject<SessionWithId>,
-      );
+      cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
         service.joinSession(id);
