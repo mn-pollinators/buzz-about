@@ -13,3 +13,7 @@ export interface Session {
 export interface SessionWithId extends Session {
   id: string;
 }
+
+export interface SessionStudentData {
+  name: string;
+}
