@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionWithId } from './session';
 import { BehaviorSubject } from 'rxjs';
 import { scheduledIt } from './utils/karma-utils';
@@ -11,7 +11,7 @@ describe('StudentSessionService', () => {
   const values: {
     sessionIds: {[letterName: string]: string},
     sessions: {[letterName: string]: SessionWithId},
-    roundPaths: {[letterName: string]: {sessionId: string, roundId: string}},
+    roundPaths: {[letterName: string]: RoundPath},
   } = {
     sessionIds: {
       n: null,

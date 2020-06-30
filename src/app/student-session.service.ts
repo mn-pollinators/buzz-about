@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { SessionWithId } from './session';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { SessionWithId, SessionStudentData } from './session';
+import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService, RoundPath } from './firebase.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentSessionService {
 
-  constructor(private firebaseService: FirebaseService) {
+  constructor(private firebaseService: FirebaseService, private authService: AuthService) {
   }
 
   sessionId$ = new BehaviorSubject<string | null>(null);
@@ -36,7 +37,7 @@ export class StudentSessionService {
    * An observable of the current round's session ID and round ID.
    * Emits null if the student is not in a session or the round is not set on the session.
    */
-  currentRoundPath$: Observable<{sessionId: string, roundId: string} | null> = this.currentSession$.pipe(
+  currentRoundPath$: Observable<RoundPath | null> = this.currentSession$.pipe(
     map(session =>
       session && session.currentRoundId
         ? {sessionId: session.id , roundId: session.currentRoundId}
@@ -46,6 +47,11 @@ export class StudentSessionService {
       prev?.roundId === curr?.roundId && prev?.sessionId === curr?.sessionId
     ),
     shareReplay(1),
+  );
+
+  sessionStudentData$: Observable<SessionStudentData | null> = combineLatest([this.sessionId$, this.authService.currentUser$]).pipe(
+    switchMap(([sessionId, user]) => sessionId && user ? this.firebaseService.getSessionStudent(sessionId, user.uid) : of(null)),
+    shareReplay(1)
   );
 
 
