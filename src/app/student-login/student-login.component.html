@@ -2,10 +2,21 @@
     <img src="/assets/images/large-display/hill-compressed.jpg" class="background-img" />
     <div class="mdc-card">
         <!-- ... content ... -->
-        <input #name>
-        <button class="mdc-button">
-          <div class="mdc-button__ripple"></div>
-          <span class="mdc-button__label">Join Session</span>
-       </button>
+        <form [formGroup]="sessionFormGroup" (ngSubmit)="addStudentToDatabase()">
+          <p>
+              <mat-form-field appearance="outline" class='name-form-field'>
+                <input matInput class='name' placeholder="Name" formControlName="nameControl">
+              </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class='form-field'>
+              <input matInput class='session' placeholder="Session ID" formControlName="sessionControl">
+            </mat-form-field>
+          </p>
+          <button class="mdc-button" type="submit">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">Join Session</span>
+          </button>
+      </form>
     </div>
 </div>
