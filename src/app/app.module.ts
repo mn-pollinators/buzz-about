@@ -11,11 +11,13 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
@@ -65,6 +67,8 @@ const MDC_MODULES = [
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
+  MatFormFieldModule,
+  MatInputModule
 ];
 
 const FIREBASE_MODULES = [
@@ -102,6 +106,7 @@ const FIREBASE_MODULES = [
     HttpClientModule,
     FlexLayoutModule,
     FormsModule,
+    ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
     MDC_MODULES,
   ],
