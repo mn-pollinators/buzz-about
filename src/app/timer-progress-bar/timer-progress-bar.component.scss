@@ -1,0 +1,42 @@
+@use "../../variables" as *;
+
+.timer-progress-bar-container {
+  position: relative;
+  width: 100%;
+
+  mat-progress-bar.monthProgress {
+    height: 24px;
+
+    .mat-progress-bar-fill::after {
+      background-color: mat-color($primary, 300);
+    }
+  }
+
+  .progressMonths {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    .progressMonth {
+      flex: 1;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      font-size: 16px;
+      position: relative;
+
+      &:not(:last-child) {
+        border-right: 1px solid white;
+      }
+
+      &.currentMonth {
+        font-weight: 600;
+        color: mat-color($foreground, text);
+      }
+    }
+  }
+}
+

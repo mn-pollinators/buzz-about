@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ar-simulation": {
+    "buzz-about": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ar-simulation",
+            "aot": true,
+            "outputPath": "dist/buzz-about",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -30,8 +31,12 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-            ]
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            },
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -55,6 +60,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ],
               "serviceWorker": true,
@@ -65,18 +74,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ar-simulation:build"
+            "browserTarget": "buzz-about:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ar-simulation:build:production"
+              "browserTarget": "buzz-about:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ar-simulation:build"
+            "browserTarget": "buzz-about:build"
           }
         },
         "test": {
@@ -94,6 +103,11 @@
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/"
+              ]
+            },
             "scripts": []
           }
         },
@@ -114,16 +128,20 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ar-simulation:serve"
+            "devServerTarget": "buzz-about:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ar-simulation:serve:production"
+              "devServerTarget": "buzz-about:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
   },
-  "defaultProject": "ar-simulation"
+  "defaultProject": "buzz-about"
 }

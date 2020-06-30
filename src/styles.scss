@@ -1,8 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-$mdc-theme-primary: #4CAF50; // primary color
-$mdc-theme-secondary: #FFC107; // secondary color
+@use "variables" as *;
 
-@import "~@angular-mdc/theme/material";
+// Set up a theme for angular material.
+
+@include mat-core();
+
+@include angular-material-theme($theme);
 
 .debug {
     margin-top: 60px;
@@ -11,5 +13,18 @@ $mdc-theme-secondary: #FFC107; // secondary color
         top: none !important;
         left: none !important;
     }
-
 }
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.main-content {
+  height: 100%;
+}
+

@@ -1,0 +1,11 @@
+.progress-spinner-wrapper {
+
+  .mat-progress-spinner svg {
+    //padding: 10px;
+
+    circle {
+      opacity: 0.6;
+      transform: scaleY(-1);
+    }
+  }
+}

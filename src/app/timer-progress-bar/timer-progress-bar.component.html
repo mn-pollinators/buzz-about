@@ -1,0 +1,16 @@
+<div class="timer-progress-bar-container">
+  <mat-progress-bar
+      class="monthProgress"
+      determinate
+      [value]="this.currentTimeFraction() * 100"
+  ></mat-progress-bar>
+  <div class="progressMonths">
+    <span
+        *ngFor="let month of getMonths()"
+        class="progressMonth"
+        [ngClass]="{'currentMonth': this.currentTime?.month === month}"
+    >
+      {{Month[month]}}
+    </span>
+  </div>
+</div>
