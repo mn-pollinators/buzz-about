@@ -26,6 +26,8 @@ import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
 import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
+import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -46,7 +48,8 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
-  AngularFirestoreModule
+  AngularFirestoreModule,
+  AngularFireAuthModule
 ]
 
 @NgModule({
@@ -65,6 +68,7 @@ const FIREBASE_MODULES = [
     HomeComponent,
     TopMenuBarComponent,
     FirebaseTestComponent,
+    SessionPageTestComponent,
     JsonDataTestComponent,
   ],
   imports: [

@@ -6,6 +6,7 @@ import { TimerTestComponent } from './timer-test/timer-test.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
+import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
   {path: 'firebase-test', component: FirebaseTestComponent},
+  {path: 'session-page-test', component: SessionPageTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent}
 ];
 
