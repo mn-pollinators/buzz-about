@@ -1,13 +1,13 @@
-<mdc-top-app-bar [fixedAdjustElement]="contents" [scrollTarget]="contents">
-  <mdc-top-app-bar-row>
-    <mdc-top-app-bar-section align="start" [title]="title">
-      <button mdcTopAppBarNavIcon>
-        <mdc-icon>menu</mdc-icon>
-      </button>
-    </mdc-top-app-bar-section>
-    <mdc-top-app-bar-section align="end">
-      <app-fullscreen-button></app-fullscreen-button>
-      <mdc-icon mdcTopAppBarActionItem>help_outline</mdc-icon>
-    </mdc-top-app-bar-section>
-  </mdc-top-app-bar-row>
-</mdc-top-app-bar>
+<mat-toolbar color="primary" class="main-toolbar">
+  <button
+    type="button"
+    aria-label="Toggle sidenav"
+    mat-icon-button
+    >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <span class="app-title">{{title}}</span>
+  <span fxFlex="1 1 auto"></span>
+  <app-fullscreen-button></app-fullscreen-button>
+  <button type="button" mat-icon-button aria-label="Help"><mat-icon>help_outline</mat-icon></button>
+</mat-toolbar>

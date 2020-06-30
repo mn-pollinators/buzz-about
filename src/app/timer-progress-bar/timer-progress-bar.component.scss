@@ -3,13 +3,12 @@
 .timer-progress-bar-container {
   position: relative;
   width: 100%;
-  color: darken($mdc-theme-primary, 35%);
 
   mat-progress-bar.monthProgress {
     height: 24px;
 
     .mat-progress-bar-fill::after {
-      background-color: lighten($mdc-theme-primary, 15%);
+      background-color: mat-color($primary, 300);
     }
   }
 
@@ -35,7 +34,7 @@
 
       &.currentMonth {
         font-weight: 600;
-        color: black;
+        color: mat-color($foreground, text);
       }
     }
   }
