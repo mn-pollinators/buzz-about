@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {allFlowerSpecies} from '../flowers';
-import {allBeeSpecies} from '../bees';
-import {allNests} from '../nests';
+import { allFlowerSpecies } from '../flowers';
+import { allBeeSpecies } from '../bees';
+import { allNests } from '../nests';
 
 @Component({
   selector: 'app-json-data-test',

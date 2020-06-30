@@ -27,6 +27,14 @@ export class FullscreenButtonComponent implements OnInit {
     }
   }
 
+  toggleFullscreen() {
+    if(this.fullscreen) {
+      this.closeFullscreen();
+    } else {
+      this.openFullscreen();
+    }
+  }
+
   /* Open fullscreen */
   openFullscreen() {
     if (this.elem.requestFullscreen) {

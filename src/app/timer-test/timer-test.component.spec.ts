@@ -4,11 +4,13 @@ import { TimerTestComponent } from './timer-test.component';
 import { TimerProgressBarComponent } from '../timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from '../timer-progress-spinner/timer-progress-spinner.component';
 import { FormsModule } from '@angular/forms';
-import { MdcSliderModule, MdcIconModule, MdcTopAppBarModule } from '@angular-mdc/web';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('TimerTestComponent', () => {
   let component: TimerTestComponent;
@@ -17,9 +19,9 @@ describe('TimerTestComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MdcIconModule,
-        MdcSliderModule,
-        MdcTopAppBarModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
         MatProgressBarModule,
         MatProgressSpinnerModule,
         FormsModule,
