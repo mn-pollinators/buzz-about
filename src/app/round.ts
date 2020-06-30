@@ -29,3 +29,7 @@ export class RoundFlower {
     return this.species === other.species && this.isBlooming === other.isBlooming;
   }
 }
+
+export interface RoundStudentData {
+  beeSpecies?: string;
+}

@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { StudentRoundService } from './student-round.service';
 import { BehaviorSubject } from 'rxjs';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService, RoundPath } from './firebase.service';
 import { FirebaseRound, RoundFlower } from './round';
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from './utils/karma-utils';
@@ -11,7 +11,7 @@ import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
 
 describe('StudentRoundService', () => {
   const values: {
-    roundPaths: {[letterName: string]: {sessionId: string, roundId: string}},
+    roundPaths: {[letterName: string]: RoundPath},
     rounds: {[letterName: string]: FirebaseRound},
     flowerSpecies: {[letterName: string]: FlowerSpecies[]},
     roundFlowers: {[letterName: string]: RoundFlower[]},
@@ -119,7 +119,7 @@ describe('StudentRoundService', () => {
   // This observable pretends to be the currentRoundPath$ coming from
   // StudentSessionService. You can push values to it to control what the
   // current round is.
-  let mockCurrentRoundPath$: BehaviorSubject<{sessionId: string, roundId: string}>;
+  let mockCurrentRoundPath$: BehaviorSubject<RoundPath>;
 
   beforeEach(() => {
     mockRound1AData$ = new BehaviorSubject(null);

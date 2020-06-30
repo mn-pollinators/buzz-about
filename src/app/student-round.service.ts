@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower } from './round';
+import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
 import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { FirebaseService } from './firebase.service';
+import { AuthService } from './auth.service';
+import { BeeSpecies, allBeeSpecies } from './bees';
 
 /**
  * This service lets you read to and write from the rounds in Firebase as a student.
@@ -18,6 +20,7 @@ export class StudentRoundService {
   constructor(
     private sessionService: StudentSessionService,
     private firebaseService: FirebaseService,
+    private authService: AuthService,
   ) {}
 
   /**
@@ -92,14 +95,33 @@ export class StudentRoundService {
 
   // currentState$: Observable<string>
 
-
   // Will need to get authstate
-  // roundUserData$: Observable<RoundUserData>
   // interact(interaction) creates interaction
 
-  /**
-   * An array of all   of the flowers in this round, or an empty array, if there
-   * isn't a round going on right now.
-   */
+  roundStudentData$: Observable<RoundStudentData | null> = combineLatest(
+    [this.sessionService.currentRoundPath$, this.authService.currentUser$]
+  ).pipe(
+    switchMap(([roundPath, user]) =>
+      roundPath && user
+        ? this.firebaseService.getRoundStudent(roundPath, user.uid)
+        : of(null)
+    ),
+    shareReplay(1),
+  );
 
+  currentBeeSpecies$: Observable<BeeSpecies | null> = this.roundStudentData$.pipe(
+    map(student => student ? student.beeSpecies : null),
+    distinctUntilChanged(),
+    map(speciesId => speciesId ? allBeeSpecies[speciesId] : null),
+    shareReplay(1),
+  );
+
+  currentBeeActive$: Observable<boolean | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
+    map(([species, time]) =>
+      species && time
+        ? species.active_period.some(interval => time.fallsWithin(...interval))
+        : null
+    ),
+    shareReplay(1),
+  );
 }
