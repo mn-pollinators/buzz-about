@@ -5,7 +5,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: $large-display-background;
+  background-color: mat-color($primary);
 }
 
 .large-display-content {
@@ -43,7 +43,7 @@
   // (Actually, on small screens it shrinks to 56px, but that complexity
   // probably isn't worth building into the bottom bar right now.)
   height: 64px;
-  background-color: $mdc-theme-primary;
+  background-color: mat-color($primary);
   display: flex;
   flex-direction: row;
 
@@ -75,18 +75,4 @@
     justify-content: flex-end;
   }
 
-  button {
-    background-color: $mdc-theme-secondary;
-    // This is the same text color that Angular MDC uses this for its
-    // mdc-top-app-bar.
-    color: rgba(0, 0, 0, 0.87);
-
-    &[mdc-fab] {
-      transform: scale(0.9);
-
-      // Since the other buttons in the toolbar don't have shadows, we
-      // should probably turn off the shadow on FABs--otherwise, it'll clash.
-      box-shadow: none;
-    }
-  }
 }

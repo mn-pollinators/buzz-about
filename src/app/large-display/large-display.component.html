@@ -8,25 +8,17 @@
 
 <div class="bottom-bar">
   <div class="left">
-    <button mdc-button>Quit Game</button>
+    <button mat-raised-button color="accent">Quit Game</button>
   </div>
   <div class="center">
-    <button mdc-fab
+    <button mat-mini-fab color="accent"
       [disabled]="running === undefined"
       (click)="toggleTimerRunning()"
     >
-      <div *ngIf="running; then pauseIcon else playIcon"></div>
+      <mat-icon>{{running ? 'pause' : 'play_arrow' }}</mat-icon>
     </button>
   </div>
   <div class="right">
-    <button mdc-button>Skip Round</button>
+    <button mat-raised-button color="accent">Skip Round</button>
   </div>
 </div>
-
-<ng-template #playIcon>
-  <mdc-icon>play_arrow</mdc-icon>
-</ng-template>
-
-<ng-template #pauseIcon>
-  <mdc-icon>pause</mdc-icon>
-</ng-template>
