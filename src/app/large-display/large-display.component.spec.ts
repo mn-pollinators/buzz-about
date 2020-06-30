@@ -13,8 +13,8 @@ import { TimerService } from '../timer.service';
 import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
