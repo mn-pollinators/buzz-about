@@ -10,12 +10,14 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class StudentLoginComponent implements OnInit {
 
-  userID: string;
+  sessionID: string;
   nameControl: FormControl;
   sessionControl: FormControl;
   sessionFormGroup: FormGroup;
 
-  constructor(public authService: AuthService, public firebaseService: FirebaseService) {  }
+  constructor(public authService: AuthService) {
+    this.sessionID = 'demo-session'; // Temporary until multiple sessions are supported
+  }
 
   ngOnInit(): void {
     this.authService.logStudentIn();
@@ -30,10 +32,8 @@ export class StudentLoginComponent implements OnInit {
   addStudentToDatabase() {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const session = this.sessionFormGroup.controls.sessionControl.value;
-    this.authService.getCurrentUser$.subscribe( user => {
-      this.userID = user.uid;
-      this.firebaseService.addStudentToSession(this.userID, session, {name});
-    });
+    // TODO: Change this to read sessionID from the submission once multiple sessions are supported
+    this.authService.addStudentToDatabase(name, this.sessionID);
   }
 
 }
