@@ -39,7 +39,6 @@ import { SessionPageTestComponent } from './session-page-test/session-page-test.
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
-import { MdcCardModule } from '@angular-mdc/web/card';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
