@@ -1,4 +1,4 @@
-<app-top-menu-bar [contents]="contents"></app-top-menu-bar>
+<app-top-menu-bar></app-top-menu-bar>
 
 <ul #contents>
   <li *ngFor="let item of firebaseService.allSessions$ | async">

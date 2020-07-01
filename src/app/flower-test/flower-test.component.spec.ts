@@ -5,9 +5,11 @@ import { FlowerLayoutComponent } from '../flower-layout/flower-layout.component'
 import { FlowerLayoutItemComponent } from '../flower-layout-item/flower-layout-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { MdcIconModule, MdcTopAppBarModule } from '@angular-mdc/web';
 import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('FlowerTestComponent', () => {
   let component: FlowerTestComponent;
@@ -16,8 +18,9 @@ describe('FlowerTestComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MdcIconModule,
-        MdcTopAppBarModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
         BrowserAnimationsModule,
         FormsModule,
       ],

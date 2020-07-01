@@ -7,9 +7,8 @@ import { FirebaseService } from './firebase.service';
 })
 export class AuthService {
 
-  userCredential: Promise<void | firebase.auth.UserCredential>;
 
-  constructor(public auth: AngularFireAuth, public firebaseService: FirebaseService) { }
+  constructor(private auth: AngularFireAuth, private firebaseService: FirebaseService) { }
 
   /**
    * Observable that emits the currently logged in firebase.User. Is undefined if no one is logged in.
@@ -20,8 +19,19 @@ export class AuthService {
    * Checks to see if the user is already logged in. If they aren't, it will create a new anonymous account.
    */
   logStudentIn() {
-    this.userCredential =  this.auth.auth.signInAnonymously().catch((error) => {
+    return this.auth.auth.signInAnonymously().catch((error) => {
       console.error(error);
      });
+  }
+
+  /**
+   *
+   * @param name preferred name of the student
+   * @param session ID of the session the student should be added to
+   */
+  addStudentToDatabase(name: string, sessionID: string) {
+    this.getCurrentUser$.subscribe( user => {
+      this.firebaseService.addStudentToSession(user.uid, sessionID, {name});
+    });
   }
 }
