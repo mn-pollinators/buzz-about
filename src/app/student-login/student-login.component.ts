@@ -32,7 +32,7 @@ export class StudentLoginComponent implements OnInit {
     const session = this.sessionFormGroup.controls.sessionControl.value;
     this.authService.getCurrentUser$.subscribe( user => {
       this.userID = user.uid;
-      this.firebaseService.addStudent(this.userID, {name});
+      this.firebaseService.addStudentToSession(this.userID, session, {name});
     });
   }
 
