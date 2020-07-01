@@ -1,22 +1,22 @@
-<div id=page>
-    <img src="/assets/images/large-display/hill-compressed.jpg" class="background-img" />
-    <div class="mdc-card">
-        <!-- ... content ... -->
-        <form [formGroup]="sessionFormGroup" (ngSubmit)="addStudentToDatabase()">
-          <p>
-              <mat-form-field appearance="outline" class='name-form-field'>
-                <input matInput class='name' placeholder="Name" formControlName="nameControl">
-              </mat-form-field>
-          </p>
-          <p>
-            <mat-form-field appearance="outline" class='form-field'>
-              <input matInput class='session' placeholder="Session ID" formControlName="sessionControl">
-            </mat-form-field>
-          </p>
-          <button class="mdc-button" type="submit">
-            <div class="mdc-button__ripple"></div>
-            <span class="mdc-button__label">Join Session</span>
-          </button>
-      </form>
-    </div>
+<div class='page'>
+  <form [formGroup]="sessionFormGroup" (ngSubmit)="addStudentToDatabase()" class='login-form'>
+    <mat-card class="login-card">
+      <mat-card-title>Join Session</mat-card-title>
+      <mat-card-content class="login-card-content">
+        <mat-form-field appearance="outline" class='form-field'>
+          <mat-label>Name</mat-label>
+          <input matInput class='name'  formControlName="nameControl">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class='form-field'>
+          <mat-label>Session ID</mat-label>
+          <input matInput class='session' formControlName="sessionControl">
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" class="join-button" type="submit">
+          JOIN
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
 </div>
