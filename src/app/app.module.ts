@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 
 
 
@@ -70,6 +71,7 @@ const FIREBASE_MODULES = [
     FirebaseTestComponent,
     SessionPageTestComponent,
     JsonDataTestComponent,
+    JoinedStudentsComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,52 @@
+@import "../../variables";
+
+.page {
+background-color: gold;
+  // Fill the rest of the screen. (The parts not covered by the toolbar.)
+  flex: 1;
+  // Crop the contents if they're too big.
+  overflow: hidden;
+}
+
+:host {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: mat-color($primary);
+  }
+
+.bottom-bar {
+    // Use 64px as a height, because that's how tall the mdc-top-app-bar is.
+    // (Actually, on small screens it shrinks to 56px, but that complexity
+    // probably isn't worth building into the bottom bar right now.)
+    height: 64px;
+    background-color: mat-color($primary);
+    display: flex;
+    flex-direction: row;
+
+
+    & > div {
+        // The child divs (the left, center, and right thirds of the toolbar) should
+        // stretch to fill the entire bar.
+        flex: 1;
+        // But give them a bit of padding so that their contents aren't right up
+        // against the edge.
+        padding-left: 16px;
+        padding-right: 16px;
+
+        // Each subsection of the toolbar should also be a flex-box.
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .right {
+        // And within the right third, all items should be right-justified.
+        justify-content: flex-end;
+      }
+
+  }
+
+  .student-list {
+  flex-direction: row;
+  }
