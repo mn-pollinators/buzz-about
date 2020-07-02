@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../firebase.service';
+import { TeacherSessionService } from '../teacher-session.service';
 import { Student } from '../student';
 
 @Component({
@@ -12,16 +12,16 @@ export class JoinedStudentsComponent implements OnInit {
   sessionID: string;
   studentList: Student[];
 
-  constructor(private firebaseService: FirebaseService) {
+  constructor(private teacherSessionService: TeacherSessionService) {
     this.sessionID = 'kugTpWqJyrXaJZ4ZB6zE'; // Temporary until a way to get the session is implemented
   }
 
   ngOnInit(): void {
-    this.getStudentsFromDatabase();
+    this.getStudentsFromService();
   }
 
-  getStudentsFromDatabase() {
-    this.firebaseService.getStudentsInSession(this.sessionID).subscribe(students => {
+  getStudentsFromService() {
+    this.teacherSessionService.getStudentsInSession(this.sessionID).subscribe(students => {
       this.studentList = students;
     });
   }
