@@ -1,15 +1,10 @@
 
-
-<div class='page'>
-
-    <div class="bottom-bar">
-        <div class="right">
-        <button mat-raised-button color="accent">Start Round </button>
-        </div>
-    </div>
-
-    <p class="student-list" fxLayout="row wrap" *ngFor="let student of studentList">
+<div class='list-container'>
+  <h2>Join with {{sessionID}}</h2>
+  <mat-grid-list cols="3" rowHeight="5:1">
+      {{studentList?.length}} Players
+      <mat-grid-tile class="student-names" fxLayout="row wrap" *ngFor="let student of studentList">
         {{student.name}}
-    </p>
-
+      </mat-grid-tile>
+  </mat-grid-list>
 </div>

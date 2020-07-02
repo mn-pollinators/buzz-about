@@ -29,14 +29,14 @@ import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
+import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { JoinedStudentsComponent } from './joined-students/joined-students.component';
-
+import { MatGridListModule} from '@angular/material/grid-list';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -45,6 +45,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule,
   MatButtonModule,
   MatIconModule,
+  MatGridListModule
 ];
 
 const FIREBASE_MODULES = [
