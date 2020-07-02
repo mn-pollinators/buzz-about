@@ -1,9 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { SessionWithId } from './session';
+import { SessionWithId, SessionStudentData } from './session';
 import { BehaviorSubject } from 'rxjs';
 import { scheduledIt } from './utils/karma-utils';
+import { AuthService } from './auth.service';
+import { User } from 'firebase';
 
 describe('StudentSessionService', () => {
   // For marble testing, here are some objects that associate single-character
@@ -12,6 +14,8 @@ describe('StudentSessionService', () => {
     sessionIds: {[letterName: string]: string},
     sessions: {[letterName: string]: SessionWithId},
     roundPaths: {[letterName: string]: RoundPath},
+    students: {[letterName: string]: SessionStudentData},
+    authUsers: {[letterName: string]: User}
   } = {
     sessionIds: {
       n: null,
@@ -67,6 +71,27 @@ describe('StudentSessionService', () => {
         roundId: 'Second Round',
       },
     },
+
+    students: {
+      n: null,
+      F: {
+        name: 'Fred',
+      },
+      V: {
+        name: 'Velma',
+      }
+    },
+
+    authUsers: {
+      X: {
+        uid: 'userX'
+      } as User,
+      Y: {
+        uid: 'userY'
+      } as User,
+      u: undefined
+    },
+
   };
 
   let service: StudentSessionService;
@@ -76,12 +101,20 @@ describe('StudentSessionService', () => {
   let mockSession1Data$: BehaviorSubject<SessionWithId>;
   let mockSession2Data$: BehaviorSubject<SessionWithId>;
 
-  beforeEach(() => {
-    mockSession1Data$ = new BehaviorSubject(null);
-    mockSession2Data$ = new BehaviorSubject(null);
-  });
+  let mockCurrentUser$: BehaviorSubject<User>;
+
+  let mockUserXData$: BehaviorSubject<SessionStudentData>;
+  let mockUserYData$: BehaviorSubject<SessionStudentData>;
 
   beforeEach(() => {
+    mockSession1Data$ = new BehaviorSubject(values.sessions.a);
+    mockSession2Data$ = new BehaviorSubject(values.sessions.i);
+
+    mockCurrentUser$ = new BehaviorSubject(undefined);
+
+    mockUserXData$ = new BehaviorSubject(values.students.F);
+    mockUserYData$ = new BehaviorSubject(values.students.V);
+
     const mockFirebaseService: Partial<FirebaseService> = {
       getSession(id) {
         switch (id) {
@@ -93,11 +126,27 @@ describe('StudentSessionService', () => {
             throw new Error(`FirebaseService.getSession(): Bad session id ${id}`);
         }
       },
+
+      getSessionStudent(_sessionId, studentId) {
+        switch (studentId) {
+          case 'userX':
+            return mockUserXData$;
+          case 'userY':
+            return mockUserYData$;
+          default:
+            throw new Error(`FirebaseService.getSession(): Bad session id ${studentId}`);
+        }
+      },
+    };
+
+    const mockAuthService: Partial<AuthService> = {
+      currentUser$: mockCurrentUser$,
     };
 
     TestBed.configureTestingModule({
       providers: [
         {provide: FirebaseService, useValue: mockFirebaseService},
+        {provide: AuthService, useValue: mockAuthService},
       ],
     });
     service = TestBed.inject(StudentSessionService);
@@ -157,9 +206,6 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when you join or leave a session', ({expectObservable, cold}) => {
-      mockSession1Data$.next(values.sessions.a);
-      mockSession2Data$.next(values.sessions.i);
-
       const [
         sessionsToJoin,
         whenToLeaveTheSession,
@@ -184,9 +230,6 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
-      mockSession1Data$.next(values.sessions.a);
-      mockSession2Data$.next(values.sessions.i);
-
       const [
         // These two marble strings represent the sessions data changing in
         /// Firebase.
@@ -233,9 +276,6 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when the current session changes', ({expectObservable, cold}) => {
-      mockSession1Data$.next(values.sessions.a);
-      mockSession2Data$.next(values.sessions.i);
-
       const [
         sessionsToJoin,
         whenToLeaveTheSession,
@@ -260,9 +300,6 @@ describe('StudentSessionService', () => {
     });
 
     scheduledIt('Changes when the contents of the current session change', ({expectObservable, cold}) => {
-      mockSession1Data$.next(values.sessions.a);
-      mockSession2Data$.next(values.sessions.i);
-
       const [
         session1Data,
         session2Data,
@@ -297,8 +334,6 @@ describe('StudentSessionService', () => {
     scheduledIt(
       'Doesn\'t change if the session changes in a way that doesn\'t affect the round path',
       ({expectObservable, cold}) => {
-        mockSession2Data$.next(values.sessions.i);
-
         const [
           session2Data,
           sessionsToJoin,
@@ -326,5 +361,81 @@ describe('StudentSessionService', () => {
         );
       },
     );
+  });
+
+  describe('the sessionStudentData$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.sessionStudentData$).toBe(
+        'n-',
+        values.students,
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      service.sessionId$.next('1');
+      expectObservable(service.sessionStudentData$).toBe(
+        'n-',
+        values.students,
+      );
+    });
+
+    scheduledIt('Emits null when no sessionId provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.sessionStudentData$).toBe(
+        'n-',
+        values.students,
+      );
+    });
+
+    scheduledIt('Emits UserX when no UserX UID and valid session provided', ({expectObservable}) => {
+      service.sessionId$.next('1');
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.sessionStudentData$).toBe(
+        'F-',
+        values.students,
+      );
+    });
+
+
+    scheduledIt('Emits every time the current user changes', ({cold, expectObservable}) => {
+      service.sessionId$.next('1');
+
+      const [
+        currentUser,
+        expectedStudentData,
+      ] = [
+        '--X-Y-',
+        'n-F-V-',
+      ];
+
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+
+      expectObservable(service.sessionStudentData$).toBe(
+        expectedStudentData,
+        values.students,
+      );
+    });
+
+    scheduledIt('Emits studentSessionData when something changes in the database', ({cold, expectObservable}) => {
+      service.sessionId$.next('2');
+      mockCurrentUser$.next(values.authUsers.X);
+
+      const [
+        currentUserXData,
+        expectedStudentData,
+      ] = [
+        '--V--F',
+        'F-V--F',
+      ];
+
+      cold(currentUserXData, values.students).subscribe(mockUserXData$);
+
+      expectObservable(service.sessionStudentData$).toBe(
+        expectedStudentData,
+        values.students,
+      );
+    });
   });
 });
