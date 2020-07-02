@@ -92,12 +92,13 @@ export class StudentRoundService {
     shareReplay(1)
   );
 
-
-  // currentState$: Observable<string>
-
-  // Will need to get authstate
-  // interact(interaction) creates interaction
-
+  /**
+   * An observable of student data for the currently logged-in student in the
+   * current round.
+   *
+   * This observable emits when it is subscribed to, and whenever the student's
+   * data in the Firestore database changes.
+   */
   roundStudentData$: Observable<RoundStudentData | null> = combineLatest(
     [this.sessionService.currentRoundPath$, this.authService.currentUser$]
   ).pipe(
@@ -109,6 +110,13 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
+  /**
+   * So, the currently logged-in student, right? What bee are they playing
+   * as? That's what this observable is for.
+   *
+   * This observable emits when it is subscribed to, and whenever the student
+   * is assigned a different bee to play as.
+   */
   currentBeeSpecies$: Observable<BeeSpecies | null> = this.roundStudentData$.pipe(
     map(student => student ? student.beeSpecies : null),
     distinctUntilChanged(),
@@ -116,6 +124,17 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
+  /**
+   * An observable stream of whether the bee that the student is playing as is
+   * active right now.
+   * - `true` if the round is playing
+   * - `false` if the round is paused, and
+   * - `null` if no student has logged in, no round has been started yet, or
+   *   the student hasn't been assigned a bee species yet.
+   *
+   * This observable emits when it is subscribed to, and whenever the bee
+   * becomes active or inactive.
+   */
   currentBeeActive$: Observable<boolean | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
     map(([species, time]) =>
       species && time
@@ -124,4 +143,7 @@ export class StudentRoundService {
     ),
     shareReplay(1),
   );
+
+
+  //TODO: interact(interaction) creates interaction
 }
