@@ -1,5 +1,11 @@
 <p>session-page-test works!</p>
 <p>What's your name?</p>
+
 <input #name>
 <button (click)="addStudentToDatabase(name.value)">Log In</button>
 <p>UserID: {{ (this.authService.getCurrentUser$ | async)?.uid }}</p>
+
+<button (click)="getStudentsFromDatabase()">See all students</button>
+<div *ngFor="let student of studentList">
+    {{student.name}}
+</div>
