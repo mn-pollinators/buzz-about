@@ -596,7 +596,7 @@ describe('StudentRoundService', () => {
     });
   });
 
-  describe('the currentBeeSpecies observable', () => {
+  describe('the currentBeeSpecies$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeSpecies$).toBe(
         'n-',
@@ -682,6 +682,124 @@ describe('StudentRoundService', () => {
       expectObservable(service.currentBeeSpecies$).toBe(
         expectedBeeSpecies,
         values.beeSpecies,
+      );
+    });
+  });
+
+  describe('the currentBeeActive$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentBeeActive$).toBe(
+        'n-',
+        values.booleans,
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.currentBeeActive$).toBe(
+        'n-',
+        values.booleans,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentBeeActive$).toBe(
+        'n-',
+        values.booleans,
+      );
+    });
+
+    scheduledIt('Emits when the current user changes', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+
+      const [
+        currentUser,
+        expectedIsTheBeeActive,
+      ] = [
+        '----Y-X-',
+        'n---1-n-',
+      ];
+
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+      expectObservable(service.currentBeeActive$).toBe(
+        expectedIsTheBeeActive,
+        values.booleans,
+      );
+    });
+
+    scheduledIt('Emits when the current user\'s assigned bee changes', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+      mockCurrentUser$.next(values.authUsers.Y);
+
+      const [
+        currentUserYData,
+        expectedIsTheBeeActive,
+      ] = [
+        '----F-W-F-',
+        '1---n-1-n-',
+      ];
+
+      cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
+
+      expectObservable(service.currentBeeActive$).toBe(
+        expectedIsTheBeeActive,
+        values.booleans,
+      );
+    });
+
+    scheduledIt('Emits when the time changes', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+      mockCurrentUser$.next(values.authUsers.Y);
+
+      const [
+        currentUserYData,
+        expectedIsTheBeeActive,
+      ] = [
+        '----F-W-F-',
+        '1---n-1-n-',
+      ];
+
+      cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
+
+      expectObservable(service.currentBeeActive$).toBe(
+        expectedIsTheBeeActive,
+        values.booleans,
+      );
+    });
+
+
+    scheduledIt('Is distinct-until-changed', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+
+      // This one is maybe a little overkill 😜
+      const [
+        currentRoundState,
+        currentUserXData,
+        currentUserYData,
+        currentUser,
+        expectedIsTheBeeActive,
+      ] = [
+        '--p-----------n----------p-------q------r-s-t-------------',
+        '----F-----------V--------------W--------------------------',
+        '----F-----------V--------------W------------------V-------',
+        '------X-Y-u-------X-Y-u----X-Y----X-Y---------X-Y---X-Y-u-',
+        'n--------------------------1------------0---------------n-',
+      ];
+
+      cold(currentRoundState, values.rounds).subscribe(mockRound1AData$);
+      cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+      cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+      expectObservable(service.currentBeeActive$).toBe(
+        expectedIsTheBeeActive,
+        values.booleans,
       );
     });
   });
