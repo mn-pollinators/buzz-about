@@ -1,8 +1,13 @@
 
 <div class='list-container'>
-  <h2>Join with {{sessionID}}</h2>
-  <mat-grid-list cols="3" rowHeight="5:1">
-      {{studentList?.length}} Players
+  <div class='list-header'>
+    <h2 class='join-code'>Join with {{sessionID}}</h2>
+    <div class="players-number">
+      <h2 class="player-count">{{studentList?.length}}</h2>
+      <p>Players</p>
+    </div>
+  </div>
+  <mat-grid-list class="name-grid" cols="4" rowHeight="fit">
       <mat-grid-tile class="student-names" fxLayout="row wrap" *ngFor="let student of studentList">
         {{student.name}}
       </mat-grid-tile>

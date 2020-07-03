@@ -10,8 +10,40 @@
   height: 100%;
 }
 
+.list-header {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 2.5% 1.5%;
+}
+
+.join-code {
+  font-size: 3em;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.players-number {
+  color: mat-color($primary);
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  }
+
+
+.player-count {
+  font-size: 4em;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.name-grid {
+  height: 70vh;
+}
 
 .student-names:hover {
+  color: red;
   text-decoration-line: line-through;
   text-decoration-color: red;
 }
