@@ -595,4 +595,94 @@ describe('StudentRoundService', () => {
       );
     });
   });
+
+  describe('the currentBeeSpecies observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentBeeSpecies$).toBe(
+        'n-',
+        values.beeSpecies,
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.currentBeeSpecies$).toBe(
+        'n-',
+        values.beeSpecies,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentBeeSpecies$).toBe(
+        'n-',
+        values.beeSpecies,
+      );
+    });
+
+    scheduledIt('Emits when the current user changes', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+
+      const [
+        currentUser,
+        expectedBeeSpecies,
+      ] = [
+        '----Y-X-',
+        'n---v-n-',
+      ];
+
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+      expectObservable(service.currentBeeSpecies$).toBe(
+        expectedBeeSpecies,
+        values.beeSpecies,
+      );
+    });
+
+    scheduledIt('Emits when the current user\'s assigned bee changes', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Y);
+
+      const [
+        currentUserYData,
+        expectedBeeSpecies,
+      ] = [
+        '----W-F-V-F-',
+        'v---w-n-v-n-',
+      ];
+
+      cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
+
+      expectObservable(service.currentBeeSpecies$).toBe(
+        expectedBeeSpecies,
+        values.beeSpecies,
+      );
+    });
+
+    scheduledIt('Is distinct-until-changed', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+
+      const [
+        currentUserXData,
+        currentUserYData,
+        currentUser,
+        expectedBeeSpecies,
+      ] = [
+        '----F---------V-------',
+        '----F---------V-------',
+        '------X-Y-u-----X-Y-u-',
+        'n---------------v---n-',
+      ];
+
+      cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+      cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+      expectObservable(service.currentBeeSpecies$).toBe(
+        expectedBeeSpecies,
+        values.beeSpecies,
+      );
+    });
+  });
 });
