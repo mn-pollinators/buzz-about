@@ -141,9 +141,9 @@ export class StudentRoundService {
         ? species.active_period.some(interval => time.fallsWithin(...interval))
         : null
     ),
+    distinctUntilChanged(),
     shareReplay(1),
   );
 
-
-  //TODO: interact(interaction) creates interaction
+  // TODO: interact(interaction) creates interaction
 }
