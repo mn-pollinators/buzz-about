@@ -118,7 +118,7 @@ export class StudentRoundService {
    * is assigned a different bee to play as.
    */
   currentBeeSpecies$: Observable<BeeSpecies | null> = this.roundStudentData$.pipe(
-    map(student => student ? student.beeSpecies : null),
+    map(student => student && student.beeSpecies ? student.beeSpecies : null),
     distinctUntilChanged(),
     map(speciesId => speciesId ? allBeeSpecies[speciesId] : null),
     shareReplay(1),
