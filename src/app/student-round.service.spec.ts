@@ -2,12 +2,15 @@ import { TestBed } from '@angular/core/testing';
 import { StudentRoundService } from './student-round.service';
 import { BehaviorSubject } from 'rxjs';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower } from './round';
+import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from './utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
+import { User } from 'firebase';
+import { AuthService } from './auth.service';
+import { allBeeSpecies, BeeSpecies } from './bees';
 
 describe('StudentRoundService', () => {
   const values: {
@@ -18,6 +21,9 @@ describe('StudentRoundService', () => {
     statuses: {[letterName: string]: string},
     times: {[letterName: string]: TimePeriod},
     booleans: {[letterName: string]: boolean},
+    studentData: {[letterName: string]: RoundStudentData},
+    authUsers: {[letterName: string]: User},
+    beeSpecies: {[letterName: string]: BeeSpecies},
   } = {
     roundPaths: {
       n: null,
@@ -105,7 +111,28 @@ describe('StudentRoundService', () => {
       n: null,
       0: false,
       1: true,
-    }
+    },
+
+    studentData: {
+      n: null,
+      F: {},
+      V: {beeSpecies: 'apis_mellifera'},
+      W: {beeSpecies: 'bombus_affinis'},
+    },
+
+    authUsers: {
+      u: undefined,
+      X: {uid: 'userX'} as User,
+      Y: {uid: 'userY'} as User,
+    },
+
+    beeSpecies: {
+      n: null,
+      // Note that both of these bees are active during time period 25, but not
+      // during time period 47.
+      v: allBeeSpecies.apis_mellifera,
+      w: allBeeSpecies.bombus_affinis,
+    },
   };
 
   let service: StudentRoundService;
@@ -121,11 +148,26 @@ describe('StudentRoundService', () => {
   // current round is.
   let mockCurrentRoundPath$: BehaviorSubject<RoundPath>;
 
+  // Similarly, this observable pretends to be the currently logged-in user
+  // (which we would normally get from Firebase's authentication).
+  let mockCurrentUser$: BehaviorSubject<User>;
+
+  // These observables pretend to be the student data stored in the Firestore
+  // database for this round.
+  // Each observable is associated with a particular user ID.
+  // You can push values to these subjects to simulate the student data
+  // changing in the database (for example, being assigned a new bee.)
+  let mockUserXData$: BehaviorSubject<RoundStudentData>;
+  let mockUserYData$: BehaviorSubject<RoundStudentData>;
+
   beforeEach(() => {
     mockRound1AData$ = new BehaviorSubject(null);
     mockRound1BData$ = new BehaviorSubject(null);
     mockRound2ZData$ = new BehaviorSubject(null);
     mockCurrentRoundPath$ = new BehaviorSubject(null);
+    mockCurrentUser$ = new BehaviorSubject(null);
+    mockUserXData$ = new BehaviorSubject(values.studentData.F);
+    mockUserYData$ = new BehaviorSubject(values.studentData.V);
   });
 
   beforeEach(() => {
@@ -141,17 +183,33 @@ describe('StudentRoundService', () => {
           default:
             throw new Error(`FirebaseService.getSession(): Bad session round path ${JSON.stringify(path)}`);
         }
-      }
+      },
+
+      getRoundStudent(ignoredRoundPath, studentId) {
+        switch (studentId) {
+          case 'userX':
+            return mockUserXData$;
+          case 'userY':
+            return mockUserYData$;
+          default:
+            throw new Error(`FirebaseService.getSession(): Bad session id ${studentId}`);
+        }
+      },
     };
 
     const mockStudentSessionService: Partial<StudentSessionService> = {
       currentRoundPath$: mockCurrentRoundPath$,
     };
 
+    const mockAuthService: Partial<AuthService> = {
+      currentUser$: mockCurrentUser$,
+    };
+
     TestBed.configureTestingModule({
       providers: [
         {provide: FirebaseService, useValue: mockFirebaseService},
         {provide: StudentSessionService, useValue: mockStudentSessionService},
+        {provide: AuthService, useValue: mockAuthService},
       ],
     });
     service = TestBed.inject(StudentRoundService);
@@ -460,5 +518,81 @@ describe('StudentRoundService', () => {
         );
       },
     );
+  });
+
+  describe('the roundStudentData$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.roundStudentData$).toBe(
+        'n-',
+        values.studentData,
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.roundStudentData$).toBe(
+        'n-',
+        values.studentData,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.roundStudentData$).toBe(
+        'n-',
+        values.studentData,
+      );
+    });
+
+    scheduledIt('Emits User X when given User X\'s UID and a valid round path', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.roundStudentData$).toBe(
+        'F-',
+        values.studentData,
+      );
+    });
+
+
+    scheduledIt('Emits every time the current user changes', ({cold, expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+
+      const [
+        currentUser,
+        expectedStudentData,
+      ] = [
+        '----X-Y-',
+        'n---F-V-',
+      ];
+
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+
+
+      expectObservable(service.roundStudentData$).toBe(
+        expectedStudentData,
+        values.studentData,
+      );
+    });
+
+    scheduledIt('Emits studentSessionData when something changes in the database', ({cold, expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.X);
+
+      const [
+        currentUserXData,
+        expectedStudentData,
+      ] = [
+        '----V-W-F-',
+        'F---V-W-F-',
+      ];
+
+      cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+
+      expectObservable(service.roundStudentData$).toBe(
+        expectedStudentData,
+        values.studentData,
+      );
+    });
   });
 });
