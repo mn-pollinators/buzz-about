@@ -21,7 +21,17 @@ export class AuthService {
   logStudentIn() {
     return this.auth.auth.signInAnonymously().catch((error) => {
       console.error(error);
-     });
+    });
+  }
+
+  /**
+   * Check to see if the teacher is already logged in, and if not, log them
+   * in.
+   */
+  logTeacherIn() {
+    // For the moment, logging in as a teacher looks exactly the same as
+    // logging in as a student (but that may change in the future).
+    return this.logStudentIn();
   }
 
   /**

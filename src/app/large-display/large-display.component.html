@@ -1,24 +1,56 @@
-<div class="large-display-content">
-  <div class="during-a-round">
-    <app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
+<div class="large-display-content" [ngSwitch]="currentScreen">
+  <div *ngSwitchCase="Screen.WaitingToAuthenticate" class="waiting-to-authenticate">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <p>Loading&hellip;</p>
+  </div>
+
+  <app-start-round
+      *ngSwitchCase="Screen.WaitingToStartTheRound"
+      class="waiting-to-start-the-round"
+  ></app-start-round>
+
+  <div *ngSwitchCase="Screen.DuringTheRound" class="during-the-round">
+    <app-timer-progress-bar
+        [currentTime]="timerService.currentTime$ | async"
+        [startMonth]="this.startTime.month"
+        [endMonth]="this.endTime.month"
+    ></app-timer-progress-bar>
     <app-flower-layout [items]="demoFlowers"></app-flower-layout>
-    <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
+    <app-timer-progress-spinner
+        [currentTime]="timerService.currentTime$ | async"
+        [startTime]="this.startTime"
+        [endTime]="this.endTime">
+    </app-timer-progress-spinner>
   </div>
 </div>
 
-<div class="bottom-bar">
-  <div class="left">
-    <button mat-raised-button color="accent">Quit Game</button>
-  </div>
-  <div class="center">
-    <button mat-mini-fab color="accent"
-      [disabled]="running === undefined"
-      (click)="toggleTimerRunning()"
-    >
-      <mat-icon>{{running ? 'pause' : 'play_arrow' }}</mat-icon>
-    </button>
-  </div>
-  <div class="right">
-    <button mat-raised-button color="accent">Skip Round</button>
-  </div>
+<div class="bottom-bar" [ngSwitch]="currentScreen">
+  <ng-container *ngSwitchCase="Screen.WaitingToStartTheRound">
+    <div class="right">
+      <button mat-raised-button color="accent" (click)="startRound()">
+        Start Round
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="Screen.DuringTheRound">
+    <div class="left">
+      <button mat-raised-button color="accent">Quit Game</button>
+    </div>
+
+    <div class="center">
+      <button
+          mat-mini-fab
+          color="accent"
+          [disabled]="running === null"
+          (click)="toggleTimerRunning()"
+      >
+        <mat-icon>{{running ? 'pause' : 'play_arrow'}}</mat-icon>
+      </button>
+    </div>
+
+    <div class="right">
+      <button mat-raised-button color="accent">Skip Round</button>
+    </div>
+  </ng-container>
 </div>
