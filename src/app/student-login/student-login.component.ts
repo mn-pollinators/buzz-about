@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FirebaseService } from '../firebase.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-login',
@@ -11,9 +11,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class StudentLoginComponent implements OnInit {
 
   sessionID: string;
-  nameControl: FormControl;
-  sessionControl: FormControl;
-  sessionFormGroup: FormGroup;
+  sessionFormGroup = new FormGroup({
+    nameControl: new FormControl('', Validators.required),
+    sessionControl: new FormControl('', Validators.required)
+  });;
 
   constructor(public authService: AuthService) {
     this.sessionID = 'demo-session'; // Temporary until multiple sessions are supported
@@ -21,9 +22,6 @@ export class StudentLoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.logStudentIn();
-    this.nameControl = new FormControl();
-    this.sessionControl = new FormControl();
-    this.sessionFormGroup = new FormGroup({nameControl: this.nameControl, sessionControl: this.sessionControl});
   }
 
   /**
