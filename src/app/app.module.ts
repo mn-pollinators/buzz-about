@@ -29,6 +29,7 @@ import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
+import { SessionTestComponent } from './session-test/session-test.component';
 
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -70,6 +71,7 @@ const FIREBASE_MODULES = [
     FirebaseTestComponent,
     SessionPageTestComponent,
     JsonDataTestComponent,
+    SessionTestComponent,
   ],
   imports: [
     BrowserModule,
