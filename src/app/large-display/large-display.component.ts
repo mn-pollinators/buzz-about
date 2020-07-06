@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
@@ -24,7 +24,7 @@ enum Screen {
   templateUrl: './large-display.component.html',
   styleUrls: ['./large-display.component.scss']
 })
-export class LargeDisplayComponent implements OnInit, AfterViewInit {
+export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly Screen = Screen;
 
@@ -135,7 +135,7 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
   constructor(
     public timerService: TimerService,
     public authService: AuthService,
-    private app: ApplicationRef,
+    private zone: NgZone,
   ) { }
 
   // TODO: These values are only here for testing. Eventually, we'll get this
@@ -147,13 +147,14 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.authService.logTeacherIn().then(() => {
-      this.currentScreen = Screen.WaitingToStartTheRound;
       // At time of this writing, AngularFire uses a DIY implementation of the
       // Promise class that runs outside of the Angular Zone. As a result, code
       // that runs inside this callback won't trigger change detection; we have
       // to trigger change-detection manually.
       // See https://github.com/google/google-api-javascript-client/issues/353
-      this.app.tick();
+      this.zone.run(() => {
+        this.currentScreen = ScreenId.WaitingToStartTheRound;
+      });
     });
   }
 
@@ -176,10 +177,6 @@ export class LargeDisplayComponent implements OnInit, AfterViewInit {
     this.timerService.running$.subscribe(running => {
       this.running = running;
     });
-  }
-
-  ngAfterViewInit() {
-
   }
 
   toggleTimerRunning() {
