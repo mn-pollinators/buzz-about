@@ -1,7 +1,7 @@
 @import "../../variables";
 
 
-.page{
+.student-login-page{
     background-repeat: no-repeat;
     background-image: url('/assets/images/large-display/hill-compressed.jpg');
     height: 100%;
@@ -13,13 +13,8 @@
 }
 
 .login-form{
-  min-width: 40%;
-  max-width: 60%;
-  max-height: 50%;
-}
-
-.login-card{
-  padding: 20px;
+  width: 400px;
+  margin: 16px;
 }
 
 .login-card-content{
