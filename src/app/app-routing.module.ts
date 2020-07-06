@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'firebase-test', component: FirebaseTestComponent},
   {path: 'session-page-test', component: SessionPageTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'join-session', component: StudentLoginComponent}
+  {path: 'join', component: StudentLoginComponent}
 ];
 
 @NgModule({
