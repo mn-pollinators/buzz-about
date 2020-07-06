@@ -1,5 +1,7 @@
-<p>session-page-test works!</p>
-<p>What's your name?</p>
-<input #name>
-<button (click)="addStudentToDatabase(name.value)">Log In</button>
-<p>UserID: {{ (this.authService.getCurrentUser$ | async)?.uid }}</p>
+<div class='field-background'>
+  <p>session-page-test works!</p>
+  <p>What's your name?</p>
+  <input #name>
+  <button (click)="addStudentToDatabase(name.value)">Log In</button>
+  <p>UserID: {{ (this.authService.getCurrentUser$ | async)?.uid }}</p>
+</div>
