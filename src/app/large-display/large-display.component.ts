@@ -1,10 +1,12 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
 import { AuthService } from '../auth.service';
-import { FirebaseService } from '../firebase.service';
+import { FirebaseService, RoundPath } from '../firebase.service';
 import { allFlowerSpecies } from '../flowers';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 /**
  * Over the course of a session, the large display will show several
@@ -26,7 +28,7 @@ export enum ScreenId {
   templateUrl: './large-display.component.html',
   styleUrls: ['./large-display.component.scss']
 })
-export class LargeDisplayComponent implements OnInit {
+export class LargeDisplayComponent implements OnInit, OnDestroy {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
@@ -153,6 +155,8 @@ export class LargeDisplayComponent implements OnInit {
 
   currentScreen: ScreenId = ScreenId.WaitingToAuthenticate;
   running: boolean = null;
+  readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
+
 
   constructor(
     public timerService: TimerService,
@@ -169,7 +173,7 @@ export class LargeDisplayComponent implements OnInit {
   // TODO: For the moment, we're only using one fixed, preexisting round for
   // all teachers. Eventually, teachers will each create their own sessions
   // and rounds.
-  readonly roundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
+  readonly demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
 
   // The flowers displayed are essentially the demoFlowers at this moment
 
@@ -184,6 +188,29 @@ export class LargeDisplayComponent implements OnInit {
         this.currentScreen = ScreenId.Lobby;
       });
     });
+
+    // Link up observables so that the timer state gets sent to the current
+    // round in Firebase. (But don't do anything when the current round is
+    // null.)
+    combineLatest([this.roundPath$, this.timerService.running$]).pipe(
+      filter(([roundPath]) => roundPath !== null),
+    ).subscribe(([roundPath, running]) => {
+      this.firebaseService.updateRoundData(roundPath, {running});
+    });
+
+    combineLatest([this.roundPath$, this.timerService.currentTime$]).pipe(
+      filter(([roundPath]) => roundPath !== null),
+    ).subscribe(([roundPath, timePeriod]) => {
+      this.firebaseService.updateRoundData(roundPath, {
+        currentTime: timePeriod.time,
+      });
+    });
+
+    // Keep a copy of the "running" boolean for the large display controls to
+    // use.
+    this.timerService.running$.subscribe(running => {
+      this.running = running;
+    });
   }
 
   /**
@@ -195,41 +222,31 @@ export class LargeDisplayComponent implements OnInit {
   startRound() {
     this.currentScreen = ScreenId.DuringTheRound;
 
-    // Initialize the round in Firestore.
-    // TODO: Eventually, we'll create a whole new round, not just update an
-    // old one.
-    this.firebaseService.updateRoundData(this.roundPath, {
-      running: false,
-      currentTime: this.startTime.time,
-      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
-    });
+    // Eventually, we'll create a new round, but for the moment, we'll just use
+    // this one.
+    this.roundPath$.next(this.demoRoundPath);
 
     // Give the timer its starting state.
+    // (Because of the subscriptions we set up, these initial values should
+    // propagate to Firestore.)
     this.timerService.initialize({
       running: false,
       tickSpeed: 1000,
       currentTime: this.startTime,
       endTime: this.endTime
     });
+  }
 
-    // Keep a copy of the "running" boolean for the large display controls to
-    // use.
-    this.timerService.running$.subscribe(running => {
-      this.running = running;
-    });
-
-    // Make sure that when the timer ticks, it updates the round in Firestore.
-    this.timerService.running$.subscribe(running => {
-      this.firebaseService.updateRoundData(this.roundPath, {running});
-    });
-    this.timerService.currentTime$.subscribe(timePeriod => {
-      this.firebaseService.updateRoundData(this.roundPath, {
-        currentTime: timePeriod.time,
-      });
-    });
+  endRound() {
+    this.timerService.setRunning(false);
+    this.roundPath$.next(null);
   }
 
   toggleTimerRunning() {
     this.timerService.setRunning(!this.running);
+  }
+
+  ngOnDestroy() {
+    this.endRound();
   }
 }

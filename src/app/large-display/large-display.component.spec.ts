@@ -37,7 +37,7 @@ describe('LargeDisplayComponent', () => {
     const mockAuthService: Partial<AuthService> = {
       logTeacherIn() {
         // Give it a bit of a delay just to catch any blatant race conditions.
-        return of(mockUserCredentials).pipe(delay(50)).toPromise();
+        return of(mockUserCredentials).pipe(delay(100)).toPromise();
       },
     };
 
@@ -160,13 +160,14 @@ describe('LargeDisplayComponent', () => {
         it(
           'Makes the timer play if it\'s currently paused',
           fakeAsync(inject([TimerService], (timerService: TimerService) => {
+            let lastEmittedRunningState: boolean;
+            timerService.running$.subscribe(running => {
+              lastEmittedRunningState = running;
+            });
+
             component.toggleTimerRunning();
             tick(0);
-
-            timerService.running$.subscribe(running => {
-              expect(running).toBe(true);
-            });
-            tick(0);
+            expect(lastEmittedRunningState).toBe(true);
 
             discardPeriodicTasks();
           })),
