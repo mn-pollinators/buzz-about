@@ -11,7 +11,16 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card'
 
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
@@ -30,14 +39,7 @@ import { SessionPageTestComponent } from './session-page-test/session-page-test.
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { SessionTestComponent } from './session-test/session-test.component';
-
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-
-
+import { StudentLoginComponent } from './student-login/student-login.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -45,6 +47,9 @@ const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule,
   MatButtonModule,
   MatIconModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatCardModule
 ];
 
 const FIREBASE_MODULES = [
@@ -72,6 +77,7 @@ const FIREBASE_MODULES = [
     SessionPageTestComponent,
     JsonDataTestComponent,
     SessionTestComponent,
+    StudentLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +88,7 @@ const FIREBASE_MODULES = [
     HttpClientModule,
     FlexLayoutModule,
     FormsModule,
+    ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
   ],
   providers: [],

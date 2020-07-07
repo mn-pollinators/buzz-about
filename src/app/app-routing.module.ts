@@ -9,6 +9,7 @@ import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { SessionTestComponent } from './session-test/session-test.component';
+import { StudentLoginComponent } from './student-login/student-login.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -20,6 +21,8 @@ const routes: Routes = [
   {path: 'json-data-test', component: JsonDataTestComponent},
   {path: 'session-test', component: SessionTestComponent},
   {path: 'session-page-test', component: SessionPageTestComponent},
+  {path: 'json-data-test', component: JsonDataTestComponent},
+  {path: 'join', component: StudentLoginComponent}
 ];
 
 @NgModule({
