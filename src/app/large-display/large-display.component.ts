@@ -13,7 +13,7 @@ import { AuthService } from '../auth.service';
  * Each individual screen has a string that identifies it.
  * This type is a union of all of those ID strings.
  */
-enum Screen {
+export enum ScreenId {
   WaitingToAuthenticate,
   WaitingToStartTheRound,
   DuringTheRound,
@@ -26,7 +26,7 @@ enum Screen {
 })
 export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
-  readonly Screen = Screen;
+  readonly ScreenId = ScreenId;
 
   // TODO: These values are only here fore testing. Eventually, we'll get this
   // information from the round service.
@@ -129,7 +129,7 @@ export class LargeDisplayComponent implements OnInit {
     }
   ];
 
-  currentScreen: Screen = Screen.WaitingToAuthenticate;
+  currentScreen: ScreenId = ScreenId.WaitingToAuthenticate;
   running: boolean = null;
 
   constructor(
@@ -149,8 +149,8 @@ export class LargeDisplayComponent implements OnInit {
     this.authService.logTeacherIn().then(() => {
       // At time of this writing, AngularFire uses a DIY implementation of the
       // Promise class that runs outside of the Angular Zone. As a result, code
-      // that runs inside this callback won't trigger change detection; we have
-      // to trigger change-detection manually.
+      // that runs inside this callback won't trigger change detection unless
+      // we tell it to.
       // See https://github.com/google/google-api-javascript-client/issues/353
       this.zone.run(() => {
         this.currentScreen = ScreenId.WaitingToStartTheRound;
@@ -165,7 +165,7 @@ export class LargeDisplayComponent implements OnInit {
    * re-populates it with data.
    */
   startRound() {
-    this.currentScreen = Screen.DuringTheRound;
+    this.currentScreen = ScreenId.DuringTheRound;
 
     this.timerService.initialize({
       running: false,

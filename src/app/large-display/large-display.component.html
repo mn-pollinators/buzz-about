@@ -1,15 +1,15 @@
 <div class="large-display-content" [ngSwitch]="currentScreen">
-  <div *ngSwitchCase="Screen.WaitingToAuthenticate" class="waiting-to-authenticate">
+  <div *ngSwitchCase="ScreenId.WaitingToAuthenticate" class="waiting-to-authenticate">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     <p>Loading&hellip;</p>
   </div>
 
   <app-start-round
-      *ngSwitchCase="Screen.WaitingToStartTheRound"
+      *ngSwitchCase="ScreenId.WaitingToStartTheRound"
       class="waiting-to-start-the-round"
   ></app-start-round>
 
-  <div *ngSwitchCase="Screen.DuringTheRound" class="during-the-round">
+  <div *ngSwitchCase="ScreenId.DuringTheRound" class="during-the-round">
     <app-timer-progress-bar
         [currentTime]="timerService.currentTime$ | async"
         [startMonth]="this.startTime.month"
@@ -25,7 +25,7 @@
 </div>
 
 <div class="bottom-bar" [ngSwitch]="currentScreen">
-  <ng-container *ngSwitchCase="Screen.WaitingToStartTheRound">
+  <ng-container *ngSwitchCase="ScreenId.WaitingToStartTheRound">
     <div class="right">
       <button mat-raised-button color="accent" (click)="startRound()">
         Start Round
@@ -33,7 +33,7 @@
     </div>
   </ng-container>
 
-  <ng-container *ngSwitchCase="Screen.DuringTheRound">
+  <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="left">
       <button mat-raised-button color="accent">Quit Game</button>
     </div>
