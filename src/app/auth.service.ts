@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FirebaseService } from './firebase.service';
+import { SessionStudentData } from './session';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthService {
   /**
    * Observable that emits the currently logged in firebase.User. Is undefined if no one is logged in.
    */
-  getCurrentUser$ = this.auth.authState;
+  currentUser$ = this.auth.user;
 
   /**
    * Checks to see if the user is already logged in. If they aren't, it will create a new anonymous account.
@@ -36,12 +37,12 @@ export class AuthService {
 
   /**
    *
-   * @param name preferred name of the student
+   * @param studentData the Student's data for this session
    * @param session ID of the session the student should be added to
    */
-  addStudentToDatabase(name: string, sessionID: string) {
-    this.getCurrentUser$.subscribe( user => {
-      this.firebaseService.addStudentToSession(user.uid, sessionID, {name});
+  addStudentToDatabase(studentData: SessionStudentData, sessionID: string) {
+    this.currentUser$.subscribe( user => {
+      this.firebaseService.addStudentToSession(user.uid, sessionID, studentData);
     });
   }
 }

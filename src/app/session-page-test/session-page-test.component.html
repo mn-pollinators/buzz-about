@@ -2,4 +2,4 @@
 <p>What's your name?</p>
 <input #name>
 <button (click)="addStudentToDatabase(name.value)">Log In</button>
-<p>UserID: {{ (this.authService.getCurrentUser$ | async)?.uid }}</p>
+<p>UserID: {{ (this.authService.currentUser$ | async)?.uid }}</p>
