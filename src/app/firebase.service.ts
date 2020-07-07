@@ -80,9 +80,9 @@ export class FirebaseService {
    * Modify the data of a particular round firebase.
    *
    * The round in question **MUST** exist already before being updated.
-   * If you try, this method will throw an error.
+   * If you use a non-existent round path, this method will throw an error.
    *
-   * (That way you can never end up with a half-initialized session document;
+   * (That way you can never end up with a half-initialized round document;
    * See https://github.com/angular/angularfire/pull/1247#issuecomment-336226671)
    *
    * @param path The Firestore ID of the round to modify, along with with the
