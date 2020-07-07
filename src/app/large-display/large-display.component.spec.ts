@@ -18,6 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../auth.service';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { FirebaseService } from '../firebase.service';
+import { TimePeriod } from '../time-period';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
@@ -29,15 +31,21 @@ describe('LargeDisplayComponent', () => {
     },
   } as firebase.auth.UserCredential;
 
-  const mockAuthService: Partial<AuthService> = {
-    logTeacherIn() {
-      // Give it a bit of a delay just to catch any blatant race conditions.
-      return of(mockUserCredentials).pipe(delay(500)).toPromise();
-    },
-  };
 
 
   beforeEach(async(() => {
+    const mockAuthService: Partial<AuthService> = {
+      logTeacherIn() {
+        // Give it a bit of a delay just to catch any blatant race conditions.
+        return of(mockUserCredentials).pipe(delay(50)).toPromise();
+      },
+    };
+
+    const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
+      'firebaseService',
+      ['updateRoundData'],
+    );
+
     TestBed.configureTestingModule({
       imports: [
         MatButtonModule,
@@ -59,7 +67,8 @@ describe('LargeDisplayComponent', () => {
       ],
       providers: [
         TimerService,
-        { provide: AuthService, useValue: mockAuthService },
+        {provide: AuthService, useValue: mockAuthService},
+        {provide: FirebaseService, useValue: mockFirebaseService}
       ],
     })
     .compileComponents();
@@ -100,6 +109,29 @@ describe('LargeDisplayComponent', () => {
         it('Is the WaitingToStartTheRound screen', () => {
           expect(component.currentScreen).toBe(ScreenId.Lobby);
         });
+      });
+
+      describe('The Firebase service', () => {
+        it(
+          'Shouldn\'t be sent any data even if the timer is ticking',
+          fakeAsync(inject([TimerService, FirebaseService], (
+            timerService: TimerService,
+            firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+          ) => {
+            timerService.initialize({
+              running: false,
+              tickSpeed: 1000,
+              currentTime: new TimePeriod(0),
+              endTime: null,
+            });
+            tick(0);
+            timerService.setRunning(true);
+            tick(0);
+            tick(1000);
+            expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
+            discardPeriodicTasks();
+          })),
+        );
       });
     });
 
@@ -170,6 +202,52 @@ describe('LargeDisplayComponent', () => {
           expect(component.running).toBe(false);
         }));
       });
+
+      describe('The Firebase service', () => {
+        it(
+          'Should be sent data when the running state changes',
+          fakeAsync(inject([FirebaseService], (
+            firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+          ) => {
+            firebaseService.updateRoundData.calls.reset();
+            component.toggleTimerRunning();
+            tick(0);
+            expect(firebaseService.updateRoundData).toHaveBeenCalled();
+            expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
+              {running: true},
+            );
+            discardPeriodicTasks();
+          })),
+        );
+
+        it(
+          'Should be sent data when the time changes',
+          fakeAsync(inject([TimerService, FirebaseService], (
+            timerService: TimerService,
+            firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+          ) => {
+            timerService.initialize({
+              running: true,
+              tickSpeed: 1,
+              currentTime: new TimePeriod(0),
+              endTime: null,
+            });
+            tick(0);
+            firebaseService.updateRoundData.calls.reset();
+            tick(1);
+            expect(firebaseService.updateRoundData).toHaveBeenCalled();
+            expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
+              {currentTime: 1},
+            );
+            tick(1);
+            expect(firebaseService.updateRoundData).toHaveBeenCalled();
+            expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
+              {currentTime: 2},
+            );
+            discardPeriodicTasks();
+          })),
+        );
+      });
     });
-    });
+  });
 });
