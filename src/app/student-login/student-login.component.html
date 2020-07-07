@@ -1,0 +1,23 @@
+<div class='student-login-page field-background'>
+  <form [formGroup]="sessionFormGroup" (ngSubmit)="addStudentToDatabase()" class='login-form'>
+    <mat-card class="login-card">
+      <mat-card-title>Join Session</mat-card-title>
+      <mat-card-content class="login-card-content">
+        <mat-form-field appearance="outline" class='form-field'>
+          <mat-label>Session ID (Not implemented yet)</mat-label>
+          <input matInput class='session' formControlName="sessionControl">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class='form-field'>
+          <mat-label>Name</mat-label>
+          <input matInput class='name'  formControlName="nameControl">
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" class="join-button"
+          type="submit" [disabled]="!sessionFormGroup.valid">
+          JOIN
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
