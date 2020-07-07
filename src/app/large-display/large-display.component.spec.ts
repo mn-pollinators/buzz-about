@@ -261,6 +261,7 @@ describe('LargeDisplayComponent', () => {
               timerService: TimerService,
               firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
             ) => {
+              firebaseService.updateRoundData.calls.reset();
               timerService.initialize({
                 running: false,
                 tickSpeed: 1000,
