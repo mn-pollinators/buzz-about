@@ -75,4 +75,21 @@ export class FirebaseService {
   addStudentToSession(id: string, sessionID: string, studentData: SessionStudentData) {
     this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
   }
+
+  /**
+   * Modify the data of a particular round firebase.
+   *
+   * The round in question **MUST** exist already before being updated.
+   * If you try, this method will throw an error.
+   *
+   * (That way you can never end up with a half-initialized session document;
+   * See https://github.com/angular/angularfire/pull/1247#issuecomment-336226671)
+   *
+   * @param path The Firestore ID of the round to modify, along with with the
+   *   ID of the session that it lives in.
+   * @param data The new round data.
+   */
+  updateRoundData(id: RoundPath, data: Partial<FirebaseRound>) {
+    this.getRoundDocument(id).update(data);
+  }
 }

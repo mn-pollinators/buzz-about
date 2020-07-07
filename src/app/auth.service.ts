@@ -20,9 +20,7 @@ export class AuthService {
    * Checks to see if the user is already logged in. If they aren't, it will create a new anonymous account.
    */
   logStudentIn() {
-    return this.auth.auth.signInAnonymously().catch((error) => {
-      console.error(error);
-    });
+    return this.auth.auth.signInAnonymously();
   }
 
   /**

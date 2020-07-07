@@ -3,6 +3,8 @@ import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.compo
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
 import { AuthService } from '../auth.service';
+import { FirebaseService } from '../firebase.service';
+import { allFlowerSpecies } from '../flowers';
 
 /**
  * Over the course of a session, the large display will show several
@@ -28,8 +30,27 @@ export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
-  // TODO: These values are only here fore testing. Eventually, we'll get this
+  // TODO: These values are only here for testing. Eventually, we'll get this
   // information from the round service.
+  demoFlowerSpecies = [
+    allFlowerSpecies.rudbeckia_hirta,
+    allFlowerSpecies.taraxacum_officinale,
+    allFlowerSpecies.solidago_rigida,
+    allFlowerSpecies.helianthus_maximiliani,
+    allFlowerSpecies.rubus_occidentalis,
+    allFlowerSpecies.trifolium_repens,
+    allFlowerSpecies.vaccinium_angustifolium,
+    allFlowerSpecies.rudbeckia_hirta,
+    allFlowerSpecies.taraxacum_officinale,
+    allFlowerSpecies.solidago_rigida,
+    allFlowerSpecies.helianthus_maximiliani,
+    allFlowerSpecies.rubus_occidentalis,
+    allFlowerSpecies.trifolium_repens,
+    allFlowerSpecies.vaccinium_angustifolium,
+    allFlowerSpecies.helianthus_maximiliani,
+    allFlowerSpecies.rubus_occidentalis,
+  ];
+
   demoFlowers: FlowerLayoutItem[] = [
     {
       imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
@@ -73,6 +94,7 @@ export class LargeDisplayComponent implements OnInit {
       active: true,
       scale: 1.5
     },
+
     {
       imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
       alt: 'test',
@@ -135,6 +157,7 @@ export class LargeDisplayComponent implements OnInit {
   constructor(
     public timerService: TimerService,
     public authService: AuthService,
+    public firebaseService: FirebaseService,
     private zone: NgZone,
   ) { }
 
@@ -142,6 +165,11 @@ export class LargeDisplayComponent implements OnInit {
   // information from the round service.
   public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
   public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
+
+  // TODO: For the moment, we're only using one fixed, preexisting round for
+  // all teachers. Eventually, teachers will each create their own sessions
+  // and rounds.
+  readonly roundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
 
   // The flowers displayed are essentially the demoFlowers at this moment
 
@@ -167,6 +195,16 @@ export class LargeDisplayComponent implements OnInit {
   startRound() {
     this.currentScreen = ScreenId.DuringTheRound;
 
+    // Initialize the round in Firestore.
+    // TODO: Eventually, we'll create a whole new round, not just update an
+    // old one.
+    this.firebaseService.updateRoundData(this.roundPath, {
+      running: false,
+      currentTime: this.startTime.time,
+      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
+    });
+
+    // Give the timer its starting state.
     this.timerService.initialize({
       running: false,
       tickSpeed: 1000,
@@ -174,8 +212,20 @@ export class LargeDisplayComponent implements OnInit {
       endTime: this.endTime
     });
 
+    // Keep a copy of the "running" boolean for the large display controls to
+    // use.
     this.timerService.running$.subscribe(running => {
       this.running = running;
+    });
+
+    // Make sure that when the timer ticks, it updates the round in Firestore.
+    this.timerService.running$.subscribe(running => {
+      this.firebaseService.updateRoundData(this.roundPath, {running});
+    });
+    this.timerService.currentTime$.subscribe(timePeriod => {
+      this.firebaseService.updateRoundData(this.roundPath, {
+        currentTime: timePeriod.time,
+      });
     });
   }
 
