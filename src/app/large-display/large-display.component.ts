@@ -227,6 +227,9 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
     // Eventually, we'll create a new round, but for the moment, we'll just use
     // this one.
     this.roundPath$.next(this.demoRoundPath);
+    this.firebaseService.updateRoundData(this.demoRoundPath, {
+      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
+    });
 
     // Give the timer its starting state.
     // (Because of the subscriptions we set up, these initial values should
