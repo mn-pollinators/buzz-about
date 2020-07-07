@@ -113,7 +113,7 @@ describe('LargeDisplayComponent', () => {
 
       describe('The Firebase service', () => {
         it(
-          'Shouldn\'t be sent any data even if the timer is ticking',
+          'Shouldn\'t be written to even if the timer is ticking',
           fakeAsync(inject([TimerService, FirebaseService], (
             timerService: TimerService,
             firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
@@ -205,7 +205,7 @@ describe('LargeDisplayComponent', () => {
 
       describe('The Firebase service', () => {
         it(
-          'Should be sent data when the running state changes',
+          'Should be written to when the running state changes',
           fakeAsync(inject([FirebaseService], (
             firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
           ) => {
@@ -221,7 +221,7 @@ describe('LargeDisplayComponent', () => {
         );
 
         it(
-          'Should be sent data when the time changes',
+          'Should be written to when the time changes',
           fakeAsync(inject([TimerService, FirebaseService], (
             timerService: TimerService,
             firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
@@ -247,6 +247,35 @@ describe('LargeDisplayComponent', () => {
             discardPeriodicTasks();
           })),
         );
+      });
+
+      describe('After the component is destroyed', () => {
+        beforeEach(async(() => {
+          fixture.destroy();
+        }));
+
+        describe('The Firebase service', () => {
+          it(
+            'Shouldn\'t be sent any data even if the timer is ticking',
+            fakeAsync(inject([TimerService, FirebaseService], (
+              timerService: TimerService,
+              firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+            ) => {
+              timerService.initialize({
+                running: false,
+                tickSpeed: 1000,
+                currentTime: new TimePeriod(0),
+                endTime: null,
+              });
+              tick(0);
+              timerService.setRunning(true);
+              tick(0);
+              tick(1000);
+              expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
+              discardPeriodicTasks();
+            })),
+          );
+        });
       });
     });
   });
