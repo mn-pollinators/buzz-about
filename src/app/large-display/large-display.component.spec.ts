@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../auth.service';
 import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 import { TimePeriod } from '../time-period';
 
@@ -99,10 +99,12 @@ describe('LargeDisplayComponent', () => {
     }));
 
     describe('Before the round starts', () => {
-      describe('The running field', () => {
-        it('Is null', () => {
-          expect(component.running).toBeNull();
-        });
+      describe('The running$ observable', () => {
+        it('Initially emits null', async(() => {
+          component.running$.pipe(take(1)).subscribe(running => {
+            expect(running).toBeNull();
+          });
+        }));
       });
 
       describe('The currentScreen field', () => {
@@ -141,16 +143,21 @@ describe('LargeDisplayComponent', () => {
       }));
 
       describe('The running field', () => {
-        it('Is initialized when the timer is initialized', () => {
-          expect(component.running).toBe(false);
-        });
+        it('Is initialized when the timer is initialized', async(() => {
+          component.running$.pipe(take(1)).subscribe(running => {
+            expect(running).toBe(false);
+          });
+        }));
 
         it(
           'Switches to true when the timer starts playing',
           fakeAsync(inject([TimerService], (timerService: TimerService) => {
             timerService.setRunning(true);
             tick(0);
-            expect(component.running).toBe(true);
+            component.running$.pipe(take(1)).subscribe(running => {
+              expect(running).toBe(true);
+            });
+            tick(0);
             discardPeriodicTasks();
           })),
         );
@@ -192,15 +199,24 @@ describe('LargeDisplayComponent', () => {
         );
 
         it('Propagates back to LargeDisplayComponent.running', fakeAsync(() => {
-          expect(component.running).toBe(false);
+          component.running$.pipe(take(1)).subscribe(running => {
+            expect(running).toBe(false);
+          });
+          tick(0);
 
           component.toggleTimerRunning();
           tick(0);
-          expect(component.running).toBe(true);
+          component.running$.pipe(take(1)).subscribe(running => {
+            expect(running).toBe(true);
+          });
+          tick(0);
 
           component.toggleTimerRunning();
           tick(0);
-          expect(component.running).toBe(false);
+          component.running$.pipe(take(1)).subscribe(running => {
+            expect(running).toBe(false);
+          });
+          tick(0);
         }));
       });
 

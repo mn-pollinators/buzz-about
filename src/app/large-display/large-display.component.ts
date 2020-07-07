@@ -5,8 +5,8 @@ import { TimePeriod } from '../time-period';
 import { AuthService } from '../auth.service';
 import { FirebaseService, RoundPath } from '../firebase.service';
 import { allFlowerSpecies } from '../flowers';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { filter, shareReplay, startWith, take } from 'rxjs/operators';
 
 /**
  * Over the course of a session, the large display will show several
@@ -154,7 +154,15 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   ];
 
   currentScreen: ScreenId = ScreenId.WaitingToAuthenticate;
-  running: boolean = null;
+
+  running$: Observable<boolean> = this.timerService.running$.pipe(
+    // We need the explicit type parameters or else tslint can't tell which
+    // overload we're using, and it mistakenly thinks we're invoking the
+    // function in a deprecated manner.
+    startWith<boolean, null>(null),
+    shareReplay(1),
+  );
+
   readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
 
@@ -205,12 +213,6 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
         currentTime: timePeriod.time,
       });
     });
-
-    // Keep a copy of the "running" boolean for the large display controls to
-    // use.
-    this.timerService.running$.subscribe(running => {
-      this.running = running;
-    });
   }
 
   /**
@@ -243,7 +245,9 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   }
 
   toggleTimerRunning() {
-    this.timerService.setRunning(!this.running);
+    this.running$.pipe(take(1)).subscribe(running => {
+      this.timerService.setRunning(!running);
+    });
   }
 
   ngOnDestroy() {
