@@ -4,11 +4,12 @@
     <p>Loading&hellip;</p>
   </div>
 
-  <app-start-round
-      *ngSwitchCase="ScreenId.WaitingToStartTheRound"
-      class="waiting-to-start-the-round"
-  ></app-start-round>
-
+  <div
+      *ngSwitchCase="ScreenId.Lobby"
+      class="lobby"
+  >
+    <p>Waiting for the round to start&hellip;</p>
+  </div>
   <div *ngSwitchCase="ScreenId.DuringTheRound" class="during-the-round">
     <app-timer-progress-bar
         [currentTime]="timerService.currentTime$ | async"
@@ -25,7 +26,7 @@
 </div>
 
 <div class="bottom-bar" [ngSwitch]="currentScreen">
-  <ng-container *ngSwitchCase="ScreenId.WaitingToStartTheRound">
+  <ng-container *ngSwitchCase="ScreenId.Lobby">
     <div class="right">
       <button mat-raised-button color="accent" (click)="startRound()">
         Start Round

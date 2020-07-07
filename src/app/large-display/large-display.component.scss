@@ -14,7 +14,7 @@
   overflow: hidden;
   position: relative;
 
-  .waiting-to-authenticate {
+  .waiting-to-authenticate, .lobby {
     display: flex;
     flex-direction: column;
     justify-content: center;

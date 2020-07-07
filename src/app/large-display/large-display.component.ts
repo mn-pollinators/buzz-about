@@ -17,7 +17,7 @@ import { allFlowerSpecies } from '../flowers';
  */
 export enum ScreenId {
   WaitingToAuthenticate,
-  WaitingToStartTheRound,
+  Lobby,
   DuringTheRound,
 }
 
@@ -181,7 +181,7 @@ export class LargeDisplayComponent implements OnInit {
       // we tell it to.
       // See https://github.com/google/google-api-javascript-client/issues/353
       this.zone.run(() => {
-        this.currentScreen = ScreenId.WaitingToStartTheRound;
+        this.currentScreen = ScreenId.Lobby;
       });
     });
   }

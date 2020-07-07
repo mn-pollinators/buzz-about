@@ -36,7 +36,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { StartRoundComponent } from './start-round/start-round.component';
 
 
 
@@ -73,7 +72,6 @@ const FIREBASE_MODULES = [
     SessionPageTestComponent,
     JsonDataTestComponent,
     SessionTestComponent,
-    StartRoundComponent,
   ],
   imports: [
     BrowserModule,

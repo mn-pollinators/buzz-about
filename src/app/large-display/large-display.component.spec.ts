@@ -98,7 +98,7 @@ describe('LargeDisplayComponent', () => {
 
       describe('The currentScreen field', () => {
         it('Is the WaitingToStartTheRound screen', () => {
-          expect(component.currentScreen).toBe(ScreenId.WaitingToStartTheRound);
+          expect(component.currentScreen).toBe(ScreenId.Lobby);
         });
       });
     });
