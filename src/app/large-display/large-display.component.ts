@@ -1,11 +1,10 @@
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
-import { FirebaseService, RoundPath } from '../firebase.service';
-import { allFlowerSpecies } from '../flowers';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, shareReplay, startWith, take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
+import { TeacherRoundService } from '../teacher-round.service';
 
 /**
  * Over the course of a session, the large display will show several
@@ -32,23 +31,23 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   // TODO: These values are only here for testing. Eventually, we'll get this
   // information from the round service.
-  demoFlowerSpecies = [
-    allFlowerSpecies.rudbeckia_hirta,
-    allFlowerSpecies.taraxacum_officinale,
-    allFlowerSpecies.solidago_rigida,
-    allFlowerSpecies.helianthus_maximiliani,
-    allFlowerSpecies.rubus_occidentalis,
-    allFlowerSpecies.trifolium_repens,
-    allFlowerSpecies.vaccinium_angustifolium,
-    allFlowerSpecies.rudbeckia_hirta,
-    allFlowerSpecies.taraxacum_officinale,
-    allFlowerSpecies.solidago_rigida,
-    allFlowerSpecies.helianthus_maximiliani,
-    allFlowerSpecies.rubus_occidentalis,
-    allFlowerSpecies.trifolium_repens,
-    allFlowerSpecies.vaccinium_angustifolium,
-    allFlowerSpecies.helianthus_maximiliani,
-    allFlowerSpecies.rubus_occidentalis,
+  demoFlowerSpeciesIds = [
+    'rudbeckia_hirta',
+    'taraxacum_officinale',
+    'solidago_rigida',
+    'helianthus_maximiliani',
+    'rubus_occidentalis',
+    'trifolium_repens',
+    'vaccinium_angustifolium',
+    'rudbeckia_hirta',
+    'taraxacum_officinale',
+    'solidago_rigida',
+    'helianthus_maximiliani',
+    'rubus_occidentalis',
+    'trifolium_repens',
+    'vaccinium_angustifolium',
+    'helianthus_maximiliani',
+    'rubus_occidentalis',
   ];
 
   demoFlowers: FlowerLayoutItem[] = [
@@ -151,14 +150,15 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
     }
   ];
 
+  // TODO: Eventually, the teacher will make their own session, but for the
+  // moment, we'll just use this one.
+  readonly demoSessionId = 'demo-session';
+
   currentScreen: ScreenId = ScreenId.Lobby;
-
-  readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
-
 
   constructor(
     public timerService: TimerService,
-    public firebaseService: FirebaseService,
+    public teacherRoundService: TeacherRoundService,
   ) { }
 
   // TODO: These values are only here for testing. Eventually, we'll get this
@@ -166,51 +166,28 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
   public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
 
-  // TODO: For the moment, we're only using one fixed, preexisting round for
-  // all teachers. Eventually, teachers will each create their own sessions
-  // and rounds.
-  readonly demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
-
-  // The flowers displayed are essentially the demoFlowers at this moment
-
-  ngOnInit() {
-    // Link up observables so that the timer state gets sent to the current
-    // round in Firebase. (But don't do anything when the current round is
-    // null.)
-    combineLatest([this.roundPath$, this.timerService.running$]).pipe(
-      filter(([roundPath]) => roundPath !== null),
-    ).subscribe(([roundPath, running]) => {
-      this.firebaseService.updateRoundData(roundPath, {running});
-    });
-
-    combineLatest([this.roundPath$, this.timerService.currentTime$]).pipe(
-      filter(([roundPath]) => roundPath !== null),
-    ).subscribe(([roundPath, timePeriod]) => {
-      this.firebaseService.updateRoundData(roundPath, {
-        currentTime: timePeriod.time,
-      });
-    });
-  }
+  ngOnInit() { }
 
   /**
-   * Create a new round within the session, set its initial state, and make .
+   * Create a new round within the session and switch to the during-the-round
+   * screen.
    *
-   * TODO: As of this iteration, this function just re-uses the old round and
-   * re-populates it with data.
+   * This method also initializes the timer.
    */
   startRound() {
     this.currentScreen = ScreenId.DuringTheRound;
 
-    // Eventually, we'll create a new round, but for the moment, we'll just use
-    // this one.
-    this.roundPath$.next(this.demoRoundPath);
-    this.firebaseService.updateRoundData(this.demoRoundPath, {
-      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
+    this.teacherRoundService.startNewRound(this.demoSessionId, {
+      flowerSpeciesIds: this.demoFlowerSpeciesIds,
+      // TODO: We should eventually figure out what we're going to do with the
+      // 'status' field; for the moment we're just giving it a dummy value.
+      status: 'test',
+      // running and startTime will actually be updated in Firestore when we
+      // initialize the timer, so these values don't really matter.
+      running: false,
+      currentTime: this.startTime.time,
     });
 
-    // Give the timer its starting state.
-    // (Because of the subscriptions we set up, these initial values should
-    // propagate to Firestore.)
     this.timerService.initialize({
       running: false,
       tickSpeed: 1000,
@@ -221,7 +198,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   endRound() {
     this.timerService.setRunning(false);
-    this.roundPath$.next(null);
+    this.teacherRoundService.endRound(this.demoSessionId);
   }
 
   toggleTimerRunning() {

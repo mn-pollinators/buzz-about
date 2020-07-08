@@ -16,8 +16,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs/operators';
-import { FirebaseService } from '../firebase.service';
-import { TimePeriod } from '../time-period';
 import { TeacherRoundService } from '../teacher-round.service';
 
 describe('LargeDisplayComponent', () => {
