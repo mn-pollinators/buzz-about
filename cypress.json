@@ -1,0 +1,12 @@
+{
+  "baseUrl": "http://localhost:4200/",
+  "fileServerFolder": ".",
+  "fixturesFolder": "cypress/fixtures",
+  "integrationFolder": "cypress/integration",
+  "pluginsFile": "cypress/plugins/index",
+  "supportFile": false,
+  "video": true,
+  "videosFolder": "cypress/videos",
+  "screenshotsFolder": "cypress/screenshots",
+  "chromeWebSecurity": true
+}

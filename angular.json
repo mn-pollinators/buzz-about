@@ -125,9 +125,10 @@
           }
         },
         "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+          "builder": "@nrwl/cypress:cypress",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
+            "cypressConfig": "cypress.json",
+            "tsConfig": "cypress/tsconfig.json",
             "devServerTarget": "buzz-about:serve"
           },
           "configurations": {

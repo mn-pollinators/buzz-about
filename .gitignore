@@ -64,3 +64,6 @@ firebase-debug.log
 firestore-debug.log
 
 ui-debug.log
+
+cypress/videos/
+cypress/screenshots/
