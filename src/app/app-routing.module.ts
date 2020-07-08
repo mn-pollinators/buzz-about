@@ -23,7 +23,7 @@ const routes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'session-page-test', component: SessionPageTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'joined-students', component: JoinedStudentsComponent}
+  {path: 'joined-students', component: JoinedStudentsComponent},
   {path: 'join', component: StudentLoginComponent}
 ];
 
