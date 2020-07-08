@@ -92,4 +92,17 @@ export class FirebaseService {
   updateRoundData(roundPath: RoundPath, data: Partial<FirebaseRound>) {
     this.getRoundDocument(roundPath).update(data);
   }
+
+  /**
+   * Modify the data of a particular round firebase.
+   *
+   * If round in question does not already exist, it will be created.
+   *
+   * @param path The Firestore ID of the round to modify, along with with the
+   *   ID of the session that it lives in.
+   * @param data The new round data.
+   */
+  setRoundData(roundPath: RoundPath, data: FirebaseRound) {
+    this.getRoundDocument(roundPath).set(data);
+  }
 }

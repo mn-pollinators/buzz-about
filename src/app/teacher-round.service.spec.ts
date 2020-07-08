@@ -17,7 +17,7 @@ describe('TeacherRoundService', () => {
   beforeEach(() => {
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
       'firebaseService',
-      ['updateRoundData'],
+      ['updateRoundData', 'setRoundData'],
     );
 
     TestBed.configureTestingModule({
