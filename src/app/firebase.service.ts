@@ -89,7 +89,7 @@ export class FirebaseService {
    *   ID of the session that it lives in.
    * @param data The new round data.
    */
-  updateRoundData(id: RoundPath, data: Partial<FirebaseRound>) {
-    this.getRoundDocument(id).update(data);
+  updateRoundData(roundPath: RoundPath, data: Partial<FirebaseRound>) {
+    this.getRoundDocument(roundPath).update(data);
   }
 }
