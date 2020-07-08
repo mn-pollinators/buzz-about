@@ -2,7 +2,6 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
-import { AuthService } from '../auth.service';
 import { FirebaseService, RoundPath } from '../firebase.service';
 import { allFlowerSpecies } from '../flowers';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
@@ -18,7 +17,6 @@ import { filter, shareReplay, startWith, take } from 'rxjs/operators';
  * This type is a union of all of those ID strings.
  */
 export enum ScreenId {
-  WaitingToAuthenticate,
   Lobby,
   DuringTheRound,
 }
@@ -153,7 +151,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
     }
   ];
 
-  currentScreen: ScreenId = ScreenId.WaitingToAuthenticate;
+  currentScreen: ScreenId = ScreenId.Lobby;
 
   running$: Observable<boolean> = this.timerService.running$.pipe(
     // We need the explicit type parameters or else tslint can't tell which
@@ -168,9 +166,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   constructor(
     public timerService: TimerService,
-    public authService: AuthService,
     public firebaseService: FirebaseService,
-    private zone: NgZone,
   ) { }
 
   // TODO: These values are only here for testing. Eventually, we'll get this
@@ -186,17 +182,6 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   // The flowers displayed are essentially the demoFlowers at this moment
 
   ngOnInit() {
-    this.authService.logTeacherIn().then(() => {
-      // At time of this writing, AngularFire uses a DIY implementation of the
-      // Promise class that runs outside of the Angular Zone. As a result, code
-      // that runs inside this callback won't trigger change detection unless
-      // we tell it to.
-      // See https://github.com/google/google-api-javascript-client/issues/353
-      this.zone.run(() => {
-        this.currentScreen = ScreenId.Lobby;
-      });
-    });
-
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
     // null.)

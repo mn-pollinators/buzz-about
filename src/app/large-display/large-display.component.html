@@ -1,15 +1,8 @@
 <div class="large-display-content" [ngSwitch]="currentScreen">
-  <div *ngSwitchCase="ScreenId.WaitingToAuthenticate" class="waiting-to-authenticate">
-    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-    <p>Loading&hellip;</p>
-  </div>
-
-  <div
-      *ngSwitchCase="ScreenId.Lobby"
-      class="lobby"
-  >
+  <div *ngSwitchCase="ScreenId.Lobby" class="lobby">
     <p>Waiting for the round to start&hellip;</p>
   </div>
+
   <div *ngSwitchCase="ScreenId.DuringTheRound" class="during-the-round">
     <app-timer-progress-bar
         [currentTime]="timerService.currentTime$ | async"
