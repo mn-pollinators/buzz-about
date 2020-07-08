@@ -1,0 +1,20 @@
+@import "../../variables";
+
+
+.student-login-page{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form{
+  width: 400px;
+  margin: 16px;
+}
+
+.login-card-content{
+  display: flex;
+  flex-direction: column;
+}

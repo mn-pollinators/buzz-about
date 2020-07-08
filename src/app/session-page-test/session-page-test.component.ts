@@ -26,8 +26,8 @@ export class SessionPageTestComponent implements OnInit {
    * Calls firebase service to add currently logged in user and their preferred name to the database
    * @param name Student's name
    */
-  addStudentToDatabase(name) {
-    this.authService.addStudentToDatabase(name, this.testSession);
+  addStudentToDatabase(name: string) {
+    this.authService.addStudentToDatabase({name}, this.testSession);
   }
 
   getStudentsFromDatabase() {
