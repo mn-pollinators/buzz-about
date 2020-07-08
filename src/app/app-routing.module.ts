@@ -10,6 +10,7 @@ import { SessionPageTestComponent } from './session-page-test/session-page-test.
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
+import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -22,7 +23,8 @@ const routes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'session-page-test', component: SessionPageTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'join', component: StudentLoginComponent}
+  {path: 'join', component: StudentLoginComponent},
+  {path: 'anon-test', component: AnonAuthTestComponent}
 ];
 
 @NgModule({
