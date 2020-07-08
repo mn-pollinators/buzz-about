@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Student } from './student';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData } from './round';
@@ -71,8 +70,8 @@ export class FirebaseService {
    * Returns an observable of all student data as an array of JSON objects
    * @param sessionID the ID of the session the students are in
    */
-  getStudentsInSession(sessionID: string): Observable<Student[]> {
-    return this.firestore.collection('sessions').doc(sessionID).collection<Student>('students').valueChanges();
+  getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
+    return this.firestore.collection('sessions').doc(sessionID).collection<SessionStudentData>('students').valueChanges();
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TeacherSessionService } from '../teacher-session.service';
-import { Student } from '../student';
+import { SessionStudentData } from '../session';
 
 @Component({
   selector: 'app-joined-students',
@@ -10,7 +10,7 @@ import { Student } from '../student';
 export class JoinedStudentsComponent implements OnInit {
 
   sessionID: string;
-  studentList: Student[];
+  studentList: SessionStudentData[];
 
   constructor(private teacherSessionService: TeacherSessionService) {
     this.sessionID = 'kugTpWqJyrXaJZ4ZB6zE'; // Temporary until a way to get the session is implemented

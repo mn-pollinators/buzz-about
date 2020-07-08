@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
-import { Student } from './student';
+import { SessionStudentData } from './session';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class TeacherSessionService {
 
   constructor(private firebaseService: FirebaseService) { }
 
-  getStudentsInSession(sessionID: string): Observable<Student[]> {
+  getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
     return this.firebaseService.getStudentsInSession(sessionID);
   }
 }
