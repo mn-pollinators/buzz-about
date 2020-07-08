@@ -66,11 +66,10 @@ describe('TeacherRoundService', () => {
     describe('The Firebase service', () => {
       it(
         'Should be written to when the running state changes',
-        fakeAsync(inject([FirebaseService], (
+        fakeAsync(inject([TimerService, FirebaseService], (
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          firebaseService.updateRoundData.calls.reset();
           timerService.initialize({
             running: false,
             tickSpeed: 1000,
@@ -78,10 +77,6 @@ describe('TeacherRoundService', () => {
             endTime: null,
           });
           tick(0);
-          expect(firebaseService.updateRoundData).toHaveBeenCalled();
-          expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
-            {running: false},
-          );
 
           firebaseService.updateRoundData.calls.reset();
           timerService.setRunning(true);
@@ -101,7 +96,6 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          firebaseService.updateRoundData.calls.reset();
           timerService.initialize({
             running: true,
             tickSpeed: 1,
@@ -109,11 +103,6 @@ describe('TeacherRoundService', () => {
             endTime: null,
           });
           tick(0);
-          expect(firebaseService.updateRoundData).toHaveBeenCalled();
-          expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
-            {currentTime: 0},
-          );
-
 
           firebaseService.updateRoundData.calls.reset();
           tick(1);
