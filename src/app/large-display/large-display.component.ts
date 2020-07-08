@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
-import { combineLatest } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../teacher-round.service';
 
 /**

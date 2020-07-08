@@ -47,6 +47,8 @@ export class TeacherRoundService {
    * round and re-populates it with data, rather than creating a new round.
    * We also don't bother with marking it as the current round.
    */
+  // In the future, we might get sessionId from a TeacherSessionService, rather
+  // than passing it in as a parameter.
   startNewRound(sessionId: string, roundData: FirebaseRound): void {
     // Eventually, we'll create a new round, but for the moment, we'll just use
     // this one.
