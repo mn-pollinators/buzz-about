@@ -153,14 +153,6 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   currentScreen: ScreenId = ScreenId.Lobby;
 
-  running$: Observable<boolean> = this.timerService.running$.pipe(
-    // We need the explicit type parameters or else tslint can't tell which
-    // overload we're using, and it mistakenly thinks we're invoking the
-    // function in a deprecated manner.
-    startWith<boolean, null>(null),
-    shareReplay(1),
-  );
-
   readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
 
@@ -233,7 +225,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   }
 
   toggleTimerRunning() {
-    this.running$.pipe(take(1)).subscribe(running => {
+    this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
     });
   }

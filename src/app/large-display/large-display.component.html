@@ -36,10 +36,11 @@
       <button
           mat-mini-fab
           color="accent"
-          [disabled]="(running$ | async) === null"
           (click)="toggleTimerRunning()"
       >
-        <mat-icon>{{(running$ | async) ? 'pause' : 'play_arrow'}}</mat-icon>
+        <mat-icon>
+          {{(timerService.running$ | async) ? 'pause' : 'play_arrow'}}
+        </mat-icon>
       </button>
     </div>
 

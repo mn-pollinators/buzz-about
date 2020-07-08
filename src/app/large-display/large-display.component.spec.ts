@@ -67,14 +67,6 @@ describe('LargeDisplayComponent', () => {
   });
 
   describe('Before the round starts', () => {
-    describe('The running$ observable', () => {
-      it('Initially emits null', async(() => {
-        component.running$.pipe(take(1)).subscribe(running => {
-          expect(running).toBeNull();
-        });
-      }));
-    });
-
     describe('The currentScreen field', () => {
       it('Is the Lobby screen', () => {
         expect(component.currentScreen).toBe(ScreenId.Lobby);
@@ -110,25 +102,12 @@ describe('LargeDisplayComponent', () => {
       component.startRound();
     }));
 
-    describe('The running field', () => {
-      it('Is initialized when the timer is initialized', async(() => {
-        component.running$.pipe(take(1)).subscribe(running => {
+    describe('The TimerService.running$ field', () => {
+      it('Is initialized to false', async(() => {
+        component.timerService.running$.pipe(take(1)).subscribe(running => {
           expect(running).toBe(false);
         });
       }));
-
-      it(
-        'Switches to true when the timer starts playing',
-        fakeAsync(inject([TimerService], (timerService: TimerService) => {
-          timerService.setRunning(true);
-          tick(0);
-          component.running$.pipe(take(1)).subscribe(running => {
-            expect(running).toBe(true);
-          });
-          tick(0);
-          discardPeriodicTasks();
-        })),
-      );
     });
 
     describe('The toggleTimerRunning() method', () => {
@@ -165,27 +144,6 @@ describe('LargeDisplayComponent', () => {
           expect(lastEmittedRunningState).toBe(false);
         })),
       );
-
-      it('Propagates back to LargeDisplayComponent.running', fakeAsync(() => {
-        component.running$.pipe(take(1)).subscribe(running => {
-          expect(running).toBe(false);
-        });
-        tick(0);
-
-        component.toggleTimerRunning();
-        tick(0);
-        component.running$.pipe(take(1)).subscribe(running => {
-          expect(running).toBe(true);
-        });
-        tick(0);
-
-        component.toggleTimerRunning();
-        tick(0);
-        component.running$.pipe(take(1)).subscribe(running => {
-          expect(running).toBe(false);
-        });
-        tick(0);
-      }));
     });
 
     describe('The Firebase service', () => {
