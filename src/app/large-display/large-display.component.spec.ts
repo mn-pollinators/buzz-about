@@ -18,15 +18,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs/operators';
 import { FirebaseService } from '../firebase.service';
 import { TimePeriod } from '../time-period';
+import { TeacherRoundService } from '../teacher-round.service';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
   let fixture: ComponentFixture<LargeDisplayComponent>;
 
   beforeEach(async(() => {
-    const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
-      'firebaseService',
-      ['updateRoundData'],
+    const mockTeacherRoundService = jasmine.createSpyObj<Partial<TeacherRoundService>>(
+      'teacherRoundService',
+      ['startNewRound', 'endRound'],
     );
 
     TestBed.configureTestingModule({
@@ -50,7 +51,7 @@ describe('LargeDisplayComponent', () => {
       ],
       providers: [
         TimerService,
-        {provide: FirebaseService, useValue: mockFirebaseService}
+        {provide: TeacherRoundService, useValue: mockTeacherRoundService},
       ],
     })
     .compileComponents();
@@ -73,27 +74,12 @@ describe('LargeDisplayComponent', () => {
       });
     });
 
-    describe('The Firebase service', () => {
-      it(
-        'Shouldn\'t be written to even if the timer is ticking',
-        fakeAsync(inject([TimerService, FirebaseService], (
-          timerService: TimerService,
-          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
-        ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
-          tick(0);
-          timerService.setRunning(true);
-          tick(0);
-          tick(1000);
-          expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
-          discardPeriodicTasks();
-        })),
-      );
+    describe('TeacherRoundService.startNewRound()', () => {
+      it('Should not have been called', inject([TeacherRoundService], (
+        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+      ) => {
+        expect(teacherRoundService.startNewRound).not.toHaveBeenCalled();
+      }));
     });
   });
 
@@ -146,50 +132,12 @@ describe('LargeDisplayComponent', () => {
       );
     });
 
-    describe('The Firebase service', () => {
-      it(
-        'Should be written to when the running state changes',
-        fakeAsync(inject([FirebaseService], (
-          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
-        ) => {
-          firebaseService.updateRoundData.calls.reset();
-          component.toggleTimerRunning();
-          tick(0);
-          expect(firebaseService.updateRoundData).toHaveBeenCalled();
-          expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
-            {running: true},
-          );
-          discardPeriodicTasks();
-        })),
-      );
-
-      it(
-        'Should be written to when the time changes',
-        fakeAsync(inject([TimerService, FirebaseService], (
-          timerService: TimerService,
-          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
-        ) => {
-          timerService.initialize({
-            running: true,
-            tickSpeed: 1,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
-          tick(0);
-          firebaseService.updateRoundData.calls.reset();
-          tick(1);
-          expect(firebaseService.updateRoundData).toHaveBeenCalled();
-          expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
-            {currentTime: 1},
-          );
-          tick(1);
-          expect(firebaseService.updateRoundData).toHaveBeenCalled();
-          expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
-            {currentTime: 2},
-          );
-          discardPeriodicTasks();
-        })),
-      );
+    describe('TeacherRoundService.startNewRound()', () => {
+      it('Should have been called', inject([TeacherRoundService], (
+        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+      ) => {
+        expect(teacherRoundService.startNewRound).toHaveBeenCalled();
+      }));
     });
 
     describe('After the component is destroyed', () => {
@@ -197,28 +145,12 @@ describe('LargeDisplayComponent', () => {
         fixture.destroy();
       }));
 
-      describe('The Firebase service', () => {
-        it(
-          'Shouldn\'t be sent any data even if the timer is ticking',
-          fakeAsync(inject([TimerService, FirebaseService], (
-            timerService: TimerService,
-            firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
-          ) => {
-            firebaseService.updateRoundData.calls.reset();
-            timerService.initialize({
-              running: false,
-              tickSpeed: 1000,
-              currentTime: new TimePeriod(0),
-              endTime: null,
-            });
-            tick(0);
-            timerService.setRunning(true);
-            tick(0);
-            tick(1000);
-            expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
-            discardPeriodicTasks();
-          })),
-        );
+      describe('TeacherRoundService.endRound()', () => {
+        it('Should have been called', inject([TeacherRoundService], (
+          teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+        ) => {
+          expect(teacherRoundService.endRound).toHaveBeenCalled();
+        }));
       });
     });
   });
