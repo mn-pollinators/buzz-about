@@ -8,9 +8,9 @@ import { HomeComponent } from './home/home.component';
 import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
-import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
+import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -23,7 +23,7 @@ const routes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'session-page-test', component: SessionPageTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'joined-students', component: JoinedStudentsComponent},
+  {path: 'session-lobby', component: SessionLobbyComponent},
   {path: 'join', component: StudentLoginComponent}
 ];
 
