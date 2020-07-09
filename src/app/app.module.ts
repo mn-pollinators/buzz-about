@@ -22,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card'
 import { MatGridListModule} from '@angular/material/grid-list';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
@@ -52,7 +53,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatGridListModule,
   MatFormFieldModule,
   MatInputModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuModule
 ];
 
 const FIREBASE_MODULES = [

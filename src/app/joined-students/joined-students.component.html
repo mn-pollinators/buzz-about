@@ -1,20 +1,22 @@
-
-<div *ngFor="let student of studentList">
-  {{student.name}}
+<div class="list-container">
+  <mat-card *ngFor="let student of studentList" class="student-card">
+    <mat-card-content class="student-content">
+      <div class="student-name">{{student.name}}</div>
+      <div>
+        <mat-menu #studentConfig="matMenu">
+          <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Rename</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Remove</span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="studentConfig">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
-
-<!-- 
-<div class='list-container'>
-  <div class='list-header'>
-    <h2 class='join-code'>Join with {{sessionID}}</h2>
-    <div class="players-number">
-      <h2 class="player-count">{{studentList?.length}}</h2>
-      <p>Players</p>
-    </div>
-  </div>
-  <mat-grid-list class="name-grid" cols="4" rowHeight="fit">
-      <mat-grid-tile class="student-names" fxLayout="row wrap" *ngFor="let student of studentList">
-        {{student.name}}
-      </mat-grid-tile>
-  </mat-grid-list>
-</div> -->
