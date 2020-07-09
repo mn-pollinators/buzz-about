@@ -67,6 +67,15 @@ export class FirebaseService {
   }
 
   /**
+   * Adds round to firestore
+   * @param sessionID Session ID to which round will be added
+   * @param roundData data for the round in FirebaseRound interface format
+   */
+  public createRoundInSession(sessionID: string, roundData: FirebaseRound){
+    this.firestore.collection('sessions/' + sessionID + '/rounds').add(roundData);
+  }
+
+  /**
    * Adds student to firestore
    * @param id Student' id
    * @param sessionID id of the session that the student will be added to
