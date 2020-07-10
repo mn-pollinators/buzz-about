@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
@@ -67,12 +67,18 @@ export class FirebaseService {
   }
 
   /**
-   * Adds round to firestore
+   * Adds round to firestore and sets round to the session's current round
    * @param sessionID Session ID to which round will be added
    * @param roundData data for the round in FirebaseRound interface format
    */
-  public createRoundInSession(sessionID: string, roundData: FirebaseRound){
-    this.firestore.collection('sessions/' + sessionID + '/rounds').add(roundData);
+  public async createRoundInSession(sessionID: string, roundData: FirebaseRound){
+    let round: Promise<DocumentReference>;
+    round = this.firestore.collection('sessions/' + sessionID + '/rounds').add(roundData);
+    this.setCurrentRound({sessionId: sessionID, roundId: (await round).id});
+  }
+
+  public setCurrentRound(roundPath: RoundPath){
+    this.firestore.collection('sessions').doc(roundPath.sessionId).update({currentRoundID: roundPath.roundId});
   }
 
   /**

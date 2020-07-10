@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseRound } from '../round';
 import { FirebaseService } from '../firebase.service';
+import { Observable } from 'rxjs';
+import { Session } from '../session';
 
 @Component({
   selector: 'app-prepare-round-test',
@@ -18,14 +20,14 @@ export class PrepareRoundTestComponent implements OnInit {
     this.testRoundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
                           status: 'fine',
                           running: false,
-                          currentTime: 0,}
+                          currentTime: 0, };
   }
 
    ngOnInit(): void {
-
   }
 
-  public prepareRound(){
+  public prepareRound() {
     this.firebaseService.createRoundInSession(this.testSession, this.testRoundData);
   }
+
 }
