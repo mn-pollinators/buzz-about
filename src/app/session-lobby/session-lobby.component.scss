@@ -1,0 +1,23 @@
+.top-content {
+    display: flex;
+    padding: 15px;
+}
+
+.box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.join-code {
+  text-align: center;
+}
+
+.count {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.player-count {
+  margin-bottom: 0px;
+}

@@ -16,6 +16,6 @@ export class SessionLobbyComponent implements OnInit {
 
   ngOnInit(): void {
     // Temporary, teacher will likely join session immediately after creating it in
-    this.teacherSessionService.joinSession(this.sessionID); 
+    this.teacherSessionService.joinSession(this.sessionID);
   }
 }

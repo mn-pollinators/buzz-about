@@ -1,2 +1,17 @@
-<app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
-
+<div class="main-content field-background">
+  <div class="top-content">
+    <div class="box"></div>
+    <div class="box">
+      <mat-card class="join-code">
+        <mat-card-content>Join at buzzabout.app</mat-card-content>
+        <mat-card-content>With the join code:</mat-card-content>
+        <mat-card-title>{{ teacherSessionService.sessionId$| async }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="box count">
+      <h1 class="player-count">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
+      <p>Players</p>
+    </div>
+  </div>
+  <app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
+</div>
