@@ -14,16 +14,14 @@
   overflow: hidden;
   position: relative;
 
-  .lobby {
+  &.lobby {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
   }
 
-  .during-the-round {
-    height: 100%;
+  &.during-the-round {
     background-color: mat-color($primary);
 
     app-flower-layout {
