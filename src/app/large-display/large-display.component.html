@@ -6,11 +6,11 @@
   </div>
 </div>
 
-<div class="bottom-bar">
-  <div class="left">
+<app-bottom-bar>
+  <div left>
     <button mat-raised-button color="accent">Quit Game</button>
   </div>
-  <div class="center">
+  <div center>
     <button mat-mini-fab color="accent"
       [disabled]="running === undefined"
       (click)="toggleTimerRunning()"
@@ -18,7 +18,7 @@
       <mat-icon>{{running ? 'pause' : 'play_arrow' }}</mat-icon>
     </button>
   </div>
-  <div class="right">
+  <div right>
     <button mat-raised-button color="accent">Skip Round</button>
   </div>
-</div>
+</app-bottom-bar>

@@ -44,6 +44,7 @@ import { JoinedStudentsComponent } from './joined-students/joined-students.compo
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
 import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
+import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -86,6 +87,7 @@ const FIREBASE_MODULES = [
     SessionTestComponent,
     StudentLoginComponent,
     SessionLobbyComponent,
+    BottomBarComponent
   ],
   imports: [
     BrowserModule,
