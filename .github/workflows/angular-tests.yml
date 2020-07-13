@@ -5,7 +5,7 @@ on: [push]
 jobs:
   ng-test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v1
 
@@ -22,5 +22,7 @@ jobs:
         node-version: 12.x
     - name: Install dependencies (npm ci)
       run: npm ci
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     - name: Test (npm run test)
       run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
