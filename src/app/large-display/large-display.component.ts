@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
+import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
 import { take } from 'rxjs/operators';
