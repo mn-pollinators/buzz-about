@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
+import { FlowerSpecies, allFlowerSpecies } from '../flowers';
 
 @Component({
   selector: 'app-flower-test',
@@ -9,140 +10,91 @@ import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.compo
 export class FlowerTestComponent implements OnInit {
 
 
-  images = [
-    {
-      name: 'rudbekia hirta',
-      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png'
-    },
-    {
-      name: 'taraxacum officinale',
-      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png'
-    },
-    {
-      name: 'solidago rigida',
-      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png'
-    },
-    {
-      name: 'sunflower',
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png'
-    },
-    {
-      name: 'black raspberry',
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png'
-    },
-    {
-      name: 'vaccinium angustifolium',
-      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png'
-    },
-    {
-      name: 'trifolium repens',
-      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png'
-    }
-  ]
 
+  flowers: {species: string, blooming: boolean}[] = [
+    {
+      species: allFlowerSpecies.asclepias_syriaca.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.cirsium_discolor.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.echinacea_angustifolia.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.helianthus_maximiliani.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.monarda_fistulosa.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.prunus_americana.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.rubus_occidentalis.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.rudbeckia_hirta.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.solidago_rigida.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.taraxacum_officinale.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.trifolium_repens.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.vaccinium_angustifolium.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.asclepias_syriaca.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.cirsium_discolor.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.echinacea_angustifolia.id,
+      blooming: true
+    },
+    {
+      species: allFlowerSpecies.helianthus_maximiliani.id,
+      blooming: true
+    },
+  ];
 
-  flowers: FlowerLayoutItem[] = [
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      alt: 'test',
-      active: true,
-      scale: 1.9
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      alt: 'test',
-      active: true,
-      scale: 1.3
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      alt: 'test',
-      active: true,
-      scale: 2.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      alt: 'test',
-      active: true,
-      scale: 1.3
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 0.9
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 0.9
-    }
-  ]
+  allFlowerSpeciesArray = Object.values(allFlowerSpecies);
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  getFlowers(inputs: {species: string, blooming: boolean}[]): FlowerLayoutItem[] {
+    return inputs.map(({species, blooming}) => {
+      const speciesObj = allFlowerSpecies[species];
+      return {
+        imgSrc: `assets/art/500w/flowers/${speciesObj.art_file}`,
+        alt: speciesObj.name,
+        active: blooming,
+        scale: speciesObj.relative_size
+    }
+    });
   }
 
 
