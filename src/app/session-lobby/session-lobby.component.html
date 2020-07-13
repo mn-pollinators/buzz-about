@@ -16,4 +16,16 @@
   <app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
 </div>
 <app-bottom-bar>
+  <button left mat-raised-button color="accent">Quit Session</button>
+  <div center>
+    <mat-form-field>
+      <mat-select placeholder="Select Round" #roundSelect>
+        <mat-option value="preset-1">Preset Round 1</mat-option>
+        <mat-option value="preset-2">Preset Round 2</mat-option>
+        <mat-option value="preset-3">Preset Round 3</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button class="start" mat-raised-button color="accent" [disabled]="roundSelect.empty">Start Round</button>
+  </div>
+  <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </app-bottom-bar>
