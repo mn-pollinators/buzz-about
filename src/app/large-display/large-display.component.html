@@ -1,7 +1,7 @@
 <div class="large-display-content">
   <div class="during-a-round">
     <app-timer-progress-bar [currentTime]="timerService.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
-    <app-flower-layout [items]="demoFlowers"></app-flower-layout>
+    <app-flower-layout [items]="demoFlowerLayoutItems$ | async"></app-flower-layout>
     <app-timer-progress-spinner [currentTime]="timerService.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
   </div>
 </div>
