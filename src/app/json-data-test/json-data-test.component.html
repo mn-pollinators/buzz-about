@@ -37,10 +37,12 @@
         </ul>
       </li>
       <li>
-        Flowers Accepted:
-        <ul>
-          <li *ngFor="let beeFlower of beeSpecies.flowers_accepted">{{beeFlower.name}}</li>
-        </ul>
+        <details>
+          <summary>Flowers Accepted</summary>
+          <ul>
+            <li *ngFor="let beeFlower of beeSpecies.flowers_accepted">{{beeFlower.name}}</li>
+          </ul>
+        </details>
       </li>
     </ul>
   </li>
