@@ -1,14 +1,15 @@
 <div class="main-view field-background">
   <div class="top-content">
-    <div class="box"></div>
-    <div class="box">
+    <!--This is not an accident, the div's are being used to split the upper portion of the page into three even sections-->
+    <div></div>
+    <div>
       <mat-card class="join-code">
         <mat-card-content>Join at buzzabout.app</mat-card-content>
         <mat-card-content>With the join code:</mat-card-content>
         <mat-card-title>{{ teacherSessionService.sessionId$| async }}</mat-card-title>
       </mat-card>
     </div>
-    <div class="box count">
+    <div class="count">
       <h1 class="player-count">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
       <p>Players</p>
     </div>
@@ -20,15 +21,6 @@
 
 <app-bottom-bar>
   <button left mat-raised-button color="accent">Quit Session</button>
-  <div center>
-    <mat-form-field>
-      <mat-select placeholder="Select Round" #roundSelect>
-        <mat-option value="preset-1">Preset Round 1</mat-option>
-        <mat-option value="preset-2">Preset Round 2</mat-option>
-        <mat-option value="preset-3">Preset Round 3</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button class="start" mat-raised-button color="accent" [disabled]="roundSelect.empty">Start Round</button>
-  </div>
+  <button center mat-raised-button color="accent">Start Round</button>
   <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </app-bottom-bar>

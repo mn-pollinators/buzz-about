@@ -9,27 +9,4 @@ import { SessionStudentData } from '../session';
 export class JoinedStudentsComponent {
 
   @Input() studentList: SessionStudentData[];
-  
-  // Remove this once component is complete
-  testList = [{name:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'},{name:'ABCDEFGHIJKLMNO PQRSTUVWXYZ'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'}]
-
 }

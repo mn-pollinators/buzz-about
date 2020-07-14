@@ -13,14 +13,13 @@
 }
 
 .top-content {
-    display: flex;
-    padding: 15px;
-}
-
-.box {
-  flex: 1;
   display: flex;
-  justify-content: center;
+  padding: 16px;
+  > * {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .join-code {
@@ -38,9 +37,4 @@
 
 .player-list {
   overflow: auto;
-  // margin-bottom: 20px;
-}
-
-.start {
-  margin-left: 10px;
 }
