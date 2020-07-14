@@ -12,7 +12,6 @@ export class JoinedStudentsComponent {
   
   // Remove this once component is complete
   testList = [{name:'ABCDEFGHIJKLMNOPQRSTUVWXYZ'},{name:'ABCDEFGHIJKLMNO PQRSTUVWXYZ'},
-  {name:'Utkarsh Kumar'},{name:'Test'},{name:'Test'},{name:'Test'},
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
@@ -30,6 +29,7 @@ export class JoinedStudentsComponent {
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
   {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
-  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'}]
+  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},
+  {name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'},{name:'Test'}]
 
 }

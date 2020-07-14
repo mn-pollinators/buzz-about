@@ -1,4 +1,4 @@
-<div class="main-content field-background">
+<div class="main-view field-background">
   <div class="top-content">
     <div class="box"></div>
     <div class="box">
@@ -13,8 +13,11 @@
       <p>Players</p>
     </div>
   </div>
-  <app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
+  <div class="player-list">
+    <app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
+  </div>
 </div>
+
 <app-bottom-bar>
   <button left mat-raised-button color="accent">Quit Session</button>
   <div center>

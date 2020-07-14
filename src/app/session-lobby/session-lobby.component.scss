@@ -5,8 +5,11 @@
   flex-direction: column;
 }
 
-.main-content {
+.main-view {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .top-content {
@@ -31,6 +34,11 @@
 
 .player-count {
   margin-bottom: 0px;
+}
+
+.player-list {
+  overflow: auto;
+  // margin-bottom: 20px;
 }
 
 .start {
