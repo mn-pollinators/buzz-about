@@ -256,7 +256,7 @@ export class ArViewComponent implements OnInit {
       //Create the basic image texture
       let loader = new THREE.TextureLoader();
       let texture = loader.load(marker.imgPath);
-      let material1 = new THREE.MeshBasicMaterial( { map: texture } );
+      const material1 = new THREE.MeshBasicMaterial( { map: texture, transparent: true } );
 
       //create a mesh of the image texture on the geometry
       let mesh1 = new THREE.Mesh( geometry1, material1 );
