@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, fakeAsync, inject, tick, discardPeriodicTasks } from '@angular/core/testing';
 
-import { LargeDisplayComponent } from './large-display.component';
+import { LargeDisplayComponent, ScreenId } from './large-display.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { TimerTestComponent } from '../timer-test/timer-test.component';
@@ -15,12 +15,19 @@ import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-butto
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { take } from 'rxjs/operators';
+import { TeacherRoundService } from '../teacher-round.service';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
   let fixture: ComponentFixture<LargeDisplayComponent>;
 
   beforeEach(async(() => {
+    const mockTeacherRoundService = jasmine.createSpyObj<Partial<TeacherRoundService>>(
+      'teacherRoundService',
+      ['startNewRound', 'endRound'],
+    );
+
     TestBed.configureTestingModule({
       imports: [
         MatButtonModule,
@@ -42,6 +49,7 @@ describe('LargeDisplayComponent', () => {
       ],
       providers: [
         TimerService,
+        {provide: TeacherRoundService, useValue: mockTeacherRoundService},
       ],
     })
     .compileComponents();
@@ -53,70 +61,95 @@ describe('LargeDisplayComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
+  it('Should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('The running field', () => {
-    it('Is initialized when the timer is initialized', () => {
-      expect(component.running).toBe(false);
+  describe('Before the round starts', () => {
+    describe('The currentScreen field', () => {
+      it('Is the Lobby screen', () => {
+        expect(component.currentScreen).toBe(ScreenId.Lobby);
+      });
     });
 
-    it(
-      'Switches to true when the timer starts playing',
-      fakeAsync(inject([TimerService], (timerService: TimerService) => {
-        timerService.setRunning(true);
-        tick(0);
-        expect(component.running).toBe(true);
-        discardPeriodicTasks();
-      })),
-    );
+    describe('TeacherRoundService.startNewRound()', () => {
+      it('Should not have been called', inject([TeacherRoundService], (
+        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+      ) => {
+        expect(teacherRoundService.startNewRound).not.toHaveBeenCalled();
+      }));
+    });
   });
 
-  describe('The toggleTimerRunning() method', () => {
-    it(
-      'Makes the timer play if it\'s currently paused',
-      fakeAsync(inject([TimerService], (timerService: TimerService) => {
-        component.toggleTimerRunning();
-        tick(0);
-
-        timerService.running$.subscribe(running => {
-          expect(running).toBe(true);
-        });
-        tick(0);
-
-        discardPeriodicTasks();
-      })),
-    );
-
-    it(
-      'Makes the timer pause if it\'s currently playing',
-      fakeAsync(inject([TimerService], (timerService: TimerService) => {
-        let lastEmittedRunningState: boolean;
-        timerService.running$.subscribe(running => {
-          lastEmittedRunningState = running;
-        });
-
-        timerService.setRunning(true);
-        tick(0);
-        expect(lastEmittedRunningState).toBe(true);
-
-        component.toggleTimerRunning();
-        tick(0);
-        expect(lastEmittedRunningState).toBe(false);
-      })),
-    );
-
-    it('Propagates back to LargeDisplayComponent.running', fakeAsync(() => {
-      expect(component.running).toBe(false);
-
-      component.toggleTimerRunning();
-      tick(0);
-      expect(component.running).toBe(true);
-
-      component.toggleTimerRunning();
-      tick(0);
-      expect(component.running).toBe(false);
+  describe('After the round starts', () => {
+    beforeEach(async(() => {
+      component.startRound();
     }));
+
+    describe('The TimerService.running$ field', () => {
+      it('Is initialized to false', async(() => {
+        component.timerService.running$.pipe(take(1)).subscribe(running => {
+          expect(running).toBe(false);
+        });
+      }));
+    });
+
+    describe('The toggleTimerRunning() method', () => {
+      it(
+        'Makes the timer play if it\'s currently paused',
+        fakeAsync(inject([TimerService], (timerService: TimerService) => {
+          let lastEmittedRunningState: boolean;
+          timerService.running$.subscribe(running => {
+            lastEmittedRunningState = running;
+          });
+
+          component.toggleTimerRunning();
+          tick(0);
+          expect(lastEmittedRunningState).toBe(true);
+
+          discardPeriodicTasks();
+        })),
+      );
+
+      it(
+        'Makes the timer pause if it\'s currently playing',
+        fakeAsync(inject([TimerService], (timerService: TimerService) => {
+          let lastEmittedRunningState: boolean;
+          timerService.running$.subscribe(running => {
+            lastEmittedRunningState = running;
+          });
+
+          timerService.setRunning(true);
+          tick(0);
+          expect(lastEmittedRunningState).toBe(true);
+
+          component.toggleTimerRunning();
+          tick(0);
+          expect(lastEmittedRunningState).toBe(false);
+        })),
+      );
+    });
+
+    describe('TeacherRoundService.startNewRound()', () => {
+      it('Should have been called', inject([TeacherRoundService], (
+        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+      ) => {
+        expect(teacherRoundService.startNewRound).toHaveBeenCalled();
+      }));
+    });
+
+    describe('After the component is destroyed', () => {
+      beforeEach(async(() => {
+        fixture.destroy();
+      }));
+
+      describe('TeacherRoundService.endRound()', () => {
+        it('Should have been called', inject([TeacherRoundService], (
+          teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
+        ) => {
+          expect(teacherRoundService.endRound).toHaveBeenCalled();
+        }));
+      });
+    });
   });
 });

@@ -13,6 +13,10 @@ export const environment = {
     messagingSenderId: "939350015320",
     appId: "1:939350015320:web:b69fc713c8c9c7c120b92d",
     measurementId: "G-B2856C83KR"
+  },
+  firestoreSettings: {
+    host: "localhost:8080",
+    ssl: false
   }
 };
 
