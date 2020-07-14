@@ -2,16 +2,18 @@
   <div class="top-content">
     <!--This is not an accident, the div's are being used to split the upper portion of the page into three even sections-->
     <div></div>
-    <div>
+    <div class="top-content-middle-section">
       <mat-card class="join-code">
         <mat-card-content>Join at buzzabout.app</mat-card-content>
         <mat-card-content>With the join code:</mat-card-content>
         <mat-card-title>{{ teacherSessionService.sessionId$| async }}</mat-card-title>
       </mat-card>
     </div>
-    <div class="count">
-      <h1 class="player-count">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
-      <p>Players</p>
+    <div class="top-content-right-section">
+      <div class="player-count">
+        <h1 class="number-of-players">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
+        <p>Players</p>
+      </div>
     </div>
   </div>
   <div class="player-list">

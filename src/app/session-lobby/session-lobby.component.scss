@@ -18,20 +18,29 @@
   > * {
     flex: 1;
     display: flex;
-    justify-content: center;
   }
+}
+
+.top-content-middle-section {
+  justify-content: center;
 }
 
 .join-code {
   text-align: center;
 }
 
-.count {
-  flex-direction: column;
-  align-items: flex-end;
+.top-content-right-section {
+  justify-content: flex-end;
 }
 
 .player-count {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.number-of-players {
   margin-bottom: 0px;
 }
 
