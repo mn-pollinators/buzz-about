@@ -28,7 +28,7 @@ export class PlayRoundComponent implements OnInit {
   }
 
   onMarkerState(states: MarkerState[]) {
-    //console.log(states);
+    // console.log(states);
   }
 
 }
