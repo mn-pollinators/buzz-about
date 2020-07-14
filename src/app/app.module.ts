@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -95,7 +95,12 @@ const FIREBASE_MODULES = [
     ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: FIRESTORE_SETTINGS,
+      useValue: environment.firestoreSettings,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
