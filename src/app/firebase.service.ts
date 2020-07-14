@@ -78,7 +78,7 @@ export class FirebaseService {
   }
 
   public setCurrentRound(roundPath: RoundPath){
-    this.firestore.collection('sessions').doc(roundPath.sessionId).update({currentRoundID: roundPath.roundId});
+    this.firestore.collection('sessions').doc(roundPath.sessionId).update({currentRoundId: roundPath.roundId});
   }
 
   /**
