@@ -3,6 +3,10 @@ import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.compo
 import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
+import { FlowerSpecies, allFlowerSpecies } from '../flowers';
+import { map } from 'rxjs/operators';
+import { RoundFlower } from '../round';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../teacher-round.service';
 
@@ -29,126 +33,37 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
-  // TODO: These values are only here for testing. Eventually, we'll get this
-  // information from the round service.
-  demoFlowerSpeciesIds = [
-    'rudbeckia_hirta',
-    'taraxacum_officinale',
-    'solidago_rigida',
-    'helianthus_maximiliani',
-    'rubus_occidentalis',
-    'trifolium_repens',
-    'vaccinium_angustifolium',
-    'rudbeckia_hirta',
-    'taraxacum_officinale',
-    'solidago_rigida',
-    'helianthus_maximiliani',
-    'rubus_occidentalis',
-    'trifolium_repens',
-    'vaccinium_angustifolium',
-    'helianthus_maximiliani',
-    'rubus_occidentalis',
+  demoFlowerSpecies: FlowerSpecies[] = [
+    allFlowerSpecies.asclepias_syriaca,
+    allFlowerSpecies.cirsium_discolor,
+    allFlowerSpecies.echinacea_angustifolia,
+    allFlowerSpecies.helianthus_maximiliani,
+    allFlowerSpecies.monarda_fistulosa,
+    allFlowerSpecies.prunus_americana,
+    allFlowerSpecies.rubus_occidentalis,
+    allFlowerSpecies.rudbeckia_hirta,
+    allFlowerSpecies.solidago_rigida,
+    allFlowerSpecies.taraxacum_officinale,
+    allFlowerSpecies.trifolium_repens,
+    allFlowerSpecies.vaccinium_angustifolium,
+    allFlowerSpecies.asclepias_syriaca,
+    allFlowerSpecies.cirsium_discolor,
+    allFlowerSpecies.echinacea_angustifolia,
+    allFlowerSpecies.helianthus_maximiliani,
   ];
 
-  demoFlowers: FlowerLayoutItem[] = [
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      alt: 'test',
-      active: true,
-      scale: 1.9
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      alt: 'test',
-      active: true,
-      scale: 1.3
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
+  demoRoundFlowers$ = this.timerService.currentTime$.pipe(
+    map(time => this.demoFlowerSpecies.map(species => new RoundFlower(species, time)))
+  );
 
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/rudbeckia hirta.png',
-      alt: 'test',
-      active: true,
-      scale: 2.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/taraxacum officinale.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/solidago rigida.png',
-      alt: 'test',
-      active: true,
-      scale: 1.3
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 0.9
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/trifolium repens.png',
-      alt: 'test',
-      active: true,
-      scale: 1.1
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/vaccinium angustifolium.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/sunflower.png',
-      alt: 'test',
-      active: true,
-      scale: 1.5
-    },
-    {
-      imgSrc: 'assets/images/1000w-8bit/flowers/black raspberry.png',
-      alt: 'test',
-      active: true,
-      scale: 0.9
-    }
-  ];
+  demoFlowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.demoRoundFlowers$.pipe(
+    map(roundFlowers => roundFlowers.map(rf => ({
+      imgSrc: `assets/art/500w/flowers/${rf.species.art_file}`,
+      alt: rf.species.name,
+      active: rf.isBlooming,
+      scale: rf.species.relative_size
+    })))
+  );
 
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.
@@ -178,7 +93,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
     this.currentScreen = ScreenId.DuringTheRound;
 
     this.teacherRoundService.startNewRound(this.demoSessionId, {
-      flowerSpeciesIds: this.demoFlowerSpeciesIds,
+      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
       // TODO: We should eventually figure out what we're going to do with the
       // 'status' field; for the moment we're just giving it a dummy value.
       status: 'test',

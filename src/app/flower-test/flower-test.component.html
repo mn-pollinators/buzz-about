@@ -3,15 +3,15 @@
 <div #contents>
   <div class="flower-settings">
     <div *ngFor="let flower of flowers">
-      <select [(ngModel)]="flower.imgSrc">
-        <option *ngFor="let image of images" [value]="image.imgSrc">{{image.name}}</option>
+      <select [(ngModel)]="flower.species">
+        <option *ngFor="let species of allFlowerSpeciesArray" [value]="species.id">{{species.name}}</option>
       </select>
-      <input type="number" step="0.1" [(ngModel)]="flower.scale" style="width: 50px">
-      <input type="checkbox" [(ngModel)]="flower.active">
+
+      <input type="checkbox" [(ngModel)]="flower.blooming">
     </div>
   </div>
 
   <div class="test-container">
-    <app-flower-layout [items]="flowers"></app-flower-layout>
+    <app-flower-layout [items]="getFlowers(flowers)"></app-flower-layout>
   </div>
 </div>

@@ -15,4 +15,10 @@ export class FlowerLayoutComponent implements OnInit {
   ngOnInit() {
   }
 
+  trackByFlower(index: number, item: FlowerLayoutItem) {
+    // Our flower items are designed to take any changes to the flower
+    // and don't need to be recreated for every change to the array.
+    return index;
+  }
+
 }

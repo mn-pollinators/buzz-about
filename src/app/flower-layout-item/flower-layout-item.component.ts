@@ -44,4 +44,9 @@ export class FlowerLayoutItemComponent implements OnInit, OnChanges {
 
   }
 
+  calculateScale(scale: number) {
+    // Normalize scale
+    return ((scale - 1) * 0.2) + 1;
+  }
+
 }

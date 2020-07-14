@@ -1,4 +1,4 @@
-<img src="/assets/images/large-display/hill-compressed.jpg" class="background-img" />
+<app-hill-background></app-hill-background>
 <div class="flowers">
-  <app-flower-layout-item *ngFor="let item of items" [item]="item"></app-flower-layout-item>
+  <app-flower-layout-item *ngFor="let item of items; trackBy:trackByFlower" [item]="item"></app-flower-layout-item>
 </div>

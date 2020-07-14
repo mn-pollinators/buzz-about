@@ -9,7 +9,12 @@
           <li *ngFor="let bloomingPeriod of flowerSpecies.blooming_period">{{bloomingPeriod[0]}} &ndash; {{bloomingPeriod[1]}}</li>
         </ul>
       </li>
-      <li>File: {{flowerSpecies.art_file}}</li>
+      <li>
+        <div>File: {{flowerSpecies.art_file}}</div>
+        <img src="/assets/art/500w/flowers/{{flowerSpecies.art_file}}" width="100px" title="500w image">
+        <img src="/assets/art/512-square/flowers/{{flowerSpecies.art_file}}" width="100px" title="512 square image">
+        <img src="/assets/art/512-square-grayscale/flowers/{{flowerSpecies.art_file}}" width="100px" title="512 square grayscale image">
+      </li>
     </ul>
   </li>
 </ul>
@@ -19,7 +24,11 @@
   <li *ngFor="let beeSpecies of allBeeSpecies">
     {{beeSpecies.name}} &ndash; {{beeSpecies.sci_name}}
     <ul>
-      <li>File: {{beeSpecies.art_file}}</li>
+      <li>
+        <div>File: {{beeSpecies.art_file}}</div>
+        <img src="/assets/art/500w/bees/{{beeSpecies.art_file}}" width="100px" title="500w image">
+      </li>
+
       <li>Nest: {{beeSpecies.nest_type.name}}</li>
       <li>
         Active Periods:
@@ -28,10 +37,12 @@
         </ul>
       </li>
       <li>
-        Flowers Accepted:
-        <ul>
-          <li *ngFor="let beeFlower of beeSpecies.flowers_accepted">{{beeFlower.name}}</li>
-        </ul>
+        <details>
+          <summary>Flowers Accepted</summary>
+          <ul>
+            <li *ngFor="let beeFlower of beeSpecies.flowers_accepted">{{beeFlower.name}}</li>
+          </ul>
+        </details>
       </li>
     </ul>
   </li>
@@ -42,7 +53,12 @@
   <li *ngFor="let nest of allNests">
     {{nest.name}}
     <ul>
-      <li>File: {{nest.art_file}}</li>
+      <li>
+        <div>File: {{nest.art_file}}</div>
+        <img src="/assets/art/500w/nests/{{nest.art_file}}" width="100px" title="500w image">
+        <img src="/assets/art/512-square/nests/{{nest.art_file}}" width="100px" title="512 square image">
+        <img src="/assets/art/512-square-grayscale/nests/{{nest.art_file}}" width="100px" title="512 square grayscale image">
+      </li>
     </ul>
   </li>
 </ul>
