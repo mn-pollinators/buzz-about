@@ -93,7 +93,7 @@ export class FlowerTestComponent implements OnInit {
         alt: speciesObj.name,
         active: blooming,
         scale: speciesObj.relative_size
-    }
+      };
     });
   }
 
