@@ -45,4 +45,22 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Created by https://www.toptal.com/developers/gitignore/api/firebase
+# Edit at https://www.toptal.com/developers/gitignore?templates=firebase
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
 .firebase/
+
+# End of https://www.toptal.com/developers/gitignore/api/firebase
+
+firebase-debug.log
+
+firestore-debug.log
+
+ui-debug.log

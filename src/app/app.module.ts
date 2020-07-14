@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -41,6 +41,7 @@ import { JsonDataTestComponent } from './json-data-test/json-data-test.component
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
 import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
+import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -80,6 +81,7 @@ const FIREBASE_MODULES = [
     SessionTestComponent,
     StudentLoginComponent,
     PrepareRoundTestComponent,
+    BottomBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,7 +95,12 @@ const FIREBASE_MODULES = [
     ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: FIRESTORE_SETTINGS,
+      useValue: environment.firestoreSettings,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
