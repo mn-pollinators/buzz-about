@@ -4,6 +4,7 @@ import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 import { TimerService } from '../timer.service';
 import { TimePeriod } from '../time-period';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
+import { BeeSpecies, allBeeSpecies } from '../bees';
 import { map } from 'rxjs/operators';
 import { RoundFlower } from '../round';
 import { Observable } from 'rxjs';
@@ -94,6 +95,7 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
     this.teacherRoundService.startNewRound(this.demoSessionId, {
       flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
+      beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
       // TODO: We should eventually figure out what we're going to do with the
       // 'status' field; for the moment we're just giving it a dummy value.
       status: 'test',

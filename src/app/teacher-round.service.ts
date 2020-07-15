@@ -14,7 +14,9 @@ const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
   providedIn: 'root'
 })
 export class TeacherRoundService {
+
   private readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
+  private beeList: string[];
 
   constructor(
     public timerService: TimerService,
@@ -54,6 +56,17 @@ export class TeacherRoundService {
     // this one.
     this.roundPath$.next(demoRoundPath);
     this.firebaseService.setRoundData(demoRoundPath, roundData);
+  }
+
+  assignBees() {
+    this.firebaseService.getRound(demoRoundPath).subscribe((round) => {
+      this.beeList = round.beeSpeciesIds;
+    });
+    this.firebaseService.getStudentsInSession(demoRoundPath.sessionId).subscribe((studentList) => {
+        studentList.forEach((student) => {
+            this.firebaseService.addStudentToRound(student.id, demoRoundPath, {beeSpecies: this.beeList[0]});
+        });
+    });
   }
 
   /**

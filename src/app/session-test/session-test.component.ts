@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentSessionService } from '../student-session.service';
 import { StudentRoundService } from '../student-round.service';
 import { AuthService } from '../auth.service';
+import { FirebaseService } from '../firebase.service';
 
 @Component({
   selector: 'app-session-test',
@@ -16,7 +17,8 @@ export class SessionTestComponent implements OnInit {
   constructor(
     public sessionService: StudentSessionService,
     public roundService: StudentRoundService,
-    public authService: AuthService) { }
+    public authService: AuthService,
+    public firebaseService: FirebaseService) { }
 
   ngOnInit(): void {
   }
