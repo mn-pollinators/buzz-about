@@ -1,0 +1,24 @@
+@import "../../variables";
+
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.student-card {
+    width: 150px;
+    margin: 8px;
+}
+
+.student-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.student-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

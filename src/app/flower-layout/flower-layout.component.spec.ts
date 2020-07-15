@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FlowerLayoutComponent } from './flower-layout.component';
 import { FlowerLayoutItemComponent } from '../flower-layout-item/flower-layout-item.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HillBackgroundComponent } from '../hill-background/hill-background.component';
 
 describe('FlowerLayoutComponent', () => {
   let component: FlowerLayoutComponent;
@@ -10,7 +11,7 @@ describe('FlowerLayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FlowerLayoutComponent, FlowerLayoutItemComponent ],
+      declarations: [ FlowerLayoutComponent, FlowerLayoutItemComponent, HillBackgroundComponent ],
       imports: [NoopAnimationsModule]
     })
     .compileComponents();
