@@ -11,10 +11,6 @@
   background-color: mat-color($primary);
   display: flex;
   flex-direction: row;
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
 
   & > div {
     // The child divs (the left, center, and right thirds of the toolbar) should
