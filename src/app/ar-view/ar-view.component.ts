@@ -156,7 +156,15 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.renderer.setSize( ArResolution.width, ArResolution.height ); // TODO: resize to entire component size
 
       // Setup the THREEAR Source with the parent div and the renderer and camera we setup
-      this.source = new THREEAR.Source({parent: this.container, renderer: this.renderer, camera: this.camera});
+      this.source = new THREEAR.Source({
+        parent: this.container,
+        renderer: this.renderer,
+        camera: this.camera,
+        sourceWidth: ArResolution.width,
+        sourceHeight: ArResolution.height,
+        displayWidth: ArResolution.width,
+        displayHeight: ArResolution.height,
+      });
 
       if (this.debug) {
         this.monitor1 = new Info();
