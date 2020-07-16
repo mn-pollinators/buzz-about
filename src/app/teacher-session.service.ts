@@ -22,11 +22,11 @@ export class TeacherSessionService {
    * - when the teacher joins or leaves a session,
    * - and when the contents of the current session change in Firebase.
    */
-  studentsInCurrentSession$: Observable<SessionStudentData[] | null> = this.sessionId$.pipe(
+  studentsInCurrentSession$: Observable<SessionStudentData[]> = this.sessionId$.pipe(
     switchMap(sessionId =>
       sessionId
         ? this.firebaseService.getStudentsInSession(sessionId)
-        : of(new Array<SessionStudentData>())
+        : of([])
     ),
     shareReplay(1),
   );
