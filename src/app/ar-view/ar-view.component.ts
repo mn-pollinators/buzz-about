@@ -114,15 +114,16 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngAfterViewInit() {
     this.initAR().then(() => { // init ar
-
-      // Set flag that AR is ready
-      this.arReady = true;
+      // Add initial set of markers passed into the component
+      if(this.markers) {
+        this.markers.forEach((marker) => this.addMarker(marker));
+      }
 
       // Setup AR events
       this.setupEvents();
 
-      // Add initial set of markers passed into the component
-      // this.markers.forEach((marker) => this.addMarker(marker));
+      // Set flag that AR is ready
+      this.arReady = true;
     });
   }
 
