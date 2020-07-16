@@ -26,7 +26,7 @@ export class TeacherSessionService {
     switchMap(sessionId =>
       sessionId
         ? this.firebaseService.getStudentsInSession(sessionId)
-        : of(null)
+        : of(new Array<SessionStudentData>())
     ),
     shareReplay(1),
   );
