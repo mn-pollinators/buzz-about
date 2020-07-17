@@ -31,4 +31,9 @@ export class PlayRoundComponent implements OnInit {
     // console.log(states);
   }
 
+  calculateBeeScale(scale: number) {
+    // Normalize scale
+    return ((scale - 1) * 0.2) + 1;
+  }
+
 }
