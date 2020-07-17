@@ -79,6 +79,14 @@ export class FirebaseService {
   }
 
   /**
+   * Returns an observable of all student data as an array of JSON objects
+   * @param sessionID the ID of the session the students are in
+   */
+  getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
+    return this.firestore.collection('sessions').doc(sessionID).collection<SessionStudentData>('students').valueChanges();
+  }
+
+  /**
    * Adds student to firestore
    * @param id Student' id
    * @param sessionID id of the session that the student will be added to
