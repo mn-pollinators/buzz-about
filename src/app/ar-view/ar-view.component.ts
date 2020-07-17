@@ -61,7 +61,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
    * Outputs an event whenever a marker is found.
    */
-  @Output() onMarkerStates = new EventEmitter<MarkerState[]>();
+  @Output() markerStates = new EventEmitter<MarkerState[]>();
 
   // https://github.com/stemkoski/AR-Examples/blob/master/texture.html
   // https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
@@ -115,7 +115,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngAfterViewInit() {
     this.initAR().then(() => { // init ar
       // Add initial set of markers passed into the component
-      if(this.markers) {
+      if (this.markers) {
         this.markers.forEach((marker) => this.addMarker(marker));
       }
 
@@ -274,7 +274,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
 
       // Setup the three group for this marker
-      const markerGroup = new THREE.Group;
+      const markerGroup = new THREE.Group();
       // Add the group to the scene that contains all the markers
       this.scene.add(markerGroup);
 
@@ -319,7 +319,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     private setupEvents() {
       this.controller.addEventListener('markerFound', (event) => {
         // if (this.debug) console.log(event.marker);
-        this.onMarkerStates.emit(this.controller.markers.barcode.map(barcode =>
+        this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
           ({
             barcodeValue: barcode.barcodeValue,
             found: barcode.found
@@ -327,7 +327,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       });
       this.controller.addEventListener('markerLost', (event) => {
         // if (this.debug) console.log(event.marker);
-        this.onMarkerStates.emit(this.controller.markers.barcode.map(barcode =>
+        this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
           ({
             barcodeValue: barcode.barcodeValue,
             found: barcode.found
@@ -368,7 +368,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     ngOnChanges(changes: SimpleChanges) {
-      console.log(changes);
+      if (this.debug) { console.log(changes); }
       // Check if there is a change to the markers and make sure AR has started
       if (typeof changes.markers !== 'undefined' && this.arReady) {
         const change = changes.markers;
@@ -380,7 +380,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
           // Get which markers have changed
           const diff = current.filter(m => !previous.some(n => n.barcodeValue === m.barcodeValue && n.imgPath === m.imgPath));
-          if (this.debug) { console.log(diff); }
 
           // Send the markers that have been changed to updateMarkers to be updated or added.
           this.updateMarkers(diff);
