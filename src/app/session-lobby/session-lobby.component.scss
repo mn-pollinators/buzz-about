@@ -1,0 +1,49 @@
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.top-content {
+  display: flex;
+  padding: 16px;
+  > * {
+    flex: 1;
+    display: flex;
+  }
+}
+
+.top-content-middle-section {
+  justify-content: center;
+}
+
+.join-code {
+  text-align: center;
+}
+
+.top-content-right-section {
+  justify-content: flex-end;
+}
+
+.player-count {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.number-of-players {
+  margin-bottom: 0px;
+}
+
+.player-list {
+  overflow: auto;
+}

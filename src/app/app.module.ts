@@ -21,6 +21,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card'
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 
 import { ArViewComponent } from './ar-view/ar-view.component';
 import { PlayRoundComponent } from './play-round/play-round.component';
@@ -38,8 +41,10 @@ import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
 import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
+import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
+import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
 
@@ -49,9 +54,12 @@ const ANGULAR_MATERIAL_MODULES = [
   MatToolbarModule,
   MatButtonModule,
   MatIconModule,
+  MatGridListModule,
   MatFormFieldModule,
   MatInputModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuModule,
+  MatSelectModule
 ];
 
 const FIREBASE_MODULES = [
@@ -78,10 +86,12 @@ const FIREBASE_MODULES = [
     FirebaseTestComponent,
     SessionPageTestComponent,
     JsonDataTestComponent,
+    JoinedStudentsComponent,
     SessionTestComponent,
     StudentLoginComponent,
     BottomBarComponent,
     HillBackgroundComponent,
+    SessionLobbyComponent,
   ],
   imports: [
     BrowserModule,
