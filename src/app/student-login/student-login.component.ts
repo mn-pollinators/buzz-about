@@ -14,14 +14,14 @@ export class StudentLoginComponent implements OnInit {
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
     sessionControl: new FormControl('', Validators.required)
-  });;
+  });
 
   constructor(public authService: AuthService) {
     this.sessionID = 'demo-session'; // Temporary until multiple sessions are supported
   }
 
   ngOnInit(): void {
-    this.authService.logStudentIn();
+
   }
 
   /**

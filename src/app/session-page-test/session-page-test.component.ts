@@ -18,8 +18,8 @@ export class SessionPageTestComponent implements OnInit {
     this.testSession = 'kugTpWqJyrXaJZ4ZB6zE';
   }
 
-   ngOnInit(): void {
-    this.authService.logStudentIn();
+  ngOnInit(): void {
+
   }
 
   /**
