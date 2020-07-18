@@ -55,7 +55,7 @@ export class TeacherRoundService {
     // Eventually, we'll create a new round, but for the moment, we'll just use
     // this one.
     this.roundPath$.next(demoRoundPath);
-    this.firebaseService.setRoundData(demoRoundPath, roundData);
+    this.firebaseService.createRoundInSession(sessionId, roundData);
   }
 
   assignBees() {

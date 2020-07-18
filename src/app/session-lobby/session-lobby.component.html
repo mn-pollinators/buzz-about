@@ -24,6 +24,6 @@
 
 <app-bottom-bar>
   <button left mat-raised-button color="accent">Quit Session</button>
-  <button center mat-raised-button color="accent">Start Round</button>
+  <button center mat-raised-button color="accent" (click)="startRound()" routerLink = '/teacher'>Start Round</button>
   <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </app-bottom-bar>
