@@ -3,12 +3,14 @@ import { TeacherRoundService } from './teacher-round.service';
 import { FirebaseService } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from './time-period';
+import { allBeeSpecies } from './bees';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
   const fakeSessionId = 'fake-session-id';
   const fakeRoundData = {
     flowerSpeciesIds: ['achillea_millefolium'],
+    beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
     status: 'dandy',
     running: true,
     currentTime: 17,
