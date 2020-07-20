@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionStudentData } from './session';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay } from 'rxjs/operators';
+import { switchMap, shareReplay, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,16 @@ export class TeacherSessionService {
         ? this.firebaseService.getStudentsInSession(sessionId)
         : of([])
     ),
+    shareReplay(1),
+  );
+
+  currentRoundId$: Observable<string | null> = this.sessionId$.pipe(
+    switchMap(sessionId =>
+      sessionId ? this.firebaseService.getSession(sessionId)
+      : of(null)),
+    map(session =>
+      session ? session.currentRoundId
+      : of(null)),
     shareReplay(1),
   );
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TeacherSessionService } from '../teacher-session.service';
 import { FirebaseRound } from '../round';
 import { TeacherRoundService } from '../teacher-round.service';
+import { allBeeSpecies } from '../bees';
 
 @Component({
   selector: 'app-session-lobby',
@@ -16,6 +17,7 @@ export class SessionLobbyComponent implements OnInit {
   constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {
     this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
     this.roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+                          beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
                           status: 'fine',
                           running: false,
                           currentTime: 0, };

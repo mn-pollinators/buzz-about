@@ -4,6 +4,8 @@ import { FirebaseRound } from './round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { allBeeSpecies } from './bees';
+import { TeacherSessionService } from './teacher-session.service';
 
 // TODO: For the moment, we're only using one fixed, preexisting round for
 // all teachers. Eventually, teachers will each create their own sessions
@@ -21,6 +23,7 @@ export class TeacherRoundService {
   constructor(
     public timerService: TimerService,
     public firebaseService: FirebaseService,
+    public teacherSessionService: TeacherSessionService,
   ) {
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
@@ -55,17 +58,28 @@ export class TeacherRoundService {
     // Eventually, we'll create a new round, but for the moment, we'll just use
     // this one.
     this.roundPath$.next(demoRoundPath);
-    this.firebaseService.createRoundInSession(sessionId, roundData);
+    this.firebaseService.createRoundInSession(sessionId, roundData).then(() => {
+      this.assignBees();
+    });
   }
 
-  assignBees() {
-    this.firebaseService.getRound(demoRoundPath).subscribe((round) => {
-      this.beeList = round.beeSpeciesIds;
-    });
-    this.firebaseService.getStudentsInSession(demoRoundPath.sessionId).subscribe((studentList) => {
-        studentList.forEach((student) => {
-            this.firebaseService.addStudentToRound(student.id, demoRoundPath, {beeSpecies: this.beeList[0]});
+  assignBees(): void {
+    let newRoundPath;
+
+    this.teacherSessionService.currentRoundId$.subscribe(currentRoundId => {
+      if (currentRoundId) {
+        this.teacherSessionService.sessionId$.subscribe(currentSessionId => {
+          newRoundPath = {sessionId: currentSessionId, roundId: currentRoundId};
+          this.firebaseService.getRound(newRoundPath).subscribe((round) => {
+            this.beeList = round.beeSpeciesIds;
+            this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
+              studentList.forEach((student) => {
+                this.firebaseService.addStudentToRound(student.id, newRoundPath, {beeSpecies: allBeeSpecies.apis_mellifera.id});
+              });
+            });
+          });
         });
+      }
     });
   }
 
