@@ -10,8 +10,12 @@ import { TeacherRoundService } from '../teacher-round.service';
 })
 export class SessionLobbyComponent implements OnInit {
 
-  sessionID: string;
-  roundData: FirebaseRound;
+
+  sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
+  roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+                        status: 'fine',
+                        running: false,
+                        currentTime: 0, };
 
   constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {
     this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
