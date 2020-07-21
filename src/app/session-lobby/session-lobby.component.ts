@@ -17,13 +17,7 @@ export class SessionLobbyComponent implements OnInit {
                         running: false,
                         currentTime: 0, };
 
-  constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {
-    this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
-    this.roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
-                          status: 'fine',
-                          running: false,
-                          currentTime: 0, };
-  }
+  constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {  }
 
   ngOnInit(): void {
     // Temporary, teacher will likely join session immediately after creating it
