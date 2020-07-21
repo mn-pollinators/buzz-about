@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Round, Marker } from '../rounds/round';
-import { ExampleRound } from "../rounds/example.round";
-import { MarkerState } from '../ar-view/ar-view.component';
+import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
+import { StudentRoundService } from '../student-round.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { StudentSessionService } from '../student-session.service';
 
 @Component({
   selector: 'app-play-round',
@@ -10,40 +12,28 @@ import { MarkerState } from '../ar-view/ar-view.component';
 })
 export class PlayRoundComponent implements OnInit {
 
-  round: Round;
 
-  roundReady: boolean;
+  arMarkers$: Observable<ARMarker[]> = this.studentRoundService.currentFlowers$.pipe(
+    map(flowers => flowers.map((flower, index) => ({
+      barcodeValue: index + 1,
+      imgPath: `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}/flowers/${flower.species.art_file}`
+    })))
+  );
 
-  constructor() { }
 
-  testMarkers : Marker[] = [
-    {name:"sunflower", barcodeValue:1, imgPath:"assets/images/1000w-8bit/flowers/sunflower.png"},
-    {name:"black raspberry", barcodeValue:2, imgPath:"assets/images/1000w-8bit/flowers/black raspberry.png"},
-    {name:"rudbeckia hirta", barcodeValue:3, imgPath:"assets/images/1000w-8bit/flowers/rudbeckia hirta.png"},
-    {name:"solidago rigida", barcodeValue:4, imgPath:"assets/images/1000w-8bit/flowers/solidago rigida.png"}
-  ]
+  constructor(public studentRoundService: StudentRoundService, private sessionService: StudentSessionService) { }
 
   ngOnInit() {
-    this.round = new ExampleRound("Test Round", this.testMarkers);
-
-    this.roundReady = true;
+    this.sessionService.joinSession('demo-session');
   }
 
   onMarkerState(states: MarkerState[]) {
-    //console.log(states);
-    this.round.onMarkerState(states);
+    // console.log(states);
   }
 
-  testMarkerChange() {
-
-    //this is creating a new reference to the array so Angular change detection will notice
-    let newmarkers = [].concat(this.round.markers); 
-    
-    newmarkers.push({name:"test marker", barcodeValue:5, imgPath:"assets/icons/icon-512x512.png"});
-    newmarkers[1] = {name:"test marker 1", barcodeValue:2, imgPath:"assets/icons/icon-512x512.png"};
-    this.round.markers = newmarkers; 
+  calculateBeeScale(scale: number) {
+    // Normalize scale
+    return ((scale - 1) * 0.2) + 1;
   }
-
-
 
 }
