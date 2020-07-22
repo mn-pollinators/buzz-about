@@ -33,8 +33,4 @@ export class SessionTestComponent implements OnInit {
     this.authService.addStudentToDatabase({name}, this.sessionId);
   }
 
-  logIn() {
-    this.authService.logStudentIn();
-  }
-
 }
