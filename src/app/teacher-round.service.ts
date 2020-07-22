@@ -5,6 +5,7 @@ import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { TeacherSessionService } from './teacher-session.service';
+import { TimePeriod } from './time-period';
 
 // TODO: For the moment, we're only using one fixed, preexisting round for
 // all teachers. Eventually, teachers will each create their own sessions
@@ -16,6 +17,11 @@ const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
 })
 export class TeacherRoundService {
   private readonly roundPath$ = this.teacherSessionService.currentRoundPath$;
+
+  // TODO: These values are only here for testing. Eventually, we'll get this
+  // information from the round service.
+  public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
+  public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
 
   constructor(
     public timerService: TimerService,
@@ -51,6 +57,14 @@ export class TeacherRoundService {
     let round: Promise<RoundPath>;
     round = this.firebaseService.createRoundInSession(sessionId, roundData);
     round.then(roundPath => (this.firebaseService.setCurrentRound(roundPath)));
+
+
+    this.timerService.initialize({
+      running: false,
+      tickSpeed: 1000,
+      currentTime: this.startTime,
+      endTime: this.endTime
+    });
   }
 
   /**

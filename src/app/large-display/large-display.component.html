@@ -1,34 +1,48 @@
-<div class="large-display-content during-the-round">
-  <app-timer-progress-bar
-    [currentTime]="timerService.currentTime$ | async"
-    [startMonth]="this.startTime.month"
-    [endMonth]="this.endTime.month"
-  ></app-timer-progress-bar>
+<ng-container [ngSwitch]="currentScreen$ | async">
+  <ng-container *ngSwitchCase="ScreenId.Lobby">
+    <app-session-lobby></app-session-lobby>
+  </ng-container>
 
-  <app-flower-layout [items]="demoFlowerLayoutItems$ | async"></app-flower-layout>
+  <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
+    <div class="large-display-content during-the-round">
+      <app-timer-progress-bar
+        [currentTime]="timerService.currentTime$ | async"
+        [startMonth]="this.teacherRoundService.startTime.month"
+        [endMonth]="this.teacherRoundService.endTime.month"
+      ></app-timer-progress-bar>
 
-  <app-timer-progress-spinner
-    [currentTime]="timerService.currentTime$ | async"
-    [startTime]="this.startTime"
-    [endTime]="this.endTime">
-  </app-timer-progress-spinner>
-</div>
+      <app-flower-layout [items]="demoFlowerLayoutItems$ | async"></app-flower-layout>
 
-<app-bottom-bar>
-  <div left>
-    <button mat-raised-button color="accent">Quit Game</button>
-  </div>
+      <app-timer-progress-spinner
+        [currentTime]="timerService.currentTime$ | async"
+        [startTime]="this.teacherRoundService.startTime"
+        [endTime]="this.teacherRoundService.endTime">
+      </app-timer-progress-spinner>
+    </div>
 
-  <div center>
-    <button mat-mini-fab color="accent" (click)="toggleTimerRunning()"
-    >
-      <mat-icon>
-        {{(timerService.running$ | async) ? 'pause' : 'play_arrow'}}
-      </mat-icon>
-    </button>
-  </div>
+    <app-bottom-bar>
+      <div left>
+        <button mat-raised-button color="accent">Quit Game</button>
+      </div>
 
-  <div right>
-    <button mat-raised-button color="accent">Skip Round</button>
-  </div>
-</app-bottom-bar>
+      <div center>
+        <button mat-mini-fab color="accent" (click)="toggleTimerRunning()"
+        >
+          <mat-icon>
+            {{(timerService.running$ | async) ? 'pause' : 'play_arrow'}}
+          </mat-icon>
+        </button>
+      </div>
+
+      <div right>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="this.teacherRoundService.endRound()"
+        >
+          Skip Round
+        </button>
+      </div>
+    </app-bottom-bar>
+  </ng-container>
+</ng-container>
