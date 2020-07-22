@@ -1,8 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
-import { BottomBarComponent } from '../bottom-bar/bottom-bar.component';
 import { TimerService } from '../timer.service';
-import { TimePeriod } from '../time-period';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
 import { map } from 'rxjs/operators';
 import { RoundFlower } from '../round';
@@ -30,7 +28,7 @@ export enum ScreenId {
   templateUrl: './large-display.component.html',
   styleUrls: ['./large-display.component.scss']
 })
-export class LargeDisplayComponent implements OnInit, OnDestroy {
+export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
@@ -82,18 +80,9 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   ngOnInit() { }
 
-  endRound() {
-    this.timerService.setRunning(false);
-    this.teacherRoundService.endRound(this.demoSessionId);
-  }
-
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
     });
-  }
-
-  ngOnDestroy() {
-    this.endRound();
   }
 }
