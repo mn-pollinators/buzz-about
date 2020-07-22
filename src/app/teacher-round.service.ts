@@ -66,12 +66,4 @@ export class TeacherRoundService {
       endTime: this.endTime
     });
   }
-
-  /**
-   * Unmark the currently active round, so that it's no longer active. Stop
-   * talking to the timer service.
-   */
-  endRound(sessionId: string): void {
-    this.firebaseService.setCurrentRound(null);
-  }
 }
