@@ -16,10 +16,9 @@ const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
   providedIn: 'root'
 })
 export class TeacherRoundService {
-  private readonly roundPath$ = this.teacherSessionService.currentRoundPath$;
 
   // TODO: These values are only here for testing. Eventually, we'll get this
-  // information from the round service.
+  // information from particular rounds.
   public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
   public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
 
@@ -28,16 +27,17 @@ export class TeacherRoundService {
     public firebaseService: FirebaseService,
     public teacherSessionService: TeacherSessionService,
   ) {
+
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
     // null.)
-    combineLatest([this.roundPath$, this.timerService.running$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, running]) => {
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
-    combineLatest([this.roundPath$, this.timerService.currentTime$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, timePeriod]) => {
       this.firebaseService.updateRoundData(roundPath, {

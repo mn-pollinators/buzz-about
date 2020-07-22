@@ -17,16 +17,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../teacher-round.service';
+import { of, BehaviorSubject } from 'rxjs';
+import { TeacherSessionService } from '../teacher-session.service';
+import { RoundPath } from '../firebase.service';
+import { TimePeriod } from '../time-period';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
   let fixture: ComponentFixture<LargeDisplayComponent>;
+  const mockCurrentRoundPath$ = new BehaviorSubject<RoundPath>(null);
 
   beforeEach(async(() => {
-    const mockTeacherRoundService = jasmine.createSpyObj<Partial<TeacherRoundService>>(
-      'teacherRoundService',
-      ['startNewRound', 'endRound'],
-    );
+    const mockTeacherRoundService: Partial<TeacherRoundService> = {
+      startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+      endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+    };
+
+    const mockTeacherSessionService: Partial<TeacherSessionService> = {
+      currentRoundPath$: mockCurrentRoundPath$,
+    };
 
     TestBed.configureTestingModule({
       imports: [
@@ -50,6 +59,7 @@ describe('LargeDisplayComponent', () => {
       providers: [
         TimerService,
         {provide: TeacherRoundService, useValue: mockTeacherRoundService},
+        {provide: TeacherSessionService, useValue: mockTeacherSessionService},
       ],
     })
     .compileComponents();
@@ -67,32 +77,24 @@ describe('LargeDisplayComponent', () => {
 
   describe('Before the round starts', () => {
     describe('The currentScreen field', () => {
-      it('Is the Lobby screen', () => {
-        expect(component.currentScreen).toBe(ScreenId.Lobby);
-      });
-    });
-
-    describe('TeacherRoundService.startNewRound()', () => {
-      it('Should not have been called', inject([TeacherRoundService], (
-        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
-      ) => {
-        expect(teacherRoundService.startNewRound).not.toHaveBeenCalled();
+      it('Is the Lobby screen', async(() => {
+        component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
+          expect(currentScreen).toBe(ScreenId.Lobby);
+        });
       }));
     });
   });
 
   describe('After the round starts', () => {
-    beforeEach(async(() => {
-      component.startRound();
-    }));
-
-    describe('The TimerService.running$ field', () => {
-      it('Is initialized to false', async(() => {
-        component.timerService.running$.pipe(take(1)).subscribe(running => {
-          expect(running).toBe(false);
-        });
-      }));
-    });
+    beforeEach(async(inject([TimerService], (timerService: TimerService) => {
+      mockCurrentRoundPath$.next({sessionId: 'demo-session', roundId: 'demo-round'});
+      timerService.initialize({
+        running: false,
+        tickSpeed: 1000,
+        currentTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+      });
+    })));
 
     describe('The toggleTimerRunning() method', () => {
       it(
@@ -128,28 +130,6 @@ describe('LargeDisplayComponent', () => {
           expect(lastEmittedRunningState).toBe(false);
         })),
       );
-    });
-
-    describe('TeacherRoundService.startNewRound()', () => {
-      it('Should have been called', inject([TeacherRoundService], (
-        teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
-      ) => {
-        expect(teacherRoundService.startNewRound).toHaveBeenCalled();
-      }));
-    });
-
-    describe('After the component is destroyed', () => {
-      beforeEach(async(() => {
-        fixture.destroy();
-      }));
-
-      describe('TeacherRoundService.endRound()', () => {
-        it('Should have been called', inject([TeacherRoundService], (
-          teacherRoundService: jasmine.SpyObj<Partial<TeacherRoundService>>,
-        ) => {
-          expect(teacherRoundService.endRound).toHaveBeenCalled();
-        }));
-      });
     });
   });
 });
