@@ -71,10 +71,10 @@ export class FirebaseService {
    * @param sessionID Session ID to which round will be added
    * @param roundData data for the round in FirebaseRound interface format
    */
-  public async createRoundInSession(sessionID: string, roundData: FirebaseRound){
-    let round: Promise<DocumentReference>;
-    round = this.firestore.collection('sessions/' + sessionID + '/rounds').add(roundData);
-    this.setCurrentRound({sessionId: sessionID, roundId: (await round).id});
+  public createRoundInSession(sessionId: string, roundData: FirebaseRound): Promise<RoundPath> {
+    return this.firestore.collection('sessions/' + sessionId + '/rounds').add(roundData).then(doc =>
+      ({sessionId, roundId: doc.id})
+    );
   }
 
   public setCurrentRound(roundPath: RoundPath){
