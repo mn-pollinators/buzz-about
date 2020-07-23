@@ -14,14 +14,14 @@ export class StudentLoginComponent implements OnInit {
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
     sessionControl: new FormControl('', Validators.required)
-  });;
+  });
 
   constructor(public authService: AuthService) {
     this.sessionID = 'demo-session'; // Temporary until multiple sessions are supported
   }
 
   ngOnInit(): void {
-    this.authService.logStudentIn();
+
   }
 
   /**
@@ -31,7 +31,7 @@ export class StudentLoginComponent implements OnInit {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const session = this.sessionFormGroup.controls.sessionControl.value;
     // TODO: Change this to read sessionID from the submission once multiple sessions are supported
-    this.authService.addStudentToDatabase(name, this.sessionID);
+    this.authService.addStudentToDatabase({name}, this.sessionID);
   }
 
 }
