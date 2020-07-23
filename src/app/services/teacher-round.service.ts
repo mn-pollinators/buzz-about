@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound } from './../round';
+import { FirebaseRound } from '../round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';

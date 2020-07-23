@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SessionWithId, SessionStudentData } from './../session';
+import { SessionWithId, SessionStudentData } from '../session';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
 import { FirebaseService, RoundPath } from './firebase.service';

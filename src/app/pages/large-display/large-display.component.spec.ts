@@ -3,20 +3,20 @@ import { async, ComponentFixture, TestBed, fakeAsync, inject, tick, discardPerio
 import { LargeDisplayComponent, ScreenId } from './large-display.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
-import { TimerTestComponent } from '../timer-test/timer-test.component';
-import { TimerProgressBarComponent } from '../timer-progress-bar/timer-progress-bar.component';
-import { TimerProgressSpinnerComponent } from '../timer-progress-spinner/timer-progress-spinner.component';
-import { FlowerLayoutComponent } from '../flower-layout/flower-layout.component';
-import { FlowerLayoutItemComponent } from '../flower-layout-item/flower-layout-item.component';
+import { TimerTestComponent } from '../../components-test/timer-test/timer-test.component';
+import { TimerProgressBarComponent } from '../../components/timer-progress-bar/timer-progress-bar.component';
+import { TimerProgressSpinnerComponent } from '../../components/timer-progress-spinner/timer-progress-spinner.component';
+import { FlowerLayoutComponent } from '../../components/flower-layout/flower-layout.component';
+import { FlowerLayoutItemComponent } from '../../components/flower-layout-item/flower-layout-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TimerService } from '../timer.service';
-import { TopMenuBarComponent } from '../top-menu-bar/top-menu-bar.component';
-import { FullscreenButtonComponent } from '../fullscreen-button/fullscreen-button.component';
+import { TimerService } from '../../services/timer.service';
+import { TopMenuBarComponent } from '../../components/top-menu-bar/top-menu-bar.component';
+import { FullscreenButtonComponent } from '../../components/fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { take } from 'rxjs/operators';
-import { TeacherRoundService } from '../teacher-round.service';
+import { TeacherRoundService } from '../../services/teacher-round.service';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;

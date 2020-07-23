@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TimePeriod, Month } from '../time-period';
+import { TimePeriod, Month } from '../../time-period';
 
 describe('TimerProgressSpinnerComponent', () => {
   let component: TimerProgressSpinnerComponent;

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { StudentLoginComponent } from './student-login.component';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../services/auth.service';
 
 xdescribe('StudentLoginComponent', () => {
   let component: StudentLoginComponent;

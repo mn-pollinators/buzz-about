@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData } from './../round';
+import { FirebaseRound, RoundFlower, RoundStudentData } from '../round';
 import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
-import { allFlowerSpecies, FlowerSpecies } from './../flowers';
-import { TimePeriod } from './../time-period';
+import { allFlowerSpecies, FlowerSpecies } from '../flowers';
+import { TimePeriod } from '../time-period';
 import { FirebaseService } from './firebase.service';
 import { AuthService } from './auth.service';
-import { BeeSpecies, allBeeSpecies } from './../bees';
+import { BeeSpecies, allBeeSpecies } from '../bees';
 
 /**
  * This service lets you read to and write from the rounds in Firebase as a student.
