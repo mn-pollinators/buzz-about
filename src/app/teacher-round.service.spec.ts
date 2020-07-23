@@ -4,6 +4,7 @@ import { FirebaseService } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from './time-period';
 import { allBeeSpecies } from './bees';
+import { of } from 'rxjs';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
@@ -15,12 +16,19 @@ describe('TeacherRoundService', () => {
     running: true,
     currentTime: 17,
   };
+  const fakeStudentData = [
+    {name: 'Bob', id: '1'},
+    {name: 'Sam', id: '2'},
+    {name: 'Abe', id: '3'}
+  ];
 
   beforeEach(() => {
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
       'firebaseService',
-      ['updateRoundData', 'setRoundData', 'createRoundInSession'],
+      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession', 'addStudentToRound'],
     );
+
+    mockFirebaseService.getStudentsInSession.and.returnValue(of(fakeStudentData));
 
     TestBed.configureTestingModule({
       providers: [
