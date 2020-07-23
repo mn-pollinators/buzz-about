@@ -44,17 +44,7 @@ export class TeacherSessionService {
    * An observable of the current round's session ID and round ID.
    * Emits null if the student is not in a session or the round is not set on the session.
    */
-  currentRoundPath$: Observable<RoundPath | null> = this.currentSession$.pipe(
-    map(session =>
-      session && session.currentRoundId
-        ? {sessionId: session.id , roundId: session.currentRoundId}
-        : null
-    ),
-    distinctUntilChanged((prev, curr) =>
-      prev?.roundId === curr?.roundId && prev?.sessionId === curr?.sessionId
-    ),
-    shareReplay(1),
-  );
+  currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
   /**
    * Temporary function to join a given session by ID

@@ -100,6 +100,7 @@ export class FirebaseService {
   }
 
   /**
+\
    * Modify the data of a particular round firebase.
    *
    * The round in question **MUST** exist already before being updated.

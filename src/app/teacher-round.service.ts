@@ -56,7 +56,10 @@ export class TeacherRoundService {
   startNewRound(sessionId: string, roundData: FirebaseRound): void {
     let round: Promise<RoundPath>;
     round = this.firebaseService.createRoundInSession(sessionId, roundData);
-    round.then(roundPath => (this.firebaseService.setCurrentRound(roundPath)));
+    round.then(roundPath => {
+      this.firebaseService.setCurrentRound(roundPath);
+      this.teacherSessionService.currentRoundPath$.next(roundPath);
+    });
 
 
     this.timerService.initialize({
