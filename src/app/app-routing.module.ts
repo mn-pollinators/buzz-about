@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PlayRoundComponent } from './play-round/play-round.component';
-import { LargeDisplayComponent } from './large-display/large-display.component';
-import { TimerTestComponent } from './timer-test/timer-test.component';
-import { FlowerTestComponent } from './flower-test/flower-test.component';
-import { HomeComponent } from './home/home.component';
-import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
-import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
-import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
-import { SessionTestComponent } from './session-test/session-test.component';
-import { StudentLoginComponent } from './student-login/student-login.component';
-import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
+import { PlayRoundComponent } from './components/play-round/play-round.component';
+import { LargeDisplayComponent } from './pages/large-display/large-display.component';
+import { TimerTestComponent } from './components-test/timer-test/timer-test.component';
+import { FlowerTestComponent } from './components-test/flower-test/flower-test.component';
+import { HomeComponent } from './pages/home/home.component';
+import { FirebaseTestComponent } from './components-test/firebase-test/firebase-test.component';
+import { SessionPageTestComponent } from './components-test/session-page-test/session-page-test.component';
+import { JsonDataTestComponent } from './components-test/json-data-test/json-data-test.component';
+import { SessionTestComponent } from './components-test/session-test/session-test.component';
+import { StudentLoginComponent } from './pages/student-login/student-login.component';
+import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

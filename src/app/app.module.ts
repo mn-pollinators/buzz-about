@@ -20,33 +20,33 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card'
+import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 
-import { ArViewComponent } from './ar-view/ar-view.component';
-import { PlayRoundComponent } from './play-round/play-round.component';
-import { LargeDisplayComponent } from './large-display/large-display.component';
-import { FullscreenButtonComponent } from './fullscreen-button/fullscreen-button.component';
-import { TimerTestComponent } from './timer-test/timer-test.component';
-import { TimerProgressBarComponent } from './timer-progress-bar/timer-progress-bar.component';
-import { TimerProgressSpinnerComponent } from './timer-progress-spinner/timer-progress-spinner.component';
-import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
-import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
-import { FlowerTestComponent } from './flower-test/flower-test.component';
-import { HomeComponent } from './home/home.component';
-import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
-import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
-import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
+import { ArViewComponent } from './pages/ar-view/ar-view.component';
+import { PlayRoundComponent } from './components/play-round/play-round.component';
+import { LargeDisplayComponent } from './pages/large-display/large-display.component';
+import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
+import { TimerTestComponent } from './components-test/timer-test/timer-test.component';
+import { TimerProgressBarComponent } from './components/timer-progress-bar/timer-progress-bar.component';
+import { TimerProgressSpinnerComponent } from './components/timer-progress-spinner/timer-progress-spinner.component';
+import { FlowerLayoutComponent } from './components/flower-layout/flower-layout.component';
+import { FlowerLayoutItemComponent } from './components/flower-layout-item/flower-layout-item.component';
+import { FlowerTestComponent } from './components-test/flower-test/flower-test.component';
+import { HomeComponent } from './pages/home/home.component';
+import { TopMenuBarComponent } from './components/top-menu-bar/top-menu-bar.component';
+import { FirebaseTestComponent } from './components-test/firebase-test/firebase-test.component';
+import { SessionPageTestComponent } from './components-test/session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
-import { JoinedStudentsComponent } from './joined-students/joined-students.component';
-import { SessionTestComponent } from './session-test/session-test.component';
-import { StudentLoginComponent } from './student-login/student-login.component';
-import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
-import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
-import { HillBackgroundComponent } from './hill-background/hill-background.component';
+import { JsonDataTestComponent } from './components-test/json-data-test/json-data-test.component';
+import { JoinedStudentsComponent } from './components/joined-students/joined-students.component';
+import { SessionTestComponent } from './components-test/session-test/session-test.component';
+import { StudentLoginComponent } from './pages/student-login/student-login.component';
+import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
+import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
+import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -92,6 +92,7 @@ const FIREBASE_MODULES = [
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
+    BottomBarComponent,
   ],
   imports: [
     BrowserModule,
