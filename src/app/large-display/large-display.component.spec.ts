@@ -37,6 +37,8 @@ describe('LargeDisplayComponent', () => {
       currentRoundPath$: mockCurrentRoundPath$,
     };
 
+    mockCurrentRoundPath$.next(null);
+
     TestBed.configureTestingModule({
       imports: [
         MatButtonModule,
