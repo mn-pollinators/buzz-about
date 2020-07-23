@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
-import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
-import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, of, combineLatest, from } from 'rxjs';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
+import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { FirebaseService } from './firebase.service';
@@ -144,6 +144,17 @@ export class StudentRoundService {
     distinctUntilChanged(),
     shareReplay(1),
   );
+
+  /**
+   * Records an interaction with a specific barcode value.
+   *
+   * @param barcodeValue the barcode value to submit in the interaction
+   */
+  interact(barcodeValue: number) {
+    combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
+      ([path, user, time]) => this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, timePeriod: time.time})
+    );
+  }
 
   // TODO: interact(interaction) creates interaction
 }

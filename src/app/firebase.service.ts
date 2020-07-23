@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData } from './round';
+import { FirebaseRound, RoundStudentData, Interaction } from './round';
 
 export interface RoundPath {
   sessionId: string;
@@ -81,7 +81,7 @@ export class FirebaseService {
    * @param studentData map of student's information including name
    */
   addStudentToSession(id: string, sessionID: string, studentData: SessionStudentData) {
-    this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
+    return this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
   }
 
   /**
@@ -98,7 +98,7 @@ export class FirebaseService {
    * @param data The new round data.
    */
   updateRoundData(roundPath: RoundPath, data: Partial<FirebaseRound>) {
-    this.getRoundDocument(roundPath).update(data);
+    return this.getRoundDocument(roundPath).update(data);
   }
 
   /**
@@ -111,6 +111,16 @@ export class FirebaseService {
    * @param data The new round data.
    */
   setRoundData(roundPath: RoundPath, data: FirebaseRound) {
-    this.getRoundDocument(roundPath).set(data);
+    return this.getRoundDocument(roundPath).set(data);
+  }
+
+  /**
+   * Adds an interaction to the `interactions` collection in firebase.
+   *
+   * @param roundPath The Firestore IDs of the session and round within it to add the interaction to
+   * @param data Information about this interaction (the ID of the student, the barcode they interacted with, etc.)
+   */
+  addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
+    return this.getRoundDocument(roundPath).collection('interactions').add(data);
   }
 }

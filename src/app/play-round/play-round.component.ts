@@ -53,7 +53,8 @@ export class PlayRoundComponent implements OnInit {
   }
 
   clickInteract(marker: RoundMarker) {
-
+    console.log(marker);
+    this.studentRoundService.interact(marker.barcodeValue);
   }
 
 

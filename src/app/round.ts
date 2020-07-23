@@ -33,3 +33,9 @@ export class RoundFlower {
 export interface RoundStudentData {
   beeSpecies?: string;
 }
+
+export interface Interaction {
+  timePeriod: number;
+  userId: string;
+  barcodeValue: number;
+}
