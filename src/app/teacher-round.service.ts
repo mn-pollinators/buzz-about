@@ -57,25 +57,22 @@ export class TeacherRoundService {
   startNewRound(sessionId: string, roundData: FirebaseRound): void {
     // Eventually, we'll create a new round, but for the moment, we'll just use
     // this one.
-    this.roundPath$.next(demoRoundPath);
-    this.firebaseService.createRoundInSession(sessionId, roundData).then(() => {
-      this.assignBees();
-    });
+    this.firebaseService.createRoundInSession(sessionId, roundData);
+    this.assignBees(roundData);
   }
 
-  assignBees(): void {
+  assignBees(roundData: FirebaseRound): void {
     let newRoundPath;
 
     this.teacherSessionService.currentRoundId$.subscribe(currentRoundId => {
       if (currentRoundId) {
         this.teacherSessionService.sessionId$.subscribe(currentSessionId => {
           newRoundPath = {sessionId: currentSessionId, roundId: currentRoundId};
-          this.firebaseService.getRound(newRoundPath).subscribe((round) => {
-            this.beeList = round.beeSpeciesIds;
-            this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
-              studentList.forEach((student) => {
-                this.firebaseService.addStudentToRound(student.id, newRoundPath, {beeSpecies: allBeeSpecies.apis_mellifera.id});
-              });
+          this.roundPath$.next(newRoundPath);
+          this.beeList = roundData.beeSpeciesIds;
+          this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
+            studentList.forEach((student) => {
+              this.firebaseService.addStudentToRound(student.id, newRoundPath, {beeSpecies: allBeeSpecies.apis_mellifera.id});
             });
           });
         });
