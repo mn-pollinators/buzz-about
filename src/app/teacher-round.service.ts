@@ -17,8 +17,8 @@ export interface tempBee {
   weight: number;
 }
 const demoBees = [
-  {bee: allBeeSpecies.apis_mellifera, weight: 0.25},
-  {bee: allBeeSpecies.colletes_simulans, weight: 0.75}
+  {bee: allBeeSpecies.apis_mellifera, weight: 0.5},
+  {bee: allBeeSpecies.colletes_simulans, weight: 0.5}
 ];
 
 @Injectable({
@@ -74,18 +74,22 @@ export class TeacherRoundService {
     let newRoundPath;
 
     this.teacherSessionService.currentRoundId$.subscribe(currentRoundId => {
-      console.log(currentRoundId);
       if (currentRoundId) {
+        console.log(currentRoundId);
         this.teacherSessionService.sessionId$.subscribe(currentSessionId => {
           newRoundPath = {sessionId: currentSessionId, roundId: currentRoundId};
           this.roundPath$.next(newRoundPath);
           this.beeList = roundData.beeSpeciesIds;
           this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
-            console.log(studentList);
             let shuffledStudents = this.shuffleArray(studentList);
-            console.log(shuffledStudents);
-            studentList.forEach((student) => {
-              this.firebaseService.addStudentToRound(student.id, newRoundPath, {beeSpecies: allBeeSpecies.apis_mellifera.id});
+            let currentStudent = 0;
+            demoBees.forEach(bee => {
+              const numStudents = Math.floor(bee.weight * shuffledStudents.length);
+              console.log(numStudents);
+              for (let i = currentStudent; i < currentStudent + numStudents; i++) {
+                this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath, {beeSpecies: bee.bee.id});
+              }
+              currentStudent += numStudents;
             });
           });
         });
