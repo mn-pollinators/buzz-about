@@ -9,7 +9,7 @@
   </p>
   <p>
     <label for="nest-barcode">What's your nest barcode?</label>
-    <input #nestBarcode name="nest-barcode" type="number" min="0" max="64" step="1">
+    <input #nestBarcode name="nest-barcode" type="number" min="0" max="63" step="1">
   </p>
   <p>
     <button (click)="addStudentToDatabase(studentName.value, nestBarcode.value)">Add user document to session with name</button>
@@ -34,6 +34,7 @@
     <button (click)="setBee(beeSelect.value)">Set Bee</button>
   </div>
   <p>current bee: {{(roundService.currentBeeSpecies$ | async)?.name}} ({{(roundService.currentBeeSpecies$ | async)?.sci_name}}): {{(roundService.currentBeeActive$ | async) ? 'active' : 'not active' }}</p>
+  <p>current bee nest type: {{(roundService.currentBeeSpecies$ | async)?.nest_type.name}}</p>
   <h3>Flowers</h3>
   <table>
     <tr *ngFor="let flower of roundService.currentFlowers$ | async">
