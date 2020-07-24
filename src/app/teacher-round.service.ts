@@ -4,13 +4,22 @@ import { FirebaseRound } from './round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { allBeeSpecies } from './bees';
+import { allBeeSpecies, BeeSpecies } from './bees';
 import { TeacherSessionService } from './teacher-session.service';
+import { SessionStudentData } from './session';
 
 // TODO: For the moment, we're only using one fixed, preexisting round for
 // all teachers. Eventually, teachers will each create their own sessions
 // and rounds.
 const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
+export interface tempBee {
+  name: BeeSpecies;
+  weight: number;
+}
+const demoBees = [
+  {bee: allBeeSpecies.apis_mellifera, weight: 0.25},
+  {bee: allBeeSpecies.colletes_simulans, weight: 0.75}
+];
 
 @Injectable({
   providedIn: 'root'
@@ -65,12 +74,16 @@ export class TeacherRoundService {
     let newRoundPath;
 
     this.teacherSessionService.currentRoundId$.subscribe(currentRoundId => {
+      console.log(currentRoundId);
       if (currentRoundId) {
         this.teacherSessionService.sessionId$.subscribe(currentSessionId => {
           newRoundPath = {sessionId: currentSessionId, roundId: currentRoundId};
           this.roundPath$.next(newRoundPath);
           this.beeList = roundData.beeSpeciesIds;
           this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
+            console.log(studentList);
+            let shuffledStudents = this.shuffleArray(studentList);
+            console.log(shuffledStudents);
             studentList.forEach((student) => {
               this.firebaseService.addStudentToRound(student.id, newRoundPath, {beeSpecies: allBeeSpecies.apis_mellifera.id});
             });
@@ -90,5 +103,16 @@ export class TeacherRoundService {
    */
   endRound(sessionId: string): void {
     this.roundPath$.next(null);
+  }
+
+  shuffleArray(array: SessionStudentData[]): SessionStudentData[] {
+    const newArray = array.slice(0);
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = newArray[i];
+        newArray[i] = newArray[j];
+        newArray[j] = temp;
+    }
+    return newArray;
   }
 }
