@@ -38,8 +38,8 @@ export class SessionTestComponent implements OnInit {
     this.sessionService.leaveSession();
   }
 
-  addStudentToDatabase(name: string) {
-    this.authService.addStudentToDatabase({name}, this.sessionId);
+  addStudentToDatabase(name: string, nestBarcode: number) {
+    this.authService.addStudentToDatabase({name, nestBarcode}, this.sessionId);
   }
 
   setBee(beeSpecies: string) {
