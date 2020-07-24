@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
-import { Observable, of, combineLatest, from } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
+import { Observable, of, combineLatest } from 'rxjs';
+import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
 import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
