@@ -15,7 +15,7 @@ export class SessionLobbyComponent implements OnInit {
   roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
                         status: 'fine',
                         running: false,
-                        currentTime: 0, };
+                        currentTime: this.teacherRoundService.startTime.time, };
 
   constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {  }
 
