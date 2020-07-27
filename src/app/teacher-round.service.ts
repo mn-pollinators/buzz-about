@@ -58,8 +58,9 @@ export class TeacherRoundService {
     this.teacherSessionService.currentSession$.pipe(take(1)).subscribe(session => {
       round = this.firebaseService.createRoundInSession(session.id, roundData);
       round.then(roundPath => {
-        this.firebaseService.setCurrentRound(roundPath);
-        this.teacherSessionService.currentRoundPath$.next(roundPath);
+        this.firebaseService.setCurrentRound(roundPath).then(currentRound => {
+          this.teacherSessionService.currentRoundPath$.next(currentRound);
+        });
     });
 
     });
