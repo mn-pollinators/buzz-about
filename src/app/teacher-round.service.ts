@@ -3,7 +3,7 @@ import { FirebaseService, RoundPath } from './firebase.service';
 import { FirebaseRound } from './round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { TeacherSessionService } from './teacher-session.service';
 import { TimePeriod } from './time-period';
 
@@ -53,12 +53,15 @@ export class TeacherRoundService {
    */
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
-  startNewRound(sessionId: string, roundData: FirebaseRound): void {
+  startNewRound(roundData: FirebaseRound): void {
     let round: Promise<RoundPath>;
-    round = this.firebaseService.createRoundInSession(sessionId, roundData);
-    round.then(roundPath => {
-      this.firebaseService.setCurrentRound(roundPath);
-      this.teacherSessionService.currentRoundPath$.next(roundPath);
+    this.teacherSessionService.currentSession$.pipe(take(1)).subscribe(session => {
+      round = this.firebaseService.createRoundInSession(session.id, roundData);
+      round.then(roundPath => {
+        this.firebaseService.setCurrentRound(roundPath);
+        this.teacherSessionService.currentRoundPath$.next(roundPath);
+    });
+
     });
 
 

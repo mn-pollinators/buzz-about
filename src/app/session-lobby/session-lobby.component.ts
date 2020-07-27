@@ -25,6 +25,6 @@ export class SessionLobbyComponent implements OnInit {
   }
 
   public startRound() {
-    this.teacherRoundService.startNewRound(this.sessionID, this.roundData);
+    this.teacherRoundService.startNewRound(this.roundData);
   }
 }
