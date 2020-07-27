@@ -55,13 +55,13 @@ export class TeacherRoundService {
   // than passing it in as a parameter.
   startNewRound(roundData: FirebaseRound): void {
     let round: Promise<RoundPath>;
-    this.teacherSessionService.currentSession$.pipe(take(1)).subscribe(session => {
-      round = this.firebaseService.createRoundInSession(session.id, roundData);
+    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
+      round = this.firebaseService.createRoundInSession(sessionId, roundData);
       round.then(roundPath => {
         this.firebaseService.setCurrentRound(roundPath).then(currentRound => {
           this.teacherSessionService.currentRoundPath$.next(currentRound);
         });
-    });
+      });
 
     });
 

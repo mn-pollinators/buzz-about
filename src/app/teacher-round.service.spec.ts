@@ -4,7 +4,7 @@ import { FirebaseService, RoundPath } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from './time-period';
 import { TeacherSessionService } from './teacher-session.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
@@ -18,9 +18,11 @@ describe('TeacherRoundService', () => {
 
   beforeEach(() => {
     const mockCurrentRoundPath$ = new BehaviorSubject<RoundPath>(null);
+    const mockSessionId$ = new BehaviorSubject<string>(fakeSessionId);
 
     const mockTeacherSessionService: Partial<TeacherSessionService> = {
       currentRoundPath$: mockCurrentRoundPath$,
+      sessionId$: mockSessionId$,
     };
 
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
@@ -34,6 +36,10 @@ describe('TeacherRoundService', () => {
       return Promise.resolve(fakeRoundPath);
     });
 
+    mockFirebaseService.setCurrentRound.and.callFake(() => {
+      const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
+      return Promise.resolve(fakeRoundPath);
+    });
 
     TestBed.configureTestingModule({
       providers: [
@@ -76,7 +82,7 @@ describe('TeacherRoundService', () => {
 
   describe('After the round starts', () => {
     beforeEach(async(() => {
-      service.startNewRound(fakeSessionId, fakeRoundData);
+      service.startNewRound(fakeRoundData);
     }));
 
     describe('The Firebase service', () => {
