@@ -54,10 +54,8 @@ export class TeacherRoundService {
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
   startNewRound(roundData: FirebaseRound): void {
-    let round: Promise<RoundPath>;
     this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
-      round = this.firebaseService.createRoundInSession(sessionId, roundData);
-      round.then(roundPath => {
+      this.firebaseService.createRoundInSession(sessionId, roundData).then(roundPath => {
         this.firebaseService.setCurrentRound(roundPath).then(currentRound => {
           this.teacherSessionService.currentRoundPath$.next(currentRound);
         });
