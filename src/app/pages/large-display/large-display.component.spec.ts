@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, inject, tick, discardPerio
 import { LargeDisplayComponent, ScreenId } from './large-display.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
-import { TimerTestComponent } from '../../components-test/timer-test/timer-test.component';
+import { TimerTestComponent } from '../../test-pages/timer-test/timer-test.component';
 import { TimerProgressBarComponent } from '../../components/timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from '../../components/timer-progress-spinner/timer-progress-spinner.component';
 import { FlowerLayoutComponent } from '../../components/flower-layout/flower-layout.component';

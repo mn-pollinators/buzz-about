@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MarkerState, ARMarker } from '../../pages/ar-view/ar-view.component';
+import { MarkerState, ARMarker } from '../../components/ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
