@@ -1,37 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { StudentSessionService } from '../student-session.service';
 import { FirebaseService } from '../firebase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-student-login',
-  templateUrl: './student-login.component.html',
-  styleUrls: ['./student-login.component.scss']
+  selector: 'app-join-session',
+  templateUrl: './join-session.component.html',
+  styleUrls: ['./join-session.component.scss']
 })
-export class StudentLoginComponent implements OnInit {
+export class JoinSessionComponent implements OnInit {
 
-  sessionID: string;
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
     sessionControl: new FormControl('', Validators.required)
   });
 
-  constructor(public authService: AuthService) {
-    this.sessionID = 'demo-session'; // Temporary until multiple sessions are supported
+  constructor(public studentSessionService: StudentSessionService, public router: Router) {
   }
 
   ngOnInit(): void {
-
   }
 
   /**
    * Calls firebase service to add currently logged in user and their preferred name to the database
    */
-  addStudentToDatabase() {
+  joinSession() {
     const name = this.sessionFormGroup.controls.nameControl.value;
-    const session = this.sessionFormGroup.controls.sessionControl.value;
+    const sessionId = this.sessionFormGroup.controls.sessionControl.value;
     // TODO: Change this to read sessionID from the submission once multiple sessions are supported
-    this.authService.addStudentToDatabase({name}, this.sessionID);
+    this.studentSessionService.joinSession({name}, sessionId).then(() => {
+      this.router.navigate(['/play', sessionId]);
+    });
   }
-
 }
