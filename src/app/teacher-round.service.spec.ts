@@ -32,7 +32,6 @@ describe('TeacherRoundService', () => {
 
     mockFirebaseService.createRoundInSession.and.callFake(() => {
       const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
-      mockCurrentRoundPath$.next(fakeRoundPath);
       return Promise.resolve(fakeRoundPath);
     });
 
