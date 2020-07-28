@@ -24,7 +24,6 @@ export class PlayRoundComponent implements OnInit {
   constructor(public studentRoundService: StudentRoundService, private sessionService: StudentSessionService) { }
 
   ngOnInit() {
-    this.sessionService.joinSession('demo-session');
   }
 
   onMarkerState(states: MarkerState[]) {

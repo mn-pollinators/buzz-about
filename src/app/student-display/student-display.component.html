@@ -1,0 +1,27 @@
+<ng-container [ngSwitch]="currentScreen$ | async">
+  <ng-container *ngSwitchCase="ScreenId.SessionLobby">
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>Waiting for round to begin&hellip;</mat-card-title>
+      </mat-card>
+    </div>
+	</ng-container>
+
+  <ng-container *ngSwitchCase="ScreenId.PlayRound">
+    <app-play-round></app-play-round>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>
+          Loading Session&hellip;
+        </mat-card-title>
+        <mat-spinner class="centered"></mat-spinner>
+      </mat-card>
+    </div>
+  </ng-container>
+
+</ng-container>

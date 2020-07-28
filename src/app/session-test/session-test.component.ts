@@ -12,7 +12,6 @@ export class SessionTestComponent implements OnInit {
   JSON = JSON;
 
   readonly sessionId = 'demo-session';
-
   constructor(
     public sessionService: StudentSessionService,
     public roundService: StudentRoundService,
@@ -21,16 +20,11 @@ export class SessionTestComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  joinSession() {
-    this.sessionService.joinSession(this.sessionId);
+  joinSession(name: string) {
+    this.sessionService.joinSession({name}, this.sessionId);
   }
 
   leaveSession() {
     this.sessionService.leaveSession();
   }
-
-  addStudentToDatabase(name: string) {
-    this.authService.addStudentToDatabase({name}, this.sessionId);
-  }
-
 }

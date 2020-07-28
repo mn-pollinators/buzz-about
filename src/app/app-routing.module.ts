@@ -7,19 +7,17 @@ import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { SessionTestComponent } from './session-test/session-test.component';
-import { StudentLoginComponent } from './student-login/student-login.component';
 import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
+import { JoinSessionComponent } from './join-session/join-session.component';
+import { StudentDisplayComponent } from './student-display/student-display.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'ar', component: PlayRoundComponent},
+  {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'teacher', component: LargeDisplayComponent},
   {path: 'timer-test', component: TimerTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent},
   {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'session-test', component: SessionTestComponent},
-  {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'join', component: StudentLoginComponent},
+  {path: 'join', component: JoinSessionComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
 ];
 

@@ -38,10 +38,14 @@ export class FirebaseService {
    * (In case you need the Firebase ID for later, it's saved as a property on
    * the SessionWithId objects emitted from the observable.)
    */
-  public getSession(id: string): Observable<SessionWithId> {
+  public getSession(id: string): Observable<SessionWithId | null> {
     return this.getSessionDocument(id)
       .snapshotChanges()
-      .pipe(map(action => ({id: action.payload.id, ...action.payload.data()})));
+      .pipe(map(action =>
+        action.payload.exists
+          ? {id: action.payload.id, ...action.payload.data()}
+          : null
+      ));
   }
 
   public getSessionStudent(sessionId: string, studentId: string): Observable<SessionStudentData> {
@@ -98,7 +102,7 @@ export class FirebaseService {
    * @param studentData map of student's information including name
    */
   addStudentToSession(id: string, sessionID: string, studentData: SessionStudentData) {
-    this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
+    return this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
   }
 
   /**
@@ -115,7 +119,7 @@ export class FirebaseService {
    * @param data The new round data.
    */
   updateRoundData(roundPath: RoundPath, data: Partial<FirebaseRound>) {
-    this.getRoundDocument(roundPath).update(data);
+    return this.getRoundDocument(roundPath).update(data);
   }
 
   /**
@@ -128,6 +132,6 @@ export class FirebaseService {
    * @param data The new round data.
    */
   setRoundData(roundPath: RoundPath, data: FirebaseRound) {
-    this.getRoundDocument(roundPath).set(data);
+    return this.getRoundDocument(roundPath).set(data);
   }
 }

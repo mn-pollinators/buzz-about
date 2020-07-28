@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SessionWithId, SessionStudentData } from './session';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { AuthService } from './auth.service';
 
@@ -60,9 +60,9 @@ export class StudentSessionService {
    *
    * @param id session Firebase ID to join
    */
-  joinSession(id: string) {
-    this.sessionId$.next(id);
-  }
+  //joinSession(id: string) {
+  //  this.sessionId$.next(id);
+  //}
 
   /**
    * Leave a session, if the student is connected to a session.
@@ -75,4 +75,26 @@ export class StudentSessionService {
     this.sessionId$.next(null);
   }
 
+  /**
+   * Mark a session as the currently playing one.
+   *
+   * @param sessionId The session that we want to play right now.
+   */
+  setCurrentSession(sessionId: string) {
+    this.sessionId$.next(sessionId);
+  }
+
+  /**
+   * Register the current student as one of the members of this session.
+   *
+   * (This doesn't tell the student's device to start playing the session; it
+   * just registers us with Firestore.)
+   *
+   * @param studentData the Student's data for this session
+   * @param session ID of the session the student should be added to
+   */
+  async joinSession(studentData: SessionStudentData, sessionId: string) {
+    const user = await this.authService.currentUser$.pipe(take(1)).toPromise();
+    return this.firebaseService.addStudentToSession(user.uid, sessionId, studentData);
+  }
 }

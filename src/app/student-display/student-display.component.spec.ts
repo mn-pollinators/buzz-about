@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FirebaseTestComponent } from './firebase-test.component';
+import { StudentDisplayComponent } from './student-display.component';
 
-xdescribe('FirebaseTestComponent', () => {
-  let component: FirebaseTestComponent;
-  let fixture: ComponentFixture<FirebaseTestComponent>;
+describe('StudentDisplayComponent', () => {
+  let component: StudentDisplayComponent;
+  let fixture: ComponentFixture<StudentDisplayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FirebaseTestComponent ]
+      declarations: [ StudentDisplayComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FirebaseTestComponent);
+    fixture = TestBed.createComponent(StudentDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

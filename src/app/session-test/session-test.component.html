@@ -1,6 +1,5 @@
 <section>
   <p>
-    <button (click)="joinSession()">Join Session</button>
     <button (click)="leaveSession()">Leave Session</button>
   </p>
   <p>
@@ -8,7 +7,7 @@
     <input #studentName name="student-name">
   </p>
   <p>
-    <button (click)="addStudentToDatabase(studentName.value)">Join Session (and set name)</button>
+    <button (click)="joinSession(studentName.value)">Join Session (and set name)</button>
   </p>
 </section>
 
