@@ -37,8 +37,6 @@ import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-it
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
 import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
-import { FirebaseTestComponent } from './firebase-test/firebase-test.component';
-import { SessionPageTestComponent } from './session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { JoinedStudentsComponent } from './joined-students/joined-students.component';
@@ -84,8 +82,6 @@ const FIREBASE_MODULES = [
     FlowerTestComponent,
     HomeComponent,
     TopMenuBarComponent,
-    FirebaseTestComponent,
-    SessionPageTestComponent,
     JsonDataTestComponent,
     JoinedStudentsComponent,
     SessionTestComponent,

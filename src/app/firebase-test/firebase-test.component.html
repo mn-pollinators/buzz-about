@@ -1,7 +1,0 @@
-<app-top-menu-bar></app-top-menu-bar>
-
-<ul #contents>
-  <li *ngFor="let item of firebaseService.allSessions$ | async">
-    {{item.name}}
-  </li>
-</ul>
