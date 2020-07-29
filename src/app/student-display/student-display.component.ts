@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StudentSessionService } from '../student-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap, map, tap } from 'rxjs/operators';
-import { of, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 export enum ScreenId {
   NoSession,
@@ -26,7 +26,7 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
     map(session =>
       session
         ? (session.currentRoundId ? ScreenId.PlayRound : ScreenId.SessionLobby)
-        : null
+        : ScreenId.NoSession
     )
   );
 

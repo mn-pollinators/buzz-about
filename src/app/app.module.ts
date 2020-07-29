@@ -91,7 +91,6 @@ const FIREBASE_MODULES = [
     PrepareRoundTestComponent,
     BottomBarComponent,
     HillBackgroundComponent,
-    StudentDisplayComponent,
     SessionLobbyComponent,
     StudentDisplayComponent,
   ],
