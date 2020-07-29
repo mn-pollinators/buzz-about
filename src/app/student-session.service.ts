@@ -78,7 +78,9 @@ export class StudentSessionService {
    * Register the current student as one of the members of this session.
    *
    * (This doesn't tell the student's device to start playing the session; it
-   * just registers us with Firestore.)
+   * just registers us with Firestore. If you want to tell the student's
+   * device "hey, this is the round we're playing right now!", then you want
+   * the `setCurrentSession()` method.)
    *
    * @param studentData the Student's data for this session
    * @param session ID of the session the student should be added to

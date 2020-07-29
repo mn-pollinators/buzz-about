@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionWithId, SessionStudentData } from './session';
@@ -127,7 +127,7 @@ describe('StudentSessionService', () => {
         }
       },
 
-      getSessionStudent(_sessionId, studentId) {
+      getSessionStudent(_, studentId) {
         switch (studentId) {
           case 'userX':
             return mockUserXData$;
@@ -137,6 +137,10 @@ describe('StudentSessionService', () => {
             throw new Error(`FirebaseService.getSession(): Bad session id ${studentId}`);
         }
       },
+
+      addStudentToSession() {
+        return Promise.resolve();
+      }
     };
 
     const mockAuthService: Partial<AuthService> = {
@@ -158,6 +162,45 @@ describe('StudentSessionService', () => {
 
   scheduledIt('Should have a sessionId$ initially set to null', ({expectObservable}) => {
     expectObservable(service.sessionId$).toBe('n-', values.sessionIds);
+  });
+
+  describe('The joinSession() method', () => {
+    let addStudentToSessionSpy:
+      jasmine.Spy<FirebaseService['addStudentToSession']>;
+
+    beforeEach(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+      addStudentToSessionSpy =
+        spyOn(firebaseService, 'addStudentToSession').and.callThrough();
+    }));
+
+    beforeEach(async(() => {
+      mockCurrentUser$.next(values.authUsers.X);
+    }));
+
+    beforeEach(async(() => {
+      service.joinSession(values.students.F, values.sessionIds[1]);
+    }));
+
+    it('Calls FirebaseService.addStudentToSession', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('Passes the student data and the session ID through to the FirebaseService', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+      const [_, sessionId, studentData] =
+        addStudentToSessionSpy.calls.mostRecent().args;
+
+      expect(studentData).toEqual(values.students.F);
+      expect(sessionId).toEqual(values.sessionIds[1]);
+    });
+
+    it('Passes the current user ID to the FirebaseService', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+      const [userId] = addStudentToSessionSpy.calls.mostRecent().args;
+      expect(userId).toEqual(values.authUsers.X.uid);
+    });
   });
 
   describe('The setCurrentSession() method', () => {
