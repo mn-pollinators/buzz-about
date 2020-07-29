@@ -54,16 +54,6 @@ export class StudentSessionService {
     shareReplay(1)
   );
 
-
-  /**
-   * Temporary function to join a given session by ID
-   *
-   * @param id session Firebase ID to join
-   */
-  //joinSession(id: string) {
-  //  this.sessionId$.next(id);
-  //}
-
   /**
    * Leave a session, if the student is connected to a session.
    *

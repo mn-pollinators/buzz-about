@@ -160,7 +160,7 @@ describe('StudentSessionService', () => {
     expectObservable(service.sessionId$).toBe('n-', values.sessionIds);
   });
 
-  describe('The joinSession() method', () => {
+  describe('The setCurrentSession() method', () => {
     scheduledIt('Causes sessionId$ to emit the new value', ({expectObservable, cold}) => {
       const [sessionsToJoin, expectedSessionIds] = [
         '----1-2-',
@@ -168,7 +168,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
 
       expectObservable(service.sessionId$).toBe(
@@ -187,7 +187,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -217,7 +217,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -254,7 +254,7 @@ describe('StudentSessionService', () => {
       cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -287,7 +287,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -319,7 +319,7 @@ describe('StudentSessionService', () => {
       cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -349,7 +349,7 @@ describe('StudentSessionService', () => {
         cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
         cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-          service.joinSession(id);
+          service.setCurrentSession(id);
         });
         cold(whenToLeaveTheSession).subscribe(() => {
           service.leaveSession();
