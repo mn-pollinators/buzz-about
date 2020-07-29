@@ -3,7 +3,7 @@
  */
 export interface Session {
   hostId: string;
-  currentRoundId: string;
+  currentRoundId?: string;
 }
 
 
