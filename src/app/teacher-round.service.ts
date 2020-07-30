@@ -84,26 +84,40 @@ export class TeacherRoundService {
           this.beeList = roundData.beeSpeciesIds;
           // Get the list of students in the session
           this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
-            // Shuffle the list of students to be a random order
-            const shuffledStudents = this.shuffleArray(studentList);
 
-            // Assign the students to a bee species based on the weight
-            let currentStudent = 0;
-            // TODO: Change to beeList once a proper round template is created
-            demoBees.forEach(bee => {
-              const numStudents = Math.floor(bee.weight * shuffledStudents.length);
-              for (let i = currentStudent; i < currentStudent + numStudents; i++) {
+            // If the round has a preset list of bees, use those
+            if (this.beeList) {
+              // Shuffle the list of students to be a random order
+              const shuffledStudents = this.shuffleArray(studentList);
+
+              // Assign the students to a bee species based on the weight
+              let currentStudent = 0;
+              // TODO: Change to beeList once a proper round template is created
+              demoBees.forEach(bee => {
+                const numStudents = Math.floor(bee.weight * shuffledStudents.length);
+                for (let i = currentStudent; i < currentStudent + numStudents; i++) {
+                  this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath,
+                    {beeSpecies: bee.bee.id});
+                }
+                currentStudent += numStudents;
+              });
+
+              // Randomly assign the leftover students to a bee species
+              for (let i = currentStudent; i < shuffledStudents.length; i++) {
+                const beeIndex = Math.floor(Math.random() * demoBees.length);
                 this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath,
-                  {beeSpecies: bee.bee.id});
+                  {beeSpecies: demoBees[beeIndex].bee.id});
               }
-              currentStudent += numStudents;
-            });
 
-            // Randomly assign the leftover students to a bee species
-            for (let i = currentStudent; i < shuffledStudents.length; i++) {
-              const beeIndex = Math.floor(Math.random() * demoBees.length);
-              this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath,
-                {beeSpecies: demoBees[beeIndex].bee.id});
+            } else {
+              const shuffledBees = this.shuffleArray(Object.values(allBeeSpecies));
+
+              studentList.forEach((student, studentIndex) => {
+                const beeIndex = studentIndex % shuffledBees.length;
+
+                this.firebaseService.addStudentToRound(student.id, newRoundPath,
+                  {beeSpecies: shuffledBees[beeIndex].id});
+              });
             }
           });
         });

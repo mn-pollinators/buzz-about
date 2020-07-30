@@ -17,7 +17,7 @@ export class SessionLobbyComponent implements OnInit {
   constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {
     this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
     this.roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
-                          beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
+                          // beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
                           status: 'fine',
                           running: false,
                           currentTime: 0, };
