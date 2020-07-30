@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData } from './round';
+import { firestore } from 'firebase';
 
 export interface RoundPath {
   sessionId: string;
@@ -55,8 +56,8 @@ export class FirebaseService {
       .valueChanges();
   }
 
-  public createSession(sessionData: Session): Promise<string> {
-    return this.firestore.collection('sessions').add(sessionData).then(doc =>
+  public createSession(sessionData: {hostId: string}): Promise<string> {
+    return this.firestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
       doc.id
     );
   }
