@@ -60,7 +60,6 @@ export class TeacherRoundService {
           this.teacherSessionService.currentRoundPath$.next(currentRound);
         });
       });
-
     });
 
 
@@ -69,6 +68,14 @@ export class TeacherRoundService {
       tickSpeed: 1000,
       currentTime: this.startTime,
       endTime: this.endTime
+    });
+  }
+
+  endRound() {
+    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
+      this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
+        this.teacherSessionService.currentRoundPath$.next(null);
+      });
     });
   }
 }

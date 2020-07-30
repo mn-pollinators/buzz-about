@@ -80,6 +80,10 @@ export class LargeDisplayComponent implements OnInit {
 
   ngOnInit() { }
 
+  quitRound() {
+    this.teacherRoundService.endRound();
+  }
+
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
