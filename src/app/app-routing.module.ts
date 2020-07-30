@@ -10,15 +10,23 @@ import { SessionTestComponent } from './session-test/session-test.component';
 import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
 import { JoinSessionComponent } from './join-session/join-session.component';
 import { StudentDisplayComponent } from './student-display/student-display.component';
+import { HostSessionComponent } from './host-session/host-session.component';
+
+const testRoutes: Routes = [
+  {path: 'timer-test', component: TimerTestComponent},
+  {path: 'json-data-test', component: JsonDataTestComponent},
+  {path: 'prepare-round-test', component: PrepareRoundTestComponent},
+  {path: 'session-test', component: SessionTestComponent},
+  {path: 'flower-test', component: FlowerTestComponent}
+]
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
+  {path: 'play', component: JoinSessionComponent},
   {path: 'play/:sessionId', component: StudentDisplayComponent},
-  {path: 'teacher', component: LargeDisplayComponent},
-  {path: 'timer-test', component: TimerTestComponent},
-  {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'join', component: JoinSessionComponent},
-  {path: 'prepare-round-test', component: PrepareRoundTestComponent},
+  {path: 'host', component: HostSessionComponent},
+  {path: 'host/session', component: LargeDisplayComponent},
+  {path: 'test', children: testRoutes}
 ];
 
 @NgModule({

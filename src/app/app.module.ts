@@ -47,6 +47,7 @@ import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
 import { StudentDisplayComponent } from './student-display/student-display.component';
+import { HostSessionComponent } from './host-session/host-session.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -93,6 +94,7 @@ const FIREBASE_MODULES = [
     HillBackgroundComponent,
     SessionLobbyComponent,
     StudentDisplayComponent,
+    HostSessionComponent,
   ],
   imports: [
     BrowserModule,
