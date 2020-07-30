@@ -7,6 +7,7 @@ import { filter } from 'rxjs/operators';
 import { allBeeSpecies, BeeSpecies } from './bees';
 import { TeacherSessionService } from './teacher-session.service';
 import { SessionStudentData } from './session';
+import { Path } from 'three';
 
 // TODO: For the moment, we're only using one fixed, preexisting round for
 // all teachers. Eventually, teachers will each create their own sessions
@@ -87,37 +88,9 @@ export class TeacherRoundService {
 
             // If the round has a preset list of bees, use those
             if (this.beeList) {
-              // Shuffle the list of students to be a random order
-              const shuffledStudents = this.shuffleArray(studentList);
-
-              // Assign the students to a bee species based on the weight
-              let currentStudent = 0;
-              // TODO: Change to beeList once a proper round template is created
-              demoBees.forEach(bee => {
-                const numStudents = Math.floor(bee.weight * shuffledStudents.length);
-                for (let i = currentStudent; i < currentStudent + numStudents; i++) {
-                  this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath,
-                    {beeSpecies: bee.bee.id});
-                }
-                currentStudent += numStudents;
-              });
-
-              // Randomly assign the leftover students to a bee species
-              for (let i = currentStudent; i < shuffledStudents.length; i++) {
-                const beeIndex = Math.floor(Math.random() * demoBees.length);
-                this.firebaseService.addStudentToRound(shuffledStudents[i].id, newRoundPath,
-                  {beeSpecies: demoBees[beeIndex].bee.id});
-              }
-
+              this.customAssign(studentList, this.beeList, newRoundPath);
             } else {
-              const shuffledBees = this.shuffleArray(Object.values(allBeeSpecies));
-
-              studentList.forEach((student, studentIndex) => {
-                const beeIndex = studentIndex % shuffledBees.length;
-
-                this.firebaseService.addStudentToRound(student.id, newRoundPath,
-                  {beeSpecies: shuffledBees[beeIndex].id});
-              });
+              this.defaultAssign(studentList, newRoundPath);
             }
           });
         });
@@ -135,6 +108,51 @@ export class TeacherRoundService {
    */
   endRound(sessionId: string): void {
     this.roundPath$.next(null);
+  }
+
+  /**
+   * When no list of bees to use in the round is provided, randomly assign a bee to each student
+   * Note: It does so by randomizing the list of bees and using the new order to assign a bee to each student
+   * @param studentList the list of students to be assigned
+   * @param path the current round's path
+   */
+  defaultAssign(studentList: SessionStudentData[], path: RoundPath) {
+    const shuffledBees = this.shuffleArray(Object.values(allBeeSpecies));
+
+    studentList.forEach((student, studentIndex) => {
+      const beeIndex = studentIndex % shuffledBees.length;
+
+      this.firebaseService.addStudentToRound(student.id, path,
+        {beeSpecies: shuffledBees[beeIndex].id});
+    });
+  }
+
+  /**
+   * Assigns bees when list of bees is provided.
+   * Right now only works on demoBees.
+   */
+  customAssign(studentList: SessionStudentData[], beeList: string[], path: RoundPath) {
+    // Shuffle the list of students to be a random order
+    const shuffledStudents = this.shuffleArray(studentList);
+
+    // Assign the students to a bee species based on the weight
+    let currentStudent = 0;
+    // TODO: Change to beeList once a proper round template is created
+    demoBees.forEach(bee => {
+      const numStudents = Math.floor(bee.weight * shuffledStudents.length);
+      for (let i = currentStudent; i < currentStudent + numStudents; i++) {
+        this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
+          {beeSpecies: bee.bee.id});
+      }
+      currentStudent += numStudents;
+    });
+
+    // Randomly assign the leftover students to a bee species
+    for (let i = currentStudent; i < shuffledStudents.length; i++) {
+      const beeIndex = Math.floor(Math.random() * demoBees.length);
+      this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
+        {beeSpecies: demoBees[beeIndex].bee.id});
+    }
   }
 
   shuffleArray(array: SessionStudentData[]): SessionStudentData[] {
