@@ -7,6 +7,14 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button (click)="newSession()" color="primary">Create Session</button>
+      <button
+        mat-raised-button
+        *ngIf="(this.teacherSessionService.mostRecentSession$ | async) as sessionId"
+        [routerLink]="['/host', sessionId]"
+        color="primary"
+      >
+        Join Current Session
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

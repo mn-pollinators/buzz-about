@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionStudentData, SessionWithId, Session } from './session';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -46,6 +46,11 @@ export class TeacherSessionService {
    * Emits null if the student is not in a session or the round is not set on the session.
    */
   currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
+
+  mostRecentSession$ = this.authService.currentUser$.pipe(
+    switchMap(user => this.firebaseService.getMostRecentSessionId(user.uid)),
+    shareReplay(1),
+  );
 
   /**
    * Mark a session as the currently playing one.

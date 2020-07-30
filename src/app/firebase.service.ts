@@ -62,6 +62,14 @@ export class FirebaseService {
     );
   }
 
+  public getMostRecentSessionId(userId: string): Observable<string | null> {
+    return this.firestore
+      .collection('sessions', ref => ref.where('hostId', '==', userId)
+      .orderBy('createdAt', 'desc')
+      .limit(1))
+      .snapshotChanges().pipe(map(snapshot => snapshot[0]?.payload.doc.id));
+  }
+
   /**
    * Return an observable stream of the round data for the round whose
    * Firebase ID is `roundId` within the session denoted by `sessionId`.
