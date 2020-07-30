@@ -1,10 +1,11 @@
 import { TestBed, fakeAsync, inject, tick, discardPeriodicTasks, async } from '@angular/core/testing';
 import { TeacherRoundService } from './teacher-round.service';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService, RoundPath } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from './time-period';
 import { allBeeSpecies } from './bees';
-import { of } from 'rxjs';
+import { TeacherSessionService } from './teacher-session.service';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
@@ -23,10 +24,27 @@ describe('TeacherRoundService', () => {
   ];
 
   beforeEach(() => {
+    const mockCurrentRoundPath$ = new BehaviorSubject<RoundPath>(null);
+    const mockSessionId$ = new BehaviorSubject<string>(fakeSessionId);
+
+    const mockTeacherSessionService: Partial<TeacherSessionService> = {
+      currentRoundPath$: mockCurrentRoundPath$,
+      sessionId$: mockSessionId$,
+    };
+
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
       'firebaseService',
-      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession', 'addStudentToRound'],
+      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession', 'addStudentToRound', 'setCurrentRound'],
     );
+
+    mockFirebaseService.createRoundInSession.and.callFake(() => {
+      const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
+      return Promise.resolve(fakeRoundPath);
+    });
+
+    mockFirebaseService.setCurrentRound.and.callFake(() => {
+      return Promise.resolve();
+    });
 
     mockFirebaseService.getStudentsInSession.and.returnValue(of(fakeStudentData));
 
@@ -34,6 +52,7 @@ describe('TeacherRoundService', () => {
       providers: [
         TimerService,
         {provide: FirebaseService, useValue: mockFirebaseService},
+        {provide: TeacherSessionService, useValue: mockTeacherSessionService},
       ],
     });
     service = TestBed.inject(TeacherRoundService);
@@ -70,7 +89,7 @@ describe('TeacherRoundService', () => {
 
   describe('After the round starts', () => {
     beforeEach(async(() => {
-      service.startNewRound(fakeSessionId, fakeRoundData);
+      service.startNewRound(fakeRoundData);
     }));
 
     describe('The Firebase service', () => {
@@ -133,9 +152,11 @@ describe('TeacherRoundService', () => {
       );
     });
 
-    describe('After the component is destroyed', () => {
+    // TODO: endRound isn't implemented yet. But, when you do implement
+    // it, here's a test you can use!
+    xdescribe('After the component is destroyed', () => {
       beforeEach(async(() => {
-        service.endRound(fakeSessionId);
+        // service.endRound(fakeSessionId);
       }));
 
       describe('The Firebase service', () => {

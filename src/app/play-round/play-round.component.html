@@ -1,11 +1,17 @@
-<app-top-menu-bar></app-top-menu-bar>
-
-
-<div #contents>
-  <div *ngIf="this.roundReady">
-    <button mat-raised-button color="primary" (click)="this.round.interactButton.onClick()" *ngIf="this.round.interactButton && this.round.interactButton.display">{{this.round.interactButton.text}}</button>
-    <button mat-flat-button (click)="this.testMarkerChange()">test add marker</button>
-
-    <app-ar-view #arview [markers]="this.round.markers" [debug]="true" (onMarkerStates)="this.onMarkerState($event)"></app-ar-view>
-  </div>
-</div>
+<app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<img
+  class="student-bee"
+  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
+  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
+  [alt]="bee.name"
+>
+<button
+  mat-raised-button
+  class="interact-button"
+  color="primary"
+  *ngIf="this.activeRoundMarker$ | async as marker" [disabled]="!marker.active"
+  (click)="clickInteract(marker)"
+>
+  Visit {{marker.name}}
+</button>

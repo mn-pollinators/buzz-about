@@ -11,17 +11,14 @@ import { allBeeSpecies } from '../bees';
 })
 export class SessionLobbyComponent implements OnInit {
 
-  sessionID: string;
-  roundData: FirebaseRound;
 
-  constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {
-    this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
-    this.roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
-                          // beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
-                          status: 'fine',
-                          running: false,
-                          currentTime: 0, };
-  }
+  sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
+  roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+                        status: 'fine',
+                        running: false,
+                        currentTime: this.teacherRoundService.startTime.time, };
+
+  constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {  }
 
   ngOnInit(): void {
     // Temporary, teacher will likely join session immediately after creating it
@@ -29,6 +26,6 @@ export class SessionLobbyComponent implements OnInit {
   }
 
   public startRound() {
-    this.teacherRoundService.startNewRound(this.sessionID, this.roundData);
+    this.teacherRoundService.startNewRound(this.roundData);
   }
 }

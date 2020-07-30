@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { StudentSessionService } from '../student-session.service';
 import { StudentRoundService } from '../student-round.service';
 import { AuthService } from '../auth.service';
-import { FirebaseService } from '../firebase.service';
+import { BeeSpecies, allBeeSpecies } from '../bees';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-session-test',
@@ -14,13 +17,17 @@ export class SessionTestComponent implements OnInit {
 
   readonly sessionId = 'demo-session';
 
+  allBeeSpeciesArray = Object.values(allBeeSpecies);
+
   constructor(
     public sessionService: StudentSessionService,
     public roundService: StudentRoundService,
     public authService: AuthService,
-    public firebaseService: FirebaseService) { }
+    public firestore: AngularFirestore,
+  ) { }
 
   ngOnInit(): void {
+    this.sessionService.joinSession(this.sessionId);
   }
 
   joinSession() {
@@ -35,8 +42,9 @@ export class SessionTestComponent implements OnInit {
     this.authService.addStudentToDatabase({name}, this.sessionId);
   }
 
-  logIn() {
-    this.authService.logStudentIn();
+  setBee(beeSpecies: string) {
+    combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$]).pipe(take(1)).subscribe(([roundPath, user]) => {
+      this.firestore.doc(`sessions/${roundPath.sessionId}/rounds/${roundPath.roundId}/students/${user.uid}`).set({beeSpecies});
+    });
   }
-
 }

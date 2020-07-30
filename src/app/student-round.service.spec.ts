@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { StudentRoundService } from './student-round.service';
 import { BehaviorSubject } from 'rxjs';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from './utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from './flowers';
@@ -190,7 +190,7 @@ describe('StudentRoundService', () => {
         }
       },
 
-      getRoundStudent(ignoredRoundPath, studentId) {
+      getRoundStudent(_, studentId) {
         switch (studentId) {
           case 'userX':
             return mockUserXData$;
@@ -200,6 +200,10 @@ describe('StudentRoundService', () => {
             throw new Error(`FirebaseService.getSession(): Bad session id ${studentId}`);
         }
       },
+
+      addInteraction() {
+        return null;
+      }
     };
 
     const mockStudentSessionService: Partial<StudentSessionService> = {
@@ -807,5 +811,76 @@ describe('StudentRoundService', () => {
         values.booleans,
       );
     });
+  });
+
+  describe('The interact() method', () => {
+    let interactionSpy: jasmine.Spy<FirebaseService['addInteraction']>;
+
+    beforeEach(inject([FirebaseService], (mockFirebaseService: Partial<FirebaseService>) => {
+      interactionSpy = spyOn(mockFirebaseService, 'addInteraction');
+    }));
+
+    it('Calls firebaseService.addInteraction()', fakeAsync(() => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+      mockCurrentUser$.next(values.authUsers.X);
+      tick(0);
+
+      service.interact(5);
+      expect(interactionSpy).toHaveBeenCalledTimes(1);
+    }));
+
+    it('Passes the current round path to firebaseService', fakeAsync(() => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+      mockCurrentUser$.next(values.authUsers.X);
+      tick(0);
+
+      service.interact(5);
+      expect(interactionSpy).toHaveBeenCalledTimes(1);
+      expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
+        values.roundPaths.A,
+      );
+
+      interactionSpy.calls.reset();
+      mockCurrentRoundPath$.next(values.roundPaths.B);
+      mockRound1BData$.next(values.rounds.q);
+      tick(0);
+
+      service.interact(5);
+      expect(interactionSpy).toHaveBeenCalledTimes(1);
+      expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
+        values.roundPaths.B,
+      );
+    }));
+
+    it('Passes the barcode to firebaseService, along with the current time and user id', fakeAsync(() => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockRound1AData$.next(values.rounds.q);
+      mockCurrentUser$.next(values.authUsers.X);
+      tick(0);
+
+      service.interact(5);
+      expect(interactionSpy).toHaveBeenCalledTimes(1);
+      expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
+        userId: values.authUsers.X.uid,
+        timePeriod: values.rounds.q.currentTime,
+        barcodeValue: 5,
+      });
+
+      interactionSpy.calls.reset();
+      mockRound1AData$.next(values.rounds.r);
+      mockCurrentUser$.next(values.authUsers.Y);
+      tick(0);
+
+      service.interact(7);
+      expect(interactionSpy).toHaveBeenCalledTimes(1);
+      expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
+        userId: values.authUsers.Y.uid,
+        timePeriod: values.rounds.r.currentTime,
+        barcodeValue: 7,
+      });
+    }));
+
   });
 });
