@@ -151,37 +151,5 @@ describe('TeacherRoundService', () => {
         })),
       );
     });
-
-    // TODO: endRound isn't implemented yet. But, when you do implement
-    // it, here's a test you can use!
-    xdescribe('After the component is destroyed', () => {
-      beforeEach(async(() => {
-        // service.endRound(fakeSessionId);
-      }));
-
-      describe('The Firebase service', () => {
-        it(
-          'Shouldn\'t be sent any data even if the timer is ticking',
-          fakeAsync(inject([TimerService, FirebaseService], (
-            timerService: TimerService,
-            firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
-          ) => {
-            firebaseService.updateRoundData.calls.reset();
-            timerService.initialize({
-              running: false,
-              tickSpeed: 1000,
-              currentTime: new TimePeriod(0),
-              endTime: null,
-            });
-            tick(0);
-            timerService.setRunning(true);
-            tick(0);
-            tick(1000);
-            expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
-            discardPeriodicTasks();
-          })),
-        );
-      });
-    });
   });
 });

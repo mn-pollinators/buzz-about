@@ -40,16 +40,6 @@ export class TeacherSessionService {
     shareReplay(1),
   );
 
-  currentRoundId$: Observable<string | null> = this.sessionId$.pipe(
-    switchMap(sessionId =>
-      sessionId ? this.firebaseService.getSession(sessionId)
-      : of(null)),
-    map(session =>
-      session ? session.currentRoundId
-      : of(null)),
-    shareReplay(1),
-  );
-
   /**
    * An observable of the current round's session ID and round ID.
    * Emits null if the student is not in a session or the round is not set on the session.

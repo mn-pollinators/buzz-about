@@ -14,13 +14,13 @@ import { TimePeriod } from './time-period';
 // all teachers. Eventually, teachers will each create their own sessions
 // and rounds.
 const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
-export interface TempBee {
-  name: BeeSpecies;
+export interface BeeWithWeight {
+  id: string;
   weight: number;
 }
-const demoBees = [
-  {bee: allBeeSpecies.apis_mellifera, weight: 0.8},
-  {bee: allBeeSpecies.colletes_simulans, weight: 0.2}
+const demoBees: BeeWithWeight[] = [
+  {id: allBeeSpecies.apis_mellifera.id, weight: 0.8},
+  {id: allBeeSpecies.colletes_simulans.id, weight: 0.2}
 ];
 
 @Injectable({
@@ -72,7 +72,9 @@ export class TeacherRoundService {
       this.firebaseService.createRoundInSession(sessionId, roundData).then(roundPath => {
         this.firebaseService.setCurrentRound(roundPath).then(() => {
           this.teacherSessionService.currentRoundPath$.next(roundPath);
-          this.assignBees(roundData);
+          // TODO: eventually, we'll get the list of weighted bees from the
+          // round template.
+          this.assignBees(roundPath, demoBees);
         });
       });
 
@@ -87,29 +89,15 @@ export class TeacherRoundService {
     });
   }
 
-  assignBees(roundData: FirebaseRound): void {
-    let newRoundPath;
+  assignBees(currentRoundPath: RoundPath, bees?: BeeWithWeight[]): void {
+    // Get the list of students in the session
+    this.firebaseService.getStudentsInSession(currentRoundPath.sessionId).subscribe(studentList => {
 
-    // Get the id of the current round
-    this.teacherSessionService.currentRoundId$.subscribe(currentRoundId => {
-      if (currentRoundId) {
-        console.log(currentRoundId);
-        // Get the id of the current session
-        this.teacherSessionService.sessionId$.subscribe(currentSessionId => {
-          newRoundPath = {sessionId: currentSessionId, roundId: currentRoundId};
-          this.roundPath$.next(newRoundPath);
-          this.beeList = roundData.beeSpeciesIds;
-          // Get the list of students in the session
-          this.firebaseService.getStudentsInSession(newRoundPath.sessionId).subscribe((studentList) => {
-
-            // If the round has a preset list of bees, use those
-            if (this.beeList) {
-              this.customAssign(studentList, this.beeList, newRoundPath);
-            } else {
-              this.defaultAssign(studentList, newRoundPath);
-            }
-          });
-        });
+      // If the round has a preset list of bees, use those
+      if (bees) {
+        this.customAssign(studentList, bees, currentRoundPath);
+      } else {
+        this.defaultAssign(studentList, currentRoundPath);
       }
     });
   }
@@ -147,18 +135,18 @@ export class TeacherRoundService {
    * Assigns bees when list of bees is provided.
    * Right now only works on demoBees.
    */
-  customAssign(studentList: SessionStudentData[], beeList: string[], path: RoundPath) {
+  customAssign(studentList: SessionStudentData[], beeList: BeeWithWeight[], path: RoundPath) {
     // Shuffle the list of students to be a random order
     const shuffledStudents = this.shuffleArray(studentList);
 
     // Assign the students to a bee species based on the weight
     let currentStudent = 0;
     // TODO: Change to beeList once a proper round template is created
-    demoBees.forEach(bee => {
+    beeList.forEach(bee => {
       const numStudents = Math.floor(bee.weight * shuffledStudents.length);
       for (let i = currentStudent; i < currentStudent + numStudents; i++) {
         this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-          {beeSpecies: bee.bee.id});
+          {beeSpecies: bee.id});
       }
       currentStudent += numStudents;
     });
@@ -167,7 +155,7 @@ export class TeacherRoundService {
     for (let i = currentStudent; i < shuffledStudents.length; i++) {
       const beeIndex = Math.floor(Math.random() * demoBees.length);
       this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-        {beeSpecies: demoBees[beeIndex].bee.id});
+        {beeSpecies: beeList[beeIndex].id});
     }
   }
 
