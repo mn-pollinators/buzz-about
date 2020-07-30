@@ -25,7 +25,7 @@ const routes: Routes = [
   {path: 'play', component: JoinSessionComponent},
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
-  {path: 'host/session', component: LargeDisplayComponent},
+  {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'test', children: testRoutes}
 ];
 

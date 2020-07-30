@@ -20,8 +20,6 @@ export class SessionLobbyComponent implements OnInit {
   constructor(public teacherSessionService: TeacherSessionService, public teacherRoundService: TeacherRoundService) {  }
 
   ngOnInit(): void {
-    // Temporary, teacher will likely join session immediately after creating it
-    this.teacherSessionService.joinSession(this.sessionID);
   }
 
   public startRound() {

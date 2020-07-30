@@ -55,6 +55,12 @@ export class FirebaseService {
       .valueChanges();
   }
 
+  public createSession(sessionData: Session): Promise<string> {
+    return this.firestore.collection('sessions').add(sessionData).then(doc =>
+      doc.id
+    );
+  }
+
   /**
    * Return an observable stream of the round data for the round whose
    * Firebase ID is `roundId` within the session denoted by `sessionId`.

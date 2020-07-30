@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { SessionStudentData, SessionWithId } from './session';
+import { SessionStudentData, SessionWithId, Session } from './session';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class TeacherSessionService {
     shareReplay(1),
   );
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService, private authService: AuthService) { }
 
 
   /**
@@ -47,12 +48,12 @@ export class TeacherSessionService {
   currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
   /**
-   * Temporary function to join a given session by ID
+   * Mark a session as the currently playing one.
    *
-   * @param id session Firebase ID to join
+   * @param sessionId The session that we want to play right now.
    */
-  joinSession(id: string) {
-    this.sessionId$.next(id);
+  setCurrentSession(sessionId: string) {
+    this.sessionId$.next(sessionId);
   }
 
   /**
@@ -64,6 +65,13 @@ export class TeacherSessionService {
    */
   leaveSession() {
     this.sessionId$.next(null);
+  }
+
+  async createSession(): Promise<string> {
+    const user = await this.authService.currentUser$.pipe(take(1)).toPromise();
+    return this.firebaseService.createSession({
+      hostId: user.uid
+    });
   }
 
 }
