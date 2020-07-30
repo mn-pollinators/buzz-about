@@ -5,8 +5,12 @@ service cloud.firestore {
       // TODO: Put restrictions on who can modify rounds.
       allow read, write: if true;
     }
-    match /sessions/{session} {
-      // TODO: Put restrictions on who can modify sessions.
+    match /sessions/{session}/rounds/{round}/interactions/{interaction} {
+      // TODO: Put restrictions on who can modify rounds.
+      allow read, write: if true;
+    }
+    match /sessions/{session}/rounds/{round}/students/{student} {
+      // TODO: Put restrictions on who can modify students.
       allow read, write: if true;
     }
     match /sessions/{session}/students/{user} {
