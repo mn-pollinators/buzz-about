@@ -1,5 +1,5 @@
 import { TestBed, fakeAsync, inject, tick, discardPeriodicTasks, async } from '@angular/core/testing';
-import { TeacherRoundService } from './teacher-round.service';
+import { TeacherRoundService, BeeWithWeight } from './teacher-round.service';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from './time-period';
@@ -10,6 +10,7 @@ import { BehaviorSubject, of } from 'rxjs';
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
   const fakeSessionId = 'fake-session-id';
+  const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
   const fakeRoundData = {
     flowerSpeciesIds: ['achillea_millefolium'],
     beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
@@ -20,7 +21,12 @@ describe('TeacherRoundService', () => {
   const fakeStudentData = [
     {name: 'Bob', id: '1'},
     {name: 'Sam', id: '2'},
-    {name: 'Abe', id: '3'}
+    {name: 'Abe', id: '3'},
+    {name: 'Jim', id: '4'}
+  ];
+  const fakeBeeData: BeeWithWeight[] = [
+    {id: 'Butterfly', weight: 0.75},
+    {id: 'Bat', weight: 0.25},
   ];
 
   beforeEach(() => {
@@ -38,7 +44,6 @@ describe('TeacherRoundService', () => {
     );
 
     mockFirebaseService.createRoundInSession.and.callFake(() => {
-      const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
       return Promise.resolve(fakeRoundPath);
     });
 
@@ -60,6 +65,64 @@ describe('TeacherRoundService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('The assignBees() method', () => {
+    // Since the assignBees() method is random, we're going to run it over
+    // and over a few times.
+    const TEST_TIMES = 20;
+
+    describe('When provided bees with weights', () => {
+      it('Assigns a bee to every student', async(inject([FirebaseService], (
+        firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+      ) => {
+        for (let i = 0; i < TEST_TIMES; i++) {
+          firebaseService.addStudentToRound.calls.reset();
+          service.assignBees(fakeRoundPath, fakeBeeData);
+
+          expect(firebaseService.addStudentToRound).toHaveBeenCalled();
+
+          const studentsAssignedTo = firebaseService.addStudentToRound.calls.allArgs().map(args => args[0]);
+          const expectedStudents = fakeStudentData.map(data => data.id);
+
+          studentsAssignedTo.sort();
+          expectedStudents.sort();
+
+          expect(studentsAssignedTo).toEqual(expectedStudents);
+
+          const studentData = firebaseService.addStudentToRound.calls.allArgs().map(args => args[2]);
+          studentData.forEach(student => {
+            expect('beeSpecies' in student).toBeTruthy();
+          });
+        }
+      })));
+    });
+
+    describe('When we don\'t provide bees', () => {
+      it('Assigns a bee to every student', async(inject([FirebaseService], (
+        firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+      ) => {
+        for (let i = 0; i < TEST_TIMES; i++) {
+          firebaseService.addStudentToRound.calls.reset();
+          service.assignBees(fakeRoundPath);
+
+          expect(firebaseService.addStudentToRound).toHaveBeenCalled();
+
+          const studentsAssignedTo = firebaseService.addStudentToRound.calls.allArgs().map(args => args[0]);
+          const expectedStudents = fakeStudentData.map(data => data.id);
+
+          studentsAssignedTo.sort();
+          expectedStudents.sort();
+
+          expect(studentsAssignedTo).toEqual(expectedStudents);
+
+          const studentData = firebaseService.addStudentToRound.calls.allArgs().map(args => args[2]);
+          studentData.forEach(student => {
+            expect('beeSpecies' in student).toBeTruthy();
+          });
+        }
+      })));
+    });
   });
 
   describe('Before the round starts', () => {
