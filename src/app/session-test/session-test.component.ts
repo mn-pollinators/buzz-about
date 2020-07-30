@@ -11,7 +11,6 @@ import { AuthService } from '../auth.service';
 export class SessionTestComponent implements OnInit {
   JSON = JSON;
 
-  readonly sessionId = 'demo-session';
   constructor(
     public sessionService: StudentSessionService,
     public roundService: StudentRoundService,
@@ -20,8 +19,8 @@ export class SessionTestComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  joinSession(name: string) {
-    this.sessionService.joinSession({name}, this.sessionId);
+  joinSession(sessionId: string, name: string) {
+    this.sessionService.joinSession({name}, sessionId).then(() => this.sessionService.setCurrentSession(sessionId));
   }
 
   leaveSession() {
