@@ -25,7 +25,6 @@ export class SessionTestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.joinSession(this.sessionId);
   }
 
   joinSession(sessionId: string, name: string) {
