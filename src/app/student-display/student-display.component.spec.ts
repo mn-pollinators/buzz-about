@@ -2,13 +2,14 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { StudentDisplayComponent, ScreenId } from './student-display.component';
 import { BehaviorSubject, of, NEVER } from 'rxjs';
 import { SessionWithId } from '../session';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { HillBackgroundComponent } from '../hill-background/hill-background.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { firestore } from 'firebase';
 
 describe('StudentDisplayComponent', () => {
   let component: StudentDisplayComponent;
@@ -16,15 +17,17 @@ describe('StudentDisplayComponent', () => {
 
   const sessionId = '1';
 
-  const sessionWithoutACurrentRound = {
+  const sessionWithoutACurrentRound: SessionWithId = {
     id: '1',
     hostId: 'Tintin',
+    createdAt: firestore.Timestamp.fromMillis(0),
   };
 
-  const sessionWithACurrentRound = {
+  const sessionWithACurrentRound: SessionWithId = {
     id: '1',
     hostId: 'Tintin',
     currentRoundId: 'First Round',
+    createdAt: firestore.Timestamp.fromMillis(0),
   };
 
   // This observable pretend to be the session data coming from Firebase.
@@ -35,21 +38,7 @@ describe('StudentDisplayComponent', () => {
     mockSessionData$ = new BehaviorSubject(sessionWithoutACurrentRound);
 
     const mockActivatedRoute: Partial<ActivatedRoute> = {
-      paramMap: of({
-        keys: ['sessionId'],
-
-        get(key) {
-          return key === 'sessionId' ? sessionId : null;
-        },
-
-        getAll(key) {
-          return key === 'sessionId' ? [sessionId] : [];
-        },
-
-        has(key) {
-          return this.keys.contains(key);
-        },
-      }),
+      paramMap: of(convertToParamMap({sessionId})),
     };
 
     const mockFirebaseService: Partial<FirebaseService> = {
@@ -104,7 +93,7 @@ describe('StudentDisplayComponent', () => {
     describe('The currentScreen$ observable', () => {
       it('Should initially be ScreenId.NoSession', fakeAsync(() => {
         component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
-          expect(currentScreen).toBe(ScreenId.NoSession);
+          expect(currentScreen).toBe(ScreenId.Loading);
         });
         tick(0);
       }));

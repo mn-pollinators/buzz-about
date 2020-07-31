@@ -5,7 +5,7 @@ import { SessionWithId, SessionStudentData } from './session';
 import { BehaviorSubject } from 'rxjs';
 import { scheduledIt } from './utils/karma-utils';
 import { AuthService } from './auth.service';
-import { User } from 'firebase';
+import { User, firestore } from 'firebase';
 
 describe('StudentSessionService', () => {
   // For marble testing, here are some objects that associate single-character
@@ -29,26 +29,31 @@ describe('StudentSessionService', () => {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       b: {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       i: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       j: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       k: {
         id: '2',
         hostId: 'Captain Haddock',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
     },
 

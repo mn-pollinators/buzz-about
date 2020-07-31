@@ -21,11 +21,14 @@ import { of, BehaviorSubject } from 'rxjs';
 import { TeacherSessionService } from '../teacher-session.service';
 import { RoundPath } from '../firebase.service';
 import { TimePeriod } from '../time-period';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('LargeDisplayComponent', () => {
   let component: LargeDisplayComponent;
   let fixture: ComponentFixture<LargeDisplayComponent>;
   const mockCurrentRoundPath$ = new BehaviorSubject<RoundPath>(null);
+
+  const fakeRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
 
   beforeEach(async(() => {
     const mockTeacherRoundService: Partial<TeacherRoundService> = {
@@ -35,7 +38,13 @@ describe('LargeDisplayComponent', () => {
 
     const mockTeacherSessionService: Partial<TeacherSessionService> = {
       currentRoundPath$: mockCurrentRoundPath$,
+      setCurrentSession() {}
     };
+
+    const mockActivatedRoute: Partial<ActivatedRoute> = {
+      paramMap: of(convertToParamMap({sessionId: fakeRoundPath.sessionId})),
+    };
+
 
     mockCurrentRoundPath$.next(null);
 
@@ -62,6 +71,7 @@ describe('LargeDisplayComponent', () => {
         TimerService,
         {provide: TeacherRoundService, useValue: mockTeacherRoundService},
         {provide: TeacherSessionService, useValue: mockTeacherSessionService},
+        {provide: ActivatedRoute, useValue: mockActivatedRoute},
       ],
     })
     .compileComponents();

@@ -23,7 +23,6 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
   constructor(public sessionService: StudentSessionService, private activatedRoute: ActivatedRoute) { }
 
   currentScreen$: Observable<ScreenId> = this.sessionService.currentSessionWithState$.pipe(
-    tap(x => console.log(x)),
     map(({sessionIdSet, session}) =>
       sessionIdSet
       ? (session
