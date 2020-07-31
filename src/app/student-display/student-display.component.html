@@ -4,13 +4,23 @@
     <div class="centered-container">
       <mat-card>
         <mat-card-title>Waiting for round to begin&hellip;</mat-card-title>
+        <button mat-raised-button routerLink="/play" >Quit Session</button>
       </mat-card>
     </div>
-	</ng-container>
+  </ng-container>
 
   <ng-container *ngSwitchCase="ScreenId.PlayRound">
     <app-play-round></app-play-round>
   </ng-container>
+
+  <ng-container *ngSwitchCase="ScreenId.NoSession">
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>Error: invalid session</mat-card-title>
+      </mat-card>
+    </div>
+	</ng-container>
 
   <ng-container *ngSwitchDefault>
     <app-hill-background cover></app-hill-background>
@@ -19,7 +29,7 @@
         <mat-card-title>
           Loading Session&hellip;
         </mat-card-title>
-        <mat-spinner class="centered"></mat-spinner>
+        <mat-spinner></mat-spinner>
       </mat-card>
     </div>
   </ng-container>

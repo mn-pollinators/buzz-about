@@ -15,6 +15,19 @@ export class StudentSessionService {
 
   sessionId$ = new BehaviorSubject<string | null>(null);
 
+
+  currentSessionWithState$: Observable<{sessionIdSet: boolean, session: SessionWithId}> = this.sessionId$.pipe(
+    switchMap(sessionId =>
+      sessionId
+        ? this.firebaseService.getSession(sessionId).pipe(map(session => ({
+          sessionIdSet: true,
+          session
+        })))
+        : of({sessionIdSet: false, session: null})
+    ),
+    shareReplay(1),
+  );
+
   /**
    * This observable says what session the student is currently connected to.
    * (If the student isn't connected to a session, then it emits null.)
@@ -24,13 +37,8 @@ export class StudentSessionService {
    * - when the student joins or leaves a session,
    * - and when the contents of the current session change in Firebase.
    */
-  currentSession$: Observable<SessionWithId | null> = this.sessionId$.pipe(
-    switchMap(sessionId =>
-      sessionId
-        ? this.firebaseService.getSession(sessionId)
-        : of(null)
-    ),
-    shareReplay(1),
+  currentSession$ = this.currentSessionWithState$.pipe(
+    map(({session}) => session)
   );
 
   /**
