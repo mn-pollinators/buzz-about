@@ -48,6 +48,7 @@ import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
 import { StudentDisplayComponent } from './student-display/student-display.component';
 import { HostSessionComponent } from './host-session/host-session.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -61,7 +62,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatInputModule,
   MatCardModule,
   MatMenuModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule,
 ];
 
 const FIREBASE_MODULES = [

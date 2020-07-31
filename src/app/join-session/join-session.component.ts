@@ -3,6 +3,7 @@ import { StudentSessionService } from '../student-session.service';
 import { FirebaseService } from '../firebase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-join-session',
@@ -16,7 +17,7 @@ export class JoinSessionComponent implements OnInit {
     sessionControl: new FormControl('', Validators.required)
   });
 
-  constructor(public studentSessionService: StudentSessionService, public router: Router) {
+  constructor(public studentSessionService: StudentSessionService, public router: Router, private snackbar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -31,6 +32,8 @@ export class JoinSessionComponent implements OnInit {
     // TODO: Change this to read sessionID from the submission once multiple sessions are supported
     this.studentSessionService.joinSession({name}, sessionId).then(() => {
       this.router.navigate(['/play', sessionId]);
+    }, (reason) => {
+      this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});
     });
   }
 }
