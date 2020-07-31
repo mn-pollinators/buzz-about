@@ -1,20 +1,30 @@
 <app-hill-background cover></app-hill-background>
 <div class="centered-container">
-  <mat-card>
-    <mat-card-title>Host Session</mat-card-title>
-    <mat-card-content>
-      Host a new session of Buzz About
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="newSession()" color="primary">Create Session</button>
-      <button
-        mat-raised-button
-        *ngIf="(this.teacherSessionService.mostRecentSession$ | async) as sessionId"
-        [routerLink]="['/host', sessionId]"
-        color="primary"
-      >
-        Join Current Session
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <div>
+    <mat-card>
+      <mat-card-title>Host new session</mat-card-title>
+      <mat-card-content>
+        Create a new session of Buzz About
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button (click)="newSession()" color="primary">Create Session</button>
+      </mat-card-actions>
+    </mat-card>
+    <mat-card *ngIf="(this.teacherSessionService.mostRecentSession$ | async) as session" class="rejoin-card">
+      <mat-card-title>Reconnect to session</mat-card-title>
+      <mat-card-subtitle>Created {{session.createdAt | timeAgo}}</mat-card-subtitle>
+      <mat-card-content>
+        Connect to your last session of Buzz About
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          mat-button
+          [routerLink]="['/host', session.id]"
+          color="primary"
+        >
+          Join Current Session
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

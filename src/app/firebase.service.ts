@@ -62,12 +62,17 @@ export class FirebaseService {
     );
   }
 
-  public getMostRecentSessionId(userId: string): Observable<string | null> {
+  public getMostRecentSession(userId: string): Observable<SessionWithId | null> {
     return this.firestore
-      .collection('sessions', ref => ref.where('hostId', '==', userId)
-      .orderBy('createdAt', 'desc')
-      .limit(1))
-      .snapshotChanges().pipe(map(snapshot => snapshot[0]?.payload.doc.id));
+      .collection<Session>('sessions', ref => ref.where('hostId', '==', userId)
+        .orderBy('createdAt', 'desc')
+        .limit(1))
+      .snapshotChanges()
+      .pipe(map(actions =>
+        actions[0]?.payload.doc.exists
+          ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data()}
+          : null
+      ));
   }
 
   /**

@@ -48,7 +48,7 @@ export class TeacherSessionService {
   currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
   mostRecentSession$ = this.authService.currentUser$.pipe(
-    switchMap(user => this.firebaseService.getMostRecentSessionId(user.uid)),
+    switchMap(user => this.firebaseService.getMostRecentSession(user.uid)),
     shareReplay(1),
   );
 
