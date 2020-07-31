@@ -25,7 +25,13 @@
   <h2>Round</h2>
   <p>running: {{roundService.currentRunning$ | async}}</p>
   <p>time: {{roundService.currentTime$ | async}}</p>
-  <p>current bee: {{(roundService.currentBeeSpecies$ | async)?.name}}: {{(roundService.currentBeeActive$ | async) ? 'active' : 'not active' }}</p>
+  <div>
+    <select #beeSelect>
+      <option *ngFor="let bee of allBeeSpeciesArray" [value]="bee.id">{{bee.name}} ({{bee.sci_name}})</option>
+    </select>
+    <button (click)="setBee(beeSelect.value)">Set Bee</button>
+  </div>
+  <p>current bee: {{(roundService.currentBeeSpecies$ | async)?.name}} ({{(roundService.currentBeeSpecies$ | async)?.sci_name}}): {{(roundService.currentBeeActive$ | async) ? 'active' : 'not active' }}</p>
   <h3>Flowers</h3>
   <table>
     <tr *ngFor="let flower of roundService.currentFlowers$ | async">

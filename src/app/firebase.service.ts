@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData } from './round';
+import { FirebaseRound, RoundStudentData, Interaction } from './round';
 import { firestore } from 'firebase';
 
 export interface RoundPath {
@@ -96,10 +96,9 @@ export class FirebaseService {
     );
   }
 
-  public setCurrentRound(roundPath: RoundPath): Promise<RoundPath>{
-    return this.firestore.collection('sessions').doc(roundPath.sessionId).update({currentRoundId: roundPath.roundId}).then(doc =>
-      (roundPath)
-    );
+  public setCurrentRound(roundPath: RoundPath) {
+    return this.firestore.collection('sessions').doc(roundPath.sessionId)
+      .update({currentRoundId: roundPath.roundId});
   }
 
   /**
@@ -148,5 +147,15 @@ export class FirebaseService {
    */
   setRoundData(roundPath: RoundPath, data: FirebaseRound) {
     return this.getRoundDocument(roundPath).set(data);
+  }
+
+  /**
+   * Adds an interaction to the `interactions` collection in firebase.
+   *
+   * @param roundPath The Firestore IDs of the session and round within it to add the interaction to
+   * @param data Information about this interaction (the ID of the student, the barcode they interacted with, etc.)
+   */
+  addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
+    return this.getRoundDocument(roundPath).collection('interactions').add(data);
   }
 }
