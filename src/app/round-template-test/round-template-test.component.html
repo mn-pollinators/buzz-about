@@ -11,12 +11,13 @@
           </ol>
         </li>
         <li>
-          Bees
+          Bees {{template.bees ? '' : '- randomly selected'}}
           <ul>
             <li *ngFor="let bee of template.bees">{{bee.species.name}} ({{bee.species.sci_name}}) - {{bee.weight}}</li>
           </ul>
         </li>
-        <li>Timer
+        <li>
+          Timer
           <ul>
             <li>Start time: {{template.startTime.toString()}}</li>
             <li>End time: {{template.endTime.toString()}}</li>

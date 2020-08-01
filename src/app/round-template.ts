@@ -77,5 +77,32 @@ export const roundTemplates: RoundTemplate[] = [
       { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
     ]
   },
+  {
+    name: 'Demo Round',
+    flowerSpecies: [
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.cirsium_discolor,
+      allFlowerSpecies.echinacea_angustifolia,
+      allFlowerSpecies.helianthus_maximiliani,
+      allFlowerSpecies.monarda_fistulosa,
+      allFlowerSpecies.prunus_americana,
+      allFlowerSpecies.rubus_occidentalis,
+      allFlowerSpecies.rudbeckia_hirta,
+      allFlowerSpecies.solidago_rigida,
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.trifolium_repens,
+      allFlowerSpecies.vaccinium_angustifolium,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.cirsium_discolor,
+      allFlowerSpecies.echinacea_angustifolia,
+      allFlowerSpecies.helianthus_maximiliani,
+    ],
+    startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+    endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+    tickSpeed: 5000
+  },
+
+
+
 
 ];
