@@ -47,6 +47,7 @@ import { StudentLoginComponent } from './student-login/student-login.component';
 import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
+import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -92,6 +93,7 @@ const FIREBASE_MODULES = [
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
+    RoundTemplateTestComponent,
   ],
   imports: [
     BrowserModule,
