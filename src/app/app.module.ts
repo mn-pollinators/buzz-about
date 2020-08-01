@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { GoogleChartsModule } from 'angular-google-charts';
+
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -104,6 +106,7 @@ const FIREBASE_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
+    GoogleChartsModule
   ],
   providers: [
     {
