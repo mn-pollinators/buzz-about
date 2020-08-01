@@ -30,10 +30,10 @@ export const roundTemplates: RoundTemplate[] = [
       allFlowerSpecies.trifolium_repens,
       allFlowerSpecies.vaccinium_angustifolium,
       allFlowerSpecies.helianthus_maximiliani,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.eutrochium_maculatum,
-      allFlowerSpecies.liatris_aspera,
-      allFlowerSpecies.symphyotrichum_oolentangiense
+      allFlowerSpecies.rubus_occidentalis,
+      allFlowerSpecies.monarda_fistulosa,
+      allFlowerSpecies.rudbeckia_hirta,
+      allFlowerSpecies.taraxacum_officinale
     ],
     startTime: TimePeriod.fromMonthAndQuarter(4, 1),
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
@@ -43,28 +43,28 @@ export const roundTemplates: RoundTemplate[] = [
       { species: allBeeSpecies.augochloropsis_metallica, weight: 0.2 },
       { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
       { species: allBeeSpecies.anthidium_manicatum, weight: 0.2 },
-      { species: allBeeSpecies.melissodes_illatus, weight: 0.2 }
+      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
     ]
   },
   {
     name: 'Non-viable Ecosystem',
     flowerSpecies: [
       allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.verbena_stricta,
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.cirsium_discolor,
       allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.verbena_stricta,
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.cirsium_discolor,
       allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.verbena_stricta,
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.cirsium_discolor,
       allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.verbena_stricta,
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.cirsium_discolor,
       allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.dalea_purpurea,
-      allFlowerSpecies.verbena_stricta,
-      allFlowerSpecies.verbena_stricta
+      allFlowerSpecies.taraxacum_officinale,
+      allFlowerSpecies.cirsium_discolor,
+      allFlowerSpecies.cirsium_discolor
     ],
     startTime: TimePeriod.fromMonthAndQuarter(4, 1),
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
@@ -74,7 +74,7 @@ export const roundTemplates: RoundTemplate[] = [
       { species: allBeeSpecies.colletes_simulans, weight: 0.2 },
       { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
       { species: allBeeSpecies.hylaeus_modestus, weight: 0.2 },
-      { species: allBeeSpecies.augochlora_pura, weight: 0.2 }
+      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
     ]
   },
 
