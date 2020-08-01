@@ -60,7 +60,7 @@ export class JsonDataTestComponent implements OnInit {
   };
 
   dateFromTimePeriod(timePeriod: TimePeriod): Date {
-    return new Date(0, timePeriod.month, timePeriod.quarter * 7);
+    return new Date(0, timePeriod.month - 1, timePeriod.quarter * 7);
   }
 
   ngOnInit(): void {
