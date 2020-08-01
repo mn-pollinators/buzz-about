@@ -54,13 +54,15 @@ export class JsonDataTestComponent implements OnInit {
     data: this.activePeriods.map(f => [
         `${f.name} (${f.id})`,
         `${f.activePeriod[0]} - ${f.activePeriod[1]}`,
-        this.dateFromTimePeriod(f.activePeriod[0]),
-        this.dateFromTimePeriod(f.activePeriod[1])
+        this.dateFromTimePeriod(f.activePeriod[0], 1),
+        this.dateFromTimePeriod(f.activePeriod[1].next(), 0)
       ])
   };
 
-  dateFromTimePeriod(timePeriod: TimePeriod): Date {
-    return new Date(0, timePeriod.month - 1, timePeriod.quarter * 7);
+  dateFromTimePeriod(timePeriod: TimePeriod, offset: number = 0): Date {
+    const numDaysInMonth =  new Date(0, timePeriod.month, 0).getDate();
+    const day = ((timePeriod.quarter - 1) * ((numDaysInMonth) / 4)) + offset;
+    return new Date(0, timePeriod.month - 1, day);
   }
 
   ngOnInit(): void {
