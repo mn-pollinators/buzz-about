@@ -1,4 +1,8 @@
-<p>Flower species:</p>
+<h1>Flower and bee active period timeline</h1>
+<google-chart class="timeline" [title]="timelineChart.title" [type]="timelineChart.type" [data]="timelineChart.data" [columns]="timelineChart.columns" [dynamicResize]="true" [options]="timelineChart.options">
+</google-chart>
+<h1>JSON Data</h1>
+<h2>Flower species</h2>
 <ul>
   <li *ngFor="let flowerSpecies of allFlowerSpecies">
     {{flowerSpecies.name}} &ndash; {{flowerSpecies.sci_name}}
@@ -19,7 +23,7 @@
   </li>
 </ul>
 
-<p>Bee species:</p>
+<h2>Bee species</h2>
 <ul>
   <li *ngFor="let beeSpecies of allBeeSpecies">
     {{beeSpecies.name}} &ndash; {{beeSpecies.sci_name}}
@@ -48,7 +52,7 @@
   </li>
 </ul>
 
-<p>nests:</p>
+<h2>Nests</h2>
 <ul>
   <li *ngFor="let nest of allNests">
     {{nest.name}}
@@ -62,6 +66,3 @@
     </ul>
   </li>
 </ul>
-
-<google-chart class="timeline" [title]="timelineChart.title" [type]="timelineChart.type" [data]="timelineChart.data" [columns]="timelineChart.columns" [dynamicResize]="true" [options]="timelineChart.options">
-</google-chart>

@@ -52,7 +52,7 @@ export class JsonDataTestComponent implements OnInit {
       { type: 'number', id: 'End' }
     ],
     data: this.activePeriods.map(f => [
-        f.name,
+        `${f.name} (${f.id})`,
         `${f.activePeriod[0]} - ${f.activePeriod[1]}`,
         this.dateFromTimePeriod(f.activePeriod[0]),
         this.dateFromTimePeriod(f.activePeriod[1])
