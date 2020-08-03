@@ -148,6 +148,29 @@ describe('TeacherRoundService', () => {
           });
         }
       })));
+
+      it('Assigns a different bee to every student', async(inject([FirebaseService], (
+        firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+      ) => {
+
+        // Note: This test is only applicable when the number of fake students is less than the number of actual bees in the simulation
+        for (let i = 0; i < TEST_TIMES; i++) {
+          firebaseService.addStudentToRound.calls.reset();
+          service.assignBees(fakeRoundPath);
+
+          expect(firebaseService.addStudentToRound).toHaveBeenCalled();
+
+          const studentData = firebaseService.addStudentToRound.calls.allArgs().map(args => args[2]);
+
+          studentData.forEach((student, studentIndex) => {
+            const studentBee = student.beeSpecies;
+
+            for (let j = studentIndex + 1; j < studentData.length; j++) {
+              expect(studentData[j].beeSpecies).not.toEqual(studentBee);
+            }
+          });
+        }
+      })));
     });
   });
 
