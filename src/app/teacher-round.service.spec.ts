@@ -20,12 +20,12 @@ describe('TeacherRoundService', () => {
     currentTime: 17,
   };
   const fakeStudentData: SessionStudentData[] = [
-    {name: 'Bob', id: '1'},
-    {name: 'Sam', id: '2'},
-    {name: 'Abe', id: '3'},
-    {name: 'Jim', id: '4'}
+    {name: 'Bob', id: '1', nestBarcode: 0},
+    {name: 'Sam', id: '2', nestBarcode: 0},
+    {name: 'Abe', id: '3', nestBarcode: 0},
+    {name: 'Jim', id: '4', nestBarcode: 0}
   ];
-  const anotherStudent: SessionStudentData = {name: 'Ace', id: '5'};
+  const anotherStudent: SessionStudentData = {name: 'Ace', id: '5', nestBarcode: 0};
   const fakeBeeData: BeeWithWeight[] = [
     {id: 'Butterfly', weight: 0.8},
     {id: 'Bat', weight: 0.2},
