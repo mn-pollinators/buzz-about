@@ -42,6 +42,7 @@ import { JsonDataTestComponent } from './json-data-test/json-data-test.component
 import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
+import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
@@ -85,6 +86,7 @@ const FIREBASE_MODULES = [
     JoinedStudentsComponent,
     SessionTestComponent,
     StudentLoginComponent,
+    PrepareRoundTestComponent,
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,

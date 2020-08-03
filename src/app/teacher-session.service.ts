@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
-import { FirebaseService } from './firebase.service';
-import { SessionStudentData } from './session';
+import { FirebaseService, RoundPath } from './firebase.service';
+import { SessionStudentData, SessionWithId } from './session';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherSessionService {
+  sessionId$ = new BehaviorSubject<string | null>(null);
+
+  currentSession$: Observable<SessionWithId | null> = this.sessionId$.pipe(
+    switchMap(sessionId =>
+      sessionId
+        ? this.firebaseService.getSession(sessionId)
+        : of(null)
+    ),
+    shareReplay(1),
+  );
 
   constructor(private firebaseService: FirebaseService) { }
 
-  sessionId$ = new BehaviorSubject<string | null>(null);
 
   /**
    * This observable lists the students in the session that the teacher is currently connected to.
@@ -30,6 +39,12 @@ export class TeacherSessionService {
     ),
     shareReplay(1),
   );
+
+  /**
+   * An observable of the current round's session ID and round ID.
+   * Emits null if the student is not in a session or the round is not set on the session.
+   */
+  currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
 
   /**
    * Temporary function to join a given session by ID

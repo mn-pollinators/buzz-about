@@ -67,6 +67,22 @@ export class FirebaseService {
   }
 
   /**
+   * Adds round to firestore and sets round to the session's current round
+   * @param sessionID Session ID to which round will be added
+   * @param roundData data for the round in FirebaseRound interface format
+   */
+  public createRoundInSession(sessionId: string, roundData: FirebaseRound): Promise<RoundPath> {
+    return this.firestore.collection('sessions/' + sessionId + '/rounds').add(roundData).then(doc =>
+      ({sessionId, roundId: doc.id})
+    );
+  }
+
+  public setCurrentRound(roundPath: RoundPath) {
+    return this.firestore.collection('sessions').doc(roundPath.sessionId)
+      .update({currentRoundId: roundPath.roundId});
+  }
+
+  /**
    * Returns an observable of all student data as an array of JSON objects
    * @param sessionID the ID of the session the students are in
    */
