@@ -17,4 +17,5 @@ export interface SessionWithId extends Session {
 export interface SessionStudentData {
   id?: string;
   name: string;
+  nestBarcode: number;
 }
