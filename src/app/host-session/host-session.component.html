@@ -14,7 +14,7 @@
       <mat-card-title>Reconnect to session</mat-card-title>
       <mat-card-subtitle>Created {{session.createdAt | timeAgo}}</mat-card-subtitle>
       <mat-card-content>
-        Connect to your last session of Buzz About
+        Connect to your most recent session of Buzz About
       </mat-card-content>
       <mat-card-actions align="end">
         <button
@@ -22,7 +22,7 @@
           [routerLink]="['/host', session.id]"
           color="primary"
         >
-          Join Current Session
+          Connect to Session
         </button>
       </mat-card-actions>
     </mat-card>
