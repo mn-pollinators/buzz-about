@@ -25,8 +25,8 @@ describe('TeacherRoundService', () => {
     {name: 'Jim', id: '4'}
   ];
   const fakeBeeData: BeeWithWeight[] = [
-    {id: 'Butterfly', weight: 0.75},
-    {id: 'Bat', weight: 0.25},
+    {id: 'Butterfly', weight: 0.8},
+    {id: 'Bat', weight: 0.2},
   ];
 
   beforeEach(() => {
@@ -93,6 +93,32 @@ describe('TeacherRoundService', () => {
           const studentData = firebaseService.addStudentToRound.calls.allArgs().map(args => args[2]);
           studentData.forEach(student => {
             expect('beeSpecies' in student).toBeTruthy();
+          });
+        }
+      })));
+
+      it('Assigns the bees according to weights', async(inject([FirebaseService], (
+        firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+      ) => {
+        for (let i = 0; i < TEST_TIMES; i++) {
+          firebaseService.addStudentToRound.calls.reset();
+          service.assignBees(fakeRoundPath, fakeBeeData);
+
+          expect(firebaseService.addStudentToRound).toHaveBeenCalled();
+
+          const studentData = firebaseService.addStudentToRound.calls.allArgs().map(args => args[2]);
+
+          fakeBeeData.forEach(fakeBee => {
+            const minStudentsExpected = Math.floor(fakeBee.weight * fakeStudentData.length);
+
+            let numOfBees = 0;
+            studentData.forEach(student => {
+              if (student.beeSpecies === fakeBee.id) {
+                numOfBees++;
+              }
+            });
+
+            expect(numOfBees).toBeGreaterThanOrEqual(minStudentsExpected);
           });
         }
       })));
