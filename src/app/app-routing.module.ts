@@ -12,6 +12,8 @@ import { SessionTestComponent } from './session-test/session-test.component';
 import { StudentLoginComponent } from './student-login/student-login.component';
 import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
+import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
+
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -26,7 +28,8 @@ const routes: Routes = [
   {path: 'json-data-test', component: JsonDataTestComponent},
   {path: 'session-lobby', component: SessionLobbyComponent},
   {path: 'join', component: StudentLoginComponent},
-  {path: 'round-template-test', component: RoundTemplateTestComponent}
+  {path: 'round-template-test', component: RoundTemplateTestComponent},
+  {path: 'prepare-round-test', component: PrepareRoundTestComponent},
 ];
 
 @NgModule({

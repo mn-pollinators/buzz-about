@@ -13,3 +13,11 @@
   height: 100%;
   overflow: hidden;
 }
+
+.interact-button {
+  position: absolute;
+  left:50%;
+  transform: translate(-50%, 0);
+  bottom: 5%;
+  text-transform: uppercase;
+}

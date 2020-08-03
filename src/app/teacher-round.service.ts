@@ -3,7 +3,9 @@ import { FirebaseService, RoundPath } from './firebase.service';
 import { FirebaseRound } from './round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
+import { TeacherSessionService } from './teacher-session.service';
+import { TimePeriod } from './time-period';
 
 // TODO: For the moment, we're only using one fixed, preexisting round for
 // all teachers. Eventually, teachers will each create their own sessions
@@ -14,22 +16,28 @@ const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
   providedIn: 'root'
 })
 export class TeacherRoundService {
-  private readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
+
+  // TODO: These values are only here for testing. Eventually, we'll get this
+  // information from particular rounds.
+  public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
+  public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
 
   constructor(
     public timerService: TimerService,
     public firebaseService: FirebaseService,
+    public teacherSessionService: TeacherSessionService,
   ) {
+
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
     // null.)
-    combineLatest([this.roundPath$, this.timerService.running$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, running]) => {
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
-    combineLatest([this.roundPath$, this.timerService.currentTime$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, timePeriod]) => {
       this.firebaseService.updateRoundData(roundPath, {
@@ -42,29 +50,24 @@ export class TeacherRoundService {
    * Create a new round within the current session, mark it as the currently
    * active round, set its initial state, and hook up the TimerService so that
    * when the timer ticks, the round updates.
-   *
-   * TODO: As of this iteration, this function just re-uses a single demo
-   * round and re-populates it with data, rather than creating a new round.
-   * We also don't bother with marking it as the current round.
    */
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
-  startNewRound(sessionId: string, roundData: FirebaseRound): void {
-    // Eventually, we'll create a new round, but for the moment, we'll just use
-    // this one.
-    this.roundPath$.next(demoRoundPath);
-    this.firebaseService.setRoundData(demoRoundPath, roundData);
-  }
+  startNewRound(roundData: FirebaseRound): void {
+    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
+      this.firebaseService.createRoundInSession(sessionId, roundData).then(roundPath => {
+        this.firebaseService.setCurrentRound(roundPath).then(() => {
+          this.teacherSessionService.currentRoundPath$.next(roundPath); });
+      });
 
-  /**
-   * Unmark the currently active round, so that it's no longer active. Stop
-   * talking to the timer service.
-   *
-   * TODO: As of this iteration, this function just re-uses a single demo
-   * round and re-populates it with data, rather than creating a new round.
-   * We also don't unmark the currently active round yet.
-   */
-  endRound(sessionId: string): void {
-    this.roundPath$.next(null);
+    });
+
+
+    this.timerService.initialize({
+      running: false,
+      tickSpeed: 1000,
+      currentTime: this.startTime,
+      endTime: this.endTime
+    });
   }
 }
