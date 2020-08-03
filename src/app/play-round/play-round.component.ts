@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../student-round.service';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map, distinctUntilChanged, share, shareReplay } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, } from 'rxjs/operators';
 import { StudentSessionService } from '../student-session.service';
 
 interface RoundMarker extends ARMarker {
@@ -18,7 +18,7 @@ interface RoundMarker extends ARMarker {
 export class PlayRoundComponent implements OnInit {
 
 
-  arMarkers$: Observable<RoundMarker[]> = this.studentRoundService.currentFlowers$.pipe(
+  flowerArMarkers$: Observable<RoundMarker[]> = this.studentRoundService.currentFlowers$.pipe(
     map(flowers => flowers.map((flower, index) => ({
       name: flower.species.name,
       active: flower.isBlooming,
@@ -27,29 +27,52 @@ export class PlayRoundComponent implements OnInit {
     })))
   );
 
+  nestArMarker$: Observable<RoundMarker> = combineLatest([
+    this.sessionService.sessionStudentData$,
+    this.studentRoundService.currentBeeSpecies$
+  ]).pipe(
+    map(([student, bee]) => ({
+      name: bee.nest_type.name,
+      active: true,
+      barcodeValue: student.nestBarcode,
+      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
+    }))
+  );
+
+  arMarkers$: Observable<RoundMarker[]> = combineLatest([this.flowerArMarkers$, this.nestArMarker$]).pipe(
+    map(([flowerMarkers, nestMarker]) => flowerMarkers.concat([nestMarker])),
+  );
 
   constructor(public studentRoundService: StudentRoundService, private sessionService: StudentSessionService) { }
 
-  currentMarkers$ = new BehaviorSubject<MarkerState[]>([]);
+  currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
 
-  activeMarkerValue$: Observable<number | null> = this.currentMarkers$.pipe(
+  foundMarkerValue$: Observable<number | null> = this.currentMarkerStates$.pipe(
     map(markers => markers.find(m => m.found)),
     map(marker => marker ? marker.barcodeValue : null),
     distinctUntilChanged(),
     shareReplay(1)
   );
 
-  activeRoundMarker$: Observable<RoundMarker | null> = combineLatest([this.activeMarkerValue$, this.arMarkers$]).pipe(
-    map(([val, markers]) => val ? markers.find(m => m.barcodeValue === val) : null),
+  foundRoundMarker$: Observable<RoundMarker | null> = this.foundMarkerValue$.pipe(
+    switchMap(val =>
+      val === null
+        ? of(null)
+        : this.arMarkers$.pipe(
+          map(markers => markers.find(m => m.barcodeValue === val))
+        )
+    ),
+    tap(marker => console.log(marker)),
     shareReplay(1)
   );
+
 
   ngOnInit() {
     this.sessionService.joinSession('demo-session');
   }
 
   onMarkerState(states: MarkerState[]) {
-    this.currentMarkers$.next(states);
+    this.currentMarkerStates$.next(states);
   }
 
   clickInteract(marker: RoundMarker) {
