@@ -6,6 +6,7 @@ import { TimePeriod } from './time-period';
 import { allBeeSpecies } from './bees';
 import { TeacherSessionService } from './teacher-session.service';
 import { BehaviorSubject, of } from 'rxjs';
+import { SessionStudentData } from './session';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
@@ -18,12 +19,13 @@ describe('TeacherRoundService', () => {
     running: true,
     currentTime: 17,
   };
-  const fakeStudentData = [
+  const fakeStudentData: SessionStudentData[] = [
     {name: 'Bob', id: '1'},
     {name: 'Sam', id: '2'},
     {name: 'Abe', id: '3'},
     {name: 'Jim', id: '4'}
   ];
+  const anotherStudent: SessionStudentData = {name: 'Ace', id: '5'};
   const fakeBeeData: BeeWithWeight[] = [
     {id: 'Butterfly', weight: 0.8},
     {id: 'Bat', weight: 0.2},
@@ -122,6 +124,29 @@ describe('TeacherRoundService', () => {
           });
         }
       })));
+
+      it(
+        // This test makes sure that we remember to cancel our subscription to
+        // FirebaseService.getStudentsInSession().
+        'Doesn\'t try to re-assign bees if the session/students collection changes in Firebase',
+        async(inject([FirebaseService], (
+          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+        ) => {
+          for (let i = 0; i < TEST_TIMES; i++) {
+            const studentsInRound$ =
+              new BehaviorSubject<SessionStudentData[]>(fakeStudentData);
+            firebaseService.getStudentsInSession.and.returnValue(studentsInRound$);
+
+            firebaseService.addStudentToRound.calls.reset();
+            service.assignBees(fakeRoundPath, fakeBeeData);
+            expect(firebaseService.addStudentToRound).toHaveBeenCalled();
+
+            firebaseService.addStudentToRound.calls.reset();
+            studentsInRound$.next([...fakeStudentData, anotherStudent]);
+            expect(firebaseService.addStudentToRound).not.toHaveBeenCalled();
+          }
+        })),
+      );
     });
 
     describe('When we don\'t provide bees', () => {
