@@ -91,8 +91,9 @@ export class TeacherRoundService {
 
   assignBees(currentRoundPath: RoundPath, bees?: BeeWithWeight[]): void {
     // Get the list of students in the session
-    this.firebaseService.getStudentsInSession(currentRoundPath.sessionId).subscribe(studentList => {
-
+    this.firebaseService.getStudentsInSession(currentRoundPath.sessionId).pipe(
+      take(1),
+    ).subscribe(studentList => {
       // If the round has a preset list of bees, use those
       if (bees) {
         this.customAssign(studentList, bees, currentRoundPath);
