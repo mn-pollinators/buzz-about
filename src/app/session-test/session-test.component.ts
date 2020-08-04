@@ -15,8 +15,6 @@ import { take } from 'rxjs/operators';
 export class SessionTestComponent implements OnInit {
   JSON = JSON;
 
-  readonly sessionId = 'demo-session';
-
   allBeeSpeciesArray = Object.values(allBeeSpecies);
 
   constructor(
@@ -27,19 +25,14 @@ export class SessionTestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.joinSession(this.sessionId);
   }
 
-  joinSession() {
-    this.sessionService.joinSession(this.sessionId);
+  joinSession(sessionId: string, name: string, nestBarcode: string) {
+    this.sessionService.joinSession({name, nestBarcode: parseInt(nestBarcode, 10)}, sessionId).then(() => this.sessionService.setCurrentSession(sessionId));
   }
 
   leaveSession() {
     this.sessionService.leaveSession();
-  }
-
-  addStudentToDatabase(name: string, nestBarcode: string) {
-    this.authService.addStudentToDatabase({name, nestBarcode: parseInt(nestBarcode, 10)}, this.sessionId);
   }
 
   setBee(beeSpecies: string) {

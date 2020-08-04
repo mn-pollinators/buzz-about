@@ -27,3 +27,13 @@ body {
 .main-content {
   height: 100%;
 }
+
+.mat-button, .mat-raised-button {
+  text-transform: uppercase;
+}
+
+.centered-container {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}

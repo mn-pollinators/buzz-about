@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {NgPipesModule} from 'ngx-pipes';
+
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,12 +43,16 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { JoinedStudentsComponent } from './joined-students/joined-students.component';
 import { SessionTestComponent } from './session-test/session-test.component';
-import { StudentLoginComponent } from './student-login/student-login.component';
+import { JoinSessionComponent } from './join-session/join-session.component';
 import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './session-lobby/session-lobby.component';
 import { BottomBarComponent } from './bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './hill-background/hill-background.component';
+import { StudentDisplayComponent } from './student-display/student-display.component';
+import { HostSessionComponent } from './host-session/host-session.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
+
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -59,7 +65,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatInputModule,
   MatCardModule,
   MatMenuModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule,
 ];
 
 const FIREBASE_MODULES = [
@@ -86,11 +93,13 @@ const FIREBASE_MODULES = [
     JsonDataTestComponent,
     JoinedStudentsComponent,
     SessionTestComponent,
-    StudentLoginComponent,
+    JoinSessionComponent,
     PrepareRoundTestComponent,
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
+    StudentDisplayComponent,
+    HostSessionComponent,
     RoundTemplateTestComponent,
   ],
   imports: [
@@ -104,6 +113,7 @@ const FIREBASE_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
+    NgPipesModule
   ],
   providers: [
     {
