@@ -62,15 +62,20 @@ describe('TeacherSessionService', () => {
       n: null,
       F: {
         name: 'Fred',
+        nestBarcode: 17
       },
       V: {
         name: 'Velma',
+        nestBarcode: 18
       },
       D: {
         name: 'Daphne',
+        nestBarcode: 19
+
       },
       S: {
         name: 'Shaggy',
+        nestBarcode: 20
       }
     },
   };

@@ -27,8 +27,8 @@ export class SessionTestComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  joinSession(sessionId: string, name: string) {
-    this.sessionService.joinSession({name}, sessionId).then(() => this.sessionService.setCurrentSession(sessionId));
+  joinSession(sessionId: string, name: string, nestBarcode: string) {
+    this.sessionService.joinSession({name, nestBarcode: parseInt(nestBarcode, 10)}, sessionId).then(() => this.sessionService.setCurrentSession(sessionId));
   }
 
   leaveSession() {
