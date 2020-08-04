@@ -1,7 +1,10 @@
 <section>
   <p>
-    <button (click)="joinSession()">Join Session</button>
     <button (click)="leaveSession()">Leave Session</button>
+  </p>
+  <p>
+    <label for="session-id">Session ID</label>
+    <input #sessionId name="session-id" value="demo-session">
   </p>
   <p>
     <label for="student-name">What's your name?</label>
@@ -12,7 +15,7 @@
     <input #nestBarcode name="nest-barcode" type="number" min="0" max="63" step="1">
   </p>
   <p>
-    <button (click)="addStudentToDatabase(studentName.value, nestBarcode.value)">Add user document to session with name</button>
+    <button (click)="joinSession(sessionId.value, studentName.value, nestBarcode.value)">Add user document to session with name</button>
   </p>
 </section>
 

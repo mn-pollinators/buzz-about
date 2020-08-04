@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './session';
 import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction } from './round';
+import { firestore } from 'firebase';
 
 export interface RoundPath {
   sessionId: string;
@@ -38,10 +39,14 @@ export class FirebaseService {
    * (In case you need the Firebase ID for later, it's saved as a property on
    * the SessionWithId objects emitted from the observable.)
    */
-  public getSession(id: string): Observable<SessionWithId> {
+  public getSession(id: string): Observable<SessionWithId | null> {
     return this.getSessionDocument(id)
       .snapshotChanges()
-      .pipe(map(action => ({id: action.payload.id, ...action.payload.data()})));
+      .pipe(map(action =>
+        action.payload.exists
+          ? {id: action.payload.id, ...action.payload.data()}
+          : null
+      ));
   }
 
   public getSessionStudent(sessionId: string, studentId: string): Observable<SessionStudentData> {
@@ -49,6 +54,25 @@ export class FirebaseService {
       .collection('students')
       .doc<SessionStudentData>(studentId)
       .valueChanges();
+  }
+
+  public createSession(sessionData: {hostId: string}): Promise<string> {
+    return this.firestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
+      doc.id
+    );
+  }
+
+  public getMostRecentSession(userId: string): Observable<SessionWithId | null> {
+    return this.firestore
+      .collection<Session>('sessions', ref => ref.where('hostId', '==', userId)
+        .orderBy('createdAt', 'desc')
+        .limit(1))
+      .snapshotChanges()
+      .pipe(map(actions =>
+        actions[0]?.payload.doc.exists
+          ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data()}
+          : null
+      ));
   }
 
   /**
