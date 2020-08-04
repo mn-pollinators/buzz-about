@@ -105,13 +105,14 @@ export class TeacherRoundService {
   /**
    * Unmark the currently active round, so that it's no longer active. Stop
    * talking to the timer service.
-   *
-   * TODO: As of this iteration, this function just re-uses a single demo
-   * round and re-populates it with data, rather than creating a new round.
-   * We also don't unmark the currently active round yet.
    */
-  endRound(sessionId: string): void {
-    this.roundPath$.next(null);
+
+  endRound() {
+    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
+      this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
+        this.teacherSessionService.currentRoundPath$.next(null);
+      });
+    });
   }
 
   /**
@@ -121,7 +122,7 @@ export class TeacherRoundService {
    * @param path the current round's path
    */
   defaultAssign(studentList: SessionStudentData[], path: RoundPath) {
-    const shuffledBees = this.shuffleArray(Object.values(allBeeSpecies));
+    const shuffledBees = this.shuffleArray<BeeSpecies>(Object.values(allBeeSpecies));
 
     studentList.forEach((student, studentIndex) => {
       const beeIndex = studentIndex % shuffledBees.length;
@@ -137,7 +138,7 @@ export class TeacherRoundService {
    */
   customAssign(studentList: SessionStudentData[], beeList: BeeWithWeight[], path: RoundPath) {
     // Shuffle the list of students to be a random order
-    const shuffledStudents = this.shuffleArray(studentList);
+    const shuffledStudents = this.shuffleArray<SessionStudentData>(studentList);
 
     // Assign the students to a bee species based on the weight
     let currentStudent = 0;
@@ -159,7 +160,7 @@ export class TeacherRoundService {
     }
   }
 
-  shuffleArray(array: any[]): any[] {
+  shuffleArray<T>(array: T[]): T[] {
     const newArray = array.slice(0);
     for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -170,11 +171,4 @@ export class TeacherRoundService {
     return newArray;
   }
 
-  endRound() {
-    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
-      this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
-        this.teacherSessionService.currentRoundPath$.next(null);
-      });
-    });
-  }
 }
