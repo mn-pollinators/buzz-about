@@ -90,6 +90,11 @@ export class FirebaseService {
       .valueChanges();
   }
 
+  addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
+    this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students').doc(id).set(studentData);
+  }
+
+
   /**
    * Adds round to firestore and sets round to the session's current round
    * @param sessionID Session ID to which round will be added
@@ -111,7 +116,7 @@ export class FirebaseService {
    * @param sessionID the ID of the session the students are in
    */
   getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
-    return this.firestore.collection('sessions').doc(sessionID).collection<SessionStudentData>('students').valueChanges();
+    return this.firestore.collection('sessions').doc(sessionID).collection<SessionStudentData>('students').valueChanges({idField: 'id'});
   }
 
   /**

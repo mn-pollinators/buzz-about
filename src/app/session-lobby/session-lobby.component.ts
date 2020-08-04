@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TeacherSessionService } from '../teacher-session.service';
 import { FirebaseRound } from '../round';
 import { TeacherRoundService } from '../teacher-round.service';
+import { allBeeSpecies } from '../bees';
 import { Router } from '@angular/router';
 
 @Component({
