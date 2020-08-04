@@ -1,0 +1,33 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+  // List of extensions which should be recommended for users of this workspace.
+  "recommendations": [
+    // Angular Language Service
+    // https://marketplace.visualstudio.com/items?itemName=Angular.ng-template
+    "Angular.ng-template",
+
+    // EditorConfig for VS Code
+    // https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+    "EditorConfig.EditorConfig",
+
+    // Bracket Pair Colorizer 2
+    // https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2
+    "CoenraadS.bracket-pair-colorizer-2",
+
+    // Code Spell Checker
+    // https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
+    "streetsidesoftware.code-spell-checker",
+
+    // TSLint
+    // https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin
+    "ms-vscode.vscode-typescript-tslint-plugin",
+
+    // Firebase
+    // https://marketplace.visualstudio.com/items?itemName=toba.vsfire
+    "toba.vsfire",
+  ],
+  // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+  "unwantedRecommendations": []
+}
