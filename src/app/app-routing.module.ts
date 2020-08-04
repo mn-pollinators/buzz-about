@@ -31,7 +31,8 @@ const routes: Routes = [
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
-  {path: 'test', component: TestPagesComponent, children: testRoutes}
+  {path: 'test', component: TestPagesComponent},
+  {path: 'test', children: testRoutes}
 ];
 
 @NgModule({
