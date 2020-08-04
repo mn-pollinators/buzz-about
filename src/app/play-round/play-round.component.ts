@@ -68,7 +68,6 @@ export class PlayRoundComponent implements OnInit {
 
 
   ngOnInit() {
-    this.sessionService.joinSession('demo-session');
   }
 
   onMarkerState(states: MarkerState[]) {

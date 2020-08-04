@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../teacher-round.service';
 import { TeacherSessionService } from '../teacher-session.service';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Over the course of a session, the large display will show several
@@ -67,7 +68,6 @@ export class LargeDisplayComponent implements OnInit {
 
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.
-  readonly demoSessionId = 'demo-session';
 
   currentScreen$: Observable<ScreenId> = this.teacherSessionService.currentRoundPath$.pipe(
     map(roundPath => roundPath === null || roundPath.roundId === null ? ScreenId.Lobby : ScreenId.DuringTheRound),
@@ -77,9 +77,18 @@ export class LargeDisplayComponent implements OnInit {
     public timerService: TimerService,
     public teacherRoundService: TeacherRoundService,
     public teacherSessionService: TeacherSessionService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.teacherSessionService.setCurrentSession(params.get('sessionId'));
+    });
+  }
+
+  quitRound() {
+    this.teacherRoundService.endRound();
+  }
 
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {

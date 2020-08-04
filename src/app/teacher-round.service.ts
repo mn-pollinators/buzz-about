@@ -77,7 +77,6 @@ export class TeacherRoundService {
           this.assignBees(roundPath, demoBees);
         });
       });
-
     });
 
 
@@ -169,5 +168,13 @@ export class TeacherRoundService {
         newArray[j] = temp;
     }
     return newArray;
+  }
+
+  endRound() {
+    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
+      this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
+        this.teacherSessionService.currentRoundPath$.next(null);
+      });
+    });
   }
 }
