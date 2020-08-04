@@ -7,7 +7,6 @@ import { TimePeriod } from './time-period';
  */
 export interface FirebaseRound {
   flowerSpeciesIds: string[];
-  beeSpeciesIds?: string[];
   status: string;
   running: boolean;
   currentTime: number;
