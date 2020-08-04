@@ -23,7 +23,7 @@ describe('HomeComponent', () => {
         FullscreenButtonComponent,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

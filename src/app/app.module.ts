@@ -52,6 +52,7 @@ import { StudentDisplayComponent } from './student-display/student-display.compo
 import { HostSessionComponent } from './host-session/host-session.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
+import { TestPagesComponent } from './test-pages/test-pages.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -101,6 +102,7 @@ const FIREBASE_MODULES = [
     StudentDisplayComponent,
     HostSessionComponent,
     RoundTemplateTestComponent,
+    TestPagesComponent,
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-te
 import { JoinSessionComponent } from './join-session/join-session.component';
 import { StudentDisplayComponent } from './student-display/student-display.component';
 import { HostSessionComponent } from './host-session/host-session.component';
+import { TestPagesComponent } from './test-pages/test-pages.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -30,7 +31,7 @@ const routes: Routes = [
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
-  {path: 'test', children: testRoutes}
+  {path: 'test', component: TestPagesComponent, children: testRoutes}
 ];
 
 @NgModule({
