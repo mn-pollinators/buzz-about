@@ -10,7 +10,7 @@
   mat-raised-button
   class="interact-button"
   color="primary"
-  *ngIf="this.activeRoundMarker$ | async as marker" [disabled]="!marker.active"
+  *ngIf="this.foundRoundMarker$ | async as marker" [disabled]="!marker.active"
   (click)="clickInteract(marker)"
 >
   Visit {{marker.name}}

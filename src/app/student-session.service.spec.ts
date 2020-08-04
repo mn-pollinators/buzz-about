@@ -76,9 +76,11 @@ describe('StudentSessionService', () => {
       n: null,
       F: {
         name: 'Fred',
+        nestBarcode: 0,
       },
       V: {
         name: 'Velma',
+        nestBarcode: 0,
       }
     },
 

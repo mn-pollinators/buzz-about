@@ -31,7 +31,7 @@ export class StudentLoginComponent implements OnInit {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const session = this.sessionFormGroup.controls.sessionControl.value;
     // TODO: Change this to read sessionID from the submission once multiple sessions are supported
-    this.authService.addStudentToDatabase({name}, this.sessionID);
+    this.authService.addStudentToDatabase({name, nestBarcode: 0}, this.sessionID);
   }
 
 }
