@@ -29,8 +29,8 @@ export class JoinSessionComponent implements OnInit {
   joinSession() {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const sessionId = this.sessionFormGroup.controls.sessionControl.value;
-    // TODO: Change this to read sessionID from the submission once multiple sessions are supported
-    this.studentSessionService.joinSession({name}, sessionId).then(() => {
+    // TODO: get barcode from form input
+    this.studentSessionService.joinSession({name, nestBarcode: 0}, sessionId).then(() => {
       this.router.navigate(['/play', sessionId]);
     }, (reason) => {
       this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});
