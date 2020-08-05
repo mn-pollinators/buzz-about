@@ -1,5 +1,6 @@
 <app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
-<p> Interactions: {{(this.studentRoundService.currentRoundInteractions$ | async)?.length }} </p>
+<p> Total: {{(this.studentRoundService.totalPollen$ | async)?.length }} </p>
+<p> Current: {{(this.studentRoundService.currentPollen$ | async) }} </p>
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"

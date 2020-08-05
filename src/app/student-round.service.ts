@@ -145,13 +145,35 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-  currentRoundInteractions$: Observable<Interaction[] | null> =
+  totalPollen$: Observable<Interaction[] | null> =
   combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
     switchMap(([path, user, student]) =>
       path && user
-        ? this.firebaseService.getStudentInteractions(path, user.uid, student)
+        ? this.firebaseService.getStudentTotalPollen(path, user.uid, student)
         : null),
     distinctUntilChanged()
+  );
+
+  currentPollen$: Observable<number | null> =
+  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
+    switchMap(([path, user, student]) =>
+      path && user
+        ? this.firebaseService.getStudentCurrentPollen(path, user.uid, student)
+        : null),
+    switchMap(interactions => {
+      if (interactions) {
+        let currentPollen = 0;
+        for (let interaction of interactions){
+          if (interaction.barcodeValue === 0) {
+            break;
+          }
+          currentPollen++;
+        }
+        return of(currentPollen);
+      } else {
+        return null;
+      }
+    })
   );
 
   /**
