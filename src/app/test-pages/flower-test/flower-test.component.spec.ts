@@ -5,7 +5,6 @@ import { FlowerLayoutComponent } from '../../components/flower-layout/flower-lay
 import { FlowerLayoutItemComponent } from '../../components/flower-layout-item/flower-layout-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { TopMenuBarComponent } from '../../components/top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../../components/fullscreen-button/fullscreen-button.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,7 +27,6 @@ describe('FlowerTestComponent', () => {
         FlowerTestComponent,
         FlowerLayoutComponent,
         FlowerLayoutItemComponent,
-        TopMenuBarComponent,
         FullscreenButtonComponent,
       ],
     })

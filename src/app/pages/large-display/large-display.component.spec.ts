@@ -10,7 +10,6 @@ import { FlowerLayoutComponent } from '../../components/flower-layout/flower-lay
 import { FlowerLayoutItemComponent } from '../../components/flower-layout-item/flower-layout-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TimerService } from '../../services/timer.service';
-import { TopMenuBarComponent } from '../../components/top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../../components/fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
@@ -65,7 +64,6 @@ describe('LargeDisplayComponent', () => {
         TimerProgressSpinnerComponent,
         FlowerLayoutComponent,
         FlowerLayoutItemComponent,
-        TopMenuBarComponent,
         FullscreenButtonComponent,
       ],
       providers: [

@@ -38,7 +38,7 @@ import { FlowerLayoutComponent } from './components/flower-layout/flower-layout.
 import { FlowerLayoutItemComponent } from './components/flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './test-pages/flower-test/flower-test.component';
 import { HomeComponent } from './pages/home/home.component';
-import { TopMenuBarComponent } from './components/top-menu-bar/top-menu-bar.component';
+
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
 import { JoinedStudentsComponent } from './components/joined-students/joined-students.component';
@@ -52,6 +52,8 @@ import { StudentDisplayComponent } from './pages/student-display/student-display
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
+import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -72,7 +74,7 @@ const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
   AngularFirestoreModule,
   AngularFireAuthModule
-]
+];
 
 @NgModule({
   declarations: [
@@ -88,7 +90,6 @@ const FIREBASE_MODULES = [
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
-    TopMenuBarComponent,
     JsonDataTestComponent,
     JoinedStudentsComponent,
     SessionTestComponent,
@@ -97,9 +98,10 @@ const FIREBASE_MODULES = [
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
-    HostSessionComponent,
     StudentDisplayComponent,
-    RoundTemplateTestComponent
+    HostSessionComponent,
+    RoundTemplateTestComponent,
+    TestPagesComponent,
   ],
   imports: [
     BrowserModule,

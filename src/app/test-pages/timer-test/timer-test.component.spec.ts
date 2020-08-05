@@ -5,7 +5,6 @@ import { TimerProgressBarComponent } from '../../components/timer-progress-bar/t
 import { TimerProgressSpinnerComponent } from '../../components/timer-progress-spinner/timer-progress-spinner.component';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TopMenuBarComponent } from '../../components/top-menu-bar/top-menu-bar.component';
 import { FullscreenButtonComponent } from '../../components/fullscreen-button/fullscreen-button.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,7 +29,6 @@ describe('TimerTestComponent', () => {
         TimerTestComponent,
         TimerProgressBarComponent,
         TimerProgressSpinnerComponent,
-        TopMenuBarComponent,
         FullscreenButtonComponent,
       ],
     })
