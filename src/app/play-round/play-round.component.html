@@ -12,7 +12,8 @@
   mat-raised-button
   class="interact-button"
   color="primary"
-  *ngIf="this.foundRoundMarker$ | async as marker" [disabled]="!marker.active"
+  *ngIf="this.foundRoundMarker$ | async as marker"
+  [disabled]="!marker.active || ((this.studentRoundService.currentPollen$ | async) >= 3 && marker.barcodeValue != 0)"
   (click)="clickInteract(marker)"
 >
   Visit {{marker.name}}
