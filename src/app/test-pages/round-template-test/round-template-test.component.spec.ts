@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RoundTemplateTestComponent } from './round-template-test.component';
 
 describe('RoundTemplateTestComponent', () => {
@@ -9,6 +8,7 @@ describe('RoundTemplateTestComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RoundTemplateTestComponent ]
+
     })
     .compileComponents();
   }));

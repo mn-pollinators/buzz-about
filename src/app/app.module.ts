@@ -48,10 +48,10 @@ import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepa
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
+import { StudentDisplayComponent } from './pages/student-display/student-display.component';
+import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
-import { HostSessionComponent } from './pages/host-session/host-session.component';
-import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -97,9 +97,9 @@ const FIREBASE_MODULES = [
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
-    BottomBarComponent,
     HostSessionComponent,
-    StudentDisplayComponent
+    StudentDisplayComponent,
+    RoundTemplateTestComponent
   ],
   imports: [
     BrowserModule,
