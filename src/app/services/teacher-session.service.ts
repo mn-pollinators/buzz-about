@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
-import { FirebaseService } from './firebase.service';
-import { SessionStudentData } from '../session';
+import { FirebaseService, RoundPath } from './../services/firebase.service';
+import { SessionStudentData, SessionWithId, Session } from './../session';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
+import { AuthService } from './../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherSessionService {
-
-  constructor(private firebaseService: FirebaseService) { }
-
   sessionId$ = new BehaviorSubject<string | null>(null);
+
+  currentSession$: Observable<SessionWithId | null> = this.sessionId$.pipe(
+    switchMap(sessionId =>
+      sessionId
+        ? this.firebaseService.getSession(sessionId)
+        : of(null)
+    ),
+    shareReplay(1),
+  );
+
+  constructor(private firebaseService: FirebaseService, private authService: AuthService) { }
+
 
   /**
    * This observable lists the students in the session that the teacher is currently connected to.
@@ -32,12 +42,23 @@ export class TeacherSessionService {
   );
 
   /**
-   * Temporary function to join a given session by ID
-   *
-   * @param id session Firebase ID to join
+   * An observable of the current round's session ID and round ID.
+   * Emits null if the student is not in a session or the round is not set on the session.
    */
-  joinSession(id: string) {
-    this.sessionId$.next(id);
+  currentRoundPath$ = new BehaviorSubject<RoundPath | null>(null);
+
+  mostRecentSession$ = this.authService.currentUser$.pipe(
+    switchMap(user => this.firebaseService.getMostRecentSession(user.uid)),
+    shareReplay(1),
+  );
+
+  /**
+   * Mark a session as the currently playing one.
+   *
+   * @param sessionId The session that we want to play right now.
+   */
+  setCurrentSession(sessionId: string) {
+    this.sessionId$.next(sessionId);
   }
 
   /**
@@ -49,6 +70,13 @@ export class TeacherSessionService {
    */
   leaveSession() {
     this.sessionId$.next(null);
+  }
+
+  async createSession(): Promise<string> {
+    const user = await this.authService.currentUser$.pipe(take(1)).toPromise();
+    return this.firebaseService.createSession({
+      hostId: user.uid
+    });
   }
 
 }

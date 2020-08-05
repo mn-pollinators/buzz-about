@@ -1,38 +1,28 @@
-<ng-container [ngSwitch]="currentScreen">
+<ng-container [ngSwitch]="currentScreen$ | async">
   <ng-container *ngSwitchCase="ScreenId.Lobby">
-    <div class="large-display-content lobby">
-      <p>Waiting for the round to start&hellip;</p>
-    </div>
-    
-    <app-bottom-bar>
-      <div right>
-        <button mat-raised-button color="accent" (click)="startRound()">
-          Start Round
-        </button>
-      </div>
-    </app-bottom-bar>
+    <app-session-lobby></app-session-lobby>
   </ng-container>
 
   <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="large-display-content during-the-round">
       <app-timer-progress-bar
         [currentTime]="timerService.currentTime$ | async"
-        [startMonth]="this.startTime.month"
-        [endMonth]="this.endTime.month"
+        [startMonth]="this.teacherRoundService.startTime.month"
+        [endMonth]="this.teacherRoundService.endTime.month"
       ></app-timer-progress-bar>
 
       <app-flower-layout [items]="demoFlowerLayoutItems$ | async"></app-flower-layout>
 
       <app-timer-progress-spinner
         [currentTime]="timerService.currentTime$ | async"
-        [startTime]="this.startTime"
-        [endTime]="this.endTime">
+        [startTime]="this.teacherRoundService.startTime"
+        [endTime]="this.teacherRoundService.endTime">
       </app-timer-progress-spinner>
     </div>
 
     <app-bottom-bar>
       <div left>
-        <button mat-raised-button color="accent">Quit Game</button>
+        <button mat-raised-button color="accent" (click)="quitRound()">Quit Round</button>
       </div>
 
       <div center>
@@ -45,7 +35,7 @@
       </div>
 
       <div right>
-        <button mat-raised-button color="accent">Skip Round</button>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
       </div>
     </app-bottom-bar>
   </ng-container>

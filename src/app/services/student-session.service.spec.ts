@@ -1,11 +1,11 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject, async } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionWithId, SessionStudentData } from '../session';
 import { BehaviorSubject } from 'rxjs';
 import { scheduledIt } from '../utils/karma-utils';
 import { AuthService } from './auth.service';
-import { User } from 'firebase';
+import { User, firestore } from 'firebase';
 
 describe('StudentSessionService', () => {
   // For marble testing, here are some objects that associate single-character
@@ -29,26 +29,31 @@ describe('StudentSessionService', () => {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       b: {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       i: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       j: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       k: {
         id: '2',
         hostId: 'Captain Haddock',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
     },
 
@@ -76,9 +81,11 @@ describe('StudentSessionService', () => {
       n: null,
       F: {
         name: 'Fred',
+        nestBarcode: 0,
       },
       V: {
         name: 'Velma',
+        nestBarcode: 0,
       }
     },
 
@@ -127,7 +134,7 @@ describe('StudentSessionService', () => {
         }
       },
 
-      getSessionStudent(_sessionId, studentId) {
+      getSessionStudent(_, studentId) {
         switch (studentId) {
           case 'userX':
             return mockUserXData$;
@@ -137,6 +144,10 @@ describe('StudentSessionService', () => {
             throw new Error(`FirebaseService.getSession(): Bad session id ${studentId}`);
         }
       },
+
+      addStudentToSession() {
+        return Promise.resolve();
+      }
     };
 
     const mockAuthService: Partial<AuthService> = {
@@ -161,6 +172,45 @@ describe('StudentSessionService', () => {
   });
 
   describe('The joinSession() method', () => {
+    let addStudentToSessionSpy:
+      jasmine.Spy<FirebaseService['addStudentToSession']>;
+
+    beforeEach(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+      addStudentToSessionSpy =
+        spyOn(firebaseService, 'addStudentToSession').and.callThrough();
+    }));
+
+    beforeEach(async(() => {
+      mockCurrentUser$.next(values.authUsers.X);
+    }));
+
+    beforeEach(async(() => {
+      service.joinSession(values.students.F, values.sessionIds[1]);
+    }));
+
+    it('Calls FirebaseService.addStudentToSession', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('Passes the student data and the session ID through to the FirebaseService', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+      const [_, sessionId, studentData] =
+        addStudentToSessionSpy.calls.mostRecent().args;
+
+      expect(studentData).toEqual(values.students.F);
+      expect(sessionId).toEqual(values.sessionIds[1]);
+    });
+
+    it('Passes the current user ID to the FirebaseService', () => {
+      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+      const [userId] = addStudentToSessionSpy.calls.mostRecent().args;
+      expect(userId).toEqual(values.authUsers.X.uid);
+    });
+  });
+
+  describe('The setCurrentSession() method', () => {
     scheduledIt('Causes sessionId$ to emit the new value', ({expectObservable, cold}) => {
       const [sessionsToJoin, expectedSessionIds] = [
         '----1-2-',
@@ -168,7 +218,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
 
       expectObservable(service.sessionId$).toBe(
@@ -187,7 +237,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -217,7 +267,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -254,7 +304,7 @@ describe('StudentSessionService', () => {
       cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -287,7 +337,7 @@ describe('StudentSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -319,7 +369,7 @@ describe('StudentSessionService', () => {
       cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -349,7 +399,7 @@ describe('StudentSessionService', () => {
         cold(session2Data, values.sessions).subscribe(mockSession2Data$);
 
         cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-          service.joinSession(id);
+          service.setCurrentSession(id);
         });
         cold(whenToLeaveTheSession).subscribe(() => {
           service.leaveSession();

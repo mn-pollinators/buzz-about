@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
 import { TeacherSessionService } from './teacher-session.service';
-import { SessionWithId, SessionStudentData } from '../session';
+import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject } from 'rxjs';
-import { scheduledIt } from '../utils/karma-utils';
+import { BehaviorSubject, of } from 'rxjs';
+import { scheduledIt } from './../utils/karma-utils';
+import { firestore, User } from 'firebase';
+import { AuthService } from './../services/auth.service';
 
 describe('TeacherSessionService', () => {
 
@@ -28,26 +30,31 @@ describe('TeacherSessionService', () => {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       b: {
         id: '1',
         hostId: 'Tintin',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       i: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'First Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       j: {
         id: '2',
         hostId: 'Snowy',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
       k: {
         id: '2',
         hostId: 'Captain Haddock',
         currentRoundId: 'Second Round',
+        createdAt: firestore.Timestamp.fromMillis(0),
       },
     },
 
@@ -55,15 +62,20 @@ describe('TeacherSessionService', () => {
       n: null,
       F: {
         name: 'Fred',
+        nestBarcode: 17
       },
       V: {
         name: 'Velma',
+        nestBarcode: 18
       },
       D: {
         name: 'Daphne',
+        nestBarcode: 19
+
       },
       S: {
         name: 'Shaggy',
+        nestBarcode: 20
       }
     },
   };
@@ -103,9 +115,14 @@ describe('TeacherSessionService', () => {
       }
     };
 
+    const mockAuthService: Partial<AuthService> = {
+      currentUser$: of({uid: 'foo'} as User)
+    };
+
     TestBed.configureTestingModule({
       providers: [
         {provide: FirebaseService, useValue: mockFirebaseService},
+        {provide: AuthService, useValue: mockAuthService},
       ]
     });
     service = TestBed.inject(TeacherSessionService);
@@ -127,7 +144,7 @@ describe('TeacherSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
 
       expectObservable(service.sessionId$).toBe(
@@ -146,7 +163,7 @@ describe('TeacherSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -176,7 +193,7 @@ describe('TeacherSessionService', () => {
       ];
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -213,7 +230,7 @@ describe('TeacherSessionService', () => {
       cold(session2StudentData, studentLists).subscribe(mockStudentListB$);
 
       cold(sessionsToJoin, values.sessionIds).subscribe(id => {
-        service.joinSession(id);
+        service.setCurrentSession(id);
       });
       cold(whenToLeaveTheSession).subscribe(() => {
         service.leaveSession();
@@ -226,4 +243,3 @@ describe('TeacherSessionService', () => {
     });
   });
 });
-

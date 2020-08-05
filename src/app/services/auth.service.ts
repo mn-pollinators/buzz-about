@@ -28,15 +28,4 @@ export class AuthService {
     shareReplay(1)
   );
 
-
-  /**
-   *
-   * @param studentData the Student's data for this session
-   * @param session ID of the session the student should be added to
-   */
-  addStudentToDatabase(studentData: SessionStudentData, sessionID: string) {
-    this.currentUser$.subscribe( user => {
-      this.firebaseService.addStudentToSession(user.uid, sessionID, studentData);
-    });
-  }
 }

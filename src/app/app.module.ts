@@ -13,6 +13,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {NgPipesModule} from 'ngx-pipes';
+
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,16 +39,19 @@ import { FlowerLayoutItemComponent } from './components/flower-layout-item/flowe
 import { FlowerTestComponent } from './test-pages/flower-test/flower-test.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TopMenuBarComponent } from './components/top-menu-bar/top-menu-bar.component';
-import { FirebaseTestComponent } from './test-pages/firebase-test/firebase-test.component';
-import { SessionPageTestComponent } from './test-pages/session-page-test/session-page-test.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
 import { JoinedStudentsComponent } from './components/joined-students/joined-students.component';
 import { SessionTestComponent } from './test-pages/session-test/session-test.component';
-import { StudentLoginComponent } from './pages/student-login/student-login.component';
+import { JoinSessionComponent } from './pages/join-session/join-session.component';
+import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
+import { HostSessionComponent } from './pages/host-session/host-session.component';
+import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -59,7 +64,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatInputModule,
   MatCardModule,
   MatMenuModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSnackBarModule,
 ];
 
 const FIREBASE_MODULES = [
@@ -83,16 +89,17 @@ const FIREBASE_MODULES = [
     FlowerTestComponent,
     HomeComponent,
     TopMenuBarComponent,
-    FirebaseTestComponent,
-    SessionPageTestComponent,
     JsonDataTestComponent,
     JoinedStudentsComponent,
     SessionTestComponent,
-    StudentLoginComponent,
+    JoinSessionComponent,
+    PrepareRoundTestComponent,
     BottomBarComponent,
     HillBackgroundComponent,
     SessionLobbyComponent,
     BottomBarComponent,
+    HostSessionComponent,
+    StudentDisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +112,7 @@ const FIREBASE_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     ANGULAR_MATERIAL_MODULES,
+    NgPipesModule
   ],
   providers: [
     {

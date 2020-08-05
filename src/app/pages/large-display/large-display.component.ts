@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
-import { BottomBarComponent } from '../../components/bottom-bar/bottom-bar.component';
 import { TimerService } from '../../services/timer.service';
-import { TimePeriod } from '../../time-period';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
+import { BeeSpecies, allBeeSpecies } from '../../bees';
 import { map } from 'rxjs/operators';
 import { RoundFlower } from '../../round';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
+import { TeacherSessionService } from '../../services/teacher-session.service';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Over the course of a session, the large display will show several
@@ -29,7 +30,7 @@ export enum ScreenId {
   templateUrl: './large-display.component.html',
   styleUrls: ['./large-display.component.scss']
 })
-export class LargeDisplayComponent implements OnInit, OnDestroy {
+export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
@@ -67,62 +68,31 @@ export class LargeDisplayComponent implements OnInit, OnDestroy {
 
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.
-  readonly demoSessionId = 'demo-session';
 
-  currentScreen: ScreenId = ScreenId.Lobby;
+  currentScreen$: Observable<ScreenId> = this.teacherSessionService.currentRoundPath$.pipe(
+    map(roundPath => roundPath === null || roundPath.roundId === null ? ScreenId.Lobby : ScreenId.DuringTheRound),
+  );
 
   constructor(
     public timerService: TimerService,
     public teacherRoundService: TeacherRoundService,
+    public teacherSessionService: TeacherSessionService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
-  // TODO: These values are only here for testing. Eventually, we'll get this
-  // information from the round service.
-  public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
-  public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
-
-  ngOnInit() { }
-
-  /**
-   * Create a new round within the session and switch to the during-the-round
-   * screen.
-   *
-   * This method also initializes the timer.
-   */
-  startRound() {
-    this.currentScreen = ScreenId.DuringTheRound;
-
-    this.teacherRoundService.startNewRound(this.demoSessionId, {
-      flowerSpeciesIds: this.demoFlowerSpecies.map(species => species.id),
-      // TODO: We should eventually figure out what we're going to do with the
-      // 'status' field; for the moment we're just giving it a dummy value.
-      status: 'test',
-      // running and startTime will actually be updated in Firestore when we
-      // initialize the timer, so these values don't really matter.
-      running: false,
-      currentTime: this.startTime.time,
-    });
-
-    this.timerService.initialize({
-      running: false,
-      tickSpeed: 1000,
-      currentTime: this.startTime,
-      endTime: this.endTime
+  ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.teacherSessionService.setCurrentSession(params.get('sessionId'));
     });
   }
 
-  endRound() {
-    this.timerService.setRunning(false);
-    this.teacherRoundService.endRound(this.demoSessionId);
+  quitRound() {
+    this.teacherRoundService.endRound();
   }
 
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
     });
-  }
-
-  ngOnDestroy() {
-    this.endRound();
   }
 }

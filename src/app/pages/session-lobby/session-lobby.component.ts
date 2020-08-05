@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TeacherSessionService } from '../../services/teacher-session.service';
+import { FirebaseRound } from '../../round';
+import { TeacherRoundService } from '../../services/teacher-round.service';
+import { allBeeSpecies } from '../../bees';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-lobby',
@@ -8,14 +12,28 @@ import { TeacherSessionService } from '../../services/teacher-session.service';
 })
 export class SessionLobbyComponent implements OnInit {
 
-  sessionID: string;
 
-  constructor(public teacherSessionService: TeacherSessionService) {
-    this.sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
-  }
+  sessionID = 'demo-session'; // Temporary until a way to get the session is implemented
+  roundData = {flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+                        status: 'fine',
+                        running: false,
+                        currentTime: this.teacherRoundService.startTime.time, };
+
+  constructor(
+    public teacherSessionService: TeacherSessionService,
+    public teacherRoundService: TeacherRoundService,
+    public router: Router
+  ) {  }
 
   ngOnInit(): void {
-    // Temporary, teacher will likely join session immediately after creating it
-    this.teacherSessionService.joinSession(this.sessionID);
+  }
+
+  public startRound() {
+    this.teacherRoundService.startNewRound(this.roundData);
+  }
+
+  public quitSession() {
+    this.teacherSessionService.leaveSession();
+    this.router.navigate(['host']);
   }
 }

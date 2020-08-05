@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlayRoundComponent } from './play-round.component';
+import { HostSessionComponent } from './host-session.component';
 
-xdescribe('PlayRoundComponent', () => {
-  let component: PlayRoundComponent;
-  let fixture: ComponentFixture<PlayRoundComponent>;
+xdescribe('HostSessionComponent', () => {
+  let component: HostSessionComponent;
+  let fixture: ComponentFixture<HostSessionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlayRoundComponent ]
+      declarations: [ HostSessionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlayRoundComponent);
+    fixture = TestBed.createComponent(HostSessionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

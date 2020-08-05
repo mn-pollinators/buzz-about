@@ -1,9 +1,12 @@
+import { firestore } from 'firebase';
+
 /**
  * Session data as it is stored in Firebase
  */
 export interface Session {
   hostId: string;
-  currentRoundId: string;
+  currentRoundId?: string;
+  createdAt: firestore.Timestamp;
 }
 
 
@@ -15,5 +18,7 @@ export interface SessionWithId extends Session {
 }
 
 export interface SessionStudentData {
+  id?: string;
   name: string;
+  nestBarcode: number;
 }
