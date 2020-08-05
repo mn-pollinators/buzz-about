@@ -2,6 +2,7 @@ import { Component, OnInit, } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../timer.service';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
+import { BeeSpecies, allBeeSpecies } from '../bees';
 import { map } from 'rxjs/operators';
 import { RoundFlower } from '../round';
 import { Observable } from 'rxjs';

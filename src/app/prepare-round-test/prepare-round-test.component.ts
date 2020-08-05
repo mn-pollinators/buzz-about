@@ -3,6 +3,7 @@ import { FirebaseRound } from '../round';
 import { FirebaseService } from '../firebase.service';
 import { Observable } from 'rxjs';
 import { Session } from '../session';
+import { allBeeSpecies } from '../bees';
 
 @Component({
   selector: 'app-prepare-round-test',
