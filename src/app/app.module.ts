@@ -38,7 +38,6 @@ import { FlowerLayoutComponent } from './flower-layout/flower-layout.component';
 import { FlowerLayoutItemComponent } from './flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { HomeComponent } from './home/home.component';
-import { TopMenuBarComponent } from './top-menu-bar/top-menu-bar.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { JoinedStudentsComponent } from './joined-students/joined-students.component';
@@ -52,6 +51,7 @@ import { StudentDisplayComponent } from './student-display/student-display.compo
 import { HostSessionComponent } from './host-session/host-session.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
+import { TestPagesComponent } from './test-pages/test-pages.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -89,7 +89,6 @@ const FIREBASE_MODULES = [
     FlowerLayoutItemComponent,
     FlowerTestComponent,
     HomeComponent,
-    TopMenuBarComponent,
     JsonDataTestComponent,
     JoinedStudentsComponent,
     SessionTestComponent,
@@ -101,6 +100,7 @@ const FIREBASE_MODULES = [
     StudentDisplayComponent,
     HostSessionComponent,
     RoundTemplateTestComponent,
+    TestPagesComponent,
   ],
   imports: [
     BrowserModule,
