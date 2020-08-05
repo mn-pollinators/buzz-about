@@ -168,4 +168,13 @@ export class FirebaseService {
   addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
     return this.getRoundDocument(roundPath).collection('interactions').add(data);
   }
+
+  getStudentInteractions(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
+    return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+      roundPath.roundId + '/interactions', ref =>
+      ref.where('userId', '==', studentId)
+        // TODO: Handle barcodes other than 0
+        .where('barcodeValue', '>', 0))
+        .valueChanges();
+  }
 }
