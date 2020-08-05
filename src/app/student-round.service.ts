@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData } from './round';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
 import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
@@ -143,6 +143,15 @@ export class StudentRoundService {
     ),
     distinctUntilChanged(),
     shareReplay(1),
+  );
+
+  currentRoundInteractions$: Observable<Interaction[] | null> =
+  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
+    switchMap(([path, user, student]) =>
+      path && user
+        ? this.firebaseService.getStudentInteractions(path, user.uid, student)
+        : null),
+    distinctUntilChanged()
   );
 
   /**
