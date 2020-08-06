@@ -1,4 +1,4 @@
-import { allFlowerSpecies } from "./flowers";
+import { allFlowerSpecies } from './flowers';
 import { allBeeSpecies, BeeSociality } from './bees';
 import { allNests } from './nests';
 

@@ -1,0 +1,48 @@
+<section>
+  <p>
+    <button (click)="leaveSession()">Leave Session</button>
+  </p>
+  <p>
+    <label for="session-id">Session ID</label>
+    <input #sessionId name="session-id" value="demo-session">
+  </p>
+  <p>
+    <label for="student-name">What's your name?</label>
+    <input #studentName name="student-name">
+  </p>
+  <p>
+    <label for="nest-barcode">What's your nest barcode?</label>
+    <input #nestBarcode name="nest-barcode" type="number" min="0" max="63" step="1">
+  </p>
+  <p>
+    <button (click)="joinSession(sessionId.value, studentName.value, nestBarcode.value)">Add user document to session with name</button>
+  </p>
+</section>
+
+<section>
+  <p>UserID: {{ (authService.currentUser$ | async)?.uid }}</p>
+  <p>Student Name: {{ (sessionService.sessionStudentData$ | async)?.name }}</p>
+  <p>Student nest barcode: {{ (sessionService.sessionStudentData$ | async)?.nestBarcode }}</p>
+  <p>Session: {{JSON.stringify(sessionService.currentSession$ | async)}}</p>
+</section>
+
+<section>
+  <h2>Round</h2>
+  <p>running: {{roundService.currentRunning$ | async}}</p>
+  <p>time: {{roundService.currentTime$ | async}}</p>
+  <div>
+    <select #beeSelect>
+      <option *ngFor="let bee of allBeeSpeciesArray" [value]="bee.id">{{bee.name}} ({{bee.sci_name}})</option>
+    </select>
+    <button (click)="setBee(beeSelect.value)">Set Bee</button>
+  </div>
+  <p>current bee: {{(roundService.currentBeeSpecies$ | async)?.name}} ({{(roundService.currentBeeSpecies$ | async)?.sci_name}}): {{(roundService.currentBeeActive$ | async) ? 'active' : 'not active' }}</p>
+  <p>current bee nest type: {{(roundService.currentBeeSpecies$ | async)?.nest_type.name}}</p>
+  <h3>Flowers</h3>
+  <table>
+    <tr *ngFor="let flower of roundService.currentFlowers$ | async">
+      <td>{{flower.species.name}}:</td>
+      <td>{{flower.isBlooming ? "🌷 blooming" : "🥀 not blooming"}}</td>
+    </tr>
+  </table>
+</section>
