@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
+import { HostListener } from '@angular/core';
 
 /**
  * Over the course of a session, the large display will show several
@@ -30,6 +31,7 @@ export enum ScreenId {
   templateUrl: './large-display.component.html',
   styleUrls: ['./large-display.component.scss']
 })
+
 export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
@@ -90,6 +92,7 @@ export class LargeDisplayComponent implements OnInit {
     this.teacherRoundService.endRound();
   }
 
+  @HostListener('window:keyup.Space')
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
