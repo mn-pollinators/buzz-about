@@ -2,16 +2,18 @@ import { FlowerSpecies, allFlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { BeeSpecies, allBeeSpecies } from './bees';
 
+export interface TemplateBee {
+  species: BeeSpecies;
+  weight: number;
+}
+
 export interface RoundTemplate {
   name: string;
   flowerSpecies: FlowerSpecies[];
   startTime: TimePeriod;
   endTime: TimePeriod;
   tickSpeed: number;
-  bees?: {
-    species: BeeSpecies;
-    weight: number;
-  }[];
+  bees?: TemplateBee[];
 }
 
 export const roundTemplates: RoundTemplate[] = [

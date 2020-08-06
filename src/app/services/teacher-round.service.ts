@@ -1,40 +1,20 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound } from '../round';
+import { FirebaseRound, RoundFlower } from '../round';
 import { TimerService } from './timer.service';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
 import { Path } from 'three';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, map, shareReplay } from 'rxjs/operators';
 import { TimePeriod } from './../time-period';
-
-// TODO: For the moment, we're only using one fixed, preexisting round for
-// all teachers. Eventually, teachers will each create their own sessions
-// and rounds.
-const demoRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
-export interface BeeWithWeight {
-  id: string;
-  weight: number;
-}
-const demoBees: BeeWithWeight[] = [
-  {id: allBeeSpecies.apis_mellifera.id, weight: 0.8},
-  {id: allBeeSpecies.colletes_simulans.id, weight: 0.2}
-];
+import { RoundTemplate, TemplateBee } from '../round-template';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherRoundService {
-
-  private readonly roundPath$ = new BehaviorSubject<RoundPath | null>(null);
-  private beeList: string[];
-
-  // TODO: These values are only here for testing. Eventually, we'll get this
-  // information from particular rounds.
-  public startTime = TimePeriod.fromMonthAndQuarter(4, 1);
-  public endTime = TimePeriod.fromMonthAndQuarter(11, 4);
 
   constructor(
     public timerService: TimerService,
@@ -60,6 +40,13 @@ export class TeacherRoundService {
     });
   }
 
+  public readonly roundTemplate$ = new BehaviorSubject<RoundTemplate | null>(null);
+
+  currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTime$]).pipe(
+    map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
+    shareReplay(1)
+  );
+
   /**
    * Create a new round within the current session, mark it as the currently
    * active round, set its initial state, and hook up the TimerService so that
@@ -67,39 +54,45 @@ export class TeacherRoundService {
    */
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
-  startNewRound(roundData: FirebaseRound): void {
-    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
-      this.firebaseService.createRoundInSession(sessionId, roundData).then(roundPath => {
-        this.firebaseService.setCurrentRound(roundPath).then(() => {
-          this.teacherSessionService.currentRoundPath$.next(roundPath);
-          // TODO: eventually, we'll get the list of weighted bees from the
-          // round template.
-          this.assignBees(roundPath, demoBees);
-        });
-      });
-    });
+  async startNewRound(template: RoundTemplate) {
 
+    this.roundTemplate$.next(template);
+
+    const roundData: FirebaseRound = {
+      flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
+      status: 'start',
+      running: false,
+      currentTime: template.startTime.time
+    };
+
+    const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
+    const roundPath = await this.firebaseService.createRoundInSession(sessionId, roundData);
+
+    await this.assignBees(roundPath, template.bees);
+
+    await this.firebaseService.setCurrentRound(roundPath);
 
     this.timerService.initialize({
       running: false,
-      tickSpeed: 1000,
-      currentTime: this.startTime,
-      endTime: this.endTime
+      tickSpeed: template.tickSpeed,
+      currentTime: template.startTime,
+      endTime: template.endTime
     });
+
+    this.teacherSessionService.currentRoundPath$.next(roundPath);
   }
 
-  assignBees(currentRoundPath: RoundPath, bees?: BeeWithWeight[]): void {
+  async assignBees(currentRoundPath: RoundPath, bees?: TemplateBee[]) {
+    const studentList = await this.firebaseService.getStudentsInSession(currentRoundPath.sessionId)
+      .pipe(take(1))
+      .toPromise();
+
     // Get the list of students in the session
-    this.firebaseService.getStudentsInSession(currentRoundPath.sessionId).pipe(
-      take(1),
-    ).subscribe(studentList => {
-      // If the round has a preset list of bees, use those
-      if (bees) {
-        this.customAssign(studentList, bees, currentRoundPath);
-      } else {
-        this.defaultAssign(studentList, currentRoundPath);
-      }
-    });
+    if (bees) {
+      return this.customAssign(studentList, bees, currentRoundPath);
+    } else {
+      return this.defaultAssign(studentList, currentRoundPath);
+    }
   }
 
   /**
@@ -111,6 +104,7 @@ export class TeacherRoundService {
     this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
       this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
         this.teacherSessionService.currentRoundPath$.next(null);
+        this.roundTemplate$.next(null);
       });
     });
   }
@@ -121,42 +115,42 @@ export class TeacherRoundService {
    * @param studentList the list of students to be assigned
    * @param path the current round's path
    */
-  defaultAssign(studentList: SessionStudentData[], path: RoundPath) {
+  private async defaultAssign(studentList: SessionStudentData[], path: RoundPath) {
     const shuffledBees = this.shuffleArray<BeeSpecies>(Object.values(allBeeSpecies));
 
-    studentList.forEach((student, studentIndex) => {
+    await Promise.all(studentList.map((student, studentIndex) => {
       const beeIndex = studentIndex % shuffledBees.length;
 
-      this.firebaseService.addStudentToRound(student.id, path,
+      return this.firebaseService.addStudentToRound(student.id, path,
         {beeSpecies: shuffledBees[beeIndex].id});
-    });
+    }));
   }
 
   /**
    * Assigns bees when list of bees is provided.
    * Right now only works on demoBees.
    */
-  customAssign(studentList: SessionStudentData[], beeList: BeeWithWeight[], path: RoundPath) {
+  private async customAssign(studentList: SessionStudentData[], beeList: TemplateBee[], path: RoundPath) {
     // Shuffle the list of students to be a random order
     const shuffledStudents = this.shuffleArray<SessionStudentData>(studentList);
 
     // Assign the students to a bee species based on the weight
     let currentStudent = 0;
     // TODO: Change to beeList once a proper round template is created
-    beeList.forEach(bee => {
+    for (const bee of beeList) {
       const numStudents = Math.floor(bee.weight * shuffledStudents.length);
       for (let i = currentStudent; i < currentStudent + numStudents; i++) {
-        this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-          {beeSpecies: bee.id});
+        await this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
+          {beeSpecies: bee.species.id});
       }
       currentStudent += numStudents;
-    });
+    }
 
     // Randomly assign the leftover students to a bee species
     for (let i = currentStudent; i < shuffledStudents.length; i++) {
-      const beeIndex = Math.floor(Math.random() * demoBees.length);
-      this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-        {beeSpecies: beeList[beeIndex].id});
+      const beeIndex = Math.floor(Math.random() * beeList.length);
+      await this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
+        {beeSpecies: beeList[beeIndex].species.id});
     }
   }
 

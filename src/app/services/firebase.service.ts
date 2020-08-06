@@ -91,7 +91,7 @@ export class FirebaseService {
   }
 
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
-    this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students').doc(id).set(studentData);
+    return this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students').doc(id).set(studentData);
   }
 
 
