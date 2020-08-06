@@ -1,7 +1,7 @@
 <h1>Round Templates</h1>
 <div *ngFor="let template of roundTemplates">
   <h2>{{template.name}}</h2>
-  <div class="template-grid-container">
+  <div class="template-grid-containerl">
     <div>
       <ul>
         <li>
@@ -28,6 +28,7 @@
     </div>
     <div>
       <app-flower-layout [items]="getFlowers(template.flowerSpecies)" ></app-flower-layout>
+      <app-timer-progress-bar [startMonth]="template.startTime.month" [endMonth]="template.endTime.month" [currentTime]="template.startTime"></app-timer-progress-bar>
       <div>
         <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.species.art_file}}" width="100px" title="{{bee.species.name}}">
       </div>

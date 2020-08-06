@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Select a Round</h1>
+<div mat-dialog-content>
+  <mat-selection-list #templates [multiple]="false">
+    <mat-list-option *ngFor="let template of roundTemplates" [value]="template">
+      {{template.name}}
+    </mat-list-option>
+  </mat-selection-list>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    [disabled]="templates.selectedOptions.isEmpty()"
+    [mat-dialog-close]="templates.selectedOptions.selected[0]?.value"
+  >
+    Start
+  </button>
+</div>

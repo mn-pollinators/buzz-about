@@ -34,30 +34,7 @@ export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
-  demoFlowerSpecies: FlowerSpecies[] = [
-    allFlowerSpecies.asclepias_syriaca,
-    allFlowerSpecies.cirsium_discolor,
-    allFlowerSpecies.echinacea_angustifolia,
-    allFlowerSpecies.helianthus_maximiliani,
-    allFlowerSpecies.monarda_fistulosa,
-    allFlowerSpecies.prunus_americana,
-    allFlowerSpecies.rubus_occidentalis,
-    allFlowerSpecies.rudbeckia_hirta,
-    allFlowerSpecies.solidago_rigida,
-    allFlowerSpecies.taraxacum_officinale,
-    allFlowerSpecies.trifolium_repens,
-    allFlowerSpecies.vaccinium_angustifolium,
-    allFlowerSpecies.asclepias_syriaca,
-    allFlowerSpecies.cirsium_discolor,
-    allFlowerSpecies.echinacea_angustifolia,
-    allFlowerSpecies.helianthus_maximiliani,
-  ];
-
-  demoRoundFlowers$ = this.timerService.currentTime$.pipe(
-    map(time => this.demoFlowerSpecies.map(species => new RoundFlower(species, time)))
-  );
-
-  demoFlowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.demoRoundFlowers$.pipe(
+  flowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.teacherRoundService.currentFlowers$.pipe(
     map(roundFlowers => roundFlowers.map(rf => ({
       imgSrc: `assets/art/500w/flowers/${rf.species.art_file}`,
       alt: rf.species.name,
