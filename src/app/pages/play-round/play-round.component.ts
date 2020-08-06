@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MarkerState, ARMarker } from '../../components/ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, } from 'rxjs/operators';
+import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
 
 interface RoundMarker extends ARMarker {
@@ -31,6 +31,7 @@ export class PlayRoundComponent implements OnInit {
     this.sessionService.sessionStudentData$,
     this.studentRoundService.currentBeeSpecies$
   ]).pipe(
+    filter(([student, bee]) => !!student && !!bee),
     map(([student, bee]) => ({
       name: bee.nest_type.name,
       active: true,
