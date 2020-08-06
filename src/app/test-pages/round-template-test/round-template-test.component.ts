@@ -18,7 +18,7 @@ export class RoundTemplateTestComponent implements OnInit {
   }
 
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {
-    return flowers.map((species) => {;
+    return flowers.map((species) => {
       return {
         imgSrc: `assets/art/500w/flowers/${species.art_file}`,
         alt: species.name,

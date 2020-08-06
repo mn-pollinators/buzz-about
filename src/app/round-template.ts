@@ -103,8 +103,4 @@ export const roundTemplates: RoundTemplate[] = [
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
     tickSpeed: 5000
   },
-
-
-
-
 ];

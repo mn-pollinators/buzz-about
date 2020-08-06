@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { roundTemplates } from 'src/app/round-template';
+import { FlowerSpecies } from 'src/app/flowers';
+import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 
 @Component({
   selector: 'app-round-chooser-dialog',
@@ -22,4 +24,14 @@ export class RoundChooserDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {
+    return flowers.map((species) => {
+      return {
+        imgSrc: `assets/art/500w/flowers/${species.art_file}`,
+        alt: species.name,
+        active: true,
+        scale: species.relative_size
+      };
+    });
+  }
 }
