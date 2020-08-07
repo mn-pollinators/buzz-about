@@ -67,7 +67,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
 
   // Setup objects
-  scene: THREE.Scene; // The Three scene, where the groups to dipslay on markers are held
+  scene: THREE.Scene; // The Three scene, where the groups to display on markers are held
   camera: THREE.Camera;
   renderer: THREE.WebGLRenderer;
   clock: THREE.Clock;
@@ -106,7 +106,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private containerRef: ElementRef;
 
 
-  @ViewChild('monitorcontainer', {static: true})
+  @ViewChild('monitorContainer', {static: true})
   private monitorContainerRef: ElementRef;
 
   ngOnInit() {
@@ -223,7 +223,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           imageSmoothingEnabled: true
         }
         ).then((controller: THREEAR.Controller) => {
-          // Initalize returns a controller, set this.controller to that so we have a reference to it
+          // Initialize returns a controller, set this.controller to that so we have a reference to it
           this.controller = controller;
 
           // Call animate for the first time
