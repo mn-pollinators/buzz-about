@@ -1,0 +1,18 @@
+<app-play-round></app-play-round>
+<app-pause-round></app-pause-round>
+<ng-container [ngSwitch]="currentRoundStatus$ | async">
+
+  <ng-container *ngSwitchCase="RoundStatus.PlayRound">
+    <app-play-round></app-play-round>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="RoundStatus.PauseRound">
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>Paused Round</mat-card-title>
+      </mat-card>
+    </div>
+  </ng-container>
+
+</ng-container>

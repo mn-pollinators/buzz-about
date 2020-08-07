@@ -28,7 +28,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
-import { PlayRoundComponent } from './pages/play-round/play-round.component';
+import { PlayRoundComponent } from './components/play-round/play-round.component';
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
@@ -53,6 +53,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+import { StudentRoundComponent } from './components/student-round/student-round.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -102,6 +103,7 @@ const FIREBASE_MODULES = [
     HostSessionComponent,
     RoundTemplateTestComponent,
     TestPagesComponent,
+    StudentRoundComponent,
   ],
   imports: [
     BrowserModule,
