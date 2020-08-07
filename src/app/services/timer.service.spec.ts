@@ -613,7 +613,7 @@ describe('TimerService', () => {
         discardPeriodicTasks();
       }));
 
-      it('...using setRunnning()', fakeAsync(() => {
+      it('...using setRunning()', fakeAsync(() => {
         const previousState = {
           running: false,
           tickSpeed: 1,
