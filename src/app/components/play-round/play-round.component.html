@@ -1,4 +1,4 @@
-<app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"

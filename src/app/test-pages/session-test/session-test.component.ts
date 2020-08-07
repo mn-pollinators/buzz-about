@@ -28,7 +28,8 @@ export class SessionTestComponent implements OnInit {
   }
 
   joinSession(sessionId: string, name: string, nestBarcode: string) {
-    this.sessionService.joinSession({name, nestBarcode: parseInt(nestBarcode, 10)}, sessionId).then(() => this.sessionService.setCurrentSession(sessionId));
+    this.sessionService.joinSession({name, nestBarcode: parseInt(nestBarcode, 10)}, sessionId)
+    .then(() => this.sessionService.setCurrentSession(sessionId));
   }
 
   leaveSession() {
