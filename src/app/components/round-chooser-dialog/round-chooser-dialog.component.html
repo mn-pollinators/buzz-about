@@ -6,7 +6,7 @@
     </mat-list-option>
   </mat-selection-list>
   <div>
-    <app-flower-layout [items]="getFlowers(templates.selectedOptions.selected[0]?.value.flowerSpecies || [])"></app-flower-layout>
+    <app-flower-layout [items]="getFlowers(templates.selectedOptions.selected[0]?.value.flowerSpecies || [])" tooltips="true"></app-flower-layout>
   </div>
 </div>
 <div mat-dialog-actions align="end">

@@ -28,6 +28,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './pages/play-round/play-round.component';
@@ -73,6 +74,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatSnackBarModule,
   MatDialogModule,
   MatListModule,
+  MatTooltipModule,
 ];
 
 const FIREBASE_MODULES = [
