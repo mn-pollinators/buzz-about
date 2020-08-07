@@ -16,14 +16,14 @@ export class TimerTestComponent implements OnInit {
 
   timerTime = this.timer.currentTime$.pipe(map(t => t.time));
 
+  public startTime = TimePeriod.fromMonthAndQuarter(6, 1);
+  public endTime = TimePeriod.fromMonthAndQuarter(8, 4);
+
   ngOnInit() {
     this.timer.currentTime$.subscribe(time => {
       console.log(time);
     });
   }
-
-  public startTime = TimePeriod.fromMonthAndQuarter(6, 1);
-  public endTime = TimePeriod.fromMonthAndQuarter(8, 4);
 
   initTimerButton() {
     this.timer.initialize({

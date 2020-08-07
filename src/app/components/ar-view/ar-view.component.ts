@@ -36,7 +36,7 @@ export interface MarkerState {
 const ArResolution = {
   width: 640,
   height: 480
-}
+};
 
 /**
  * The ArViewComponent contains a THREE scene and THREEAR setup to show images on barcode markers.
