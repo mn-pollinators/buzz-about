@@ -29,7 +29,7 @@ describe('TimerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [TimerService] });
-    service = TestBed.get(TimerService); // TODO change to inject when we update to Angular 9
+    service = TestBed.inject(TimerService); // TODO change to inject when we update to Angular 9
   });
 
   it('Should be created', () => {
