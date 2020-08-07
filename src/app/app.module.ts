@@ -53,7 +53,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { StudentRoundComponent } from './components/student-round/student-round.component';
+import { StudentRoundComponent } from './pages/student-round/student-round.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
