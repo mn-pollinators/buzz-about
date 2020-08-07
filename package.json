@@ -8,7 +8,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng deploy",
     "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data"
   },
   "private": true,
