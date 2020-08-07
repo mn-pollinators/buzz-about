@@ -2,7 +2,7 @@ name: Firebase Deploy
 
 on:
   push:
-    branches: [ master, gh-actions-deploy ]
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
