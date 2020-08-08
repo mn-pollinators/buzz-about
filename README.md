@@ -1,15 +1,15 @@
-<center>
+<div align="center">
 
 <img alt="Buzz About Icon" src="https://raw.githubusercontent.com/mn-pollinators/buzz-about/master/src/assets/icons/icon-circle.svg?sanitize=true" width="150"/>
 
 # Buzz About
 
-[![Build Status](../../workflows/Angular%Tests/badge.svg)](../../actions?query=workflow%3A"Angular+Tests")
+[![Build Status](../../workflows/Angular%20Tests/badge.svg)](../../actions?query=workflow%3A"Angular+Tests")
 
-[![Deployment Status](../../workflows/Firebase%Deploy/badge.svg)](../../actions?query=workflow%3A"Firebase+Deploy")
+[![Deployment Status](../../workflows/Firebase%20Deploy/badge.svg)](../../actions?query=workflow%3A"Firebase+Deploy")
 
 
-</center>
+</div align="center">
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.0.
