@@ -24,29 +24,21 @@ Once you've set up the markers, you can go to [buzzabout.app][] to host a sessio
 
 In the simulation, each participant acts as a different pollinator, trying to collect pollen from the flowers. Make sure you bring enough pollen back to your nest before the time runs out!
 
-## Development server
+## Contributing
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
 
-## Code scaffolding
+For more information on how to contribute to Buzz About, see [DEVELOPMENT.md][].
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Code of Conduct
 
-## Build
+All repositories in the Minnesota Pollinators organization are subject to our [Code of Conduct][].
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Acknowledgements
 
-## Running unit tests
+Funding for this project was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the [Legislative-Citizen Commission on Minnesota Resources (LCCMR)][LCCMR].
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+The Trust Fund is a permanent fund constitutionally established by the citizens of Minnesota to assist in the protection, conservation, preservation, and enhancement of the state’s air, water, land, fish, wildlife, and other natural resources. Currently 40% of net Minnesota State Lottery proceeds are dedicated to growing the Trust Fund and ensuring future benefits for Minnesota’s environment and natural resources.
 
 
 [Angular Tests badge]: ../../workflows/Angular%20Tests/badge.svg
@@ -58,3 +50,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 [AR Markers]: ./AR_Markers.pdf
 [buzzabout.app]: html://buzzabout.app
 [buzzabout.app/play]: html://buzzabout.app/play
+[DEVELOPMENT.md]: ./DEVELOPMENT.md
+[Code of Conduct]: https://github.com/mn-pollinators/code-of-conduct/blob/master/CODE_OF_CONDUCT.md
+[LCCMR]: https://www.lccmr.leg.mn/
