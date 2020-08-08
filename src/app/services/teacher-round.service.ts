@@ -165,4 +165,10 @@ export class TeacherRoundService {
     return newArray;
   }
 
+  pause() {
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(take(1)).subscribe(
+      ([path, time]) => this.firebaseService.addPause(path, {timePeriod: time.time})
+    );
+  }
+
 }

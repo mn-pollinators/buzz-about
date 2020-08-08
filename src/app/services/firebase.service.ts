@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './../session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction } from './../round';
+import { FirebaseRound, RoundStudentData, Interaction, PauseData } from './../round';
 import { firestore } from 'firebase';
 
 export interface RoundPath {
@@ -91,7 +91,8 @@ export class FirebaseService {
   }
 
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
-    return this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students').doc(id).set(studentData);
+    return this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
+    .doc(id).set(studentData);
   }
 
 
@@ -167,5 +168,10 @@ export class FirebaseService {
    */
   addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
     return this.getRoundDocument(roundPath).collection('interactions').add(data);
+  }
+
+  addPause(roundPath: RoundPath, data: PauseData): Promise<DocumentReference> {
+    console.log(data);
+    return this.getRoundDocument(roundPath).collection('pauses').add(data);
   }
 }

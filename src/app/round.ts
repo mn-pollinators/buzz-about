@@ -39,3 +39,7 @@ export interface Interaction {
   userId: string;
   barcodeValue: number;
 }
+
+export interface PauseData {
+  timePeriod: number;
+}
