@@ -5,7 +5,6 @@
 # Buzz About
 
 [![Build Status][Angular Tests badge]][Angular Tests page]
-
 [![Deployment Status][Deploy badge]][Deploy page]
 
 </div align="center">
