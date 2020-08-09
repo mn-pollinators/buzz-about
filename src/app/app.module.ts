@@ -53,6 +53,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -102,6 +103,7 @@ const FIREBASE_MODULES = [
     HostSessionComponent,
     RoundTemplateTestComponent,
     TestPagesComponent,
+    MarkerGeneratorComponent,
   ],
   imports: [
     BrowserModule,
