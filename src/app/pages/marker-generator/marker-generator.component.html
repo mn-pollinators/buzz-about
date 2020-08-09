@@ -1,6 +1,9 @@
 <p>
   <input type="number" value="0" [(ngModel)]="barcodeValue">
-  <button (click)="makePdf()">Make PDF</button>
+</p>
+<p>
+  <button (click)="makePdf()">Open PDF</button>
+  <button (click)="makePdf(true)">Download PDF</button>
 </p>
 
 <p>

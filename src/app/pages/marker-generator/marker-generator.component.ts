@@ -5,7 +5,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from 'src/app/CustomBarcodeMarkerGenerator';
-//pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const fonts = {
   // Temporary: download default Roboto font from cdnjs.com
@@ -45,7 +45,7 @@ export class MarkerGeneratorComponent implements OnInit {
     console.log(BarcodeMarkerGenerator.getMatrixTypes());
   }
 
-  makePdf() {
+  makePdf(dl: boolean = false) {
     const docDefinition: TDocumentDefinitions = {
       content: [
         `Buzz About Marker ${this.barcodeValue}`,
@@ -54,7 +54,11 @@ export class MarkerGeneratorComponent implements OnInit {
         }
       ]
     };
-    pdfMake.createPdf(docDefinition, null, fonts).open();
+    if (dl) {
+      pdfMake.createPdf(docDefinition, null, fonts).download();
+    } else {
+      pdfMake.createPdf(docDefinition, null, fonts).open();
+    }
   }
 
 }
