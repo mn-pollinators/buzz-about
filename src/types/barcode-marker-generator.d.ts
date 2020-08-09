@@ -13,6 +13,9 @@ declare module 'studio-backend/src/modules/marker/tools/barcode-marker-generator
     static getMatrixTypes(): BarcodeMatrixType[];
     asSVG(): string;
     asSVGDataURI(): string;
+    typeDesc: BarcodeMatrixType;
+    value: number;
+    valueEncoded: boolean[];
   }
 
   export interface BarcodeMatrixType {

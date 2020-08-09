@@ -1,2 +1,8 @@
-<input type="number" value="0" [(ngModel)]="barcodeValue">
-<img [src]="getBarcode(barcodeValue)">
+<p>
+  <input type="number" value="0" [(ngModel)]="barcodeValue">
+  <button (click)="makePdf()">Make PDF</button>
+</p>
+
+<p>
+  <img [src]="getBarcodeSVGDataURI(barcodeValue)">
+</p>
