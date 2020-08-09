@@ -15,6 +15,7 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Nest Barcode</mat-label>
           <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl">
+          <mat-hint>The number at the top of your nest marker</mat-hint>
           <mat-error *ngIf="sessionFormGroup.controls['nestControl'].invalid">
             This number is from 20 to 100 and can be found on the printed nest marker in the upper left corner
           </mat-error>
