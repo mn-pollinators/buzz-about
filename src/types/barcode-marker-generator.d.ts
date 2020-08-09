@@ -12,7 +12,7 @@ declare module 'studio-backend/src/modules/marker/tools/barcode-marker-generator
     constructor (matrixTypeId: string, value: number);
     static getMatrixTypes(): BarcodeMatrixType[];
     asSVG(): string;
-    asSVGData(): string;
+    asSVGDataURI(): string;
   }
 
   export interface BarcodeMatrixType {
