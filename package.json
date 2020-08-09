@@ -30,6 +30,7 @@
     "info-monitor": "^1.0.12",
     "ngx-pipes": "^2.7.5",
     "rxjs": "~6.5.3",
+    "studio-backend": "github:AR-js-org/studio-backend#v0.21.0",
     "three": "^0.110.0",
     "threear": "github:mn-pollinators/THREEAR#ts-fixes-2",
     "tslib": "^1.10.0",
