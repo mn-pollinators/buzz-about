@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from './../session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction, PauseData } from './../round';
+import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
 
 export interface RoundPath {
@@ -170,8 +170,14 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).collection('interactions').add(data);
   }
 
-  addPause(roundPath: RoundPath, data: PauseData): Promise<DocumentReference> {
-    console.log(data);
-    return this.getRoundDocument(roundPath).collection('pauses').add(data);
+  /**
+   * Adds an host event to the `hostEvents` collection in firebase.
+   *
+   * @param roundPath The Firestore IDs of the session and round within it to add the interaction to
+   * @param eventData The type of event(pause, etc) and it's time of occurrence relative to the game
+   */
+  addHostEvent(roundPath: RoundPath, eventData: Partial<HostEvent>): Promise<DocumentReference> {
+    return this.getRoundDocument(roundPath).collection('hostEvents')
+      .add({occurredAt: firestore.FieldValue.serverTimestamp(), ...eventData});
   }
 }

@@ -1,10 +1,7 @@
 import { Component, OnInit, } from '@angular/core';
 import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../../services/timer.service';
-import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
-import { BeeSpecies, allBeeSpecies } from '../../bees';
 import { map } from 'rxjs/operators';
-import { RoundFlower } from '../../round';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
@@ -70,7 +67,7 @@ export class LargeDisplayComponent implements OnInit {
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       if (running === true) {
-        this.teacherRoundService.pause();
+        this.teacherRoundService.addHostRoundEvent('Pause');
       }
       this.timerService.setRunning(!running);
     });

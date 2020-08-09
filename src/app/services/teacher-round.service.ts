@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower } from '../round';
+import { FirebaseRound, RoundFlower, EventType } from '../round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { Path } from 'three';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
-import { TimePeriod } from './../time-period';
 import { RoundTemplate, TemplateBee } from '../round-template';
 
 @Injectable({
@@ -165,9 +163,14 @@ export class TeacherRoundService {
     return newArray;
   }
 
-  pause() {
+  /**
+   * Records an event with a specific string and current time according to the timer service.
+   *
+   * @param eventString string representing a member of the EventType enum
+   */
+  addHostRoundEvent(eventString: string) {
     combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(take(1)).subscribe(
-      ([path, time]) => this.firebaseService.addPause(path, {timePeriod: time.time})
+      ([path, time]) =>  this.firebaseService.addHostEvent(path, {eventType: EventType[eventString], timePeriod: time.time})
     );
   }
 

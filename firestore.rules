@@ -13,7 +13,7 @@ service cloud.firestore {
       // TODO: Put restrictions on who can modify rounds.
       allow read, write: if true;
     }
-     match /sessions/{session}/rounds/{round}/pauses/{pause} {
+     match /sessions/{session}/rounds/{round}/hostEvents/{hostEvent} {
       // TODO: Put restrictions on who can modify rounds.
       allow read, write: if true;
     }
