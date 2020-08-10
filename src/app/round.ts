@@ -44,8 +44,9 @@ export interface Interaction {
 /**
  * A string enum representing the different types of host events we want to record.
  */
-export enum EventType {
-  Pause = 'pause'
+export enum HostEventType {
+  Pause = 'pause',
+  Play = 'play'
 }
 
 /*
@@ -54,7 +55,7 @@ export enum EventType {
  * an absolute value according to server's timestamp.
  */
 export interface HostEvent {
-  eventType: EventType;
+  eventType: HostEventType;
   timePeriod: number;
   occurredAt: firestore.Timestamp;
 }

@@ -174,7 +174,7 @@ export class FirebaseService {
    * Adds an host event to the `hostEvents` collection in firebase.
    *
    * @param roundPath The Firestore IDs of the session and round within it to add the interaction to
-   * @param eventData The type of event(pause, etc) and it's time of occurrence relative to the game
+   * @param eventData The type of event(play, pause, etc) and it's time of occurrence relative to the game
    */
   addHostEvent(roundPath: RoundPath, eventData: Partial<HostEvent>): Promise<DocumentReference> {
     return this.getRoundDocument(roundPath).collection('hostEvents')

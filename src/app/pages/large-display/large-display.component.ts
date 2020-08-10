@@ -66,9 +66,6 @@ export class LargeDisplayComponent implements OnInit {
 
   toggleTimerRunning() {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
-      if (running === true) {
-        this.teacherRoundService.addHostRoundEvent('Pause');
-      }
       this.timerService.setRunning(!running);
     });
   }

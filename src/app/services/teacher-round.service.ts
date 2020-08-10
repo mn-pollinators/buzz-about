@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, EventType } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType } from '../round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
@@ -23,9 +23,15 @@ export class TeacherRoundService {
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
     // null.)
-    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
+    // Also, record pause & play events based on state of running observable from timer service and
+    // the time of its occurrence.
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$, this.timerService.currentTime$]).pipe(
       filter(([roundPath]) => roundPath !== null),
-    ).subscribe(([roundPath, running]) => {
+    ).subscribe(([roundPath, running, time]) => {
+      this.firebaseService.addHostEvent(
+        roundPath,
+        { eventType: ( running ? HostEventType.Play : HostEventType.Pause ), timePeriod: time.time}
+      );
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
@@ -162,16 +168,4 @@ export class TeacherRoundService {
     }
     return newArray;
   }
-
-  /**
-   * Records an event with a specific string and current time according to the timer service.
-   *
-   * @param eventString string representing a member of the EventType enum
-   */
-  addHostRoundEvent(eventString: string) {
-    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(take(1)).subscribe(
-      ([path, time]) =>  this.firebaseService.addHostEvent(path, {eventType: EventType[eventString], timePeriod: time.time})
-    );
-  }
-
 }
