@@ -1,25 +1,63 @@
-<!-- TODO: A lot of these instructions are out of date. Additionally, there should be directions for things like installing the firebase emulator and setting up the GitHub packages token. -->
+# How to work on Buzz About
 
-## Development server
+This is a fairly comprehensive guide to setting up a development environment, aimed at new students. You may already have some of the necessary programs installed&mdash;if so, you can just skip those steps!
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This document is draws from prior writeups by [Paul Friederichsen][] and [Prof. Nic McPhee][].
 
-## Code scaffolding
+**Table of Contents**
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Creating a GitHub Account
+2. Installing Visual Studio Code
+3. Installing `git`
+   1. On Windows
+   2. On a Mac
+4. Installing GitKraken
 
-## Build
+## Creating a GitHub Account
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+The code for BuzzAbout&mdash;along with its revision history&mdash;is stored on [GitHub][], a website for hosting software projects. To work on Buzz About, you're going to need to sign up for a GitHub account [here][Sign up for GitHub].
 
-## Running unit tests
+You'll want to join the [Minnesota Pollinators][] organization ([Prof. KK Lamberty][] can invite you).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Be sure to sign up for the [student developer pack][], as well!
 
-## Running end-to-end tests
+## Installing Visual Studio Code
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Next, in order to read and write the code, you're going to need a text editor. There are a lot of good options, but the one that we've been using is [Visual Studio Code][], particularly because of its [live share][] feature.
 
-## Further help
+## Installing `git`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+`git` is a version-control system: it keeps track of all of the changes made to the project, and lets several people work on the same code in parallel.
+
+### On Windows
+
+If you're on windows, you can go [here][install git for Windows] to download `git`.
+
+When the installer asks you to choose the default editor, you may want to select Visual Studio Code. Other than that, the default options should be just fine.
+
+### On a Mac
+
+If you're on a Mac, you can get `git` as part of the XCode command-line developer tools. Open up Terminal.app and type `git --version`:
+
+You'll get a pop-up asking you to install the developer tools:
+
+If you don't get a pop-up, but instead get a version number like this, that means `git` is already installed.
+
+## Installing GitKraken
+
+`git` by itself is very spare, so we've been using it through a program called [GitKraken][]. (This program has a nice chart showing all of the changes over time.) You can use GitKraken for free, but you actually have access to the Pro version through GitHub's student developer pack.
+
+Once you've installed GitKraken, you're going to want to download the Buzz About code onto your computer. To do this, click the "Clone a repo" button on the left, and type in the url `https://github.com/mn-pollinators/buzz-about.git`. Now, you should be able to see the whole history of the project!
+
+
+[Paul Friederichsen]: https://github.com/floogulinc
+[Prof. Nic McPhee]: https://github.com/nicmcphee
+[Prof. KK Lamberty]: https://github.com/kklamberty
+[GitHub]: https://github.com
+[Minnesota Pollinators]: https://github.com/mn-pollinators
+[student developer pack]: https://education.github.com/pack
+[Sign up for GitHub]: https://github.com/join
+[Visual Studio Code]: https://code.visualstudio.com/
+[live share]: https://docs.microsoft.com/en-us/visualstudio/liveshare/
+[install git for Windows]: https://git-scm.com/download
+[GitKraken]: https://www.gitkraken.com/
