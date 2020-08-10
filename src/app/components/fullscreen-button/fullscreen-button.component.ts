@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit, HostListener } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-// Code from this stackoverflow issue: https://stackoverflow.com/questions/51998594/how-to-make-google-chrome-go-full-screen-in-angular-4-application
+// Code from this stackoverflow issue:
+// https://stackoverflow.com/questions/51998594/how-to-make-google-chrome-go-full-screen-in-angular-4-application
 @Component({
   selector: 'app-fullscreen-button',
   templateUrl: './fullscreen-button.component.html',
@@ -19,8 +20,8 @@ export class FullscreenButtonComponent implements OnInit {
     this.elem = document.documentElement;
   }
 
-  @HostListener("document:fullscreenchange", ['$event']) fullScreen() {
-    if(document.fullscreenElement === null) {
+  @HostListener('document:fullscreenchange', ['$event']) fullScreen() {
+    if (document.fullscreenElement === null) {
       this.fullscreen = false;
     } else {
       this.fullscreen = true;
@@ -28,7 +29,7 @@ export class FullscreenButtonComponent implements OnInit {
   }
 
   toggleFullscreen() {
-    if(this.fullscreen) {
+    if (this.fullscreen) {
       this.closeFullscreen();
     } else {
       this.openFullscreen();
@@ -77,7 +78,7 @@ export class FullscreenButtonComponent implements OnInit {
       this.document.msExitFullscreen();
     } else {
       // if this line is reached, we somehow failed to close fullscreen
-      this.fullscreen=true;
+      this.fullscreen = true;
     }
   }
 }
