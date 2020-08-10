@@ -1,0 +1,11 @@
+<app-play-round *ngIf="(roundService.currentRunning$ | async) else paused"></app-play-round>
+
+<ng-template #paused>
+  <app-hill-background cover></app-hill-background>
+  <div class="centered-container">
+    <mat-card>
+      <mat-card-title>Paused</mat-card-title>
+    </mat-card>
+  </div>
+</ng-template>
+

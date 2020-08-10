@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, tap, shareReplay, delay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 export enum ScreenId {
   Loading,
   NoSession,
   SessionLobby,
-  PlayRound
+  StudentRound
 }
 
 @Component({
@@ -27,13 +27,12 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
       sessionIdSet
       ? (session
         ? (session.currentRoundId
-          ? ScreenId.PlayRound
+          ? ScreenId.StudentRound
           : ScreenId.SessionLobby)
         : ScreenId.NoSession)
       : ScreenId.Loading
     ),
   );
-
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
