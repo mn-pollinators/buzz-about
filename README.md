@@ -42,8 +42,8 @@ The Trust Fund is a permanent fund constitutionally established by the citizens 
 [Angular]: https://angular.io/
 [Firebase]: https://firebase.google.com/
 [AR Markers]: ./AR_Markers.pdf
-[buzzabout.app]: html://buzzabout.app
-[buzzabout.app/play]: html://buzzabout.app/play
+[buzzabout.app]: https://buzzabout.app/
+[buzzabout.app/play]: https://buzzabout.app/play
 [DEVELOPMENT.md]: ./DEVELOPMENT.md
 [Code of Conduct]: https://github.com/mn-pollinators/code-of-conduct/blob/master/CODE_OF_CONDUCT.md
 [LCCMR]: https://www.lccmr.leg.mn/
