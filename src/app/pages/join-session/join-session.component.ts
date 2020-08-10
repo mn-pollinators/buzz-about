@@ -15,7 +15,7 @@ export class JoinSessionComponent implements OnInit {
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
     sessionControl: new FormControl('', Validators.required),
-    nestControl: new FormControl('', [Validators.required, Validators.min(18), Validators.max(127),
+    nestControl: new FormControl('', [Validators.required, Validators.min(20), Validators.max(120),
       Validators.pattern('^[0-9]*$')])
   });
 
