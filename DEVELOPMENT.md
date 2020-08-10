@@ -21,7 +21,7 @@ The code for BuzzAbout&mdash;along with its revision history&mdash;is stored on 
 
 You'll want to join the [Minnesota Pollinators][] organization ([Prof. KK Lamberty][] can invite you).
 
-Be sure to sign up for the [Student developer pack][], as well!
+Be sure to sign up for the [student developer pack][Student developer pack], as well!
 
 ![The student developer pack's webpage][i:Student developer pack]
 
