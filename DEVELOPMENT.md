@@ -21,13 +21,13 @@ The code for BuzzAbout&mdash;along with its revision history&mdash;is stored on 
 
 You'll want to join the [Minnesota Pollinators][] organization ([Prof. KK Lamberty][] can invite you).
 
-Be sure to sign up for the [student developer pack][], as well!
+Be sure to sign up for the [Student developer pack][], as well!
 
 ![The student developer pack's webpage][i:Student developer pack]
 
 ## Installing Visual Studio Code
 
-Next, in order to read and write the code, you're going to need a text editor. There are a lot of good options, but the one that we've been using is [Visual Studio Code][], particularly because of its [live share][] feature.
+Next, in order to read and write the code, you're going to need a text editor. There are a lot of good options, but the one that we've been using is [Visual Studio Code][], particularly because of its [live share][Live share] feature.
 
 ![Visual Studio Code][i:VS Code]
 
@@ -37,7 +37,7 @@ Next, in order to read and write the code, you're going to need a text editor. T
 
 ### On Windows
 
-If you're on windows, you can go [here][install git for Windows] to download `git`.
+If you're on Windows, you can go [here][Install git for Windows] to download `git`.
 
 When the installer asks you to choose the default editor, you may want to select Visual Studio Code. Other than that, the default options should be just fine.
 
@@ -73,11 +73,11 @@ Once you've installed GitKraken, you're going to want to download the Buzz About
 [Prof. KK Lamberty]: https://github.com/kklamberty
 [GitHub]: https://github.com
 [Minnesota Pollinators]: https://github.com/mn-pollinators
-[student developer pack]: https://education.github.com/pack
+[Student developer pack]: https://education.github.com/pack
 [Sign up for GitHub]: https://github.com/join
 [Visual Studio Code]: https://code.visualstudio.com/
-[live share]: https://docs.microsoft.com/en-us/visualstudio/liveshare/
-[install git for Windows]: https://git-scm.com/download
+[Live share]: https://docs.microsoft.com/en-us/visualstudio/liveshare/
+[Install git for Windows]: https://git-scm.com/download
 [GitKraken]: https://www.gitkraken.com/
 
 <!-- Images: -->
