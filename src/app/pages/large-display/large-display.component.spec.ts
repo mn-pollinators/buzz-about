@@ -31,7 +31,9 @@ describe('LargeDisplayComponent', () => {
   const fakeRoundPath = {sessionId: 'demo-session', roundId: 'demo-round'};
 
   beforeEach(async(() => {
-    const mockTeacherRoundService: Partial<TeacherRoundService> = {};
+    const mockTeacherRoundService: Partial<TeacherRoundService> = {
+      currentFlowers$: of([]),
+    };
 
     const mockTeacherSessionService: Partial<TeacherSessionService> = {
       currentRoundPath$: mockCurrentRoundPath$,
