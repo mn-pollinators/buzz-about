@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MarkerState, ARMarker } from '../../components/ar-view/ar-view.component';
+import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, } from 'rxjs/operators';
