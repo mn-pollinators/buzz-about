@@ -68,9 +68,13 @@ If you don't get a pop-up, but instead get a version number like this, that mean
 
 ![The screen GitKraken shows when it first launches][i:GitKraken splash page]
 
-Once you've installed GitKraken, you're going to want to download the Buzz About code onto your computer. To do this, click the "Clone a repo" button on the left, and type in the url `https://github.com/mn-pollinators/buzz-about.git`. Now, you should be able to see the whole history of the project!
+Once you've installed GitKraken, you're going to want to download the Buzz About code onto your computer. To do this, click the "Clone a repo" button on the left, and type in the `git` URL for the project. (You can find this URL on Buzz About's GitHub page under the "Code" dropdown:)
 
-![The screen GitKraken shows when you've opened a repo][i:GitKraken graph view]
+![The GitHub page for Buzz About, with the "Code" dropdown menu open, showing the title "Clone with HTTPS" and the start of the URL][i:Cloning from GitHUb]
+
+Now, you should be able to see the whole history of the project!
+
+![The screen that GitKraken shows when you've opened a repo][i:GitKraken graph view]
 
 ## Installing `npm`
 
@@ -170,6 +174,7 @@ Note that the third-party libraries are installed within this project&mdash; the
 [i:VS Code]: https://user-images.githubusercontent.com/56209343/89746720-e15f2700-da80-11ea-920e-7219d47b4a83.PNG
 [i:Windows, installing git]: https://user-images.githubusercontent.com/56209343/89847231-1040d000-db49-11ea-898b-4ae52f19326c.PNG
 [i:GitKraken splash page]: https://user-images.githubusercontent.com/56209343/89746747-ff2c8c00-da80-11ea-9065-4c7b3dbb9f6a.PNG
+[i:Cloning from GitHub]: https://user-images.githubusercontent.com/56209343/89918462-aadbf600-dbbf-11ea-9e3a-7abe5fbd3d37.PNG
 [i:GitKraken graph view]: https://user-images.githubusercontent.com/56209343/89746748-00f64f80-da81-11ea-85dc-6a7334f18252.PNG
 [i:Windows, installing npm]: https://user-images.githubusercontent.com/56209343/89849965-4bde9880-db4f-11ea-8208-d64811844f57.PNG
 [i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
