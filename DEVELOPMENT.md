@@ -50,9 +50,9 @@ When the installer asks you to choose the default editor, you may want to select
 
 ### On a Mac
 
-If you're on a Mac, you can get `git` as part of the XCode command-line developer tools. Open up Terminal.app and type `git --version`:
+If you're on a Mac, you can get `git` as part of the XCode command-line developer tools. Open up Terminal and type `git --version`:
 
-<img width="638" alt="Terminal.app with the command &quot;git --version&quot; typed" src="https://user-images.githubusercontent.com/56209343/89746736-f0de7000-da80-11ea-9ab5-cf48acd6b5f7.png">
+<img width="638" alt="Terminal with the command &quot;git --version&quot; typed" src="https://user-images.githubusercontent.com/56209343/89746736-f0de7000-da80-11ea-9ab5-cf48acd6b5f7.png">
 
 You'll get a pop-up asking you to install the developer tools:
 
@@ -60,7 +60,7 @@ You'll get a pop-up asking you to install the developer tools:
 
 If you don't get a pop-up, but instead get a version number like this, that means `git` is already installed.
 
-<img width="682" alt="Terminal.app showing the command &quot;git --version&quot; and the output &quot;git version 2.24.3 (Apple Git-128)&quot;" src="https://user-images.githubusercontent.com/56209343/89746734-f045d980-da80-11ea-8944-f2b0de3b2ecb.png">
+<img width="682" alt="Terminal showing the command &quot;git --version&quot; and the output &quot;git version 2.24.3 (Apple Git-128)&quot;" src="https://user-images.githubusercontent.com/56209343/89746734-f045d980-da80-11ea-8944-f2b0de3b2ecb.png">
 
 ## Installing GitKraken
 
@@ -98,7 +98,7 @@ Then, you can click "Generate token" at the bottom of the page. You'll get a tok
 
 ### Giving that personal access token to `npm`
 
-Next, open a command prompt (Terminal.app on the Mac; PowerShell on Windows) and run
+Next, open the command-line (Terminal on the Mac; PowerShell on Windows) and run
 
 ```sh
 npm login --registry=https://npm.pkg.github.com
@@ -124,10 +124,10 @@ If you run into trouble, you can always fall back to typing the personal access 
 
 Buzz About uses code from several third-party packages. You can install all of these packages at once using `npm`.
 
-Open up the command prompt. First, you'll want to navigate to the folder where you downloaded Buzz About. You can do this by running
+Open up the command-line. First, you'll want to navigate to the folder where you downloaded Buzz About. You can do this by running
 
 ```PowerShell
-Set-Location C:\wherever\you\downloaded\buzz-about
+cd C:\wherever\you\downloaded\buzz-about
 ```
 
 on Windows, or
@@ -136,7 +136,7 @@ on Windows, or
 cd /wherever/you/downloaded/buzz-about
 ```
 
-on a Mac.
+on a Mac. (The `cd` here stands for "change directory".)
 
 Then, run
 
