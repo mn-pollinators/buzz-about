@@ -180,4 +180,4 @@ Note that the third-party libraries are installed within this project&mdash; the
 [i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
 [i:Logging in to npm]: https://user-images.githubusercontent.com/56209343/89855121-42f3c400-db5b-11ea-9d29-faaa20e5d90a.PNG
 [i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89855344-e218bb80-db5b-11ea-9e2a-21881e0fe457.PNG
-[i:Running npm install]: https://user-images.githubusercontent.com/56209343/89857158-edbab100-db60-11ea-9b11-779f2ec82c15.PNG
+[i:Running npm install]: https://user-images.githubusercontent.com/56209343/89921641-9699f800-dbc3-11ea-86e8-d1179d552fd6.PNG
