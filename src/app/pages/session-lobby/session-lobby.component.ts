@@ -39,7 +39,6 @@ export class SessionLobbyComponent implements OnInit {
       this.matDialog.open(RoundChooserDialogComponent);
 
     dialogRef.afterClosed().subscribe(template => {
-      console.log('The dialog was closed with template ' + template?.name);
       if (template) {
         this.startRound(template);
       }
