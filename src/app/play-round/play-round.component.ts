@@ -66,6 +66,16 @@ export class PlayRoundComponent implements OnInit {
     shareReplay(1)
   );
 
+  beePollen$: Observable<boolean[]> = this.studentRoundService.currentBeePollen$.pipe(
+    map(pollenCount => {
+      let pollenArray: boolean[] = [false, false, false];
+      for (let i = 0; i < pollenCount; i++) {
+        pollenArray[i] = true;
+      }
+      return pollenArray;
+    }),
+    tap(val => console.log('beePollen$: ' + val))
+  );
 
   ngOnInit() {
   }

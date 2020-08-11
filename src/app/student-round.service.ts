@@ -151,8 +151,7 @@ export class StudentRoundService {
       path && user && student
         ? this.firebaseService.getStudentInteractions(path, user.uid, student)
         : null),
-    distinctUntilChanged(),
-    tap(val => console.log('All Interactions: ' + val.length))
+    distinctUntilChanged()
   );
 
   totalPollen$: Observable<Interaction[] | null> = this.interactions$.pipe(
