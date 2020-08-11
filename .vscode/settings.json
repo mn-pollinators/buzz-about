@@ -52,5 +52,6 @@
     ],
     "cSpell.enableFiletypes": [
       "firerules"
-    ]
+    ],
+    "markdown.extension.toc.levels": "2..6"
 }

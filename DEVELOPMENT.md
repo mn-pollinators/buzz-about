@@ -6,17 +6,17 @@ This document is draws from prior writeups by [Paul Friederichsen][] and [Prof. 
 
 **Table of Contents**
 
-1. Creating a GitHub Account
-2. Installing Visual Studio Code
-3. Installing `git`
-   1. On Windows
-   2. On a Mac
-4. Installing GitKraken
-5. Installing `npm`
-6. Telling `npm` how to talk to GitHub Packages
-   1. Generating a personal access token
-   2. Giving that personal access token to `npm`
-<!-- 7. Installing all of the third-party libraries -->
+- [Creating a GitHub Account](#creating-a-github-account)
+- [Installing Visual Studio Code](#installing-visual-studio-code)
+- [Installing `git`](#installing-git)
+  - [On Windows](#on-windows)
+  - [On a Mac](#on-a-mac)
+- [Installing GitKraken](#installing-gitkraken)
+- [Installing `npm`](#installing-npm)
+- [Telling `npm` how to talk to GitHub Packages](#telling-npm-how-to-talk-to-github-packages)
+  - [Generating the personal access token](#generating-the-personal-access-token)
+  - [Giving that personal access token to `npm`](#giving-that-personal-access-token-to-npm)
+- [Installing all of the third-party libraries](#installing-all-of-the-third-party-libraries)
 
 ## Creating a GitHub Account
 
