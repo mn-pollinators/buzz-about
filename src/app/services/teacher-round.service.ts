@@ -99,14 +99,11 @@ export class TeacherRoundService {
    * Unmark the currently active round, so that it's no longer active. Stop
    * talking to the timer service.
    */
-
-  endRound() {
-    this.teacherSessionService.sessionId$.pipe(take(1)).subscribe(sessionId => {
-      this.firebaseService.setCurrentRound({sessionId, roundId: null}).then(() => {
-        this.teacherSessionService.currentRoundPath$.next(null);
-        this.roundTemplate$.next(null);
-      });
-    });
+  async endRound() {
+    const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
+    await this.firebaseService.setCurrentRound({sessionId, roundId: null});
+    this.teacherSessionService.currentRoundPath$.next(null);
+    this.roundTemplate$.next(null);
   }
 
   /**

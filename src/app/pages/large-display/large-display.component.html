@@ -43,4 +43,16 @@
       </div>
     </app-bottom-bar>
   </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>
+          Loading Session&hellip;
+        </mat-card-title>
+        <mat-spinner></mat-spinner>
+      </mat-card>
+    </div>
+  </ng-container>
 </ng-container>
