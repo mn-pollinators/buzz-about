@@ -114,7 +114,7 @@ Some sticking-points:
 
 1. For security reasons, what you type into the "password" field is invisible.
 2. To paste text into PowerShell, right-click once.
-3. On github.com/settings/tokens, there personal access token has a space after it&mdash;be careful that you don't copy that! :upside_down_face:
+3. On github.com/settings/tokens, the personal access token has a space after it&mdash;be careful that you don't copy that! :upside_down_face:
 
 ![github.com/settings/tokens with the extra space character highlighted][i:The gosh-darn whitespace]
 
