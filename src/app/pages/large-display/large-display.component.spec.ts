@@ -34,6 +34,7 @@ describe('LargeDisplayComponent', () => {
     const mockTeacherRoundService: Partial<TeacherRoundService> = {
       startTime: TimePeriod.fromMonthAndQuarter(4, 1),
       endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+      async endRound() {}
     };
 
     const mockTeacherSessionService: Partial<TeacherSessionService> = {
