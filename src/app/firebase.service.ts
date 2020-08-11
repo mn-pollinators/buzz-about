@@ -169,31 +169,30 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).collection('interactions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...data});
   }
 
-  getStudentTotalPollen(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
-    return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
-      roundPath.roundId + '/interactions', ref =>
-      ref.where('userId', '==', studentId)
-        // TODO: Handle barcodes other than 0
-        .where('barcodeValue', '>', 0))
-        .valueChanges();
-  }
+  // getStudentTotalPollen(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
+  //   return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+  //     roundPath.roundId + '/interactions', ref =>
+  //     ref.where('userId', '==', studentId)
+  //       // TODO: Handle barcodes other than 0
+  //       .where('barcodeValue', '>', 0))
+  //       .valueChanges();
+  // }
 
-  getStudentCurrentPollen(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
-    return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
-    roundPath.roundId + '/interactions', ref =>
-    ref.where('userId', '==', studentId)
-      // TODO: Handle barcodes other than 0
-      .orderBy('createdAt', 'desc')
-      .limit(3))
-      .valueChanges();
-  }
+  // getStudentCurrentPollen(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
+  //   return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+  //   roundPath.roundId + '/interactions', ref =>
+  //   ref.where('userId', '==', studentId)
+  //     // TODO: Handle barcodes other than 0
+
+  //     .limit(3))
+  //     .valueChanges();
+  // }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string, student: SessionStudentData): Observable<Interaction[]> {
     return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
       roundPath.roundId + '/interactions', ref =>
       ref.where('userId', '==', studentId)
-        // TODO: Handle barcodes other than 0
-        .where('barcodeValue', '>', 0))
+        .orderBy('createdAt', 'desc'))
         .valueChanges();
   }
 }

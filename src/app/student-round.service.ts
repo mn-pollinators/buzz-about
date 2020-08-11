@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { FirebaseService } from './firebase.service';
@@ -145,35 +145,52 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-  totalPollen$: Observable<Interaction[] | null> =
+  interactions$: Observable<Interaction[] | null> =
   combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
     switchMap(([path, user, student]) =>
-      path && user
-        ? this.firebaseService.getStudentTotalPollen(path, user.uid, student)
+      path && user && student
+        ? this.firebaseService.getStudentInteractions(path, user.uid, student)
         : null),
-    distinctUntilChanged()
+    distinctUntilChanged(),
+    tap(val => console.log('All Interactions: ' + val.length))
   );
 
-  currentPollen$: Observable<number | null> =
-  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
-    switchMap(([path, user, student]) =>
-      path && user
-        ? this.firebaseService.getStudentCurrentPollen(path, user.uid, student)
-        : null),
-    switchMap(interactions => {
+  totalPollen$: Observable<Interaction[] | null> = this.interactions$.pipe(
+    map(interactions =>
+      interactions ?
+      interactions.filter(interaction => interaction.barcodeValue >= 1 && interaction.barcodeValue <= 16)
+      : null
+    ),
+    distinctUntilChanged(),
+  );
+
+  currentBeePollen$: Observable<number | null> =
+  this.interactions$.pipe(
+    map(interactions => {
       if (interactions) {
         let currentPollen = 0;
-        for (let interaction of interactions){
+        for (const interaction of interactions) {
           if (interaction.barcodeValue === 0) {
             break;
           }
           currentPollen++;
         }
-        return of(currentPollen);
+        return currentPollen;
       } else {
-        return null;
+        return 300;
       }
-    })
+    }),
+    distinctUntilChanged(),
+  );
+
+  currentNestPollen$: Observable<number | null> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
+    map(([total, bee]) =>
+      total && bee !== null
+      ? total.length - bee
+      : null
+    ),
+    distinctUntilChanged(),
+    shareReplay(1)
   );
 
   /**

@@ -1,6 +1,7 @@
 <app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
-<p> Total: {{(this.studentRoundService.totalPollen$ | async)?.length }} </p>
-<p> Current: {{(this.studentRoundService.currentPollen$ | async) }} </p>
+<p *ngIf="(this.foundRoundMarker$ | async)?.barcodeValue === 0" > Nest: {{(this.studentRoundService.currentNestPollen$ | async) }} </p>
+<p> Total: {{(this.studentRoundService.totalPollen$ | async)?.length}}</p>
+<p> Current: {{(this.studentRoundService.currentBeePollen$ | async) }} </p>
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
@@ -13,7 +14,7 @@
   class="interact-button"
   color="primary"
   *ngIf="this.foundRoundMarker$ | async as marker"
-  [disabled]="!marker.active || ((this.studentRoundService.currentPollen$ | async) >= 3 && marker.barcodeValue != 0)"
+  [disabled]="!marker.active || ((this.studentRoundService.currentBeePollen$ | async) >= 3 && marker.barcodeValue != 0)"
   (click)="clickInteract(marker)"
 >
   Visit {{marker.name}}
