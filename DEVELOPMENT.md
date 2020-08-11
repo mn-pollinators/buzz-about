@@ -28,8 +28,6 @@ You'll want to join the [Minnesota Pollinators][] organization ([Prof. KK Lamber
 
 Be sure to sign up for the [student developer pack][Student developer pack], as well!
 
-![The student developer pack's webpage][i:Student developer pack]
-
 ## Installing Visual Studio Code
 
 Next, in order to read and write the code, you're going to need a text editor. There are a lot of good options, but the one that we've been using is [Visual Studio Code][], particularly because of its [live share][Live share] feature.
@@ -170,7 +168,6 @@ Note that the third-party libraries are installed within this project&mdash; the
 
 <!-- Images: -->
 [i:Signing up for GitHub]:https://user-images.githubusercontent.com/56209343/89746895-bb865200-da81-11ea-9dbc-1779b40768d6.PNG
-[i:Student developer pack]: https://user-images.githubusercontent.com/56209343/89746740-f1770680-da80-11ea-86dc-c0aa7ef0e0b4.PNG
 [i:VS Code]: https://user-images.githubusercontent.com/56209343/89746720-e15f2700-da80-11ea-920e-7219d47b4a83.PNG
 [i:Windows, installing git]: https://user-images.githubusercontent.com/56209343/89847231-1040d000-db49-11ea-898b-4ae52f19326c.PNG
 [i:GitKraken splash page]: https://user-images.githubusercontent.com/56209343/89746747-ff2c8c00-da80-11ea-9065-4c7b3dbb9f6a.PNG
@@ -179,5 +176,5 @@ Note that the third-party libraries are installed within this project&mdash; the
 [i:Windows, installing npm]: https://user-images.githubusercontent.com/56209343/89849965-4bde9880-db4f-11ea-8208-d64811844f57.PNG
 [i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
 [i:Logging in to npm]: https://user-images.githubusercontent.com/56209343/89855121-42f3c400-db5b-11ea-9d29-faaa20e5d90a.PNG
-[i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89855344-e218bb80-db5b-11ea-9e2a-21881e0fe457.PNG
-[i:Running npm install]: https://user-images.githubusercontent.com/56209343/89921641-9699f800-dbc3-11ea-86e8-d1179d552fd6.PNG
+[i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89954475-c4e4fb00-dbf6-11ea-950f-2ce572e19a7e.png
+[i:Running npm install]: https://user-images.githubusercontent.com/56209343/89921981-0e682280-dbc4-11ea-92de-9b21dd65b918.PNG
