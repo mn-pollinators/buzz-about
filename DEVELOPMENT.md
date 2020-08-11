@@ -161,7 +161,7 @@ Note that the third-party libraries are installed within this project&mdash; the
 [Visual Studio Code]: https://code.visualstudio.com/
 [Live share]: https://docs.microsoft.com/en-us/visualstudio/liveshare/
 [Install git for Windows]: https://git-scm.com/download
-[GitKraken]: https://www.gitkraken.com/
+[GitKraken]: https://www.gitkraken.com/git-client
 [Node.js]: https://nodejs.org/
 
 <!-- Images: -->
