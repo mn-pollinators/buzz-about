@@ -10,6 +10,8 @@ export class FlowerLayoutComponent implements OnInit {
 
   @Input() items: FlowerLayoutItem[] = [];
 
+  @Input() tooltips = false;
+
   constructor() { }
 
   ngOnInit() {
