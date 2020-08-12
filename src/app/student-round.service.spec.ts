@@ -886,26 +886,26 @@ describe('StudentRoundService', () => {
    *
    */
   describe('the interactions$ observable', () => {
-    scheduledIt('Emits null initially', ({expectObservable}) => {
+    scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.interactions$).toBe(
-        'n-',
+        'E-',
         values.interactions,
       );
     });
 
 
-    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+    scheduledIt('Emits an empty array when no user uid provided', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       expectObservable(service.interactions$).toBe(
-        'n-',
+        'E-',
         values.interactions,
       );
     });
 
-    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+    scheduledIt('Emits an empty array when no roundPath provided', ({expectObservable}) => {
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.interactions$).toBe(
-        'n-',
+        'E-',
         values.interactions,
       );
     });
@@ -924,26 +924,26 @@ describe('StudentRoundService', () => {
    *
    */
   describe('the totalPollen$ observable', () => {
-    scheduledIt('Emits null initially', ({expectObservable}) => {
+    scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.totalPollen$).toBe(
-        'n-',
+        'E-',
         values.interactions
       );
     });
 
 
-    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+    scheduledIt('Emits an empty array when no user uid provided', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       expectObservable(service.totalPollen$).toBe(
-        'n-',
+        'E-',
         values.interactions,
       );
     });
 
-    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+    scheduledIt('Emits an empty array when no roundPath provided', ({expectObservable}) => {
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.totalPollen$).toBe(
-        'n-',
+        'E-',
         values.interactions,
       );
     });
@@ -980,25 +980,25 @@ describe('StudentRoundService', () => {
    *
    */
   describe('the currentBeePollen$ observable', () => {
-    scheduledIt('Emits null initially', ({expectObservable}) => {
+    scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentBeePollen$).toBe(
-        'n-',
+        '0-',
         values.numbers
       );
     });
 
-    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no user uid provided', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       expectObservable(service.currentBeePollen$).toBe(
-        'n-',
+        '0-',
         values.numbers,
       );
     });
 
-    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no roundPath provided', ({expectObservable}) => {
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.currentBeePollen$).toBe(
-        'n-',
+        '0-',
         values.numbers,
       );
     });
@@ -1035,25 +1035,25 @@ describe('StudentRoundService', () => {
    *
    */
   describe('the currentNestPollen$ observable', () => {
-    scheduledIt('Emits null initially', ({expectObservable}) => {
+    scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentNestPollen$).toBe(
-        'n-',
+        '0-',
         values.numbers
       );
     });
 
-    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no user uid provided', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       expectObservable(service.currentNestPollen$).toBe(
-        'n-',
+        '0-',
         values.numbers,
       );
     });
 
-    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no roundPath provided', ({expectObservable}) => {
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.currentNestPollen$).toBe(
-        'n-',
+        '0-',
         values.numbers,
       );
     });

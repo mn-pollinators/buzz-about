@@ -145,28 +145,25 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-  interactions$: Observable<Interaction[] | null> =
+  interactions$: Observable<Interaction[]> =
   combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$]).pipe(
     switchMap(([path, user]) =>
       path && user
         ? this.firebaseService.getStudentInteractions(path, user.uid)
-        : of(null)),
+        : of([])),
     distinctUntilChanged()
   );
 
-  totalPollen$: Observable<Interaction[] | null> = this.interactions$.pipe(
+  totalPollen$: Observable<Interaction[]> = this.interactions$.pipe(
     map(interactions =>
-      interactions ?
       interactions.filter(interaction => interaction.barcodeValue >= 1 && interaction.barcodeValue <= 16)
-      : null
     ),
     distinctUntilChanged(),
   );
 
-  currentBeePollen$: Observable<number | null> =
+  currentBeePollen$: Observable<number> =
   this.interactions$.pipe(
     map(interactions => {
-      if (interactions) {
         let currentPollen = 0;
         for (const interaction of interactions) {
           if (interaction.barcodeValue === 0) {
@@ -175,18 +172,13 @@ export class StudentRoundService {
           currentPollen++;
         }
         return currentPollen;
-      } else {
-        return null;
-      }
     }),
     distinctUntilChanged(),
   );
 
-  currentNestPollen$: Observable<number | null> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
+  currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
     map(([total, bee]) =>
-      total && bee !== null
-      ? total.length - bee
-      : null
+      total.length - bee
     ),
     distinctUntilChanged(),
     shareReplay(1)
