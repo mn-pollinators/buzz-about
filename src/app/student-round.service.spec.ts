@@ -149,6 +149,12 @@ describe('StudentRoundService', () => {
         {barcodeValue: 0} as Interaction,
         {barcodeValue: 5} as Interaction,
       ],
+      // This one is just N without the nest interaction. Used to test totalPollen$
+      W: [
+        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 6} as Interaction,
+        {barcodeValue: 5} as Interaction,
+      ]
     },
   };
 
@@ -189,7 +195,7 @@ describe('StudentRoundService', () => {
     mockCurrentUser$ = new BehaviorSubject(null);
     mockUserXData$ = new BehaviorSubject(values.studentData.F);
     mockUserYData$ = new BehaviorSubject(values.studentData.V);
-    mockInteractionsX$ = new BehaviorSubject(values.interactions.e);
+    mockInteractionsX$ = new BehaviorSubject(values.interactions.E);
     mockInteractionsY$ = new BehaviorSubject(values.interactions.P);
     mockInteractionsZ$ = new BehaviorSubject(values.interactions.N);
   });
@@ -901,6 +907,62 @@ describe('StudentRoundService', () => {
       mockCurrentUser$.next(values.authUsers.Y);
       expectObservable(service.interactions$).toBe(
         'P-',
+        values.interactions,
+      );
+    });
+  });
+
+  /**
+   *
+   */
+  describe('the totalPollen$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.totalPollen$).toBe(
+        'n-',
+        values.interactions
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.totalPollen$).toBe(
+        'n-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.totalPollen$).toBe(
+        'n-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Emits an empty array when no interactions have occurred', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.totalPollen$).toBe(
+        'E-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Leaves the array of interactions unchanged when the student has not interacted with a nest', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Y);
+      expectObservable(service.totalPollen$).toBe(
+        'P-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Filters out any nest interactions', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Z);
+      expectObservable(service.totalPollen$).toBe(
+        'W-',
         values.interactions,
       );
     });
