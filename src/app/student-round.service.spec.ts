@@ -24,6 +24,7 @@ describe('StudentRoundService', () => {
     studentData: {[letterName: string]: RoundStudentData},
     authUsers: {[letterName: string]: User},
     beeSpecies: {[letterName: string]: BeeSpecies},
+    interactions: {[letterName: string]: Interaction[]}
   } = {
     roundPaths: {
       n: null,
@@ -124,14 +125,30 @@ describe('StudentRoundService', () => {
       u: undefined,
       X: {uid: 'userX'} as User,
       Y: {uid: 'userY'} as User,
+      Z: {uid: 'userZ'} as User,
     },
 
     beeSpecies: {
       n: null,
       // Note that both of these bees are active during time period 25, but not
       // during time period 47.
-      v: allBeeSpecies.apis_mellifera,
-      w: allBeeSpecies.bombus_affinis,
+      V: allBeeSpecies.apis_mellifera,
+      W: allBeeSpecies.bombus_affinis,
+    },
+
+    interactions: {
+      n: null,
+      E: [],
+      P: [
+        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 6} as Interaction,
+      ],
+      N: [
+        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 6} as Interaction,
+        {barcodeValue: 0} as Interaction,
+        {barcodeValue: 5} as Interaction,
+      ],
     },
   };
 
@@ -160,6 +177,10 @@ describe('StudentRoundService', () => {
   let mockUserXData$: BehaviorSubject<RoundStudentData>;
   let mockUserYData$: BehaviorSubject<RoundStudentData>;
 
+  let mockInteractionsX$: BehaviorSubject<Interaction[]>;
+  let mockInteractionsY$: BehaviorSubject<Interaction[]>;
+  let mockInteractionsZ$: BehaviorSubject<Interaction[]>;
+
   beforeEach(() => {
     mockRound1AData$ = new BehaviorSubject(null);
     mockRound1BData$ = new BehaviorSubject(null);
@@ -168,6 +189,9 @@ describe('StudentRoundService', () => {
     mockCurrentUser$ = new BehaviorSubject(null);
     mockUserXData$ = new BehaviorSubject(values.studentData.F);
     mockUserYData$ = new BehaviorSubject(values.studentData.V);
+    mockInteractionsX$ = new BehaviorSubject(values.interactions.e);
+    mockInteractionsY$ = new BehaviorSubject(values.interactions.P);
+    mockInteractionsZ$ = new BehaviorSubject(values.interactions.N);
   });
 
   beforeEach(() => {
@@ -198,6 +222,19 @@ describe('StudentRoundService', () => {
 
       addInteraction() {
         return null;
+      },
+
+      getStudentInteractions(_, studentId) {
+        switch (studentId) {
+          case 'userX':
+            return mockInteractionsX$;
+          case 'userY':
+            return mockInteractionsY$;
+          case 'userZ':
+            return mockInteractionsZ$;
+          default:
+            throw new Error(`FirebaseService.getStudentInteractions(): Bad student id ${studentId}`);
+        }
       }
     };
 
@@ -223,6 +260,9 @@ describe('StudentRoundService', () => {
     expect(service).toBeTruthy();
   });
 
+  /**
+   *
+   */
   describe('The currentRound$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRound$).toBe('n-', values.rounds);
@@ -274,6 +314,9 @@ describe('StudentRoundService', () => {
     });
   });
 
+  /**
+   *
+   */
   describe('The currentFlowerSpecies$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -338,6 +381,9 @@ describe('StudentRoundService', () => {
     );
   });
 
+  /**
+   *
+   */
   describe('The currentTime$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentTime$).toBe(
@@ -402,7 +448,9 @@ describe('StudentRoundService', () => {
     );
   });
 
-
+  /**
+   *
+   */
   describe('The currentFlowers$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -460,6 +508,9 @@ describe('StudentRoundService', () => {
     );
   });
 
+  /**
+   *
+   */
   describe('The currentRunning$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRunning$).toBe(
@@ -524,6 +575,9 @@ describe('StudentRoundService', () => {
     );
   });
 
+  /**
+   *
+   */
   describe('the roundStudentData$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.roundStudentData$).toBe(
@@ -600,6 +654,9 @@ describe('StudentRoundService', () => {
     });
   });
 
+  /**
+   *
+   */
   describe('the currentBeeSpecies$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeSpecies$).toBe(
@@ -633,7 +690,7 @@ describe('StudentRoundService', () => {
         expectedBeeSpecies,
       ] = [
         '----Y-X-',
-        'n---v-n-',
+        'n---V-n-',
       ];
 
       cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
@@ -653,7 +710,7 @@ describe('StudentRoundService', () => {
         expectedBeeSpecies,
       ] = [
         '----W-F-V-F-',
-        'v---w-n-v-n-',
+        'V---W-n-V-n-',
       ];
 
       cold(currentUserYData, values.studentData).subscribe(mockUserYData$);
@@ -676,7 +733,7 @@ describe('StudentRoundService', () => {
         '----F---------V-------',
         '----F---------V-------',
         '------X-Y-u-----X-Y-u-',
-        'n---------------v---n-',
+        'n---------------V---n-',
       ];
 
       cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
@@ -690,6 +747,9 @@ describe('StudentRoundService', () => {
     });
   });
 
+  /**
+   *
+   */
   describe('the currentBeeActive$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeActive$).toBe(
@@ -808,6 +868,47 @@ describe('StudentRoundService', () => {
     });
   });
 
+  /**
+   *
+   */
+  describe('the interactions$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.interactions$).toBe(
+        'n-',
+        values.interactions,
+      );
+    });
+
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.interactions$).toBe(
+        'n-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.interactions$).toBe(
+        'n-',
+        values.interactions,
+      );
+    });
+
+    scheduledIt('Emits Interactions P when given User Y\'s UID and a valid round path', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Y);
+      expectObservable(service.interactions$).toBe(
+        'P-',
+        values.interactions,
+      );
+    });
+  });
+
+  /**
+   *
+   */
   describe('The interact() method', () => {
     let interactionSpy: jasmine.Spy<FirebaseService['addInteraction']>;
 
