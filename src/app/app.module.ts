@@ -26,6 +26,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './components/play-round/play-round.component';
@@ -53,6 +56,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
 
 
@@ -69,6 +73,9 @@ const ANGULAR_MATERIAL_MODULES = [
   MatMenuModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatDialogModule,
+  MatListModule,
+  MatTooltipModule,
 ];
 
 const FIREBASE_MODULES = [
@@ -103,6 +110,7 @@ const FIREBASE_MODULES = [
     HostSessionComponent,
     RoundTemplateTestComponent,
     TestPagesComponent,
+    RoundChooserDialogComponent,
     StudentRoundComponent,
   ],
   imports: [
