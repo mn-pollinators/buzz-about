@@ -37,7 +37,8 @@ describe('TeacherRoundService', () => {
 
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
       'firebaseService',
-      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession', 'addStudentToRound', 'setCurrentRound'],
+      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession',
+      'addStudentToRound', 'setCurrentRound', 'addHostEvent'],
     );
 
     mockFirebaseService.createRoundInSession.and.callFake(() => {
