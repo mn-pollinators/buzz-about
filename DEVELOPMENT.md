@@ -53,7 +53,7 @@ If you run into trouble, you can always fall back to typing the personal access 
 
 Angular provides a CLI with commands for some common operations, like `ng build`, `ng serve`, `ng lint`, and `ng test`. (There's also `ng generate`, which lets you quickly make a new component or service without having to write out the boilerplate every time.)
 
-In order to use the Angular CLI, you'll need to install the `@angular/cli` module globally:
+In order to use the Angular CLI, you'll need to install the `@angular/cli` package globally:
 
 ```PowerShell
 npm install -g @angular/cli
