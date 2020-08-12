@@ -3,9 +3,9 @@ import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-lay
 import { TimerService } from '../../services/timer.service';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 import { BeeSpecies, allBeeSpecies } from '../../bees';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { RoundFlower } from '../../round';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
@@ -22,6 +22,7 @@ import { ActivatedRoute } from '@angular/router';
  */
 export enum ScreenId {
   Lobby,
+  Loading,
   DuringTheRound,
 }
 
@@ -34,30 +35,7 @@ export class LargeDisplayComponent implements OnInit {
   // Expose this enum to the template
   readonly ScreenId = ScreenId;
 
-  demoFlowerSpecies: FlowerSpecies[] = [
-    allFlowerSpecies.asclepias_syriaca,
-    allFlowerSpecies.cirsium_discolor,
-    allFlowerSpecies.echinacea_angustifolia,
-    allFlowerSpecies.helianthus_maximiliani,
-    allFlowerSpecies.monarda_fistulosa,
-    allFlowerSpecies.prunus_americana,
-    allFlowerSpecies.rubus_occidentalis,
-    allFlowerSpecies.rudbeckia_hirta,
-    allFlowerSpecies.solidago_rigida,
-    allFlowerSpecies.taraxacum_officinale,
-    allFlowerSpecies.trifolium_repens,
-    allFlowerSpecies.vaccinium_angustifolium,
-    allFlowerSpecies.asclepias_syriaca,
-    allFlowerSpecies.cirsium_discolor,
-    allFlowerSpecies.echinacea_angustifolia,
-    allFlowerSpecies.helianthus_maximiliani,
-  ];
-
-  demoRoundFlowers$ = this.timerService.currentTime$.pipe(
-    map(time => this.demoFlowerSpecies.map(species => new RoundFlower(species, time)))
-  );
-
-  demoFlowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.demoRoundFlowers$.pipe(
+  flowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.teacherRoundService.currentFlowers$.pipe(
     map(roundFlowers => roundFlowers.map(rf => ({
       imgSrc: `assets/art/500w/flowers/${rf.species.art_file}`,
       alt: rf.species.name,
@@ -69,8 +47,20 @@ export class LargeDisplayComponent implements OnInit {
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.
 
-  currentScreen$: Observable<ScreenId> = this.teacherSessionService.currentRoundPath$.pipe(
-    map(roundPath => roundPath === null || roundPath.roundId === null ? ScreenId.Lobby : ScreenId.DuringTheRound),
+  loading$ = new BehaviorSubject<boolean>(true);
+
+  currentScreen$: Observable<ScreenId> = this.loading$.pipe(
+    switchMap(loading =>
+      loading
+        ? of(ScreenId.Loading)
+        : this.teacherSessionService.currentRoundPath$.pipe(
+          map(roundPath =>
+            roundPath === null
+              ? ScreenId.Lobby
+              : ScreenId.DuringTheRound
+          ),
+        )
+    ),
   );
 
   constructor(
@@ -83,11 +73,14 @@ export class LargeDisplayComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe(params => {
       this.teacherSessionService.setCurrentSession(params.get('sessionId'));
+      this.quitRound().then(() => {
+        this.loading$.next(false);
+      });
     });
   }
 
   quitRound() {
-    this.teacherRoundService.endRound();
+    return this.teacherRoundService.endRound();
   }
 
   toggleTimerRunning() {

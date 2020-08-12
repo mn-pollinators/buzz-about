@@ -6,17 +6,21 @@
   <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="large-display-content during-the-round">
       <app-timer-progress-bar
+        *ngIf="teacherRoundService.roundTemplate$ | async as template"
         [currentTime]="timerService.currentTime$ | async"
-        [startMonth]="this.teacherRoundService.startTime.month"
-        [endMonth]="this.teacherRoundService.endTime.month"
-      ></app-timer-progress-bar>
+        [startMonth]="template.startTime.month"
+        [endMonth]="template.endTime.month"
+      >
+      </app-timer-progress-bar>
 
-      <app-flower-layout [items]="demoFlowerLayoutItems$ | async"></app-flower-layout>
+      <app-flower-layout [items]="flowerLayoutItems$ | async"></app-flower-layout>
 
       <app-timer-progress-spinner
+        *ngIf="teacherRoundService.roundTemplate$ | async as template"
         [currentTime]="timerService.currentTime$ | async"
-        [startTime]="this.teacherRoundService.startTime"
-        [endTime]="this.teacherRoundService.endTime">
+        [startTime]="template.startTime"
+        [endTime]="template.endTime"
+      >
       </app-timer-progress-spinner>
     </div>
 
@@ -38,5 +42,17 @@
         <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
       </div>
     </app-bottom-bar>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>
+          Loading Session&hellip;
+        </mat-card-title>
+        <mat-spinner></mat-spinner>
+      </mat-card>
+    </div>
   </ng-container>
 </ng-container>

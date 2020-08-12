@@ -9,6 +9,7 @@
   height: 64px;
   width: 100%;
   background-color: mat-color($primary);
+  color: mat-color($primary, default-contrast);
   display: flex;
   flex-direction: row;
 
