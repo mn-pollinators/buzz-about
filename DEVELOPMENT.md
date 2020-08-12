@@ -8,6 +8,9 @@ Before you can start working on Buzz About, there are a few things you'll have t
   - [Generating the personal access token](#generating-the-personal-access-token)
   - [Giving that personal access token to `npm`](#giving-that-personal-access-token-to-npm)
 - [Installing the Angular command-line interface](#installing-the-angular-command-line-interface)
+- [Setting up Firebase](#setting-up-firebase)
+  - [Installing the command-line interface](#installing-the-command-line-interface)
+  - [Running the emulator](#running-the-emulator)
 
 ## Tell `npm` how to talk to GitHub Packages
 
@@ -53,16 +56,54 @@ Angular provides a CLI with commands for some common operations, like `ng build`
 In order to use the Angular CLI, you'll need to install the `@angular/cli` module globally:
 
 ```PowerShell
-npm install -g @angular/cli 
+npm install -g @angular/cli
 ```
 
 (If you're on a Unix system, you may need `sudo`.)
 
+## Setting up Firebase
+
+[Firebase][] is a set of cloud services provided by Google. We use a few of these services in Buzz About. Notably, we're using [Cloud Firestore][], a database that syncs between multiple clients in real time.
+
+When working on Buzz About, you'll want to make sure your school Google account gets added to our Firebase project. (Professor KK should be able to add you.)
+
+### Installing the command-line interface
+
+Like Angular, Firebase provides a set of command-line tools. You can get these by running
+
+```PowerShell
+npm install -g firebase-tools
+```
+
+The first command that you want to run is probably `firebase login`. This will open a web browser prompting you to log in with your Google account.
+
+![PowerShell after running "firebase login". The program asks if it's okay to collect usage and error reporting, and then waits for authentication from the web browser.][i:Running firebase login]
+
+![The browser window that "firebase login" spawns. It says that the Firebase CLI wants to view and manage your data across Google Cloud Platform services, view and administer all your Firebase data and settings, and view your cloud platform projects. At the bottom, there's an "Allow" button and a "Cancel" button.][i:Authenticating the Firebase CLI in the browser]
+
+### Running the emulator
+
+When you're developing Buzz About locally, it isn't able to talk to the production database, so you'll need to run a local emulator.
+
+To run the the Firestore emulator locally, type
+
+```PowerShell
+npm run firebase:emulator
+```
+
+Now, if you start up a local copy of Buzz About, it should be able to talk to the emulator. Also, if you go to localhost:4000 in a browser, you'll find a nifty little database console!
+
+![The local Firebase console at localhost:4000][i:Local Firebase console]
+
 
 <!-- Links: -->
-
+[Firebase]: https://firebase.google.com/
+[Cloud Firestore]: https://firebase.google.com/products/firestore
 
 <!-- Images: -->
 [i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
 [i:Logging in to npm]: https://user-images.githubusercontent.com/56209343/89855121-42f3c400-db5b-11ea-9d29-faaa20e5d90a.PNG
 [i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89954475-c4e4fb00-dbf6-11ea-950f-2ce572e19a7e.png
+[i:Running firebase login]: https://user-images.githubusercontent.com/56209343/89972375-52d6db00-dc23-11ea-83ca-411f89a6aac7.PNG
+[i:Authenticating the Firebase CLI in the browser]: https://user-images.githubusercontent.com/56209343/89972377-536f7180-dc23-11ea-977e-48a254e8604c.PNG
+[i:Local Firebase console]: 
