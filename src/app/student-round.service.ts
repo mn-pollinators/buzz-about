@@ -146,11 +146,11 @@ export class StudentRoundService {
   );
 
   interactions$: Observable<Interaction[] | null> =
-  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.sessionService.sessionStudentData$]).pipe(
-    switchMap(([path, user, student]) =>
-      path && user && student
-        ? this.firebaseService.getStudentInteractions(path, user.uid, student)
-        : null),
+  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$]).pipe(
+    switchMap(([path, user]) =>
+      path && user
+        ? this.firebaseService.getStudentInteractions(path, user.uid)
+        : of(null)),
     distinctUntilChanged()
   );
 

@@ -73,8 +73,7 @@ export class PlayRoundComponent implements OnInit {
         pollenArray[i] = true;
       }
       return pollenArray;
-    }),
-    tap(val => console.log('beePollen$: ' + val))
+    })
   );
 
   ngOnInit() {
