@@ -32,8 +32,8 @@ describe('LargeDisplayComponent', () => {
 
   beforeEach(async(() => {
     const mockTeacherRoundService: Partial<TeacherRoundService> = {
-      startTime: TimePeriod.fromMonthAndQuarter(4, 1),
-      endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+      currentFlowers$: of([]),
+      async endRound() {}
     };
 
     const mockTeacherSessionService: Partial<TeacherSessionService> = {

@@ -131,7 +131,7 @@ describe('StudentDisplayComponent', () => {
           tick(0);
 
           component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
-            expect(currentScreen).toBe(ScreenId.PlayRound);
+            expect(currentScreen).toBe(ScreenId.StudentRound);
           });
           tick(0);
         }),

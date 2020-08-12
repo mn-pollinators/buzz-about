@@ -31,7 +31,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
-import { PlayRoundComponent } from './pages/play-round/play-round.component';
+import { PlayRoundComponent } from './components/play-round/play-round.component';
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
@@ -57,6 +57,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
+import { StudentRoundComponent } from './pages/student-round/student-round.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -110,6 +111,7 @@ const FIREBASE_MODULES = [
     RoundTemplateTestComponent,
     TestPagesComponent,
     RoundChooserDialogComponent,
+    StudentRoundComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { roundTemplates } from 'src/app/round-template';
 import { FlowerSpecies } from 'src/app/flowers';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
@@ -17,7 +17,7 @@ export class RoundChooserDialogComponent implements OnInit {
 
   roundTemplates = roundTemplates;
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 
