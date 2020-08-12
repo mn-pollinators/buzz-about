@@ -74,15 +74,15 @@ Now, you should be able to see the whole history of the project!
 
 ![The screen that GitKraken shows when you've opened a repo][i:GitKraken graph view]
 
-## Installing `npm`
+## Installing Node.js
 
-At this point, you should have all of the code for Buzz About on your computer, but you still don't have a way to run it. For that, you'll need to install `npm`, the one-stop shop for everything JavaScript.
+At this point, you should have all of the code for Buzz About on your computer, but you still don't have a way to compile and run it. For that, you'll need to install Node.js, a JavaScript interpreter.
 
-`npm` comes as part of the Node project, which you can download [here][Node.js]. The LTS (long-term support) version should be fine.
+You can download Node.js, along with its associated command-line tools, [here][Node.js]. The LTS (long-term support) version should be fine.
 
 On Windows, you'll be asked if you want to install tools for native modules. We don't have any native modules in this project, but you'll probably want to check that box anyway, in case you want to install any in the future. (Installing tools for native modules may take a while.)
 
-![The npm installer asking whether you'd like tools for native modules, with the checkbox checked][i:Windows, installing npm]
+![The Node.js installer asking whether you'd like tools for native modules, with the checkbox checked][i:Windows, installing npm]
 
 ## Telling `npm` how to talk to GitHub Packages
 
