@@ -106,4 +106,4 @@ Now, if you start up a local copy of Buzz About, it should be able to talk to th
 [i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89954475-c4e4fb00-dbf6-11ea-950f-2ce572e19a7e.png
 [i:Running firebase login]: https://user-images.githubusercontent.com/56209343/89972375-52d6db00-dc23-11ea-83ca-411f89a6aac7.PNG
 [i:Authenticating the Firebase CLI in the browser]: https://user-images.githubusercontent.com/56209343/89972377-536f7180-dc23-11ea-977e-48a254e8604c.PNG
-[i:Local Firebase console]: 
+[i:Local Firebase console]: https://user-images.githubusercontent.com/56209343/89973180-58352500-dc25-11ea-800d-2eeac828063b.PNG
