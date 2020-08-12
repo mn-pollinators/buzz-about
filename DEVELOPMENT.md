@@ -38,8 +38,6 @@ npm login --registry=https://npm.pkg.github.com
  * When it asks for a password, paste in the personal access token (***not*** your GitHub password).
  * When it asks for your email, enter your GitHub email. 
 
-![Powershell after running "npm login --registry=https://npm.pkg.github.com". The output "Logged in as helloworld12321demo on https://npm.pkg.github.com/" is shown.][i:Logging in to npm]
-
 Some sticking-points:
 
 1. To paste text into PowerShell, right-click once.
@@ -102,7 +100,6 @@ Now, if you start up a local copy of Buzz About, it should be able to talk to th
 
 <!-- Images: -->
 [i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
-[i:Logging in to npm]: https://user-images.githubusercontent.com/56209343/89855121-42f3c400-db5b-11ea-9d29-faaa20e5d90a.PNG
 [i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89954475-c4e4fb00-dbf6-11ea-950f-2ce572e19a7e.png
 [i:Running firebase login]: https://user-images.githubusercontent.com/56209343/89972375-52d6db00-dc23-11ea-83ca-411f89a6aac7.PNG
 [i:Authenticating the Firebase CLI in the browser]: https://user-images.githubusercontent.com/56209343/89972377-536f7180-dc23-11ea-977e-48a254e8604c.PNG
