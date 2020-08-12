@@ -1,5 +1,5 @@
 import { TestBed, fakeAsync, inject, tick, discardPeriodicTasks, async } from '@angular/core/testing';
-import { TeacherRoundService, BeeWithWeight } from './teacher-round.service';
+import { TeacherRoundService } from './teacher-round.service';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { TimerService } from './timer.service';
 import { TimePeriod } from '../time-period';
@@ -7,18 +7,13 @@ import { allBeeSpecies } from '../bees';
 import { TeacherSessionService } from './teacher-session.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { SessionStudentData } from '../session';
+import { RoundTemplate, TemplateBee, roundTemplates } from '../round-template';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
   const fakeSessionId = 'fake-session-id';
   const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
-  const fakeRoundData = {
-    flowerSpeciesIds: ['achillea_millefolium'],
-    beeSpeciesIds: [allBeeSpecies.apis_mellifera.id],
-    status: 'dandy',
-    running: true,
-    currentTime: 17,
-  };
+  const fakeRoundData: RoundTemplate = roundTemplates[0];
   const fakeStudentData: SessionStudentData[] = [
     {name: 'Bob', id: '1', nestBarcode: 0},
     {name: 'Sam', id: '2', nestBarcode: 0},
@@ -26,9 +21,9 @@ describe('TeacherRoundService', () => {
     {name: 'Jim', id: '4', nestBarcode: 0}
   ];
   const anotherStudent: SessionStudentData = {name: 'Ace', id: '5', nestBarcode: 0};
-  const fakeBeeData: BeeWithWeight[] = [
-    {id: 'Butterfly', weight: 0.8},
-    {id: 'Bat', weight: 0.2},
+  const fakeBeeData: TemplateBee[] = [
+    {species: allBeeSpecies.apis_mellifera, weight: 0.8},
+    {species: allBeeSpecies.colletes_simulans, weight: 0.2},
   ];
 
   beforeEach(() => {
@@ -75,12 +70,12 @@ describe('TeacherRoundService', () => {
     const TEST_TIMES = 20;
 
     describe('When provided bees with weights', () => {
-      it('Assigns a bee to every student', async(inject([FirebaseService], (
+      it('Assigns a bee to every student', async(inject([FirebaseService], async (
         firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
       ) => {
         for (let i = 0; i < TEST_TIMES; i++) {
           firebaseService.addStudentToRound.calls.reset();
-          service.assignBees(fakeRoundPath, fakeBeeData);
+          await service.assignBees(fakeRoundPath, fakeBeeData);
 
           expect(firebaseService.addStudentToRound).toHaveBeenCalled();
 
@@ -99,12 +94,12 @@ describe('TeacherRoundService', () => {
         }
       })));
 
-      it('Assigns the bees according to weights', async(inject([FirebaseService], (
+      it('Assigns the bees according to weights', async(inject([FirebaseService], async (
         firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
       ) => {
         for (let i = 0; i < TEST_TIMES; i++) {
           firebaseService.addStudentToRound.calls.reset();
-          service.assignBees(fakeRoundPath, fakeBeeData);
+          await service.assignBees(fakeRoundPath, fakeBeeData);
 
           expect(firebaseService.addStudentToRound).toHaveBeenCalled();
 
@@ -115,7 +110,7 @@ describe('TeacherRoundService', () => {
 
             let numOfBees = 0;
             studentData.forEach(student => {
-              if (student.beeSpecies === fakeBee.id) {
+              if (student.beeSpecies === fakeBee.species.id) {
                 numOfBees++;
               }
             });
@@ -129,7 +124,7 @@ describe('TeacherRoundService', () => {
         // This test makes sure that we remember to cancel our subscription to
         // FirebaseService.getStudentsInSession().
         'Doesn\'t try to re-assign bees if the session/students collection changes in Firebase',
-        async(inject([FirebaseService], (
+        async(inject([FirebaseService], async (
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
           for (let i = 0; i < TEST_TIMES; i++) {
@@ -138,7 +133,7 @@ describe('TeacherRoundService', () => {
             firebaseService.getStudentsInSession.and.returnValue(studentsInRound$);
 
             firebaseService.addStudentToRound.calls.reset();
-            service.assignBees(fakeRoundPath, fakeBeeData);
+            await service.assignBees(fakeRoundPath, fakeBeeData);
             expect(firebaseService.addStudentToRound).toHaveBeenCalled();
 
             firebaseService.addStudentToRound.calls.reset();
@@ -150,12 +145,12 @@ describe('TeacherRoundService', () => {
     });
 
     describe('When we don\'t provide bees', () => {
-      it('Assigns a bee to every student', async(inject([FirebaseService], (
+      it('Assigns a bee to every student', async(inject([FirebaseService], async (
         firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
       ) => {
         for (let i = 0; i < TEST_TIMES; i++) {
           firebaseService.addStudentToRound.calls.reset();
-          service.assignBees(fakeRoundPath);
+          await service.assignBees(fakeRoundPath);
 
           expect(firebaseService.addStudentToRound).toHaveBeenCalled();
 
@@ -174,14 +169,14 @@ describe('TeacherRoundService', () => {
         }
       })));
 
-      it('Assigns a different bee to every student', async(inject([FirebaseService], (
+      it('Assigns a different bee to every student', async(inject([FirebaseService], async (
         firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
       ) => {
 
         // Note: This test is only applicable when the number of fake students is less than the number of actual bees in the simulation
         for (let i = 0; i < TEST_TIMES; i++) {
           firebaseService.addStudentToRound.calls.reset();
-          service.assignBees(fakeRoundPath);
+          await service.assignBees(fakeRoundPath);
 
           expect(firebaseService.addStudentToRound).toHaveBeenCalled();
 
