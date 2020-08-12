@@ -14,7 +14,9 @@ export class JoinSessionComponent implements OnInit {
 
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
-    sessionControl: new FormControl('', Validators.required)
+    sessionControl: new FormControl('', Validators.required),
+    nestControl: new FormControl('', [Validators.required, Validators.min(20), Validators.max(120),
+      Validators.pattern('^[0-9]*$')])
   });
 
   constructor(public studentSessionService: StudentSessionService, public router: Router, private snackbar: MatSnackBar) {
@@ -29,8 +31,9 @@ export class JoinSessionComponent implements OnInit {
   joinSession() {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const sessionId = this.sessionFormGroup.controls.sessionControl.value;
-    // TODO: get barcode from form input
-    this.studentSessionService.joinSession({name, nestBarcode: 0}, sessionId).then(() => {
+    const nestBarcode = this.sessionFormGroup.controls.nestControl.value;
+
+    this.studentSessionService.joinSession({name, nestBarcode}, sessionId).then(() => {
       this.router.navigate(['/play', sessionId]);
     }, (reason) => {
       this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});
