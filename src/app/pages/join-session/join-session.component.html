@@ -6,15 +6,15 @@
       <mat-card-content class="join-card-content">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Session ID</mat-label>
-          <input matInput class="session" formControlName="sessionControl">
+          <input matInput class="session" formControlName="sessionControl" required>
         </mat-form-field>
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Name</mat-label>
-          <input matInput class="name" formControlName="nameControl">
+          <input matInput class="name" formControlName="nameControl" required>
         </mat-form-field>
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Nest marker ID</mat-label>
-          <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl">
+          <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl" required>
           <mat-hint>The number at the top of your nest marker</mat-hint>
           <mat-error *ngIf="sessionFormGroup.controls['nestControl'].invalid">
             Invalid nest ID: please enter the ID number on your nest marker
