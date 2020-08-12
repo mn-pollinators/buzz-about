@@ -1034,6 +1034,61 @@ describe('StudentRoundService', () => {
   /**
    *
    */
+  describe('the currentNestPollen$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentNestPollen$).toBe(
+        'n-',
+        values.numbers
+      );
+    });
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.currentNestPollen$).toBe(
+        'n-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentNestPollen$).toBe(
+        'n-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits 0 when no interactions have occurred', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentNestPollen$).toBe(
+        '0-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits 0 when the student has not interacted with a nest', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Y);
+      expectObservable(service.currentNestPollen$).toBe(
+        '0-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Does not count interactions that have occurred since the last nest visit', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Z);
+      expectObservable(service.currentNestPollen$).toBe(
+        '1-',
+        values.numbers,
+      );
+    });
+  });
+
+  /**
+   *
+   */
   describe('The interact() method', () => {
     let interactionSpy: jasmine.Spy<FirebaseService['addInteraction']>;
 
