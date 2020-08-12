@@ -7,13 +7,13 @@
       <mat-card class="join-code">
         <mat-card-content>Join at buzzabout.app</mat-card-content>
         <mat-card-content>With the join code:</mat-card-content>
-        <mat-card-title>{{ teacherSessionService.sessionId$| async }}</mat-card-title>
+        <mat-card-title>{{ teacherSessionService.sessionId$ | async }}</mat-card-title>
       </mat-card>
     </div>
     <div class="top-content-right-section">
       <div class="player-count">
         <h1 class="number-of-players">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
-        <p>Players</p>
+        <p>{{'Player' | makePluralString: (teacherSessionService.studentsInCurrentSession$ | async)?.length}}</p>
       </div>
     </div>
   </div>
@@ -24,6 +24,6 @@
 
 <app-bottom-bar>
   <button left mat-raised-button color="accent" (click)="quitSession()">Quit Session</button>
-  <button center mat-raised-button color="accent" (click)="startRound()">Start Round</button>
+  <button center mat-raised-button color="accent" (click)="openRoundDialog()">Start Round</button>
   <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </app-bottom-bar>
