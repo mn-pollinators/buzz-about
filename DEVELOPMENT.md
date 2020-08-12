@@ -7,6 +7,7 @@ Before you can start working on Buzz About, there are a few things you'll have t
 - [Tell `npm` how to talk to GitHub Packages](#tell-npm-how-to-talk-to-github-packages)
   - [Generating the personal access token](#generating-the-personal-access-token)
   - [Giving that personal access token to `npm`](#giving-that-personal-access-token-to-npm)
+- [Installing the Angular command-line interface](#installing-the-angular-command-line-interface)
 
 ## Tell `npm` how to talk to GitHub Packages
 
@@ -44,6 +45,18 @@ Some sticking-points:
 ![github.com/settings/tokens with the extra space character highlighted][i:The gosh-darn whitespace]
 
 If you run into trouble, you can always fall back to typing the personal access code by hand.
+
+## Installing the Angular command-line interface
+
+Angular provides a CLI with commands for some common operations, like `ng build`, `ng serve`, `ng lint`, and `ng test`. (There's also `ng generate`, which lets you quickly make a new component or service without having to write out the boilerplate every time.)
+
+In order to use the Angular CLI, you'll need to install the `@angular/cli` module globally:
+
+```PowerShell
+npm install -g @angular/cli 
+```
+
+(If you're on a Unix system, you may need `sudo`.)
 
 
 <!-- Links: -->
