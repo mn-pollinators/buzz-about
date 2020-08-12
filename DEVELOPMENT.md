@@ -2,6 +2,8 @@
 
 Before you can start working on Buzz About, there are a few things you'll have to set up on your computer.
 
+If you're new to Minnesota Pollinators, you may also want to read the [getting started][Getting started] document, which gives an overview of how to set up your development environment.
+
 **Table of Contents**
 
 - [Tell `npm` how to talk to GitHub Packages](#tell-npm-how-to-talk-to-github-packages)
@@ -95,6 +97,7 @@ Now, if you start up a local copy of Buzz About, it should be able to talk to th
 
 
 <!-- Links: -->
+[Getting started]: https://github.com/mn-pollinators/getting-started/blob/master/README.md
 [Firebase]: https://firebase.google.com/
 [Cloud Firestore]: https://firebase.google.com/products/firestore
 
