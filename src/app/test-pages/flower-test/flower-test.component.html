@@ -1,0 +1,15 @@
+<div #contents>
+  <div class="flower-settings">
+    <div *ngFor="let flower of flowers">
+      <select [(ngModel)]="flower.species">
+        <option *ngFor="let species of allFlowerSpeciesArray" [value]="species.id">{{species.name}}</option>
+      </select>
+
+      <input type="checkbox" [(ngModel)]="flower.blooming">
+    </div>
+  </div>
+
+  <div class="test-container">
+    <app-flower-layout [items]="getFlowers(flowers)"></app-flower-layout>
+  </div>
+</div>
