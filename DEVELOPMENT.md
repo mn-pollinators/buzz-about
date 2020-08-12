@@ -55,7 +55,7 @@ Angular provides a CLI with commands for some common operations, like `ng build`
 
 In order to use the Angular CLI, you'll need to install the `@angular/cli` package globally:
 
-```PowerShell
+```sh
 npm install -g @angular/cli
 ```
 
@@ -71,7 +71,7 @@ When working on Buzz About, you'll want to make sure your school Google account 
 
 Like Angular, Firebase provides a set of command-line tools. You can get these by running
 
-```PowerShell
+```sh
 npm install -g firebase-tools
 ```
 
@@ -87,7 +87,7 @@ When you're developing Buzz About locally, it isn't able to talk to the producti
 
 To run the the Firestore emulator locally, type
 
-```PowerShell
+```sh
 npm run firebase:emulator
 ```
 
