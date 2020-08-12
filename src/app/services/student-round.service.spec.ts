@@ -2,15 +2,15 @@ import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { StudentRoundService } from './student-round.service';
 import { BehaviorSubject } from 'rxjs';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from './round';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
 import { StudentSessionService } from './student-session.service';
-import { scheduledIt } from './utils/karma-utils';
-import { FlowerSpecies, allFlowerSpecies } from './flowers';
-import { TimePeriod } from './time-period';
+import { scheduledIt } from '../utils/karma-utils';
+import { FlowerSpecies, allFlowerSpecies } from '../flowers';
+import { TimePeriod } from '../time-period';
 import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { User } from 'firebase';
 import { AuthService } from './auth.service';
-import { allBeeSpecies, BeeSpecies } from './bees';
+import { allBeeSpecies, BeeSpecies } from '../bees';
 
 describe('StudentRoundService', () => {
   const values: {

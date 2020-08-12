@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
-import { StudentRoundService } from '../student-round.service';
+import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, } from 'rxjs/operators';
-import { StudentSessionService } from '../student-session.service';
+import { StudentSessionService } from '../../services/student-session.service';
 
 interface RoundMarker extends ARMarker {
   name: string;

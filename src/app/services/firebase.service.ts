@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Session, SessionWithId, SessionStudentData } from './session';
+import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction } from './round';
+import { FirebaseRound, RoundStudentData, Interaction } from '../round';
 import { firestore } from 'firebase';
 
 export interface RoundPath {
