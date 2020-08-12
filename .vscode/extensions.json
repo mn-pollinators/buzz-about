@@ -27,6 +27,9 @@
     // Firebase
     // https://marketplace.visualstudio.com/items?itemName=toba.vsfire
     "toba.vsfire",
+
+    // We use Markdown All in One to generate the table of contents.
+    "yzhang.markdown-all-in-one"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []
