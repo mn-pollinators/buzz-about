@@ -176,7 +176,7 @@ export class StudentRoundService {
         }
         return currentPollen;
       } else {
-        return 300;
+        return null;
       }
     }),
     distinctUntilChanged(),

@@ -21,6 +21,7 @@ describe('StudentRoundService', () => {
     statuses: {[letterName: string]: string},
     times: {[letterName: string]: TimePeriod},
     booleans: {[letterName: string]: boolean},
+    numbers: {[letterName: string]: number},
     studentData: {[letterName: string]: RoundStudentData},
     authUsers: {[letterName: string]: User},
     beeSpecies: {[letterName: string]: BeeSpecies},
@@ -114,6 +115,14 @@ describe('StudentRoundService', () => {
       1: true,
     },
 
+    numbers: {
+      n: null,
+      0: 0,
+      1: 1,
+      2: 2,
+      3: 3,
+    },
+
     studentData: {
       n: null,
       F: {},
@@ -141,7 +150,6 @@ describe('StudentRoundService', () => {
       E: [],
       P: [
         {barcodeValue: 5} as Interaction,
-        {barcodeValue: 6} as Interaction,
       ],
       N: [
         {barcodeValue: 5} as Interaction,
@@ -964,6 +972,61 @@ describe('StudentRoundService', () => {
       expectObservable(service.totalPollen$).toBe(
         'W-',
         values.interactions,
+      );
+    });
+  });
+
+  /**
+   *
+   */
+  describe('the currentBeePollen$ observable', () => {
+    scheduledIt('Emits null initially', ({expectObservable}) => {
+      expectObservable(service.currentBeePollen$).toBe(
+        'n-',
+        values.numbers
+      );
+    });
+
+    scheduledIt('Emits null when no user uid provided', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.currentBeePollen$).toBe(
+        'n-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits null when no roundPath provided', ({expectObservable}) => {
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentBeePollen$).toBe(
+        'n-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits 0 when no interactions have occurred', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.X);
+      expectObservable(service.currentBeePollen$).toBe(
+        '0-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Emits the number of interactions when the student has not interacted with a nest', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Y);
+      expectObservable(service.currentBeePollen$).toBe(
+        '1-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Ignores interactions that occurred before the last nest visit', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Z);
+      expectObservable(service.currentBeePollen$).toBe(
+        '2-',
+        values.numbers,
       );
     });
   });
