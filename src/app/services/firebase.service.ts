@@ -15,12 +15,12 @@ export interface RoundPath {
   providedIn: 'root'
 })
 export class FirebaseService {
-  allSessions$: Observable<any[]> = this.firestore.collection('sessions').valueChanges();
+  allSessions$: Observable<any[]> = this.angularFirestore.collection('sessions').valueChanges();
 
-  constructor(public firestore: AngularFirestore) {  }
+  constructor(public angularFirestore: AngularFirestore) {  }
 
   private getSessionDocument(sessionId: string): AngularFirestoreDocument<Session> {
-    return this.firestore
+    return this.angularFirestore
       .collection('sessions')
       .doc<Session>(sessionId);
   }
@@ -57,13 +57,13 @@ export class FirebaseService {
   }
 
   public createSession(sessionData: {hostId: string}): Promise<string> {
-    return this.firestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
+    return this.angularFirestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
       doc.id
     );
   }
 
   public getMostRecentSession(userId: string): Observable<SessionWithId | null> {
-    return this.firestore
+    return this.angularFirestore
       .collection<Session>('sessions', ref => ref.where('hostId', '==', userId)
         .orderBy('createdAt', 'desc')
         .limit(1))
@@ -91,7 +91,7 @@ export class FirebaseService {
   }
 
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
-    this.firestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
+    this.angularFirestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
       .doc(id)
       .set(studentData);
   }
@@ -103,13 +103,13 @@ export class FirebaseService {
    * @param roundData data for the round in FirebaseRound interface format
    */
   public createRoundInSession(sessionId: string, roundData: FirebaseRound): Promise<RoundPath> {
-    return this.firestore.collection('sessions/' + sessionId + '/rounds').add(roundData).then(doc =>
+    return this.angularFirestore.collection('sessions/' + sessionId + '/rounds').add(roundData).then(doc =>
       ({sessionId, roundId: doc.id})
     );
   }
 
   public setCurrentRound(roundPath: RoundPath) {
-    return this.firestore.collection('sessions').doc(roundPath.sessionId)
+    return this.angularFirestore.collection('sessions').doc(roundPath.sessionId)
       .update({currentRoundId: roundPath.roundId});
   }
 
@@ -118,7 +118,7 @@ export class FirebaseService {
    * @param sessionID the ID of the session the students are in
    */
   getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
-    return this.firestore.collection('sessions').doc(sessionID)
+    return this.angularFirestore.collection('sessions').doc(sessionID)
       .collection<SessionStudentData>('students')
       .valueChanges({idField: 'id'});
   }
@@ -130,7 +130,7 @@ export class FirebaseService {
    * @param studentData map of student's information including name
    */
   addStudentToSession(id: string, sessionID: string, studentData: SessionStudentData) {
-    return this.firestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
+    return this.angularFirestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
   }
 
   /**
@@ -174,7 +174,7 @@ export class FirebaseService {
   }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
-    return this.firestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+    return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
       roundPath.roundId + '/interactions', ref =>
       ref.where('userId', '==', studentId)
         .orderBy('createdAt', 'desc'))

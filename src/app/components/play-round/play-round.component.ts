@@ -69,7 +69,7 @@ export class PlayRoundComponent implements OnInit {
 
   beePollen$: Observable<boolean[]> = this.studentRoundService.currentBeePollen$.pipe(
     map(pollenCount => {
-      let pollenArray: boolean[] = [false, false, false];
+      const pollenArray: boolean[] = [false, false, false];
       for (let i = 0; i < pollenCount; i++) {
         pollenArray[i] = true;
       }
