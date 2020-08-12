@@ -4,11 +4,11 @@ Before you can start working on Buzz About, there are a few things you'll have t
 
 **Table of Contents**
 
-- [Telling `npm` how to talk to GitHub Packages](#telling-npm-how-to-talk-to-github-packages)
+- [Tell `npm` how to talk to GitHub Packages](#tell-npm-how-to-talk-to-github-packages)
   - [Generating the personal access token](#generating-the-personal-access-token)
   - [Giving that personal access token to `npm`](#giving-that-personal-access-token-to-npm)
 
-## Telling `npm` how to talk to GitHub Packages
+## Tell `npm` how to talk to GitHub Packages
 
 GitHub Packages is where we keep all of the images for the website, along with some data about flowers and bees. 
 
@@ -24,7 +24,7 @@ Then, you can click "Generate token" at the bottom of the page. You'll get a tok
 
 ### Giving that personal access token to `npm`
 
-Next, open the command-line (Terminal on a Mac; PowerShell on Windows) and run
+Next, open the command-line and run
 
 ```sh
 npm login --registry=https://npm.pkg.github.com
