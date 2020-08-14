@@ -155,7 +155,7 @@ export class StudentRoundService {
 
   totalPollen$: Observable<number> = this.interactions$.pipe(
     map(interactions =>
-      interactions.filter(interaction => interaction.barcodeValue >= 1 && interaction.barcodeValue <= 16)
+      interactions.filter(interaction => !interaction.isNest)
     ),
     map(interactions =>
       interactions.length)
@@ -170,7 +170,7 @@ export class StudentRoundService {
     map(interactions => {
         let currentPollen = 0;
         for (const interaction of interactions) {
-          if (interaction.barcodeValue === 0) {
+          if (interaction.isNest) {
             break;
           }
           currentPollen++;
@@ -192,10 +192,14 @@ export class StudentRoundService {
    * Records an interaction with a specific barcode value.
    *
    * @param barcodeValue the barcode value to submit in the interaction
+   * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number) {
+  interact(barcodeValue: number, isANest?: boolean) {
+    let isNest: boolean;
+    isANest ? isNest = true : isNest = false;
     combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
-      ([path, user, time]) => this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, timePeriod: time.time})
+      ([path, user, time]) =>
+      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
     );
   }
 

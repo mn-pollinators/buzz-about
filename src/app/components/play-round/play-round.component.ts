@@ -8,6 +8,7 @@ import { StudentSessionService } from '../../services/student-session.service';
 interface RoundMarker extends ARMarker {
   name: string;
   active: boolean;
+  isNest?: boolean;
 }
 
 @Component({
@@ -35,6 +36,7 @@ export class PlayRoundComponent implements OnInit {
     map(([student, bee]) => ({
       name: bee.nest_type.name,
       active: true,
+      isNest: true,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
     }))
@@ -86,7 +88,7 @@ export class PlayRoundComponent implements OnInit {
 
   clickInteract(marker: RoundMarker) {
     console.log(marker);
-    this.studentRoundService.interact(marker.barcodeValue);
+    this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
   }
 
 

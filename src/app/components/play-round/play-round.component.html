@@ -3,9 +3,9 @@
   <mat-card class='pollen-card'>
     <mat-icon color='accent' *ngFor="let pollen of (this.beePollen$ | async)">{{ pollen ? 'lens' : 'panorama_fish_eye' }}</mat-icon>
   </mat-card>
-  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.barcodeValue === 0">
+  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
     <mat-card-content class='nest-content'>
-      <p>Nest:</p>
+      <p>Pollen in Nest:</p>
       <h1 class="nest-count">{{(this.studentRoundService.currentNestPollen$ | async) }}</h1>
     </mat-card-content>
   </mat-card>
