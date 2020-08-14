@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { roundTemplates, RoundTemplate } from 'src/app/round-template';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RoundChooserDialogComponent } from 'src/app/components/round-chooser-dialog/round-chooser-dialog.component';
+import { BehaviorSubject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-session-lobby',
@@ -19,14 +21,13 @@ export class SessionLobbyComponent implements OnInit {
     public teacherSessionService: TeacherSessionService,
     public teacherRoundService: TeacherRoundService,
     public router: Router,
-    public matDialog: MatDialog
+    public matDialog: MatDialog,
+    public matSnackbar: MatSnackBar
   ) {  }
 
-  ngOnInit(): void {
-  }
+  loadingRound$ = new BehaviorSubject<boolean>(false);
 
-  public startRound(template: RoundTemplate) {
-    this.teacherRoundService.startNewRound(template);
+  ngOnInit(): void {
   }
 
   public quitSession() {
@@ -40,7 +41,13 @@ export class SessionLobbyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(template => {
       if (template) {
-        this.startRound(template);
+        this.loadingRound$.next(true);
+        this.teacherRoundService.startNewRound(template).then(() => {
+          this.loadingRound$.next(false);
+        }, (err) => {
+          this.loadingRound$.next(false);
+          this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000});
+        });
       }
     });
   }

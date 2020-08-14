@@ -19,7 +19,7 @@ import { ActivatedRoute } from '@angular/router';
  */
 export enum ScreenId {
   Lobby,
-  Loading,
+  LoadingSession,
   DuringTheRound,
 }
 
@@ -44,12 +44,12 @@ export class LargeDisplayComponent implements OnInit {
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.
 
-  loading$ = new BehaviorSubject<boolean>(true);
+  loadingSession$ = new BehaviorSubject<boolean>(true);
 
-  currentScreen$: Observable<ScreenId> = this.loading$.pipe(
+  currentScreen$: Observable<ScreenId> = this.loadingSession$.pipe(
     switchMap(loading =>
       loading
-        ? of(ScreenId.Loading)
+        ? of(ScreenId.LoadingSession)
         : this.teacherSessionService.currentRoundPath$.pipe(
           map(roundPath =>
             roundPath === null
@@ -71,7 +71,7 @@ export class LargeDisplayComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       this.teacherSessionService.setCurrentSession(params.get('sessionId'));
       this.quitRound().then(() => {
-        this.loading$.next(false);
+        this.loadingSession$.next(false);
       });
     });
   }
