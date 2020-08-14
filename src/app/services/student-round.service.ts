@@ -154,11 +154,7 @@ export class StudentRoundService {
   );
 
   totalPollen$: Observable<number> = this.interactions$.pipe(
-    map(interactions =>
-      interactions.filter(interaction => !interaction.isNest)
-    ),
-    map(interactions =>
-      interactions.length)
+    map(interactions => interactions.filter(interaction => !interaction.isNest).length)
   );
 
   /**
