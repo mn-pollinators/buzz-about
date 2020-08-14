@@ -188,7 +188,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
           // type of matrix code - valid iif detectionMode end with 'matrix' -
           // [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-          matrixCodeType: '3x3',
+          matrixCodeType: '4x4_BCH_13_9_3',
 
           // timeout for setting a marker as lost when it is no longer seen
           // default was 1000

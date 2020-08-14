@@ -65,7 +65,6 @@ export class PlayRoundComponent implements OnInit {
           map(markers => markers.find(m => m.barcodeValue === val))
         )
     ),
-    tap(marker => console.log(marker)),
     shareReplay(1)
   );
 
