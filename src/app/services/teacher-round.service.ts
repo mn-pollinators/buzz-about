@@ -8,6 +8,7 @@ import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
 import { RoundTemplate, TemplateBee } from '../round-template';
+import { rejects } from 'assert';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,10 @@ export class TeacherRoundService {
     // null.)
     // Also, record pause & play events based on state of running observable from timer service and
     // the time of its occurrence.
-    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$, this.timerService.currentTime$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
       filter(([roundPath]) => roundPath !== null),
-    ).subscribe(([roundPath, running, time]) => {
-      this.firebaseService.addHostEvent(
-        roundPath,
-        { eventType: ( running ? HostEventType.Play : HostEventType.Pause ), timePeriod: time.time}
-      );
+    ).subscribe(([roundPath, running]) => {
+      this.addHostEvent(running ? HostEventType.Play : HostEventType.Pause);
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
@@ -50,6 +48,15 @@ export class TeacherRoundService {
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
     shareReplay(1)
   );
+
+  async addHostEvent(eventType: HostEventType) {
+    const time = await this.timerService.currentTime$.pipe(take(1)).toPromise();
+    const roundPath = await this.teacherSessionService.currentRoundPath$.pipe(take(1)).toPromise();
+    if (!roundPath) {
+      return Promise.reject();
+    }
+    return this.firebaseService.addHostEvent(roundPath, {eventType, timePeriod: time.time});
+  }
 
   /**
    * Create a new round within the current session, mark it as the currently
