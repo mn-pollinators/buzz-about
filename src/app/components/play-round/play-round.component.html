@@ -22,7 +22,7 @@
   class="interact-button"
   color="primary"
   *ngIf="this.foundRoundMarker$ | async as marker"
-  [disabled]="!marker.active || ((this.studentRoundService.currentBeePollen$ | async) >= 3 && marker.barcodeValue != 0)"
+  [disabled]="!marker.active || ((this.studentRoundService.currentBeePollen$ | async) >= 3 && !marker.isNest)"
   (click)="clickInteract(marker)"
 >
   Visit {{marker.name}}
