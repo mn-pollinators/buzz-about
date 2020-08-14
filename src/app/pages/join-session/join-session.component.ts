@@ -31,7 +31,7 @@ export class JoinSessionComponent implements OnInit {
   joinSession() {
     const name = this.sessionFormGroup.controls.nameControl.value;
     const sessionId = this.sessionFormGroup.controls.sessionControl.value;
-    const nestBarcode = this.sessionFormGroup.controls.nestControl.value;
+    const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
 
     this.studentSessionService.joinSession({name, nestBarcode}, sessionId).then(() => {
       this.router.navigate(['/play', sessionId]);
