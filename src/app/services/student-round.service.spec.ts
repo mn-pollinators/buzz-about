@@ -924,36 +924,36 @@ describe('StudentRoundService', () => {
    *
    */
   describe('the totalPollen$ observable', () => {
-    scheduledIt('Emits an empty array initially', ({expectObservable}) => {
+    scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.totalPollen$).toBe(
-        'E-',
-        values.interactions
+        '0-',
+        values.numbers
       );
     });
 
 
-    scheduledIt('Emits an empty array when no user uid provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no user uid provided', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       expectObservable(service.totalPollen$).toBe(
-        'E-',
-        values.interactions,
+        '0-',
+        values.numbers,
       );
     });
 
-    scheduledIt('Emits an empty array when no roundPath provided', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no roundPath provided', ({expectObservable}) => {
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.totalPollen$).toBe(
-        'E-',
-        values.interactions,
+        '0-',
+        values.numbers,
       );
     });
 
-    scheduledIt('Emits an empty array when no interactions have occurred', ({expectObservable}) => {
+    scheduledIt('Emits 0 when no interactions have occurred', ({expectObservable}) => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       mockCurrentUser$.next(values.authUsers.X);
       expectObservable(service.totalPollen$).toBe(
-        'E-',
-        values.interactions,
+        '0-',
+        values.numbers,
       );
     });
 
@@ -961,8 +961,8 @@ describe('StudentRoundService', () => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       mockCurrentUser$.next(values.authUsers.Y);
       expectObservable(service.totalPollen$).toBe(
-        'P-',
-        values.interactions,
+        '1-',
+        values.numbers,
       );
     });
 
@@ -970,8 +970,8 @@ describe('StudentRoundService', () => {
       mockCurrentRoundPath$.next(values.roundPaths.A);
       mockCurrentUser$.next(values.authUsers.Z);
       expectObservable(service.totalPollen$).toBe(
-        'W-',
-        values.interactions,
+        '3-',
+        values.numbers,
       );
     });
   });
