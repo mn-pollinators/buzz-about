@@ -194,9 +194,7 @@ export class StudentRoundService {
    * @param barcodeValue the barcode value to submit in the interaction
    * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number, isANest?: boolean) {
-    let isNest: boolean;
-    isANest ? isNest = true : isNest = false;
+  interact(barcodeValue: number, isNest: boolean = false) {
     combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
       ([path, user, time]) =>
       this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
