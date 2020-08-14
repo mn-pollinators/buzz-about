@@ -1,19 +1,14 @@
 <app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
 <div class="cards">
   <mat-card class='pollen-card'>
-    <div *ngFor="let pollen of (this.beePollen$ | async)">
-      <mat-icon color='accent' *ngIf="pollen">lens</mat-icon>
-      <mat-icon color='accent' *ngIf="!pollen">panorama_fish_eye</mat-icon>
-    </div>
+    <mat-icon color='accent' *ngFor="let pollen of (this.beePollen$ | async)">{{ pollen ? 'lens' : 'panorama_fish_eye' }}</mat-icon>
   </mat-card>
-  <div *ngIf="(this.foundRoundMarker$ | async)?.barcodeValue === 0">
-    <mat-card class='nest-card'>
-      <mat-card-content class='nest-content'>
-        <p>Nest:</p>
-        <h1 class='nest-count'>{{(this.studentRoundService.currentNestPollen$ | async) }}</h1>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.barcodeValue === 0">
+    <mat-card-content class='nest-content'>
+      <p>Nest:</p>
+      <h1 class="nest-count">{{(this.studentRoundService.currentNestPollen$ | async) }}</h1>
+    </mat-card-content>
+  </mat-card>
 </div>
 <img
   class="student-bee"
@@ -32,4 +27,3 @@
 >
   Visit {{marker.name}}
 </button>
-

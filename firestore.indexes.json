@@ -10,7 +10,7 @@
     },
     {
       "collectionGroup": "interactions",
-      "queryScope": "COLLECTION_GROUP",
+      "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "userId", "order": "ASCENDING"},
         { "fieldPath": "createdAt", "order": "DESCENDING"}
