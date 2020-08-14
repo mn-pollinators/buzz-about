@@ -149,22 +149,23 @@ describe('StudentRoundService', () => {
       n: null,
       E: [],
       P: [
-        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 5, isNest: false} as Interaction,
       ],
       N: [
-        {barcodeValue: 5} as Interaction,
-        {barcodeValue: 6} as Interaction,
-        {barcodeValue: 0} as Interaction,
-        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 6, isNest: false} as Interaction,
+        {barcodeValue: 0, isNest: true} as Interaction,
+        {barcodeValue: 5, isNest: false} as Interaction,
       ],
       // This one is just N without the nest interaction. Used to test totalPollen$
       W: [
-        {barcodeValue: 5} as Interaction,
-        {barcodeValue: 6} as Interaction,
-        {barcodeValue: 5} as Interaction,
+        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 6, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false} as Interaction,
       ]
     },
   };
+
 
   let service: StudentRoundService;
 
@@ -1142,6 +1143,7 @@ describe('StudentRoundService', () => {
         userId: values.authUsers.X.uid,
         timePeriod: values.rounds.q.currentTime,
         barcodeValue: 5,
+        isNest: false,
       });
 
       interactionSpy.calls.reset();
@@ -1155,6 +1157,7 @@ describe('StudentRoundService', () => {
         userId: values.authUsers.Y.uid,
         timePeriod: values.rounds.r.currentTime,
         barcodeValue: 7,
+        isNest: false,
       });
     }));
 
