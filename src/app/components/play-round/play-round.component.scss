@@ -24,14 +24,13 @@
   text-transform: uppercase;
 }
 
-.cards{
+.cards {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
-.pollen-card{
-  max-width: fit-content;
-  height: fit-content;
+.pollen-card {
   margin: 5px;
   display: flex;
   flex-flow: row wrap;
@@ -40,20 +39,11 @@
   align-items: center;
 }
 
-.nest-card{
-  align-self: end;
-  align-content: center;
-  max-width: fit-content;
+.nest-card {
   margin: 5px;
   padding: 20px;
 }
 
 .nest-content {
-  flex-direction: column;
-  align-items: center;
   text-align: center;
 }
-
-// .nest-count {
-//   text-align: center;
-// }
