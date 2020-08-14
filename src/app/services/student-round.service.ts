@@ -150,17 +150,21 @@ export class StudentRoundService {
     switchMap(([path, user]) =>
       path && user
         ? this.firebaseService.getStudentInteractions(path, user.uid)
-        : of([])),
-    distinctUntilChanged()
+        : of([]))
   );
 
-  totalPollen$: Observable<Interaction[]> = this.interactions$.pipe(
+  totalPollen$: Observable<number> = this.interactions$.pipe(
     map(interactions =>
       interactions.filter(interaction => interaction.barcodeValue >= 1 && interaction.barcodeValue <= 16)
     ),
-    distinctUntilChanged(),
+    map(interactions =>
+      interactions.length)
   );
 
+  /**
+   * An observable that emits the amount of pollen a bee is currently carrying
+   * In order to do so it requires the array of interactions to be sorted from most recent to least recent
+   */
   currentBeePollen$: Observable<number> =
   this.interactions$.pipe(
     map(interactions => {
@@ -177,8 +181,8 @@ export class StudentRoundService {
   );
 
   currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
-    map(([total, bee]) =>
-      total.length - bee
+    map(([totalPollen, beePollen]) =>
+      totalPollen - beePollen
     ),
     distinctUntilChanged(),
     shareReplay(1)

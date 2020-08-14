@@ -1,4 +1,4 @@
-<app-ar-view #arview [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
 <div class="cards">
   <mat-card class='pollen-card'>
     <mat-icon color='accent' *ngFor="let pollen of (this.beePollen$ | async)">{{ pollen ? 'lens' : 'panorama_fish_eye' }}</mat-icon>
