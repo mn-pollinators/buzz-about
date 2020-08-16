@@ -8,7 +8,6 @@ import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
 import { RoundTemplate, TemplateBee } from '../round-template';
-import { rejects } from 'assert';
 
 @Injectable({
   providedIn: 'root'
