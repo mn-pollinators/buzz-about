@@ -1,0 +1,32 @@
+<app-hill-background cover></app-hill-background>
+<div class="join-session-page">
+  <form [formGroup]="sessionFormGroup" (ngSubmit)="joinSession()" class="join-form" autocomplete="off">
+    <mat-card class="join-card">
+      <mat-card-title>Join Session</mat-card-title>
+      <mat-card-content class="join-card-content">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Session ID</mat-label>
+          <input matInput class="session" formControlName="sessionControl" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name</mat-label>
+          <input matInput class="name" formControlName="nameControl" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nest marker ID</mat-label>
+          <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl" required>
+          <mat-hint>The number at the top of your nest marker</mat-hint>
+          <mat-error *ngIf="sessionFormGroup.controls['nestControl'].invalid">
+            Invalid nest ID: please enter the ID number on your nest marker
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary" class="join-button"
+          type="submit" [disabled]="!sessionFormGroup.valid">
+          Join
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

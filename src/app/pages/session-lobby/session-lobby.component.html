@@ -1,0 +1,40 @@
+<app-hill-background cover></app-hill-background>
+<div class="main-view" *ngIf="(loadingRound$ | async) === false else loading">
+  <div class="top-content">
+    <!--This is not an accident, the div elements are being used to split the upper portion of the page into three even sections-->
+    <div></div>
+    <div class="top-content-middle-section">
+      <mat-card class="join-code">
+        <mat-card-content>Join at buzzabout.app</mat-card-content>
+        <mat-card-content>With the join code:</mat-card-content>
+        <mat-card-title>{{ teacherSessionService.sessionId$ | async }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="top-content-right-section">
+      <div class="player-count">
+        <h1 class="number-of-players">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
+        <p>{{'Player' | makePluralString: (teacherSessionService.studentsInCurrentSession$ | async)?.length}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="player-list">
+    <app-joined-students [studentList]="teacherSessionService.studentsInCurrentSession$ | async"></app-joined-students>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="centered-container">
+    <mat-card>
+      <mat-card-title>
+        Loading Round&hellip;
+      </mat-card-title>
+      <mat-spinner></mat-spinner>
+    </mat-card>
+  </div>
+</ng-template>
+
+<app-bottom-bar>
+  <button left mat-raised-button color="accent" (click)="quitSession()">Quit Session</button>
+  <button center mat-raised-button color="accent" (click)="openRoundDialog()" [disabled]="loadingRound$ | async">Start Round</button>
+  <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
+</app-bottom-bar>

@@ -1,0 +1,23 @@
+.student-bee {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 50%;
+}
+
+:host {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.interact-button {
+  position: absolute;
+  left:50%;
+  transform: translate(-50%, 0);
+  bottom: 5%;
+  text-transform: uppercase;
+}

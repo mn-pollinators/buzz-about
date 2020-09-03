@@ -1,0 +1,17 @@
+<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<img
+  class="student-bee"
+  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
+  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
+  [alt]="bee.name"
+>
+<button
+  mat-raised-button
+  class="interact-button"
+  color="primary"
+  *ngIf="this.foundRoundMarker$ | async as marker" [disabled]="!marker.active"
+  (click)="clickInteract(marker)"
+>
+  Visit {{marker.name}}
+</button>

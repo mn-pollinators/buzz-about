@@ -1,0 +1,10 @@
+<app-hill-background></app-hill-background>
+<div class="flowers">
+  <app-flower-layout-item
+  *ngFor="let item of items; trackBy:trackByFlower"
+  [item]="item"
+  [matTooltip]="item.alt"
+  [matTooltipDisabled]="!tooltips"
+  >
+  </app-flower-layout-item>
+</div>

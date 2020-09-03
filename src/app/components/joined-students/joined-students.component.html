@@ -1,0 +1,22 @@
+<div class="list-container">
+  <mat-card *ngFor="let student of studentList" class="student-card">
+    <mat-card-content class="student-content">
+      <div class="student-name">{{student.name}}</div>
+      <div>
+        <mat-menu #studentConfig="matMenu">
+          <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Rename</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Remove</span>
+          </button>
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="studentConfig">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

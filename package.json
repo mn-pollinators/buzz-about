@@ -25,14 +25,15 @@
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@angular/service-worker": "~9.1.11",
+    "@mn-pollinators/assets": "0.2.0",
     "firebase": ">= 5.5.7 <8",
     "info-monitor": "^1.0.12",
+    "ngx-pipes": "^2.7.5",
     "rxjs": "~6.5.3",
     "three": "^0.110.0",
     "threear": "github:mn-pollinators/THREEAR#ts-fixes-2",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2",
-    "@mn-pollinators/assets": "github:mn-pollinators/assets#npm-package"
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0",

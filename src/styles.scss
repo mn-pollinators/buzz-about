@@ -28,8 +28,12 @@ body {
   height: 100%;
 }
 
-.field-background {
-  background-repeat: no-repeat;
-  background-image: url('/assets/images/large-display/hill-compressed.jpg');
-  background-size: cover;
+.mat-button, .mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  text-transform: uppercase;
+}
+
+.centered-container {
+  height: 100%;
+  display: grid;
+  place-items: center;
 }

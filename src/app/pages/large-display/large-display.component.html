@@ -1,0 +1,58 @@
+<ng-container [ngSwitch]="currentScreen$ | async">
+  <ng-container *ngSwitchCase="ScreenId.Lobby">
+    <app-session-lobby></app-session-lobby>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
+    <div class="large-display-content during-the-round">
+      <app-timer-progress-bar
+        *ngIf="teacherRoundService.roundTemplate$ | async as template"
+        [currentTime]="timerService.currentTime$ | async"
+        [startMonth]="template.startTime.month"
+        [endMonth]="template.endTime.month"
+      >
+      </app-timer-progress-bar>
+
+      <app-flower-layout [items]="flowerLayoutItems$ | async"></app-flower-layout>
+
+      <app-timer-progress-spinner
+        *ngIf="teacherRoundService.roundTemplate$ | async as template"
+        [currentTime]="timerService.currentTime$ | async"
+        [startTime]="template.startTime"
+        [endTime]="template.endTime"
+      >
+      </app-timer-progress-spinner>
+    </div>
+
+    <app-bottom-bar>
+      <div left>
+        <button mat-raised-button color="accent" (click)="quitRound()">Quit Round</button>
+      </div>
+
+      <div center>
+        <button mat-mini-fab color="accent" (click)="toggleTimerRunning()"
+        >
+          <mat-icon>
+            {{(timerService.running$ | async) ? 'pause' : 'play_arrow'}}
+          </mat-icon>
+        </button>
+      </div>
+
+      <div right>
+        <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
+      </div>
+    </app-bottom-bar>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container">
+      <mat-card>
+        <mat-card-title>
+          Loading Session&hellip;
+        </mat-card-title>
+        <mat-spinner></mat-spinner>
+      </mat-card>
+    </div>
+  </ng-container>
+</ng-container>
