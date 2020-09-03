@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/firestore-tests",
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+
+  }
+}
