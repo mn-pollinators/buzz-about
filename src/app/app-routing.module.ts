@@ -21,7 +21,7 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent}
+  {path: 'flower-test', component: FlowerTestComponent},
   {path: 'anon-test', component: AnonAuthTestComponent}
 ];
 
