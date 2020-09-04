@@ -64,3 +64,9 @@ firebase-debug.log
 firestore-debug.log
 
 ui-debug.log
+
+# Ignore the service account information we need for Cypress and Firestore
+# since this is how we will keep our information secure
+# (from https://github.com/prescottprue/cypress-firebase Setup)
+# needed for firebase-admin to have read/write access to our DB from within our tests
+serviceAccount.json

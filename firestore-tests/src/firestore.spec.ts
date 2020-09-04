@@ -9,7 +9,8 @@ const PROJECT_ID = 'firestore-testing-project';
  * The FIRESTORE_EMULATOR_HOST environment variable is set automatically
  * by "firebase emulators:exec"
  */
-const COVERAGE_URL = `http://${process.env.FIRESTORE_EMULATOR_HOST}/emulator/v1/projects/${PROJECT_ID}:ruleCoverage.html`;
+const COVERAGE_URL =
+  `http://${process.env.FIRESTORE_EMULATOR_HOST || 'localhost:8080'}/emulator/v1/projects/${PROJECT_ID}:ruleCoverage.html`;
 
 /**
  * Creates a new client FirebaseApp with authentication and returns the Firestore instance.
@@ -56,11 +57,6 @@ describe('Sessions', () => {
       const db = getAuthedFirestore({uid: 'alice'});
       await firebase.assertFails(createSession(db, {hostId: 'not-alice'}));
       await firebase.assertSucceeds(createSession(db, {hostId: 'alice'}));
-    });
-
-    it('should enforce the createdAt date for sessions', async () => {
-      const db = getAuthedFirestore({uid: 'alice'});
-      await firebase.assertFails(db.collection('sessions').add({hostId: 'alice'}));
     });
   });
 });

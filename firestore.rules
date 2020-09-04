@@ -2,36 +2,69 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // At the moment, these rules provide access control, but not data validation.
+
     function validAuth() {
       return request.auth != null && request.auth.uid != null;
     }
 
     match /sessions/{session} {
-      // TODO: Put restrictions on who can modify sessions.
-      allow read: if true;
-      allow create: if validAuth()
-        && request.auth.uid == request.resource.data.hostId
-        && request.resource.data.createdAt == request.time;
+
+      // Return whether the current user is the teacher hosting this session.
+      function isTeacher() {
+        return request.auth.uid == resource.data.hostId;
+      }
+
+      // Return whether the current user is a student in this session.
+      function isStudent() {
+        return exists(/databases/$(database)/documents/sessions/$(session)/students/$(request.auth.uid))
+      }
+
+      // A session can be read by the teacher and students
+      allow read: if validAuth() && (isTeacher() || isStudent());
+
+      // A session's hostId must equal the uid of the teacher creating it and the createdAt timestamp must be correct.
+      allow create: if validAuth() && request.auth.uid == request.resource.data.hostId;
 
       match /rounds/{round} {
-        // TODO: Put restrictions on who can modify rounds.
-        allow read, write: if true;
 
+        // A round can be written to by the teacher
+        allow write: if validAuth() && isTeacher();
+
+        // A round can be read by the teacher and students
+        allow read: if validAuth() && (isTeacher() || isStudent());
 
         match /interactions/{interaction} {
-          // TODO: Put restrictions on who can modify interactions.
-          allow read, write: if true;
+
+          // Teachers and the student who created the interaction can read them
+          allow read: if validAuth() && (isTeacher() || (isStudent() && resource.userId == request.auth.uid));
+
+          // Interactions can only be created if the userId on the interaction matches the user adding them
+          allow create: if validAuth() && isStudent() && request.resource.userId == request.auth.uid;
         }
 
         match /students/{student} {
-          // TODO: Put restrictions on who can modify rounds' students.
-          allow read, write: if true;
+          // A round student can be read and written to by the teacher and the specific student
+          allow read, write: if validAuth() && (isTeacher() || (isStudent() && request.auth.uid == student));
         }
       }
 
+      function hasCurrentRound() {
+        let sessionData = get(/databases/$(database)/documents/sessions/$(session)).data;
+        return ('currentRoundId' in sessionData) && sessionData.currentRoundId != null;
+      }
+
       match /students/{student} {
-        // Checks if the user id is the same as the document id
-        allow read, write: if request.auth.uid == student;
+        // A session student can be read by the teacher and by that specific student.
+        allow read: if validAuth() && (isTeacher() || request.auth.uid == student);
+
+        // A session student must be created with the same ID as the user's UID
+        // and while there is not currently a round running in the session.
+        allow create: if validAuth() && request.auth.uid == student && !hasCurrentRound();
+
+        // A session student can be updated or deleted by the teacher or that specific student
+        // TODO: potentially check what is being changed on the student (eg name shouldn't be editable by student)
+        allow update, delete: if validAuth() && (isTeacher() || request.auth.uid == student);
       }
     }
   }
