@@ -121,10 +121,10 @@ describe('Sessions', () => {
       name: 'Bob',
       nestBarcode: 22
     });
-    firebase.assertFails(alice.doc(doc.path).delete());
-    firebase.assertFails(bob.doc(doc.path).delete());
-    firebase.assertFails(otherUser.doc(doc.path).delete());
-    firebase.assertFails(noAuth.doc(doc.path).delete());
+    await firebase.assertFails(alice.doc(doc.path).delete());
+    await firebase.assertFails(bob.doc(doc.path).delete());
+    await firebase.assertFails(otherUser.doc(doc.path).delete());
+    await firebase.assertFails(noAuth.doc(doc.path).delete());
   });
 
   it('can be read by the teacher and students', async () => {
@@ -238,32 +238,32 @@ describe('Rounds', () => {
     });
 
     it('can only be added to the round if you\'re a student', async () => {
-      firebase.assertSucceeds(addInteraction(bob, round.path, {
+      await firebase.assertSucceeds(addInteraction(bob, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(alice, round.path, {
+      await firebase.assertFails(addInteraction(alice, round.path, {
         userId: 'alice',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(otherUser, round.path, {
+      await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'otheruser',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(otherUser, round.path, {
+      await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(noAuth, round.path, {
+      await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(noAuth, round.path, {
+      await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: null,
         timePeriod: 22,
         barcodeValue: 12
@@ -271,12 +271,12 @@ describe('Rounds', () => {
     });
 
     it('can only be added if the userId matches', async () => {
-      firebase.assertSucceeds(addInteraction(carol, round.path, {
+      await firebase.assertSucceeds(addInteraction(carol, round.path, {
         userId: 'carol',
         timePeriod: 22,
         barcodeValue: 12
       }));
-      firebase.assertFails(addInteraction(carol, round.path, {
+      await firebase.assertFails(addInteraction(carol, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12
