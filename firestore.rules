@@ -1,4 +1,4 @@
-rules_version = '2';
+rules_version = "2";
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -12,6 +12,9 @@ service cloud.firestore {
 
       // Return whether the current user is the teacher hosting this session.
       function isTeacher() {
+        // Note, you can only use this function in the base collection, not a
+        // subcollection. (If you're in a subcollection, 'resource' doesn't
+        // refer to the session anymore.)
         return request.auth.uid == resource.data.hostId;
       }
 
@@ -26,10 +29,15 @@ service cloud.firestore {
       // A session's hostId must equal the uid of the teacher creating it and the createdAt timestamp must be correct.
       allow create: if validAuth() && request.auth.uid == request.resource.data.hostId;
 
+      allow update: if validAuth() && isTeacher() && request.resource.data.hostId == resource.data.hostId;
+
       match /rounds/{round} {
+        function isTeacher() {
+          return request.auth.uid == get(/databases/$(database)/documents/sessions/$(session)).data.hostId;
+        }
 
         // A round can be written to by the teacher
-        allow write: if validAuth() && isTeacher();
+        allow create, update: if validAuth() && isTeacher();
 
         // A round can be read by the teacher and students
         allow read: if validAuth() && (isTeacher() || isStudent());
@@ -37,24 +45,29 @@ service cloud.firestore {
         match /interactions/{interaction} {
 
           // Teachers and the student who created the interaction can read them
-          allow read: if validAuth() && (isTeacher() || (isStudent() && resource.userId == request.auth.uid));
+          allow read: if validAuth() && (isTeacher() || (isStudent() && resource.data.userId == request.auth.uid));
 
           // Interactions can only be created if the userId on the interaction matches the user adding them
-          allow create: if validAuth() && isStudent() && request.resource.userId == request.auth.uid;
+          allow create: if validAuth() && isStudent() && request.resource.data.userId == request.auth.uid;
         }
 
         match /students/{student} {
-          // A round student can be read and written to by the teacher and the specific student
-          allow read, write: if validAuth() && (isTeacher() || (isStudent() && request.auth.uid == student));
+          // A round student can be read the teacher and the specific student
+          allow read: if validAuth() && (isTeacher() || (isStudent() && request.auth.uid == student));
+          allow create, update: if validAuth() && isTeacher();
         }
       }
 
       function hasCurrentRound() {
         let sessionData = get(/databases/$(database)/documents/sessions/$(session)).data;
-        return ('currentRoundId' in sessionData) && sessionData.currentRoundId != null;
+        return ("currentRoundId" in sessionData) && sessionData.currentRoundId != null;
       }
 
       match /students/{student} {
+        function isTeacher() {
+          return request.auth.uid == get(/databases/$(database)/documents/sessions/$(session)).data.hostId;
+        }
+
         // A session student can be read by the teacher and by that specific student.
         allow read: if validAuth() && (isTeacher() || request.auth.uid == student);
 
