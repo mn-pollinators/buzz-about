@@ -2,7 +2,7 @@ import * as firebase from '@firebase/testing';
 import { firestore } from '@firebase/testing';
 import * as fs from 'fs';
 import { SessionStudentData } from '../../src/app/session';
-import { RoundStudentData, FirebaseRound, Interaction } from '../../src/app/round';
+import { RoundStudentData, FirebaseRound, Interaction, HostEvent, HostEventType } from '../../src/app/round';
 import { roundTemplates } from '../../src/app/round-template';
 
 const PROJECT_ID = 'firestore-testing-project';
@@ -161,6 +161,10 @@ function addInteraction(db: firestore.Firestore, roundPath: string, data: Intera
   return db.collection(roundPath + '/interactions').add(data);
 }
 
+function addHostEvent(db: firestore.Firestore, roundPath: string, data: Partial<HostEvent>) {
+  return db.collection(roundPath + '/hostEvents').add({occurredAt: firestore.FieldValue.serverTimestamp(), ...data});
+}
+
 // Some demo round data to use.
 const demoRound: FirebaseRound = {
   flowerSpeciesIds: roundTemplates[0].flowerSpecies.map(f => f.id),
@@ -209,6 +213,66 @@ describe('Rounds', () => {
     await firebase.assertSucceeds(bob.doc(round.path).get());
     await firebase.assertFails(otherUser.doc(round.path).get());
     await firebase.assertFails(noAuth.doc(round.path).get());
+  });
+
+
+  describe('hostEvents', () => {
+    let round;
+
+    const hostPauseEvent = {
+      eventType: HostEventType.Pause,
+      timePeriod: 0
+    };
+
+    const hostPlayEvent = {
+      eventType: HostEventType.Play,
+      timePeriod: 12
+    };
+
+    beforeEach(async () => {
+      await addStudentToSession(admin, 'Linus', session.id, {
+        name: 'Linus Torvalds',
+        nestBarcode: 91
+      });
+
+      round = await createRoundInSession(admin, session.id, demoRound);
+    });
+
+    it('can only be added to the round by a teacher', async () => {
+      await firebase.assertFails(addHostEvent(bob, round.path, hostPauseEvent));
+      await firebase.assertFails(addHostEvent(carol, round.path, hostPlayEvent));
+      await firebase.assertFails(addHostEvent(otherUser, round.path, hostPauseEvent));
+      await firebase.assertFails(addHostEvent(noAuth, round.path, hostPlayEvent));
+      await firebase.assertSucceeds(addHostEvent(alice, round.path, hostPauseEvent));
+      await firebase.assertSucceeds(addHostEvent(alice, round.path, hostPlayEvent));
+    });
+
+    it('can only be read by the teacher', async () => {
+      const doc = await addHostEvent(admin, round.path, hostPlayEvent);
+      await firebase.assertSucceeds(alice.doc(doc.path).get());
+      await firebase.assertFails(bob.doc(doc.path).get());
+      await firebase.assertFails(carol.doc(doc.path).get());
+      await firebase.assertFails(otherUser.doc(doc.path).get());
+      await firebase.assertFails(noAuth.doc(doc.path).get());
+    });
+
+    it('cannot be deleted by anyone', async () => {
+      const doc = await addHostEvent(admin, round.path, hostPlayEvent);
+      await firebase.assertFails(alice.doc(doc.path).delete());
+      await firebase.assertFails(bob.doc(doc.path).delete());
+      await firebase.assertFails(carol.doc(doc.path).delete());
+      await firebase.assertFails(otherUser.doc(doc.path).delete());
+      await firebase.assertFails(noAuth.doc(doc.path).delete());
+    });
+
+    it('cannot be updated by anyone', async () => {
+      const doc = await addHostEvent(admin, round.path, hostPauseEvent);
+      await firebase.assertFails(alice.doc(doc.path).update(hostPlayEvent));
+      await firebase.assertFails(bob.doc(doc.path).update(hostPlayEvent));
+      await firebase.assertFails(carol.doc(doc.path).update(hostPlayEvent));
+      await firebase.assertFails(otherUser.doc(doc.path).update(hostPlayEvent));
+      await firebase.assertFails(noAuth.doc(doc.path).update(hostPlayEvent));
+    });
   });
 
 
