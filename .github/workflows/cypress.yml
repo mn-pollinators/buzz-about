@@ -1,0 +1,22 @@
+name: Cypress Tests
+
+on: [push]
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@mn-pollinators'
+    - name: Cypress run
+      uses: cypress-io/github-action@v2
+      with:
+        start: npm run firebase:emulator
+        command: npm run e2e
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
