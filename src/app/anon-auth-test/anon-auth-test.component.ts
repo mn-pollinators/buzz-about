@@ -9,7 +9,7 @@ import { auth } from 'firebase';
 })
 export class AnonAuthTestComponent implements OnInit {
 
-  constructor(public auth: AngularFireAuth) { }
+  constructor(public angularFireAuth: AngularFireAuth) { }
 
   public JSON = JSON;
 
@@ -17,11 +17,11 @@ export class AnonAuthTestComponent implements OnInit {
   }
 
   anonSignIn() {
-    this.auth.signInAnonymously();
+    this.angularFireAuth.signInAnonymously();
   }
 
   normalSignIn() {
-    this.auth.signInWithPopup(new auth.GoogleAuthProvider());
+    this.angularFireAuth.signInWithPopup(new auth.GoogleAuthProvider());
   }
 
 }
