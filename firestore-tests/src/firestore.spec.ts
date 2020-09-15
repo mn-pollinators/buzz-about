@@ -230,11 +230,6 @@ describe('Rounds', () => {
     };
 
     beforeEach(async () => {
-      await addStudentToSession(admin, 'Linus', session.id, {
-        name: 'Linus Torvalds',
-        nestBarcode: 91
-      });
-
       round = await createRoundInSession(admin, session.id, demoRound);
     });
 
