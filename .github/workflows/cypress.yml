@@ -20,3 +20,4 @@ jobs:
         command: npm run e2e
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
