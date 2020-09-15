@@ -8,8 +8,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 ng e2e",
-    "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data",
     "cy:open": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 cypress open"
+    "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data",
+    "firestore-specs": "jasmine-ts --project=firestore-tests/tsconfig.json --config=firestore-tests/support/jasmine.json",
+    "test-firestore": "firebase emulators:exec --only firestore \"npm run firestore-specs\""
   },
   "private": true,
   "dependencies": {
@@ -44,6 +46,7 @@
     "@angular/language-service": "~9.1.11",
     "@nrwl/cypress": "^9.5.1",
     "@nrwl/workspace": "^9.5.1",
+    "@firebase/testing": "^0.20.11",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
@@ -56,8 +59,10 @@
     "fuzzy": "^0.1.3",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",
+    "jasmine": "~3.4.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
+    "jasmine-ts": "^0.3.0",
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
