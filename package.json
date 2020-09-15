@@ -7,8 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data"
+    "e2e": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 ng e2e",
+    "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data",
+    "cy:open": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 cypress open"
   },
   "private": true,
   "dependencies": {
@@ -47,6 +48,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "cross-env": "^7.0.2",
     "cypress": "^4.10.0",
     "cypress-firebase": "^1.4.4",
     "firebase-admin": "^9.1.1",
