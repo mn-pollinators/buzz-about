@@ -58,6 +58,7 @@ import { RoundTemplateTestComponent } from './test-pages/round-template-test/rou
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
+import { AboutComponent } from './pages/about/about.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -112,6 +113,7 @@ const FIREBASE_MODULES = [
     TestPagesComponent,
     RoundChooserDialogComponent,
     StudentRoundComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+import { AboutComponent } from './pages/about/about.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
+  {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes}
 ];
