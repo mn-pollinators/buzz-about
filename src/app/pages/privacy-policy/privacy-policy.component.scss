@@ -1,0 +1,29 @@
+@import "../../../variables";
+
+.home-container {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  grid-template-rows: 1fr auto;
+  grid-template-columns: 100%;
+  margin-left: 8px;
+  margin-right: 8px;
+  overflow-y: scroll;
+}
+
+.lccmr-card {
+  //max-width: 600px;
+  margin-bottom: 100px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.mat-card {
+  max-width: 90%;
+  margin: 20px;
+  margin-top: 50px;
+}
+
+.column {
+  padding: 20px;
+}
