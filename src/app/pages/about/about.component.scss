@@ -43,21 +43,13 @@
   }
 }
 
-.github-link {
-  display: inline-flex;
-  align-items: center;
-  >img {
-    margin-right: 8px;
-    width: 24px;
-  }
-}
-
 .enrtf-card .mat-card-content {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin: 0px -8px -8px;
+
   > div {
     margin: 8px;
   }
@@ -73,5 +65,16 @@
   .enrtf-message {
     min-width: 60%;
     flex: 1;
+  }
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  width: max-content;
+
+  >img {
+    margin-right: 8px;
+    width: 24px;
   }
 }
