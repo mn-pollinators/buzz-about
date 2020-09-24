@@ -15,3 +15,8 @@ $theme: mat-light-theme($primary, $accent, $warn);
 $foreground: map-get($theme, foreground);
 
 $background: map-get($theme, background);
+
+// 64px is the default menu bar height in Material; we use it for both our top
+// bars and our bottom bars.
+$menu-bar-height: 64px;
+$menu-bar-padding: 16px;
