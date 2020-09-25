@@ -64,7 +64,7 @@ async function main() {
     if ((await fs.promises.stat(pathToEntry)).isFile()) {
       await fs.promises.unlink(pathToEntry);
     } else if ((await fs.promises.stat(pathToEntry)).isDirectory()) {
-      // In the future, we might be able to use
+      // In the future, we might be able to use...
       // `await fs.promises.rmdir(pathToEntry, { recursive: true });`
       // But that's not available in Node 10.x LTS, and even in more recent
       // versions the API isn't stable yet.
