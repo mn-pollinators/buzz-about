@@ -4,29 +4,21 @@
  * write it into some static files to be included in the Angular application.
  */
 
-import * as project from '../package.json';
-import * as path from 'path';
+import * as child_process from 'child_process';
 import * as fs from 'fs';
+import * as path from 'path';
+import * as util from 'util';
+
+// A package for recursively deleting directories.
 import * as rimraf from 'rimraf';
+
+import * as project from '../package.json';
 
 const GENERATED_FILES_PATH = 'statically-generated';
 const BUILD_DATA_FILENAME = 'build-data.json';
 
-/**
- * A simple promise wrapper for the rimraf package (for deleting a directory
- * recursively).
- */
-function rimrafPromise(dirPath: string, options: object): Promise<void> {
-  return new Promise((resolve, reject) => {
-    rimraf(dirPath, options, (err: any) => {
-      if (err) {
-        reject();
-      } else {
-        resolve();
-      }
-    });
-  });
-}
+const rimrafPromise = util.promisify(rimraf);
+const execPromise = util.promisify(child_process.exec);
 
 async function main() {
   // Check if the output directory exists; if not, make it.
@@ -77,6 +69,7 @@ async function main() {
 
   const buildData = {
     version: project.version,
+    commitHash: (await execPromise('git rev-parse HEAD')).stdout
     // TODO: add the current commit hash, get the members of the organization
     // from GitHub somehow.
   };

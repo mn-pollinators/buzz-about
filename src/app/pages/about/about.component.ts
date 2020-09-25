@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { version } from '../../../../statically-generated/build-data.json';
+import { version, commitHash } from '../../../../statically-generated/build-data.json';
 
 @Component({
   selector: 'app-about',
@@ -8,6 +8,7 @@ import { version } from '../../../../statically-generated/build-data.json';
 })
 export class AboutComponent implements OnInit {
   version = version;
+  commitHash = commitHash;
 
   constructor() { }
 
