@@ -67,9 +67,10 @@ async function main() {
     }
   }
 
+  const commitHash = (await execPromise('git rev-parse HEAD')).stdout.trim();
   const buildData = {
     version: project.version,
-    commitHash: (await execPromise('git rev-parse HEAD')).stdout
+    commitHash,
     // TODO: add the current commit hash, get the members of the organization
     // from GitHub somehow.
   };
