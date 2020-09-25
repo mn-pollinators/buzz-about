@@ -1,9 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
+**/tmp
+**/out-tsc
 /dist
-/tmp
-/out-tsc
+/statically-generated
 # Only exists if Bazel was run
 /bazel-out
 
