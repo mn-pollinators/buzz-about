@@ -8,13 +8,20 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "postinstall": "node postinstall.js",
+    "postversion": "node postinstall.js",
     "firebase:emulator": "firebase emulators:start --only firestore --import firebase-test-data",
     "firestore-specs": "jasmine-ts --project=firestore-tests/tsconfig.json --config=firestore-tests/support/jasmine.json",
-    "test-firestore": "firebase emulators:exec --only firestore \"npm run firestore-specs\"",
-    "prebuild": "ts-node --project=scripts/tsconfig.json scripts/pre-build.ts",
-    "prestart": "npm run prebuild",
-    "pretest": "npm run prebuild"
+    "test-firestore": "firebase emulators:exec --only firestore \"npm run firestore-specs\""
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mn-pollinators/buzz-about.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mn-pollinators/buzz-about/issues"
+  },
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.11",
@@ -47,12 +54,14 @@
     "@angular/compiler-cli": "~9.1.11",
     "@angular/language-service": "~9.1.11",
     "@firebase/testing": "^0.20.11",
+    "@octokit/rest": "^18.0.6",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "firebase-tools": "^8.4.3",
     "fuzzy": "^0.1.3",
+    "git-describe": "^4.0.4",
     "inquirer": "^6.2.2",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "jasmine": "~3.4.0",

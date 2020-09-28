@@ -4,7 +4,7 @@
 **/tmp
 **/out-tsc
 /dist
-/statically-generated
+
 # Only exists if Bazel was run
 /bazel-out
 
@@ -71,3 +71,5 @@ ui-debug.log
 # (from https://github.com/prescottprue/cypress-firebase Setup)
 # needed for firebase-admin to have read/write access to our DB from within our tests
 serviceAccount.json
+
+project-info.json
