@@ -21,8 +21,11 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v2
       with:
+        record: true
         start: npm run firebase:emulator
         command: npm run e2e
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
