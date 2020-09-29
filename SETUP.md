@@ -1,4 +1,4 @@
-# Developing Buzz About
+# Setting Up the Development Environment
 
 Before you can start working on Buzz About, there are a few things you'll have to set up on your computer.
 
@@ -13,6 +13,7 @@ If you're new to Minnesota Pollinators, you may also want to read the [getting s
 - [Setting up Firebase](#setting-up-firebase)
   - [Installing the command-line interface](#installing-the-command-line-interface)
   - [Running the emulator](#running-the-emulator)
+  - [Setting up Firebase for Cypress](#setting-up-firebase-for-cypress)
 
 ## Tell `npm` how to talk to GitHub Packages
 
@@ -95,6 +96,14 @@ Now, if you start up a local copy of Buzz About, it should be able to talk to th
 
 ![The local Firebase console at localhost:4000][i:Local Firebase console]
 
+
+### Setting up Firebase for Cypress
+
+We use [Cypress](https://www.cypress.io/) for our end-to-end testing and use the [cypress-firebase](https://github.com/prescottprue/cypress-firebase) plugin to be able to communicate with Firebase for authentication and the Firebase emulator for Firebase. In addition to having installed `firebase-tools` and used `firebase login`, you will need a Firebase service account for end-to-end testing in Cypress. You can skip this part of the guide if you will not be using Cypress locally.
+
+1. Go to the [service accounts section](https://console.firebase.google.com/project/buzz-about/settings/serviceaccounts/adminsdk) of the Firebase project settings.
+2. In the "Firebase Admin SDK" section, click the "Generate new private key" button. Then click "Generate key" on the dialog.
+3. It will download a JSON file. Copy this into the root of your local copy of the repo and rename it to `serviceAccount.json`. It should be ignored by git. NEVER commit this file to the repo or share it.
 
 <!-- Links: -->
 [Getting started]: https://github.com/mn-pollinators/getting-started/blob/master/README.md
