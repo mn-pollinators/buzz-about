@@ -7,15 +7,21 @@ const { Octokit } = require("@octokit/rest");
 function formatContributor(contributor) {
   return {
     username: contributor.login,
-    fullName: contributor.name,
+    name: contributor.name,
     avatarUrl: contributor.avatar_url,
-    url: contributor.html_url
+    url: contributor.html_url,
+    type: contributor.type
   };
 }
 
 (async () => {
 
-  const octokit = new Octokit();
+  const octokit = new Octokit({
+    // If GITHUB_TOKEN isn't set, you'll just get an unauthenticated version of
+    // of the API (which is fine, although the rate limiting is pretty strict).
+    auth: process.env.GITHUB_TOKEN
+  });
+
 
   const gitInfo = await gitDescribe({
     customArguments: ['--abbrev=40'],

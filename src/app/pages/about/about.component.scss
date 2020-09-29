@@ -5,7 +5,7 @@
   width: 100%;
 
   // Make sure the padding is counted as part of the 100% width.
-  // (Without the `box-sizing` property, our padding wouldb't be counted as
+  // (Without the `box-sizing` property, our padding wouldn't be counted as
   // part of the top-bar's width, and we'd get something more than 100% wide.)
   box-sizing: border-box;
 
@@ -23,14 +23,11 @@
   padding-right: $menu-bar-padding;
 }
 
-
 .about-page {
-  height: calc(100% - #{$menu-bar-height});
   display: grid;
   place-items: center;
   grid-template-rows: 1fr auto;
   grid-template-columns: 100%;
-  overflow-y: scroll;
 }
 
 .about-cards {

@@ -1,7 +1,7 @@
 <app-hill-background cover></app-hill-background>
 <div class="top-bar">
   <button routerLink="/" mat-raised-button color="accent">
-    <mat-icon>arrow_back</mat-icon>
+    Home
   </button>
 </div>
 <div class="about-page">
@@ -9,12 +9,25 @@
     <mat-card>
       <mat-card-header>
         <img mat-card-avatar src="/assets/icons/icon-circle.svg">
-        <mat-card-title>About This App</mat-card-title>
-        <mat-card-subtitle>Buzz About {{version}} &ndash; {{commitHash}}</mat-card-subtitle>
+        <mat-card-title>Buzz About</mat-card-title>
+        <mat-card-subtitle>Version {{buzzAboutInfo.version}} &ndash; <code>{{buzzAboutInfo.git.hash | shorten: 7}}</code></mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.</p>
-        </mat-card-content>
+      </mat-card-content>
+      <mat-card-actions>
+        <!-- <a mat-button href="TODO">
+          Terms of Service
+        </a>
+        <a mat-button href="TODO">
+          Privacy Policy
+        </a>
+        <div fxFlex></div> -->
+        <a mat-button href="https://github.com/mn-pollinators/buzz-about">
+          <mat-icon svgIcon="github"></mat-icon>
+          GitHub Repo
+        </a>
+      </mat-card-actions>
     </mat-card>
 
     <mat-card>
@@ -24,10 +37,27 @@
           Minnesota Pollinators is an organization of <a href="https://morris.umn.edu/">University of Minnesota, Morris</a> students and faculty
           working on projects that help the native pollinators of Minnesota.
         </p>
-        <h3>Members</h3>
-        <!-- TODO: Get the members using some sort of build script. -->
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button href="https://github.com/mn-pollinators">
+          <mat-icon svgIcon="github"></mat-icon>
+          GitHub
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Contributors</mat-card-title>
+      <mat-card-content>
+        <mat-nav-list>
+          <mat-list-item *ngFor="let contributor of allContributors">
+            <img matListAvatar [src]="contributor.avatarUrl">
+            <a matLine [href]="contributor.url">{{contributor.name || contributor.username}}</a>
+          </mat-list-item>
+        </mat-nav-list>
       </mat-card-content>
     </mat-card>
+
 
     <mat-card class="enrtf-card">
       <mat-card-title>Funding</mat-card-title>
@@ -50,13 +80,24 @@
         </div>
       </mat-card-content>
     </mat-card>
-    <mat-card class="links-card">
+
+
+    <mat-card>
+      <mat-card-title>
+        License
+      </mat-card-title>
       <mat-card-content>
-        <a class="github-link" href="https://github.com/mn-pollinators/buzz-about/">
-          <img src="/assets/github-mark.svg">
-          <span>GitHub</span>
-        </a>
+        <p>
+          Buzz About is released under the
+          <a href="https://github.com/mn-pollinators/buzz-about/blob/master/LICENSE">MIT License</a>
+          except as otherwise noted. The illustrations used in Buzz About are released by Olivia Carlson under
+          <a href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a>.
+        </p>
       </mat-card-content>
+      <mat-card-actions>
+        <a mat-button href="/3rdpartylicenses.txt">Third Party Licenses</a>
+      </mat-card-actions>
     </mat-card>
+
   </div>
 </div>
