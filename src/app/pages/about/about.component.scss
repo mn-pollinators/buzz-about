@@ -1,28 +1,5 @@
 @import "../../../variables";
 
-.top-bar {
-  height: $menu-bar-height;
-  width: 100%;
-
-  // Make sure the padding is counted as part of the 100% width.
-  // (Without the `box-sizing` property, our padding wouldn't be counted as
-  // part of the top-bar's width, and we'd get something more than 100% wide.)
-  box-sizing: border-box;
-
-  position: relative;
-  z-index: 1;
-
-  background-color: mat-color($primary);
-  color: mat-color($primary, default-contrast);
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  padding-left: $menu-bar-padding;
-  padding-right: $menu-bar-padding;
-}
-
 .about-page {
   display: grid;
   place-items: center;
@@ -35,7 +12,7 @@
   //width: 80%;
   margin: 16px;
 
-  .mat-card:not(:last-child) {
+  >*:not(:last-child) {
     margin-bottom: 16px;
   }
 }
@@ -62,16 +39,5 @@
   .enrtf-message {
     min-width: 60%;
     flex: 1;
-  }
-}
-
-.github-link {
-  display: flex;
-  align-items: center;
-  width: max-content;
-
-  >img {
-    margin-right: 8px;
-    width: 24px;
   }
 }
