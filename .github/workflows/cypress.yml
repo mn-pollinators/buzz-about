@@ -23,7 +23,7 @@ jobs:
       with:
         record: true
         start: npm run firebase:emulator
-        command: npm run e2e
+        command: npm run e2e -- --record
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
