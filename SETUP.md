@@ -14,6 +14,7 @@ If you're new to Minnesota Pollinators, you may also want to read the [getting s
   - [Installing the command-line interface](#installing-the-command-line-interface)
   - [Running the emulator](#running-the-emulator)
   - [Setting up Firebase for Cypress](#setting-up-firebase-for-cypress)
+- [Next Steps](#next-steps)
 
 ## Tell `npm` how to talk to GitHub Packages
 
@@ -104,6 +105,10 @@ We use [Cypress](https://www.cypress.io/) for our end-to-end testing and use the
 1. Go to the [service accounts section](https://console.firebase.google.com/project/buzz-about/settings/serviceaccounts/adminsdk) of the Firebase project settings.
 2. In the "Firebase Admin SDK" section, click the "Generate new private key" button. Then click "Generate key" on the dialog.
 3. It will download a JSON file. Copy this into the root of your local copy of the repo and rename it to `serviceAccount.json`. It should be ignored by git. NEVER commit this file to the repo or share it.
+
+## Next Steps
+
+Now you're ready to start development! Check out the [development guide](./DEVELOPMENT.md) for useful commands.
 
 <!-- Links: -->
 [Getting started]: https://github.com/mn-pollinators/getting-started/blob/master/README.md

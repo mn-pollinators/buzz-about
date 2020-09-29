@@ -23,7 +23,7 @@ You can find Buzz About online at [buzzabout.app][].
 
 If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
 
-For more information on how to contribute to Buzz About, see [DEVELOPMENT.md][].
+For more information on how to contribute to Buzz About, see [the development guide][DEVELOPMENT.md].
 
 ## Code of Conduct
 
