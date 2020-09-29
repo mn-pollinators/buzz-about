@@ -18,6 +18,11 @@ const cypressFirebasePlugin = require("cypress-firebase").plugin;
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
+
+  if(!process.env.FIRESTORE_EMULATOR_HOST) {
+    throw new Error('FIRESTORE_EMULATOR_HOST env variable not set');
+  }
+
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 

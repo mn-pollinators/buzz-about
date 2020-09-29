@@ -34,10 +34,6 @@ import {environment} from '../../src/environments/environment';
 
 const fbConfig = environment.firebase;
 
-if(!process.env.FIRESTORE_EMULATOR_HOST) {
-  throw new Error('FIRESTORE_EMULATOR_HOST env variable not set');
-}
-
 
 firebase.initializeApp(fbConfig);
 
