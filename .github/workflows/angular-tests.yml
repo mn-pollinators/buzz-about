@@ -24,6 +24,7 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Test (npm run test)
       run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
@@ -48,5 +49,6 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Lint (npm run lint)
       run: npm run lint
