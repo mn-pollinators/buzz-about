@@ -100,7 +100,7 @@ Now, if you start up a local copy of Buzz About, it should be able to talk to th
 
 ### Setting up Firebase for Cypress
 
-We use [Cypress](https://www.cypress.io/) for our end-to-end testing and use the [cypress-firebase](https://github.com/prescottprue/cypress-firebase) plugin to be able to communicate with Firebase for authentication and the Firebase emulator for Firebase. In addition to having installed `firebase-tools` and used `firebase login`, you will need a Firebase service account for end-to-end testing in Cypress. You can skip this part of the guide if you will not be using Cypress locally.
+We use [Cypress](https://www.cypress.io/) for our end-to-end testing, with the [cypress-firebase](https://github.com/prescottprue/cypress-firebase) plugin to help Cypress talk to Firebase. In addition to the Firebase tools installed above, you will need a Firebase service account for end-to-end testing in Cypress. You can skip this part of the guide if you will not be using Cypress locally.
 
 1. Go to the [service accounts section](https://console.firebase.google.com/project/buzz-about/settings/serviceaccounts/adminsdk) of the Firebase project settings.
 2. In the "Firebase Admin SDK" section, click the "Generate new private key" button. Then click "Generate key" on the dialog.

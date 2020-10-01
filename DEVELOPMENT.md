@@ -24,7 +24,7 @@ To run the Firebase emulators:
 npm run firebase:emulator
 ```
 
-You should be able to access the Firebase Emulator Suite page at http://localhost:4000/
+You should be able to access the Firebase Emulator Suite console at http://localhost:4000/
 
 ### Development Server
 
@@ -52,7 +52,7 @@ To build the app and run the Cypress end-to-end tests, start the Firebase emulat
 npm run e2e
 ```
 
-To open Cypress (so you can run the tests interactively), start both the Firebase emulators and the development server and run:
+To open Cypress (so you can run the tests interactively), start both the development server and the Firebase emulators and run:
 ```
 npm run cy:open
 ```
