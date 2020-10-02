@@ -4,9 +4,10 @@
 
 # Buzz About
 
-[![Angular Build Status][Angular Tests badge]][Angular Tests page]
-[![Firebase Build Status][Firebase Tests badge]][Firebase Tests page]
-[![Deployment Status][Deploy badge]][Deploy page]
+[![Angular tests status][Angular Tests badge]][Angular Tests page]
+[![Cypress tests status][Cypress Tests badge]][Cypress Tests page]
+[![Firebase tests status][Firebase Tests badge]][Firebase Tests page]
+[![Deployment status][Deploy badge]][Deploy page]
 
 </div align="center">
 
@@ -38,6 +39,8 @@ The Trust Fund is a permanent fund constitutionally established by the citizens 
 
 [Angular Tests badge]: ../../workflows/Angular%20Tests/badge.svg
 [Angular Tests page]: ../../actions?query=workflow%3A"Angular+Tests"
+[Cypress Tests badge]: ../../workflows/Cypress%20Tests/badge.svg
+[Cypress Tests page]: ../../actions?query=workflow%3A"Cypress+Tests"
 [Firebase Tests badge]: ../../workflows/Firebase%20Tests/badge.svg
 [Firebase Tests page]: ../../actions?query=workflow%3A"Firebase+Tests"
 [Deploy badge]: ../../workflows/Firebase%20Deploy/badge.svg
