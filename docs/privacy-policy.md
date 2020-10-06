@@ -30,8 +30,6 @@ Buzz About was developed and is maintained in the United States, which may not p
 We may modify this privacy policy at any time by posting revisions to this document. When we update the privacy policy, we will revise the "Effective Date" above. In all cases, your continued use of Buzz About indicates your assent to the amended privacy policy.
 
 ## Contact
-  > Kristin Lamberty
-  >
-  > University of Minnesota - Morris
-  >
-  > Email Address: <mn-polinators@morris.umn.edu>
+Kristin Lamberty  
+University of Minnesota Morris  
+Email Address: <mn-polinators@morris.umn.edu> 
