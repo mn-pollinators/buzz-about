@@ -48,5 +48,6 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        CYPRESS_INSTALL_BINARY: 0
     - name: Lint (npm run lint)
       run: npm run lint
