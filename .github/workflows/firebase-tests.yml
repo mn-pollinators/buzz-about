@@ -6,16 +6,16 @@ jobs:
   firestore-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
     - name: Cache firebase emulators
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.cache/firebase/emulators
         key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
@@ -29,5 +29,6 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        CYPRESS_INSTALL_BINARY: 0
     - name: Test (npm run test-firestore)
       run: npm run test-firestore
