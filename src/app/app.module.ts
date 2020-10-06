@@ -114,7 +114,6 @@ const FIREBASE_MODULES = [
     RoundChooserDialogComponent,
     StudentRoundComponent,
     AnonAuthTestComponent,
-
   ],
   imports: [
     BrowserModule,
