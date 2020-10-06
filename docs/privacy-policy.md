@@ -1,5 +1,7 @@
 # Privacy Policy
 
+*Effective 2020-10-05*
+
 ## Collection of Information
 
 ### Information you give
