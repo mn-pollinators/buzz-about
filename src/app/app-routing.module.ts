@@ -12,7 +12,7 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -21,7 +21,8 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent}
+  {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'anon-test', component: AnonAuthTestComponent}
 ];
 
 const routes: Routes = [
