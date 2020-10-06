@@ -12,7 +12,6 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -31,8 +30,7 @@ const routes: Routes = [
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'test', component: TestPagesComponent},
-  {path: 'test', children: testRoutes},
-  {path: 'privacy-policy', component: PrivacyPolicyComponent}
+  {path: 'test', children: testRoutes}
 ];
 
 @NgModule({
