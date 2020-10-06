@@ -29,5 +29,7 @@ We may modify this privacy policy at any time by posting revisions to this docum
 
 ## Contact
   > Kristin Lamberty
+  >
   > University of Minnesota - Morris
+  >
   > Email Address: <mn-polinators@morris.umn.edu>
