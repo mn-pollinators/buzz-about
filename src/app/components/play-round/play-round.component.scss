@@ -1,3 +1,5 @@
+@import "../../../variables";
+
 .student-bee {
   position: absolute;
   left: 50%;
@@ -20,4 +22,28 @@
   transform: translate(-50%, 0);
   bottom: 5%;
   text-transform: uppercase;
+}
+
+.cards {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pollen-card {
+  margin: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  align-items: center;
+}
+
+.nest-card {
+  margin: 5px;
+  padding: 20px;
+}
+
+.nest-content {
+  text-align: center;
 }

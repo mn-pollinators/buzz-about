@@ -39,6 +39,7 @@ export interface Interaction {
   timePeriod: number;
   userId: string;
   barcodeValue: number;
+  isNest: boolean;
 }
 
 /**
