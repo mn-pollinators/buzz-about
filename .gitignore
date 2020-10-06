@@ -65,6 +65,9 @@ firestore-debug.log
 
 ui-debug.log
 
+cypress/videos/
+cypress/screenshots/
+
 # Ignore the service account information we need for Cypress and Firestore
 # since this is how we will keep our information secure
 # (from https://github.com/prescottprue/cypress-firebase Setup)

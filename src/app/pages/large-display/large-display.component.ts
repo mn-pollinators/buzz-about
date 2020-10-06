@@ -1,10 +1,7 @@
 import { Component, OnInit, } from '@angular/core';
 import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../../services/timer.service';
-import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
-import { BeeSpecies, allBeeSpecies } from '../../bees';
 import { map, switchMap } from 'rxjs/operators';
-import { RoundFlower } from '../../round';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';

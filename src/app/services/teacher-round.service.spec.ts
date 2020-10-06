@@ -8,6 +8,7 @@ import { TeacherSessionService } from './teacher-session.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { SessionStudentData } from '../session';
 import { RoundTemplate, TemplateBee, roundTemplates } from '../round-template';
+import { HostEventType } from '../round';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
@@ -37,7 +38,8 @@ describe('TeacherRoundService', () => {
 
     const mockFirebaseService = jasmine.createSpyObj<Partial<FirebaseService>>(
       'firebaseService',
-      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession', 'addStudentToRound', 'setCurrentRound'],
+      ['updateRoundData', 'setRoundData', 'createRoundInSession', 'getStudentsInSession',
+      'addStudentToRound', 'setCurrentRound', 'addHostEvent'],
     );
 
     mockFirebaseService.createRoundInSession.and.callFake(() => {
@@ -212,6 +214,7 @@ describe('TeacherRoundService', () => {
           timerService.setRunning(true);
           tick(0);
           tick(1000);
+          expect(firebaseService.addHostEvent).not.toHaveBeenCalled();
           expect(firebaseService.updateRoundData).not.toHaveBeenCalled();
           discardPeriodicTasks();
         })),
@@ -282,6 +285,102 @@ describe('TeacherRoundService', () => {
           discardPeriodicTasks();
         })),
       );
+
+      it(
+        'add an initial HostEvent with HostEventType \'Pause\' at the start of the round',
+        fakeAsync(inject([TimerService, FirebaseService], (
+          timerService: TimerService,
+          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+        ) => {
+          timerService.initialize({
+            running: false,
+            tickSpeed: 1000,
+            currentTime: new TimePeriod(0),
+            endTime: null,
+          });
+          tick(0);
+          expect(firebaseService.addHostEvent).toHaveBeenCalled();
+          expect(firebaseService.addHostEvent.calls.count()).toBe(1);
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Pause, timePeriod: fakeRoundData.startTime.time}
+          );
+
+          discardPeriodicTasks();
+        })),
+      );
+
+      it(
+        'add HostEvent with HostEventType \'Play\' when running state changes',
+        fakeAsync(inject([TimerService, FirebaseService], (
+          timerService: TimerService,
+          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+        ) => {
+          timerService.initialize({
+            running: false,
+            tickSpeed: 1000,
+            currentTime: new TimePeriod(0),
+            endTime: null,
+          });
+          tick(0);
+          firebaseService.addHostEvent.calls.reset();
+          timerService.setRunning(true);
+          tick(1);
+          expect(firebaseService.addHostEvent).toHaveBeenCalled();
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Play, timePeriod: 0}
+          );
+
+          discardPeriodicTasks();
+        })),
+      );
+
+
+
+      it(
+        'add HostEvents only when running state changes',
+        fakeAsync(inject([TimerService, FirebaseService], (
+          timerService: TimerService,
+          firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
+        ) => {
+          timerService.initialize({
+            running: false,
+            tickSpeed: 1,
+            currentTime: new TimePeriod(0),
+            endTime: null,
+          });
+
+          tick(0);
+          expect(firebaseService.addHostEvent.calls.count()).toBe(1);
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Pause, timePeriod: fakeRoundData.startTime.time}
+          );
+
+          timerService.setRunning(true);
+
+          tick(1);
+          expect(firebaseService.addHostEvent.calls.count()).toBe(2);
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Play, timePeriod: 0}
+          );
+
+          tick(5);
+          expect(firebaseService.addHostEvent.calls.count()).toBe(2);
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Play, timePeriod: 0}
+          );
+
+          timerService.setRunning(false);
+
+          tick(1);
+          expect(firebaseService.addHostEvent.calls.count()).toBe(3);
+          expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
+            {eventType: HostEventType.Pause, timePeriod: 6}
+          );
+
+          discardPeriodicTasks();
+        })),
+      );
+
     });
   });
 });
