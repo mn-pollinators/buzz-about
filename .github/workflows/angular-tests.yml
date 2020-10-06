@@ -6,9 +6,9 @@ jobs:
   ng-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -24,15 +24,16 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        CYPRESS_INSTALL_BINARY: 0
     - name: Test (npm run test)
       run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
   ng-lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -48,5 +49,6 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        CYPRESS_INSTALL_BINARY: 0
     - name: Lint (npm run lint)
       run: npm run lint
