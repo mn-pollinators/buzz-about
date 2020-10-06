@@ -52,9 +52,15 @@ service cloud.firestore {
         }
 
         match /students/{student} {
-          // A round student can be read the teacher and the specific student
+          // A round student can be read by the teacher and the specific student
           allow read: if validAuth() && (isTeacher() || (isStudent() && request.auth.uid == student));
+          // Only the teacher can create or update a round student
           allow create, update: if validAuth() && isTeacher();
+        }
+
+        match /hostEvents/{hostEvents} {
+          // The host events are only created and read by the teacher
+          allow create, read: if validAuth() && isTeacher();
         }
       }
 

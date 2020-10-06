@@ -1,5 +1,6 @@
 import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
+import { firestore } from 'firebase';
 
 
 /**
@@ -39,4 +40,23 @@ export interface Interaction {
   userId: string;
   barcodeValue: number;
   isNest: boolean;
+}
+
+/**
+ * A string enum representing the different types of host events we want to record.
+ */
+export enum HostEventType {
+  Pause = 'pause',
+  Play = 'play'
+}
+
+/*
+ * An action performed by the teacher during a round
+ * recorded with both time relative to the game and
+ * an absolute value according to server's timestamp.
+ */
+export interface HostEvent {
+  eventType: HostEventType;
+  timePeriod: number;
+  occurredAt: firestore.Timestamp;
 }
