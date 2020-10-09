@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import 'cypress-wait-until';
+
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';

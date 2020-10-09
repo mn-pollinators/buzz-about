@@ -6,7 +6,8 @@
     "outDir": "../out-tsc/cypress",
     "types": [
       "cypress",
-      "node"
+      "node",
+      "cypress-wait-until"
     ],
     "sourceMap": false
   },

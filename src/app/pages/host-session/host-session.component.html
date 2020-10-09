@@ -7,7 +7,12 @@
         Create a new session of Buzz About
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-button (click)="newSession()" color="primary">Create Session</button>
+        <button
+          mat-button
+          (click)="newSession()"
+          color="primary"
+          data-cy="createSession"
+        >Create Session</button>
       </mat-card-actions>
     </mat-card>
     <mat-card *ngIf="(this.teacherSessionService.mostRecentSession$ | async) as session" class="rejoin-card">
