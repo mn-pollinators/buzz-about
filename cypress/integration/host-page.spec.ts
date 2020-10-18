@@ -30,7 +30,7 @@ describe('The host page', () => {
     cy.document().should('exist');
   });
 
-  describe('Clicking the create-session button ', () => {
+  describe('Clicking the "create session" button ', () => {
     clearTheDatabaseBeforeEach();
     clearTheDatabaseAfter();
 
@@ -108,6 +108,23 @@ describe('The host page', () => {
 
       it('Is shown', () => {
         cy.get('[data-cy=reconnectToSession]').should('exist');
+      });
+
+      describe('Clicking it', () => {
+        it('Redirects you to the page for hosting that session', () => {
+          cy.get<HTMLButtonElement>('[data-cy=reconnectToSession]').click();
+          cy.url().should('include', `host/${fakeSessionId}`);
+        });
+
+        it('Doesn\'t add a new session to firestore', () => {
+          cy.get<HTMLButtonElement>('[data-cy=reconnectToSession]').click();
+          cy.url().should('include', `host/${fakeSessionId}`);
+
+          cy.callFirestore('get', 'sessions').should(sessions => {
+            expect(sessions).to.have.lengthOf(1);
+            expect(sessions[0].id).to.equal(fakeSessionId);
+          });
+        });
       });
     });
   });
