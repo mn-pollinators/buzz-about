@@ -1,5 +1,6 @@
 import { firestore } from 'firebase';
 import { Session } from 'src/app/session';
+import { FirebaseRound } from 'src/app/round';
 
 function clearAllSessions() {
   cy.callFirestore('delete', 'sessions', { recursive: true });
@@ -9,6 +10,14 @@ function clearAllStudents(sessionId: string) {
   cy.callFirestore(
     'delete',
     `sessions/${sessionId}/students`,
+    { recursive: true },
+  );
+}
+
+function clearAllRounds(sessionId: string) {
+  cy.callFirestore(
+    'delete',
+    `sessions/${sessionId}/rounds`,
     { recursive: true },
   );
 }
@@ -168,6 +177,76 @@ describe('The join page', () => {
             fillOutForm(rest);
             cy.get('[cy-data=joinSession]').should('be.disabled');
           });
+        });
+      });
+    });
+
+    context('When there is a round in progress', () => {
+      const mockRoundId = '123Round';
+      const mockRound: FirebaseRound = {
+        flowerSpeciesIds: [],
+        status: 'good!',
+        running: false,
+        currentTime: 0,
+      };
+
+      before(() => {
+        clearAllRounds(mockSessionId);
+        clearAllStudents(mockSessionId);
+        clearAllSessions();
+      });
+
+      beforeEach(() => {
+        // We're actually creating the round before the session it belongs to,
+        // but Firestore is pretty loosey-goosey about creating documents, so
+        // that shouldn't make a difference! :)
+        cy.callFirestore(
+          'set',
+          `sessions/${mockSessionId}/rounds/${mockRoundId}`,
+          mockRound,
+        );
+
+        cy.callFirestore(
+          'set',
+          `sessions/${mockSessionId}`,
+          { ...mockSession, currentRoundId: mockRoundId },
+        );
+      });
+
+      afterEach(() => {
+        clearAllRounds(mockSessionId);
+        clearAllStudents(mockSessionId);
+        clearAllSessions();
+      });
+
+      context('Even when you enter acceptable values into the form and click the join-session button', () => {
+        it('Should not redirect you to the "play" page for that session', () => {
+          fillOutForm(goodFormInput);
+          cy.get('[cy-data=joinSession]').should('not.be.disabled');
+          cy.get('[cy-data=joinSession]').click();
+          // We can't test that a redirect *never* happens--we'd have to wait
+          // forever to be absolutely sure. So, instead, we'll just stand here
+          // for one second, and if we haven't been redirected by then, we'll
+          // call it good.
+          cy.wait(1000);
+          cy.url().should('not.include', `/play/${mockSessionId}`);
+        });
+
+        it('Should not add you to the session in firebase', () => {
+          fillOutForm(goodFormInput);
+          cy.get('[cy-data=joinSession]').should('not.be.disabled');
+          cy.get('[cy-data=joinSession]').click();
+          cy.wait(1000);
+          // If a subcollection is empty, getting it returns null.
+          cy.callFirestore('get', `sessions/${mockSessionId}/students`)
+            .should('be.null');
+        });
+
+        it('Should display an error message in a snackbar', () => {
+          fillOutForm(goodFormInput);
+          cy.get('[cy-data=joinSession]').should('not.be.disabled');
+          cy.get('[cy-data=joinSession]').click();
+          cy.get('simple-snack-bar').should('contain', 'Error:');
         });
       });
     });
