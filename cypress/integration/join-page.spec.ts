@@ -59,7 +59,7 @@ describe('The join page', () => {
     const ourUid = Cypress.env('TEST_UID');
 
     context('When there isn\'t a round in progress', () => {
-      beforeEach(() => {
+      before(() => {
         clearAllStudents(mockSessionId);
         clearAllSessions();
       });
@@ -68,7 +68,7 @@ describe('The join page', () => {
         cy.callFirestore('set', `sessions/${mockSessionId}`, mockSession);
       });
 
-      after(() => {
+      afterEach(() => {
         clearAllStudents(mockSessionId);
         clearAllSessions();
       });

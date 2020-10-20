@@ -12,6 +12,10 @@ describe('The host page', () => {
     cy.login();
   });
 
+  before(clearAllSessions);
+
+  afterEach(clearAllSessions);
+
   afterEach(() => {
     // cy.logout();
   });
@@ -21,9 +25,6 @@ describe('The host page', () => {
   });
 
   describe('Clicking the "create session" button ', () => {
-    beforeEach(clearAllSessions);
-    after(clearAllSessions);
-
     // Use named groups to capture the session ID.
     const sessionUrlPattern = /\/host\/(?<sessionId>[^/]+)/;
 
@@ -49,9 +50,6 @@ describe('The host page', () => {
 
   describe('The "reconnect to session" card', () => {
     context('When there\'s no pre-existing session', () => {
-      beforeEach(clearAllSessions);
-      after(clearAllSessions);
-
       it('Isn\'t shown', () => {
         cy.get('[data-cy=reconnectToSession]').should('not.exist');
       });
@@ -64,16 +62,8 @@ describe('The host page', () => {
         createdAt: firestore.Timestamp.now(),
       };
 
-      beforeEach(clearAllSessions);
-
       beforeEach(() => {
         cy.callFirestore('set', `sessions/${fakeSessionId}`, fakeSession);
-      });
-
-      after(clearAllSessions);
-
-      after(() => {
-        cy.callFirestore('delete', 'sessions', { recursive: true });
       });
 
       it('Isn\'t shown', () => {
@@ -88,13 +78,9 @@ describe('The host page', () => {
         createdAt: firestore.Timestamp.now(),
       };
 
-      beforeEach(clearAllSessions);
-
       beforeEach(() => {
         cy.callFirestore('set', `sessions/${fakeSessionId}`, fakeSession);
       });
-
-      after(clearAllSessions);
 
       it('Is shown', () => {
         cy.get('[data-cy=reconnectToSession]').should('exist');
