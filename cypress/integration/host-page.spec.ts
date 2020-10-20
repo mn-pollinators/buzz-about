@@ -2,8 +2,7 @@ import { Session } from 'src/app/session';
 import { firestore } from 'firebase';
 
 // We use this  in a few places, so I thought I'd make it its own function.
-
-function clearTheDatabase() {
+function clearAllSessions() {
   cy.callFirestore('delete', 'sessions', { recursive: true });
 }
 
@@ -22,8 +21,8 @@ describe('The host page', () => {
   });
 
   describe('Clicking the "create session" button ', () => {
-    beforeEach(clearTheDatabase);
-    after(clearTheDatabase);
+    beforeEach(clearAllSessions);
+    after(clearAllSessions);
 
     // Use named groups to capture the session ID.
     const sessionUrlPattern = /\/host\/(?<sessionId>[^/]+)/;
@@ -50,8 +49,8 @@ describe('The host page', () => {
 
   describe('The "reconnect to session" card', () => {
     context('When there\'s no pre-existing session', () => {
-      beforeEach(clearTheDatabase);
-      after(clearTheDatabase);
+      beforeEach(clearAllSessions);
+      after(clearAllSessions);
 
       it('Isn\'t shown', () => {
         cy.get('[data-cy=reconnectToSession]').should('not.exist');
@@ -65,13 +64,13 @@ describe('The host page', () => {
         createdAt: firestore.Timestamp.now(),
       };
 
-      beforeEach(clearTheDatabase);
+      beforeEach(clearAllSessions);
 
       beforeEach(() => {
         cy.callFirestore('set', `sessions/${fakeSessionId}`, fakeSession);
       });
 
-      after(clearTheDatabase);
+      after(clearAllSessions);
 
       after(() => {
         cy.callFirestore('delete', 'sessions', { recursive: true });
@@ -89,13 +88,13 @@ describe('The host page', () => {
         createdAt: firestore.Timestamp.now(),
       };
 
-      beforeEach(clearTheDatabase);
+      beforeEach(clearAllSessions);
 
       beforeEach(() => {
         cy.callFirestore('set', `sessions/${fakeSessionId}`, fakeSession);
       });
 
-      after(clearTheDatabase);
+      after(clearAllSessions);
 
       it('Is shown', () => {
         cy.get('[data-cy=reconnectToSession]').should('exist');
