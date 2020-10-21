@@ -28,9 +28,15 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
-import { attachCustomCommands } from 'cypress-firebase';
 
-import {environment} from '../../src/environments/environment';
+// Cypress-firebase has a bad index.d.ts file, so we can't import
+// 'cypress-firebase' directly; we have to skip the index.d.ts and import
+// 'cypress-firebase/lib' from within the package.
+//
+// See: https://github.com/prescottprue/cypress-firebase/issues/173
+import { attachCustomCommands } from 'cypress-firebase/lib';
+
+import { environment } from '../../src/environments/environment';
 
 const fbConfig = environment.firebase;
 
