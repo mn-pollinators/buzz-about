@@ -12,7 +12,7 @@ We collect information about your interactions in Buzz About. While Buzz About i
 
 ## Use of Information
 The data collected by Buzz About is used by a research team at the University of Minnesota Morris. The purpose of this research is to learn more about how taking part in activities that show what bees do and what they need might help people understand more about how to support bees and how they help people. We want to know more about how we can use technology to help people learn more from these activities. The results of this research might help people design technology in a way that helps people learn more effectively.
-In line with ethical guidelines for research, efforts will be made to limit the use of any data collected by Buzz About, including personal information, to the people who need to view the information. This may include the [University of Minnesota Institutional Review Board](https://research.umn.edu/units/irb) and other members of the institution.
+In line with ethical guidelines for research, efforts will be made to limit the use of any data collected by Buzz About, including personal information, to the people who need to view the information. This may include the [University of Minnesota Institutional Review Board](https://research.umn.edu/units/irb) and other representatives of the institution.
 
 ## Third-Party Services
 Buzz About uses a third party service Google Firebase to authenticate users and to store our data. You can view the Firebase privacy policy [here](https://firebase.google.com/support/privacy).
