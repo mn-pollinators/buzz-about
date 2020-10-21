@@ -7,7 +7,7 @@
     "types": [
       "cypress",
       "node",
-      "cypress-wait-until"
+      "cypress-firebase"
     ],
     "sourceMap": false
   },
