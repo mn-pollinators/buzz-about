@@ -18,10 +18,41 @@
 
 .interact-button {
   position: absolute;
-  left:50%;
-  transform: translate(-50%, 0);
+  left: 50%;
   bottom: 5%;
-  text-transform: uppercase;
+  transform: translate(-50%, 0);
+
+  // Make sure that the button is 30% width or 25% height, whichever is
+  // smaller. This looks pretty good on both portrait and landscape screens.
+  $button-diameter: min(35vw, 30vh);
+  width: $button-diameter;
+  height: $button-diameter;
+
+  mat-icon {
+    // The default mat-icon font-size is 24px, and the default FAB diameter is
+    // 56 px. So, the font-size should be 24/56 = 3/7 times as big as the
+    // FAB's diameter.
+    font-size: calc(3 / 7 * #{$button-diameter});
+  }
+  // An aside for anyone curious:
+  // Unfortunately, in order to scale the FAB how we want, we have to assume
+  // that the play-round component fills the whole viewport. This is
+  // regrettable, but it's the simplest solution.
+  //
+  // Note in particular that we can't use units of "%" here, because there's
+  // no way to specify percent-width or percent-height. As a consequence, it
+  // would be impossible to keep the button's height and width in sync, and
+  // you would end up with an ellipse-shaped button, which is no good.
+  //
+  // I'd prefer to use transform: scale(...), but that isn't feasible either.
+  // You would need to scale up by the factor
+  // (desired size / default FAB size)
+  // But CSS isn't powerful enough to divide two lengths like that; its calc
+  // function is limited to dividing by a scalar.
+  // See https://developer.mozilla.org/en-US/docs/Web/CSS/calc#Syntax
+  //
+  // You could also do the scaling in TypeScript, of course, but that would be
+  // pretty slow (and also cumbersome to write).
 }
 
 .cards {
