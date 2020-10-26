@@ -3,7 +3,7 @@
 .student-bee {
   position: absolute;
   left: 50%;
-  bottom: 0;
+  bottom: 3%;
   height: 50%;
 }
 
@@ -22,9 +22,9 @@
   bottom: 5%;
   transform: translate(-50%, 0);
 
-  // Make sure that the button is 30% width or 25% height, whichever is
+  // Make sure that the button is 35% width or 22.5% height, whichever is
   // smaller. This looks pretty good on both portrait and landscape screens.
-  $button-diameter: min(35vw, 30vh);
+  $button-diameter: min(35vw, 22.5vh);
   width: $button-diameter;
   height: $button-diameter;
 
