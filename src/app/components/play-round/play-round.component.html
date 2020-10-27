@@ -33,17 +33,6 @@
     (click)="clickInteract(marker)"
     aria-label="Interact"
   >
-    <!--
-      These icons are temporary--we'll replace them once we get the the custom
-      bee & flower icons made! :)
-
-      The `inline` attribute makes sure that the mat-icon stays correctly
-      aligned (centered in the middle of the FAB) when the font size scales up
-      and down. (I don't know the details of how it works, though 🙂)
-      See https://github.com/angular/components/issues/8842#issuecomment-457664561
-    -->
-    <mat-icon inline>
-      {{marker.isNest ? "flight_land" : "emoji_nature"}}
-    </mat-icon>
+    <mat-icon>arrow_upward</mat-icon>
   </button>
 </ng-container>
