@@ -13,7 +13,7 @@ describe('PlayRoundComponent', () => {
   let component: PlayRoundComponent;
   let fixture: ComponentFixture<PlayRoundComponent>;
 
-  // These observables pretend to be data coming from the services. You can
+  // These observables pretend to be data coming from the services; you can
   // push whatever values you want to them.
   let mockSessionStudentData$: BehaviorSubject<SessionStudentData | null>;
   let mockCurrentFlowers$: BehaviorSubject<RoundFlower[]>;
