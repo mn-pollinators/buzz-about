@@ -9,7 +9,6 @@ describe('Sanity Tests', () => {
     // asserting the two objects are equal
     expect(actual).toEqual(expected);
   });
-
   it('tests of() correctly', async(() => {
     testScheduler.run(({ expectObservable }) => {
       expectObservable(of('a')).toBe('(a|)');

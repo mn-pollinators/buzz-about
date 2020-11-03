@@ -13,7 +13,7 @@ import { Interaction } from 'src/app/round';
  * and flowers. This interface is more of a gameplay object; it its name is,
  * whether it's active, and stuff like that.)
  */
-interface RoundMarker extends ARMarker {
+export interface RoundMarker extends ARMarker {
   name: string;
 
   // The `active` field will not be present if this round marker represents a
@@ -49,7 +49,8 @@ export class PlayRoundComponent implements OnInit {
       isNest: true,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
-    }))
+    })),
+    shareReplay(1),
   );
 
   arMarkers$: Observable<RoundMarker[]> = combineLatest([this.flowerArMarkers$, this.nestArMarker$]).pipe(
@@ -85,7 +86,8 @@ export class PlayRoundComponent implements OnInit {
         pollenArray[i] = true;
       }
       return pollenArray;
-    })
+    }),
+    shareReplay(1),
   );
 
   ngOnInit() {

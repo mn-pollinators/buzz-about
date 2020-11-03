@@ -207,12 +207,15 @@ export class StudentRoundService {
   );
 
   /**
-   * An observable that emits the amount of pollen a bee is currently carrying
-   * In order to do so it requires the array of interactions to be sorted from most recent to least recent
+   * An observable that emits the amount of pollen a bee is currently carrying.
+   *
+   * If we're not in a round, or not logged in, or something like that, this
+   * observable will just emit 0.
    */
   currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
     map(recentFlowerInteractions => recentFlowerInteractions.length),
     distinctUntilChanged(),
+    shareReplay(1),
   );
 
   currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
