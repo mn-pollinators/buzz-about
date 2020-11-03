@@ -30,14 +30,19 @@ interface FormData {
 
 function fillOutForm(formData: Partial<FormData>) {
   if ('sessionId' in formData) {
-    cy.get('input[formControlName=sessionControl]').type(formData.sessionId);
+    cy.get('input[formControlName=sessionControl]')
+      .type(formData.sessionId)
+      .blur();
   }
   if ('name' in formData) {
-    cy.get('input[formControlName=nameControl]').type(formData.name);
+    cy.get('input[formControlName=nameControl]')
+      .type(formData.name)
+      .blur();
   }
   if ('nest' in formData) {
     cy.get('input[formControlName=nestControl]')
-      .type(formData.nest.toString());
+      .type(formData.nest.toString())
+      .blur();
   }
 }
 
