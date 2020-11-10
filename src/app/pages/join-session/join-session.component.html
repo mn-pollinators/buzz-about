@@ -22,8 +22,14 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary" class="join-button"
-          type="submit" [disabled]="!sessionFormGroup.valid">
+        <button
+          mat-raised-button
+          color="primary"
+          class="join-button"
+          type="submit"
+          [disabled]="!sessionFormGroup.valid"
+          cy-data="joinSession"
+        >
           Join
         </button>
       </mat-card-actions>
