@@ -61,6 +61,16 @@ describe('PlayRoundComponent', () => {
   });
 
   describe('The flowerArMarkers$ observable', () => {
+    // Generate some silly data to fill the recentFlowerInteractions array.
+    function mockFlowerInteraction(barcodeValue: number): Interaction {
+      return {
+        timePeriod: 0,
+        userId: 'me',
+        barcodeValue,
+        isNest: false,
+      };
+    }
+
     it('Transforms flowers that are blooming correctly', fakeAsync(() => {
       let lastEmittedFlowerMarkers: RoundMarker[];
 
@@ -74,8 +84,12 @@ describe('PlayRoundComponent', () => {
           TimePeriod.fromMonthAndQuarter(Month.July, 1),
         ),
       ]);
-      mockBeePollen$.next(0);
-      mockRecentInteractions$.next([]);
+      mockBeePollen$.next(1);
+      mockRecentInteractions$.next([
+        // Add in an irrelevant flower interaction--let's say we interacted
+        // with flower 8, for example.
+        mockFlowerInteraction(8),
+      ]);
 
       tick(0);
 
@@ -113,8 +127,8 @@ describe('PlayRoundComponent', () => {
           TimePeriod.fromMonthAndQuarter(Month.December, 1),
         ),
       ]);
-      mockBeePollen$.next(0);
-      mockRecentInteractions$.next([]);
+      mockBeePollen$.next(1);
+      mockRecentInteractions$.next([mockFlowerInteraction(8)]);
 
       tick(0);
 
@@ -135,6 +149,61 @@ describe('PlayRoundComponent', () => {
       expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/square/);
       expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/grayscale/);
     }));
+
+    it(
+      'Sets canVisit to false if you\'re already carrying 3 pollen',
+      fakeAsync(() => {
+        let lastEmittedFlowerMarkers: RoundMarker[];
+
+        component.flowerArMarkers$.subscribe(flowerMarkers => {
+          lastEmittedFlowerMarkers = flowerMarkers;
+        });
+
+        mockCurrentFlowers$.next([
+          new RoundFlower(
+            allFlowerSpecies.asclepias_syriaca,
+            TimePeriod.fromMonthAndQuarter(Month.December, 1),
+          ),
+        ]);
+        mockBeePollen$.next(3);
+        mockRecentInteractions$.next([
+          mockFlowerInteraction(8),
+          mockFlowerInteraction(9),
+          mockFlowerInteraction(10),
+        ]);
+
+        tick(0);
+
+        expect(lastEmittedFlowerMarkers[0].canVisit).toBe(false);
+      }),
+    );
+
+    it(
+      'Sets canVisit to false if you\'ve already interacted with the marker sometime this nest cycle',
+      fakeAsync(() => {
+        let lastEmittedFlowerMarkers: RoundMarker[];
+
+        component.flowerArMarkers$.subscribe(flowerMarkers => {
+          lastEmittedFlowerMarkers = flowerMarkers;
+        });
+
+        mockCurrentFlowers$.next([
+          new RoundFlower(
+            allFlowerSpecies.asclepias_syriaca,
+            TimePeriod.fromMonthAndQuarter(Month.December, 1),
+          ),
+        ]);
+        mockBeePollen$.next(2);
+        mockRecentInteractions$.next([
+          mockFlowerInteraction(1),
+          mockFlowerInteraction(8),
+        ]);
+
+        tick(0);
+
+        expect(lastEmittedFlowerMarkers[0].canVisit).toBe(false);
+      }),
+    );
   });
 
   describe('The nestArMarker$ observable', () => {
