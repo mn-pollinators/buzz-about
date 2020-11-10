@@ -8,5 +8,8 @@
   "videosFolder": "cypress/videos",
   "screenshotsFolder": "cypress/screenshots",
   "chromeWebSecurity": true,
-  "projectId": "zrfvs1"
+  "projectId": "zrfvs1",
+  "env": {
+    "TEST_UID": "LDtLx0SwXHYQK5LXCjk3sD6j1782"
+  }
 }
