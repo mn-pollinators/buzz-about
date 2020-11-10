@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, filter, } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
-import { Interaction } from 'src/app/round';
+import { Interaction, RoundFlower } from 'src/app/round';
 
 /**
  * Like an `ARMarker`, but with semantics about the simulation.
  *
  * (`ARMarker`s are kind of just QR codes; they don't know anything about bees
- * and flowers. This interface is more of a gameplay object; it its name is,
- * whether it's active, and stuff like that.)
+ * and flowers. This interface is more of a gameplay object; what its name is,
+ * whether you can visit it, and stuff like that.)
  */
 export interface RoundMarker extends ARMarker {
   name: string;
 
-  // The `active` field will not be present if this round marker represents a
-  // nest.
-  active?: boolean;
+  // The `isBlooming` field will only be present if this round marker
+  // represents a flower. (Not a nest.)
+  isBlooming?: boolean;
 
   isNest: boolean;
+
+  canVisit: boolean;
 }
 
 @Component({
@@ -29,14 +31,17 @@ export interface RoundMarker extends ARMarker {
   styleUrls: ['./play-round.component.scss']
 })
 export class PlayRoundComponent implements OnInit {
-  flowerArMarkers$: Observable<RoundMarker[]> = this.studentRoundService.currentFlowers$.pipe(
-    map(flowers => flowers.map((flower, index) => ({
-      name: flower.species.name,
-      active: flower.isBlooming,
-      isNest: false,
-      barcodeValue: index + 1,
-      imgPath: `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}/flowers/${flower.species.art_file}`
-    })))
+  console = console;
+  flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
+    this.studentRoundService.currentFlowers$,
+    this.studentRoundService.currentBeePollen$,
+    this.studentRoundService.recentFlowerInteractions$,
+  ]).pipe(
+    map(([flowers, beePollen, recentInteractions]) =>
+      flowers.map((flower, index) =>
+        roundMarkerFromRoundFlower(flower, index, beePollen, recentInteractions)
+      )
+    )
   );
 
   nestArMarker$: Observable<RoundMarker> = combineLatest([
@@ -47,6 +52,7 @@ export class PlayRoundComponent implements OnInit {
     map(([student, bee]) => ({
       name: bee.nest_type.name,
       isNest: true,
+      canVisit: true,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
     })),
@@ -97,29 +103,6 @@ export class PlayRoundComponent implements OnInit {
     this.currentMarkerStates$.next(states);
   }
 
-  // Pass currentBeePollen and recentFlowerInteractions in as parameters to
-  // give the caller control over how it wants to consume those observables.
-  canVisit(
-    marker: RoundMarker,
-    context: {
-      currentBeePollen: number,
-      recentFlowerInteractions: Interaction[],
-    },
-  ) {
-    if (marker.isNest) {
-      return true;
-    } else {
-      const haveVisitedThisFlower = context.recentFlowerInteractions
-        .map(interaction => interaction.barcodeValue)
-        .includes(marker.barcodeValue);
-      return (
-        marker.active
-          && context.currentBeePollen < 3
-          && !haveVisitedThisFlower
-      );
-    }
-  }
-
   clickInteract(marker: RoundMarker) {
     this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
   }
@@ -128,4 +111,48 @@ export class PlayRoundComponent implements OnInit {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
+}
+
+function roundMarkerFromRoundFlower(
+  flower: RoundFlower,
+  index: number,
+  currentBeePollen: number,
+  recentFlowerInteractions: Interaction[]
+): RoundMarker {
+  const barcodeValue = index + 1;
+  const canVisit = canVisitFlower(
+    barcodeValue,
+    flower.isBlooming,
+    currentBeePollen,
+    recentFlowerInteractions,
+  );
+  console.log(canVisit);
+  return {
+    barcodeValue,
+    imgPath: imagePathForFlower(flower),
+    name: flower.species.name,
+    isBlooming: flower.isBlooming,
+    isNest: false,
+    canVisit,
+  };
+}
+
+function canVisitFlower(
+  barcodeValue: number,
+  isBlooming: boolean,
+  currentBeePollen: number,
+  recentFlowerInteractions: Interaction[],
+): boolean {
+  console.log(arguments);
+  const haveVisitedThisFlower = recentFlowerInteractions
+    .map(interaction => interaction.barcodeValue)
+    .includes(barcodeValue);
+  return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;
+}
+
+function imagePathForFlower(flower: RoundFlower): string {
+  return (
+    `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}`
+    + `/flowers/${flower.species.art_file}`
+  );
 }

@@ -17,18 +17,12 @@
   [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
   [alt]="bee.name"
 >
-<ng-container
-  *ngIf="{
-    currentBeePollen: (studentRoundService.currentBeePollen$ | async),
-    recentFlowerInteractions: (studentRoundService.recentFlowerInteractions$ | async)
-  } as context"
->
+<ng-container *ngIf="this.foundRoundMarker$ | async as marker">
   <button
     mat-raised-button
     class="interact-button"
     color="primary"
-    *ngIf="this.foundRoundMarker$ | async as marker"
-    [disabled]="!canVisit(marker, context)"
+    [disabled]="!marker.canVisit"
     (click)="clickInteract(marker)"
   >
     Visit {{marker.name}}
