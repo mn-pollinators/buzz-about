@@ -1,29 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
+import { MarkerState } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
-import { Interaction, RoundFlower } from 'src/app/round';
+import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 
-/**
- * Like an `ARMarker`, but with semantics about the simulation.
- *
- * (`ARMarker`s are kind of just QR codes; they don't know anything about bees
- * and flowers. This interface is more of a gameplay object; what its name is,
- * whether you can visit it, and stuff like that.)
- */
-export interface RoundMarker extends ARMarker {
-  name: string;
-
-  // The `isBlooming` field will only be present if this round marker
-  // represents a flower. (Not a nest.)
-  isBlooming?: boolean;
-
-  isNest: boolean;
-
-  canVisit: boolean;
-}
 
 @Component({
   selector: 'app-play-round',
@@ -38,7 +20,12 @@ export class PlayRoundComponent implements OnInit {
   ]).pipe(
     map(([flowers, beePollen, recentInteractions]) =>
       flowers.map((flower, index) =>
-        roundMarkerFromRoundFlower(flower, index, beePollen, recentInteractions)
+        roundMarkerFromRoundFlower(
+          flower,
+          index + 1,
+          beePollen,
+          recentInteractions,
+        )
       )
     )
   );
@@ -110,46 +97,4 @@ export class PlayRoundComponent implements OnInit {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
-}
-
-function roundMarkerFromRoundFlower(
-  flower: RoundFlower,
-  index: number,
-  currentBeePollen: number,
-  recentFlowerInteractions: Interaction[]
-): RoundMarker {
-  const barcodeValue = index + 1;
-  const canVisit = canVisitFlower(
-    barcodeValue,
-    flower.isBlooming,
-    currentBeePollen,
-    recentFlowerInteractions,
-  );
-  return {
-    barcodeValue,
-    imgPath: imagePathForFlower(flower),
-    name: flower.species.name,
-    isBlooming: flower.isBlooming,
-    isNest: false,
-    canVisit,
-  };
-}
-
-function canVisitFlower(
-  barcodeValue: number,
-  isBlooming: boolean,
-  currentBeePollen: number,
-  recentFlowerInteractions: Interaction[],
-): boolean {
-  const haveVisitedThisFlower = recentFlowerInteractions
-    .map(interaction => interaction.barcodeValue)
-    .includes(barcodeValue);
-  return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;
-}
-
-function imagePathForFlower(flower: RoundFlower): string {
-  return (
-    `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}`
-    + `/flowers/${flower.species.art_file}`
-  );
 }
