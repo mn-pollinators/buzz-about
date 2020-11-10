@@ -31,7 +31,6 @@ export interface RoundMarker extends ARMarker {
   styleUrls: ['./play-round.component.scss']
 })
 export class PlayRoundComponent implements OnInit {
-  console = console;
   flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
     this.studentRoundService.currentFlowers$,
     this.studentRoundService.currentBeePollen$,
@@ -126,7 +125,6 @@ function roundMarkerFromRoundFlower(
     currentBeePollen,
     recentFlowerInteractions,
   );
-  console.log(canVisit);
   return {
     barcodeValue,
     imgPath: imagePathForFlower(flower),
@@ -143,7 +141,6 @@ function canVisitFlower(
   currentBeePollen: number,
   recentFlowerInteractions: Interaction[],
 ): boolean {
-  console.log(arguments);
   const haveVisitedThisFlower = recentFlowerInteractions
     .map(interaction => interaction.barcodeValue)
     .includes(barcodeValue);
