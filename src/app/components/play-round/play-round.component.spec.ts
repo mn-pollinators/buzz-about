@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { BehaviorSubject } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
 import { allFlowerSpecies } from 'src/app/flowers';
-import { RoundFlower } from 'src/app/round';
+import { Interaction, RoundFlower } from 'src/app/round';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 import { StudentSessionService } from 'src/app/services/student-session.service';
 import { SessionStudentData } from 'src/app/session';
@@ -19,12 +19,14 @@ describe('PlayRoundComponent', () => {
   let mockCurrentFlowers$: BehaviorSubject<RoundFlower[]>;
   let mockBeeSpecies$: BehaviorSubject<BeeSpecies | null>;
   let mockBeePollen$: BehaviorSubject<number>;
+  let mockRecentInteractions$: BehaviorSubject<Interaction[]>;
 
   beforeEach(() => {
     mockSessionStudentData$ = new BehaviorSubject(null);
     mockCurrentFlowers$ = new BehaviorSubject([]);
     mockBeeSpecies$ = new BehaviorSubject(null);
     mockBeePollen$ = new BehaviorSubject(0);
+    mockRecentInteractions$ = new BehaviorSubject([]);
   });
 
   beforeEach(async(() => {
@@ -36,6 +38,7 @@ describe('PlayRoundComponent', () => {
       currentFlowers$: mockCurrentFlowers$,
       currentBeeSpecies$: mockBeeSpecies$,
       currentBeePollen$: mockBeePollen$,
+      recentFlowerInteractions$: mockRecentInteractions$
     };
 
     TestBed.configureTestingModule({
@@ -71,18 +74,23 @@ describe('PlayRoundComponent', () => {
           TimePeriod.fromMonthAndQuarter(Month.July, 1),
         ),
       ]);
+      mockBeePollen$.next(0);
+      mockRecentInteractions$.next([]);
 
       tick(0);
 
-      const expectedFields: [string, any][] = [
+      const expectedFields: [keyof RoundMarker, any][] = [
         ['name', allFlowerSpecies.asclepias_syriaca.name],
-        ['active', true],
+        ['isBlooming', true],
         ['isNest', false],
         ['barcodeValue', 1],
+        ['canVisit', true],
       ];
 
       for (const [field, expectedValue] of expectedFields) {
-        expect(lastEmittedFlowerMarkers[0][field]).toEqual(expectedValue);
+        expect(lastEmittedFlowerMarkers[0][field])
+          .withContext(`RoundMarker field ${field} should be ${expectedValue}`)
+          .toEqual(expectedValue);
       }
 
       // I don't want to encode too hard a dependency on the image path (which
@@ -105,18 +113,23 @@ describe('PlayRoundComponent', () => {
           TimePeriod.fromMonthAndQuarter(Month.December, 1),
         ),
       ]);
+      mockBeePollen$.next(0);
+      mockRecentInteractions$.next([]);
 
       tick(0);
 
       const expectedFields: [keyof RoundMarker, any][] = [
         ['name', allFlowerSpecies.asclepias_syriaca.name],
-        ['active', false],
+        ['isBlooming', false],
         ['isNest', false],
         ['barcodeValue', 1],
+        ['canVisit', false],
       ];
 
       for (const [field, expectedValue] of expectedFields) {
-        expect(lastEmittedFlowerMarkers[0][field]).toEqual(expectedValue);
+        expect(lastEmittedFlowerMarkers[0][field])
+        .withContext(`RoundMarker field ${field} should be ${expectedValue}`)
+        .toEqual(expectedValue);
       }
 
       expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/square/);
@@ -143,16 +156,20 @@ describe('PlayRoundComponent', () => {
           ['name', allBeeSpecies.apis_mellifera.nest_type.name],
           ['isNest', true],
           ['barcodeValue', 30],
+          ['canVisit', true],
         ];
 
         for (const [field, expectedValue] of expectedFields) {
-          expect(lastEmittedNestMarker[field]).toEqual(expectedValue);
+          expect(lastEmittedNestMarker[field])
+            .withContext(`RoundMarker field ${field} should be ${expectedValue}`)
+            .toEqual(expectedValue);
         }
 
         expect(lastEmittedNestMarker.imgPath).toMatch(/square/);
 
-        // Nest markers don't have an `active` field; that's only for flowers.
-        expect('active' in lastEmittedNestMarker).toBe(false);
+        // Nest markers don't have an `isBlooming` field; that's only for
+        // flowers.
+        expect('isBlooming' in lastEmittedNestMarker).toBe(false);
       }),
     );
 
