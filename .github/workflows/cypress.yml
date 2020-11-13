@@ -1,19 +1,12 @@
-name: Firebase Tests
+name: Cypress Tests
 
 on: [push]
 
 jobs:
-  firestore-tests:
+  cypress:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
     - name: Cache firebase emulators
       uses: actions/cache@v2
       with:
@@ -25,11 +18,14 @@ jobs:
         node-version: 12.x
         registry-url: 'https://npm.pkg.github.com'
         scope: '@mn-pollinators'
-    - name: Install dependencies (npm ci)
-      run: npm ci
+    - name: Cypress run
+      uses: cypress-io/github-action@v2
+      with:
+        record: true
+        start: npm run firebase:emulator
+        command: npm run e2e -- --record
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CYPRESS_INSTALL_BINARY: 0
-    - name: Test (npm run test-firestore)
-      run: npm run test-firestore
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

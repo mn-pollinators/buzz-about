@@ -1,109 +1,105 @@
 # Developing Buzz About
 
-Before you can start working on Buzz About, there are a few things you'll have to set up on your computer.
-
-If you're new to Minnesota Pollinators, you may also want to read the [getting started][Getting started] document, which gives an overview of how to set up your development environment.
+This is a guide to developing Buzz About. If you are new to the project, take a look at the [setup guide](./SETUP.md) for information on setting up the development environment.
 
 **Table of Contents**
+- [Running Buzz About](#running-buzz-about)
+  - [Firebase Emulators](#firebase-emulators)
+  - [Development server](#development-server)
+- [Testing](#testing)
+  - [Running unit tests](#running-unit-tests)
+  - [Running Cypress](#running-cypress)
+  - [Running Firebase tests](#running-firebase-tests)
+- [Additional Angular CLI commands](#additional-angular-cli-commands)
+  - [Linting](#linting)
+  - [Code scaffolding](#code-scaffolding)
+  - [Further help](#further-help)
+- [Useful links](#useful-links)
+  - [Deployment locations](#deployment-locations)
 
-- [Tell `npm` how to talk to GitHub Packages](#tell-npm-how-to-talk-to-github-packages)
-  - [Generating the personal access token](#generating-the-personal-access-token)
-  - [Giving that personal access token to `npm`](#giving-that-personal-access-token-to-npm)
-- [Installing the Angular command-line interface](#installing-the-angular-command-line-interface)
-- [Setting up Firebase](#setting-up-firebase)
-  - [Installing the command-line interface](#installing-the-command-line-interface)
-  - [Running the emulator](#running-the-emulator)
+## Running Buzz About
 
-## Tell `npm` how to talk to GitHub Packages
+### Firebase Emulators
 
-GitHub Packages is where we keep all of the images for the website, along with some data about flowers and bees. 
-
-For `npm` read from GitHub Packages, you'll need to provide it with a personal access token.
-
-### Generating the personal access token
-
-You can create a personal access token by going to <https://github.com/settings/tokens> and clicking "Generate new token". Under "Scopes", you'll want to check `repo`, `read:packages`, `write:packages`, and `delete:packages`:
-
-![The "New personal access token" page on GitHub, with those four scopes checked.][i:New personal access token]
-
-Then, you can click "Generate token" at the bottom of the page. You'll get a token that looks like `745b0dcc742dedf87c67ff075f65eb87295e205f`. Keep that around.
-
-### Giving that personal access token to `npm`
-
-Next, open the command-line and run
-
-```sh
-npm login --registry=https://npm.pkg.github.com
+To run the Firebase emulators:
 ```
-
- * When it asks for a username, enter your GitHub username.
- * When it asks for a password, paste in the personal access token (***not*** your GitHub password).
- * When it asks for your email, enter your GitHub email. 
-
-Some sticking-points:
-
-1. To paste text into PowerShell, right-click once.
-2. On github.com/settings/tokens, the personal access token has a space after it&mdash;be careful that you don't copy that! :upside_down_face:
-
-![github.com/settings/tokens with the extra space character highlighted][i:The gosh-darn whitespace]
-
-If you run into trouble, you can always fall back to typing the personal access code by hand.
-
-## Installing the Angular command-line interface
-
-Angular provides a CLI with commands for some common operations, like `ng build`, `ng serve`, `ng lint`, and `ng test`. (There's also `ng generate`, which lets you quickly make a new component or service without having to write out the boilerplate every time.)
-
-In order to use the Angular CLI, you'll need to install the `@angular/cli` package globally:
-
-```sh
-npm install -g @angular/cli
-```
-
-(If you're on a Unix system, you may need `sudo`.)
-
-## Setting up Firebase
-
-[Firebase][] is a set of cloud services provided by Google. We use a few of these services in Buzz About. Notably, we're using [Cloud Firestore][], a database that syncs between multiple clients in real time.
-
-When working on Buzz About, you'll want to make sure your school Google account gets added to our Firebase project. (Professor KK should be able to add you.)
-
-### Installing the command-line interface
-
-Like Angular, Firebase provides a set of command-line tools. You can get these by running
-
-```sh
-npm install -g firebase-tools
-```
-
-The first command that you want to run is probably `firebase login`. This will open a web browser prompting you to log in with your Google account.
-
-![PowerShell after running "firebase login". The program asks if it's okay to collect usage and error reporting, and then waits for authentication from the web browser.][i:Running firebase login]
-
-![The browser window that "firebase login" spawns. It says that the Firebase CLI wants to view and manage your data across Google Cloud Platform services, view and administer all your Firebase data and settings, and view your cloud platform projects. At the bottom, there's an "Allow" button and a "Cancel" button.][i:Authenticating the Firebase CLI in the browser]
-
-### Running the emulator
-
-When you're developing Buzz About locally, it isn't able to talk to the production database, so you'll need to run a local emulator.
-
-To run the the Firestore emulator locally, type
-
-```sh
 npm run firebase:emulator
 ```
 
-Now, if you start up a local copy of Buzz About, it should be able to talk to the emulator. Also, if you go to localhost:4000 in a browser, you'll find a nifty little database console!
+You should be able to access the Firebase Emulator Suite console at http://localhost:4000/
 
-![The local Firebase console at localhost:4000][i:Local Firebase console]
+### Development server
+
+To run the development server:
+```
+ng serve
+```
+
+Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
 
 
-<!-- Links: -->
-[Getting started]: https://github.com/mn-pollinators/getting-started/blob/master/README.md
-[Firebase]: https://firebase.google.com/
-[Cloud Firestore]: https://firebase.google.com/products/firestore
+## Testing
 
-<!-- Images: -->
-[i:New personal access token]: https://user-images.githubusercontent.com/56209343/89853567-569d2b80-db57-11ea-82d6-22bfd027b3a4.PNG
-[i:The gosh-darn whitespace]: https://user-images.githubusercontent.com/56209343/89954475-c4e4fb00-dbf6-11ea-950f-2ce572e19a7e.png
-[i:Running firebase login]: https://user-images.githubusercontent.com/56209343/89972375-52d6db00-dc23-11ea-83ca-411f89a6aac7.PNG
-[i:Authenticating the Firebase CLI in the browser]: https://user-images.githubusercontent.com/56209343/89972377-536f7180-dc23-11ea-977e-48a254e8604c.PNG
-[i:Local Firebase console]: https://user-images.githubusercontent.com/56209343/89973180-58352500-dc25-11ea-800d-2eeac828063b.PNG
+### Running unit tests
+
+To run the unit tests:
+```
+ng test
+```
+
+### Running Cypress
+
+To build the app and run the Cypress end-to-end tests, start the Firebase emulators and run:
+```
+npm run e2e
+```
+
+To open Cypress (so you can run the tests interactively), start both the development server and the Firebase emulators and run:
+```
+npm run cy:open
+```
+
+### Running Firebase tests
+
+With the Firebase emulators already running, run:
+```
+npm run firestore-specs
+```
+
+To start the Firebase emulators and run through the Firebase tests:
+```
+npm run test-firestore
+```
+
+## Additional Angular CLI commands
+
+### Linting
+
+To run the Angular linting tools:
+```
+ng lint
+```
+
+### Code scaffolding
+
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+
+### Further help
+
+To get more help on the Angular CLI use `ng help`.
+
+## Useful links
+
+- [Firebase console](https://console.firebase.google.com/project/buzz-about/overview)
+- [Vercel project](https://vercel.com/mn-pollinators/buzz-about)
+- [Cypress dashboard](https://dashboard.cypress.io/projects/zrfvs1)
+- [GitHub Actions](https://github.com/mn-pollinators/buzz-about/actions)
+
+### Deployment locations
+
+- Primary deployment on Firebase: [buzzabout.app](https://buzzabout.app/)
+  - Deploys the latest commit from `master` using [this](https://github.com/mn-pollinators/buzz-about/actions?query=workflow%3A%22Firebase+Deploy%22) GitHub Actions workflow.
+  - Alternate URLs: [buzz-about.web.app](https://buzz-about.web.app/) and [buzz-about.firebaseapp.com](https://buzz-about.firebaseapp.com/)
+- Vercel `master` deployment: [buzz-about.now.sh](https://buzz-about.now.sh/)
+  - Vercel also deploys every commit from every branch automatically.
+  - Alternate URLs: [buzz-about.mn-pollinators.vercel.app](https://buzz-about.mn-pollinators.vercel.app/) and [buzz-about.mn-pollinators.now.sh](https://buzz-about.mn-pollinators.now.sh/)

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Session, SessionWithId, SessionStudentData } from './../session';
+import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction } from './../round';
+import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
 
 export interface RoundPath {
@@ -91,9 +91,9 @@ export class FirebaseService {
   }
 
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
-    return this.angularFirestore
-      .collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
-      .doc(id).set(studentData);
+    this.angularFirestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
+      .doc(id)
+      .set(studentData);
   }
 
 
@@ -118,9 +118,8 @@ export class FirebaseService {
    * @param sessionID the ID of the session the students are in
    */
   getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
-    return this.angularFirestore
-      .collection('sessions')
-      .doc(sessionID).collection<SessionStudentData>('students')
+    return this.angularFirestore.collection('sessions').doc(sessionID)
+      .collection<SessionStudentData>('students')
       .valueChanges({idField: 'id'});
   }
 
@@ -171,6 +170,25 @@ export class FirebaseService {
    * @param data Information about this interaction (the ID of the student, the barcode they interacted with, etc.)
    */
   addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
-    return this.getRoundDocument(roundPath).collection('interactions').add(data);
+    return this.getRoundDocument(roundPath).collection('interactions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...data});
+  }
+
+  getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
+    return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+      roundPath.roundId + '/interactions', ref =>
+      ref.where('userId', '==', studentId)
+        .orderBy('createdAt', 'desc'))
+        .valueChanges();
+  }
+
+  /**
+   * Adds an host event to the `hostEvents` collection in firebase.
+   *
+   * @param roundPath The Firestore IDs of the session and round within it to add the interaction to
+   * @param eventData The type of event(play, pause, etc) and it's time of occurrence relative to the game
+   */
+  addHostEvent(roundPath: RoundPath, eventData: Partial<HostEvent>): Promise<DocumentReference> {
+    return this.getRoundDocument(roundPath).collection('hostEvents')
+      .add({occurredAt: firestore.FieldValue.serverTimestamp(), ...eventData});
   }
 }

@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType } from '../round';
 import { TimerService } from './timer.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { Path } from 'three';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
-import { TimePeriod } from './../time-period';
 import { RoundTemplate, TemplateBee } from '../round-template';
 
 @Injectable({
@@ -25,9 +23,12 @@ export class TeacherRoundService {
     // Link up observables so that the timer state gets sent to the current
     // round in Firebase. (But don't do anything when the current round is
     // null.)
+    // Also, record pause & play events based on state of running observable from timer service and
+    // the time of its occurrence.
     combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, running]) => {
+      this.addHostEvent(running ? HostEventType.Play : HostEventType.Pause);
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
@@ -46,6 +47,15 @@ export class TeacherRoundService {
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
     shareReplay(1)
   );
+
+  async addHostEvent(eventType: HostEventType) {
+    const time = await this.timerService.currentTime$.pipe(take(1)).toPromise();
+    const roundPath = await this.teacherSessionService.currentRoundPath$.pipe(take(1)).toPromise();
+    if (!roundPath) {
+      return Promise.reject();
+    }
+    return this.firebaseService.addHostEvent(roundPath, {eventType, timePeriod: time.time});
+  }
 
   /**
    * Create a new round within the current session, mark it as the currently
@@ -161,5 +171,4 @@ export class TeacherRoundService {
     }
     return newArray;
   }
-
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData } from '../round';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { FirebaseService } from './firebase.service';
@@ -145,14 +145,55 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
+  interactions$: Observable<Interaction[]> =
+  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$]).pipe(
+    switchMap(([path, user]) =>
+      path && user
+        ? this.firebaseService.getStudentInteractions(path, user.uid)
+        : of([]))
+  );
+
+  totalPollen$: Observable<number> = this.interactions$.pipe(
+    map(interactions => interactions.filter(interaction => !interaction.isNest).length)
+  );
+
+  /**
+   * An observable that emits the amount of pollen a bee is currently carrying
+   * In order to do so it requires the array of interactions to be sorted from most recent to least recent
+   */
+  currentBeePollen$: Observable<number> =
+  this.interactions$.pipe(
+    map(interactions => {
+        let currentPollen = 0;
+        for (const interaction of interactions) {
+          if (interaction.isNest) {
+            break;
+          }
+          currentPollen++;
+        }
+        return currentPollen;
+    }),
+    distinctUntilChanged(),
+  );
+
+  currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
+    map(([totalPollen, beePollen]) =>
+      totalPollen - beePollen
+    ),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
+
   /**
    * Records an interaction with a specific barcode value.
    *
    * @param barcodeValue the barcode value to submit in the interaction
+   * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number) {
+  interact(barcodeValue: number, isNest: boolean = false) {
     combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
-      ([path, user, time]) => this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, timePeriod: time.time})
+      ([path, user, time]) =>
+      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
     );
   }
 
