@@ -1,12 +1,7 @@
 @import "../../../variables";
 
-
-
 .bottom-bar {
-  // Use 64px as a height, because that's how tall the mdc-top-app-bar is.
-  // (Actually, on small screens it shrinks to 56px, but that complexity
-  // probably isn't worth building into the bottom bar right now.)
-  height: 64px;
+  height: $menu-bar-height;
   width: 100%;
   background-color: mat-color($primary);
   color: mat-color($primary, default-contrast);
@@ -19,8 +14,8 @@
     flex: 1;
     // But give them a bit of padding so that their contents aren't right up
     // against the edge.
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: $menu-bar-padding;
+    padding-right: $menu-bar-padding;
 
     // Each subsection of the toolbar should also be a flex-box.
     display: flex;

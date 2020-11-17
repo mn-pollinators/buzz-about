@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './components/play-round/play-round.component';
@@ -58,6 +59,7 @@ import { RoundTemplateTestComponent } from './test-pages/round-template-test/rou
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
+import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 
 
@@ -77,6 +79,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatDialogModule,
   MatListModule,
   MatTooltipModule,
+  MatExpansionModule,
 ];
 
 const FIREBASE_MODULES = [
@@ -113,6 +116,7 @@ const FIREBASE_MODULES = [
     TestPagesComponent,
     RoundChooserDialogComponent,
     StudentRoundComponent,
+    AboutComponent,
     AnonAuthTestComponent,
   ],
   imports: [

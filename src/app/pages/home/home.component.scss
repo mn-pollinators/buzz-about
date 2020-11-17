@@ -6,14 +6,24 @@
   grid-template-columns: 100%;
   margin-left: 8px;
   margin-right: 8px;
-  overflow-y: scroll;
 }
 
-.lccmr-card {
-  max-width: 600px;
+.about-container {
+  max-width: 600px + 32px;
+  margin-top: 8px;
   margin-bottom: 16px;
+  width: 100%;
+}
+
+.about-card {
   margin-left: 8px;
   margin-right: 8px;
+  mat-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 }
 
 .main-section {
@@ -36,3 +46,4 @@
     flex: 1;
   }
 }
+
