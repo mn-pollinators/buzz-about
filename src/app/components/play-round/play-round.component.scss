@@ -3,7 +3,7 @@
 .student-bee {
   position: absolute;
   left: 50%;
-  bottom: 0;
+  bottom: 0%;
   height: 50%;
 }
 
@@ -18,10 +18,9 @@
 
 .interact-button {
   position: absolute;
-  left:50%;
-  transform: translate(-50%, 0);
-  bottom: 5%;
-  text-transform: uppercase;
+  right: 16px;
+  bottom: 16px;
+  transform: translate(-50%, -50%) scale(2);
 }
 
 .cards {
@@ -37,6 +36,13 @@
   justify-content: space-around;
   align-content: space-around;
   align-items: center;
+
+  // Scale the font's point size up to 6% of the average of the viewport width
+  // and the viewport height. (Never scale it down, though.)
+  // This makes the pollen indicators look pretty good in both landscape and
+  // portrait mode across a range of devices.
+  font-size: max(calc(6 * (1vw + 1vh) / 2), 100%);
+  padding: 0.6em 0.4em;
 }
 
 .nest-card {
