@@ -23,13 +23,12 @@
   [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
   [alt]="bee.name"
 >
-<ng-container *ngIf="{ count: (this.studentRoundService.currentBeePollen$ | async) } as currentBeePollen">
+<ng-container *ngIf="this.foundRoundMarker$ | async as marker">
   <button
     mat-fab
     class="interact-button"
     color="primary"
-    *ngIf="this.foundRoundMarker$ | async as marker"
-    [disabled]="!marker.active || currentBeePollen.count >= 3 && !marker.isNest"
+    [disabled]="!marker.canVisit"
     (click)="clickInteract(marker)"
     aria-label="Interact"
   >

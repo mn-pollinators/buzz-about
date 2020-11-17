@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MarkerState, ARMarker } from '../ar-view/ar-view.component';
+import { MarkerState } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, share, shareReplay, switchMap, tap, filter, } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
+import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 
-interface RoundMarker extends ARMarker {
-  name: string;
-  active: boolean;
-  isNest?: boolean;
-}
 
 @Component({
   selector: 'app-play-round',
@@ -17,15 +13,21 @@ interface RoundMarker extends ARMarker {
   styleUrls: ['./play-round.component.scss']
 })
 export class PlayRoundComponent implements OnInit {
-
-
-  flowerArMarkers$: Observable<RoundMarker[]> = this.studentRoundService.currentFlowers$.pipe(
-    map(flowers => flowers.map((flower, index) => ({
-      name: flower.species.name,
-      active: flower.isBlooming,
-      barcodeValue: index + 1,
-      imgPath: `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}/flowers/${flower.species.art_file}`
-    })))
+  flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
+    this.studentRoundService.currentFlowers$,
+    this.studentRoundService.currentBeePollen$,
+    this.studentRoundService.recentFlowerInteractions$,
+  ]).pipe(
+    map(([flowers, beePollen, recentInteractions]) =>
+      flowers.map((flower, index) =>
+        roundMarkerFromRoundFlower(
+          flower,
+          index + 1,
+          beePollen,
+          recentInteractions,
+        )
+      )
+    )
   );
 
   nestArMarker$: Observable<RoundMarker> = combineLatest([
@@ -35,11 +37,12 @@ export class PlayRoundComponent implements OnInit {
     filter(([student, bee]) => !!student && !!bee),
     map(([student, bee]) => ({
       name: bee.nest_type.name,
-      active: true,
       isNest: true,
+      canVisit: true,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
-    }))
+    })),
+    shareReplay(1),
   );
 
   arMarkers$: Observable<RoundMarker[]> = combineLatest([this.flowerArMarkers$, this.nestArMarker$]).pipe(
@@ -75,7 +78,8 @@ export class PlayRoundComponent implements OnInit {
         pollenArray[i] = true;
       }
       return pollenArray;
-    })
+    }),
+    shareReplay(1),
   );
 
   ngOnInit() {
@@ -86,14 +90,11 @@ export class PlayRoundComponent implements OnInit {
   }
 
   clickInteract(marker: RoundMarker) {
-    console.log(marker);
     this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
   }
-
 
   calculateBeeScale(scale: number) {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
-
 }

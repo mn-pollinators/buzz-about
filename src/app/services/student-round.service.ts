@@ -145,35 +145,77 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-  interactions$: Observable<Interaction[]> =
-  combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$]).pipe(
+  /**
+   * An observable stream of the list of times the student got pollen from a
+   * flower or dropped it off at a nest, sorted from most recent to least
+   * recent.
+   *
+   * If the user is not logged in or not in a round right now, then this the
+   * value of this observable is the empty array.
+   *
+   * This observable emits whenever it's subscribed to, and when the
+   * interactions in the database change. (Also if the round path or current
+   * user changes.)
+   */
+  interactions$: Observable<Interaction[]> = combineLatest([
+    this.sessionService.currentRoundPath$,
+    this.authService.currentUser$,
+  ]).pipe(
     switchMap(([path, user]) =>
       path && user
         ? this.firebaseService.getStudentInteractions(path, user.uid)
-        : of([]))
-  );
-
-  totalPollen$: Observable<number> = this.interactions$.pipe(
-    map(interactions => interactions.filter(interaction => !interaction.isNest).length)
+        : of([])
+    ),
+    shareReplay(1),
   );
 
   /**
-   * An observable that emits the amount of pollen a bee is currently carrying
-   * In order to do so it requires the array of interactions to be sorted from most recent to least recent
+   * A list of every time the student has interacted with a flower during the
+   * current nest cycle.
+   *
+   * (This observable does *not* include the interaction with the nest itself.)
+   *
+   * A nest cycle is the period between visits to the nest when the student is
+   * running around the room collecting pollen. A new nest cycle starts when
+   * the round begins, or when the student deposits pollen at their nest.
+   *
+   * If the user is not logged in or not in a round right now, then this the
+   * value of this observable is the empty array.
+   *
+   * This observable emits whenever it's subscribed to, and whenever the
+   * interactions$ observable emits.
    */
-  currentBeePollen$: Observable<number> =
-  this.interactions$.pipe(
+  recentFlowerInteractions$: Observable<Interaction[]> = this.interactions$.pipe(
     map(interactions => {
-        let currentPollen = 0;
-        for (const interaction of interactions) {
-          if (interaction.isNest) {
-            break;
-          }
-          currentPollen++;
+      const recentFlowerInteractions = [];
+      for (const interaction of interactions) {
+        if (interaction.isNest) {
+          break;
         }
-        return currentPollen;
+        recentFlowerInteractions.push(interaction);
+      }
+      return recentFlowerInteractions;
     }),
+    shareReplay(1),
+  );
+
+  totalPollen$: Observable<number> = this.interactions$.pipe(
+    map(interactions =>
+      interactions.filter(interaction => !interaction.isNest).length
+    ),
+    shareReplay(1),
+  );
+
+  /**
+   * An observable that emits the amount of pollen a bee is currently carrying.
+   *
+   * If we're not in a round, or not logged in, or something like that, this
+   * observable will just emit 0.
+   */
+  currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
+    map(recentFlowerInteractions => recentFlowerInteractions.length),
     distinctUntilChanged(),
+    shareReplay(1),
   );
 
   currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(

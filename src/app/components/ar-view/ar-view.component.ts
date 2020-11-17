@@ -7,8 +7,6 @@ import {
   ViewChild,
   ElementRef,
   SimpleChanges,
-  SimpleChange,
-  SystemJsNgModuleLoader,
   OnChanges,
   OnDestroy,
   AfterViewInit
@@ -16,14 +14,7 @@ import {
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 import Info from 'info-monitor';
-
-/**
- * A barcode marker for AR
- */
-export interface ARMarker {
-  barcodeValue: number;
-  imgPath: string;
-}
+import { ARMarker } from 'src/app/markers';
 
 /**
  * The state of a marker
