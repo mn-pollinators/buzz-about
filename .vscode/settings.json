@@ -5,6 +5,7 @@
     "LCCMR",
     "Lamberty",
     "McPhee",
+    "Scoob",
     "achillea",
     "affinis",
     "agapostemon",
@@ -49,12 +50,14 @@
     "syriaca",
     "theming",
     "threear",
+    "ucfirst",
     "unpaused",
     "unpauses",
     "vaccinium",
     "virescens",
     "writeups",
-    "xdescribe"
+    "xdescribe",
+    "zoinks"
   ],
   "cSpell.enableFiletypes": [
     "firerules"

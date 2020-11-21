@@ -61,6 +61,7 @@ import { RoundChooserDialogComponent } from './components/round-chooser-dialog/r
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
+import { SentenceCasePipe } from './utils/string-utils';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -118,6 +119,7 @@ const FIREBASE_MODULES = [
     StudentRoundComponent,
     AboutComponent,
     AnonAuthTestComponent,
+    SentenceCasePipe,
   ],
   imports: [
     BrowserModule,

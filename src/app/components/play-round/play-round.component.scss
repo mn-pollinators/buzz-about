@@ -1,5 +1,28 @@
 @import "../../../variables";
 
+/**
+ * Provide different font sizes depending on the size class of the device.
+ *
+ * This mixin also updates the line-height property, so that it always equals
+ * the font size.
+ */
+@mixin responsive-font-size(
+  $for-phone-portrait,
+  $for-tablet-portrait,
+  $for-tablet-landscape,
+) {
+  font-size: $for-phone-portrait;
+  line-height: $for-phone-portrait;
+  @media (min-width: $tablet-portrait-min-width) {
+    font-size: $for-tablet-portrait;
+    line-height: $for-tablet-portrait;
+  }
+  @media (min-width: $tablet-landscape-min-width) {
+    font-size: $for-tablet-landscape;
+    line-height: $for-tablet-landscape;
+  }
+}
+
 :host {
   position: absolute;
   left: 0;
@@ -9,20 +32,6 @@
   overflow: hidden;
 }
 
-.student-bee {
-  position: absolute;
-  left: 50%;
-  bottom: 0%;
-  height: 50%;
-}
-
-.interact-button {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  transform: translate(-50%, -50%) scale(2);
-}
-
 .cards {
   display: flex;
   justify-content: space-between;
@@ -30,16 +39,9 @@
 }
 
 .nest-card, .pollen-card {
-  margin: 5px;
-  padding: 0.6em 0.4em;
-
-  font-size: 1.5rem;
-  @media (min-width: $tablet-portrait-min-width) {
-    font-size: 2rem;
-  }
-  @media (min-width: $tablet-landscape-min-width) {
-    font-size: 2.5rem;
-  }
+  margin: 4px;
+  padding: 0.4em;
+  @include responsive-font-size(1.5rem, 2rem, 2.5rem);
 }
 
 .pollen-card {
@@ -58,3 +60,30 @@
   }
 }
 
+.marker-name {
+  margin-top: 16px;
+  text-align: center;
+
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+  font-weight: bold;
+  color: white;
+  // I played around with drop shadows for a while before settling on
+  // a single, wide, dark-grey shadow, which seemed to be the most readable.
+  // (I tried a pure black shadow first, but it had a bit too much visual
+  // noise.)
+  text-shadow: 0 0 0.6em #111;
+}
+
+.student-bee {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  height: 50%;
+}
+
+.interact-button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  transform: translate(-50%, -50%) scale(2);
+}
