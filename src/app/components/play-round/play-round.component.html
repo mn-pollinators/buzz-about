@@ -20,7 +20,7 @@
 </div>
 
 <div class="marker-name" *ngIf="this.foundRoundMarker$ | async as marker">
-  {{marker.name | sentenceCase}}
+  {{marker.name | titlecase}}
 </div>
 
 <img
