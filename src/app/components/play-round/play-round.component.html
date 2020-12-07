@@ -1,4 +1,5 @@
 <app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+
 <div class="cards">
   <mat-card class='pollen-card'>
     <mat-icon
@@ -9,13 +10,19 @@
       {{ pollen ? 'lens' : 'panorama_fish_eye' }}
     </mat-icon>
   </mat-card>
+
   <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
-    <mat-card-content class='nest-content'>
-      <p>Pollen in Nest:</p>
-      <h1 class="nest-count">{{(this.studentRoundService.currentNestPollen$ | async) }}</h1>
-    </mat-card-content>
+    Pollen in nest:
+    <span class="nest-pollen-count">
+      {{(this.studentRoundService.currentNestPollen$ | async)}}
+    </span>
   </mat-card>
 </div>
+
+<div class="marker-name" *ngIf="this.foundRoundMarker$ | async as marker">
+  {{marker.name | titlecase}}
+</div>
+
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
@@ -23,6 +30,7 @@
   [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
   [alt]="bee.name"
 >
+
 <ng-container *ngIf="this.foundRoundMarker$ | async as marker">
   <button
     mat-fab
