@@ -86,5 +86,30 @@ service cloud.firestore {
         allow update, delete: if validAuth() && (isTeacher() || request.auth.uid == student);
       }
     }
+
+    match /joinCodes/{joinCode} {
+
+      function isOlderThan(hours) {
+        return request.time.toMillis() - resource.data.updatedAt.toMillis() > hours * 60 * 60 * 1000;
+      }
+
+      function timestampNow() {
+        return request.resource.data.updatedAt.toMillis() == request.time.toMillis();
+      }
+
+      function isTeacher() {
+        return request.auth.uid
+          == get(/databases/$(database)/documents/sessions/$(request.resource.data.sessionId)).data.hostId;
+      }
+
+      function validJoinCodeId() {
+        return joinCode.matches('\\d{6}');
+      }
+
+      allow create: if validAuth() && validJoinCodeId() && timestampNow() && isTeacher();
+      allow update: if validAuth() && validJoinCodeId() && timestampNow() && isTeacher() && isOlderThan(1);
+
+
+    }
   }
 }
