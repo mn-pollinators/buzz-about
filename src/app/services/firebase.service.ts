@@ -5,6 +5,7 @@ import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
+import { JoinCode } from '../join-code';
 
 export interface RoundPath {
   sessionId: string;
@@ -191,4 +192,14 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).collection('hostEvents')
       .add({occurredAt: firestore.FieldValue.serverTimestamp(), ...eventData});
   }
+
+
+  public getJoinCode(id: string): Observable<JoinCode | undefined> {
+    return this.angularFirestore.collection('joinCodes').doc<JoinCode>(id).get().pipe(
+      map(doc => (doc as firestore.DocumentSnapshot<JoinCode>).data())
+    );
+  }
+
+
+
 }
