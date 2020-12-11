@@ -137,3 +137,7 @@ export function createJoinCode(db: firestore.Firestore, id: string, joinCodeData
 export function milliseconds(hrs: number, min: number, sec: number): number {
   return((hrs * 60 * 60 + min * 60 + sec) * 1000);
 }
+
+export async function queryJoinCodesBySessionId(db: firestore.Firestore, sessionId: string) {
+  return db.collection('joinCodes').where('sessionId', '==', sessionId).get();
+}

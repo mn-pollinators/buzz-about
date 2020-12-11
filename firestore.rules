@@ -14,7 +14,7 @@ service cloud.firestore {
       function isTeacher() {
         // Note, you can only use this function in the base collection, not a
         // subcollection. (If you're in a subcollection, 'resource' doesn't
-        // refer to the session anymore.)
+        // refer to the session anymore; it's kind of a relative-path issue.)
         return request.auth.uid == resource.data.hostId;
       }
 
@@ -26,7 +26,7 @@ service cloud.firestore {
         return exists(/databases/$(database)/documents/sessions/$(session)/students/$(request.auth.uid))
       }
 
-      // A session can be read by the teacher and students
+      // A session can be read by the teacher and students.
       allow read: if validAuth() && (isStudent() || isTeacher());
 
       // A session's hostId must equal the uid of the teacher creating it and the createdAt timestamp must be correct.
@@ -39,30 +39,30 @@ service cloud.firestore {
           return request.auth.uid == get(/databases/$(database)/documents/sessions/$(session)).data.hostId;
         }
 
-        // A round can be written to by the teacher
+        // A round can be written to by the teacher.
         allow create, update: if validAuth() && isTeacher();
 
-        // A round can be read by the teacher and students
+        // A round can be read by the teacher and students.
         allow read: if validAuth() && (isStudent() || isTeacher());
 
         match /interactions/{interaction} {
 
-          // Teachers and the student who created the interaction can read them
+          // Teachers and the student who created the interaction can read them.
           allow read: if validAuth() && ((isStudent() && resource.data.userId == request.auth.uid) || isTeacher());
 
-          // Interactions can only be created if the userId on the interaction matches the user adding them
+          // Interactions can only be created if the userId on the interaction matches the user adding them.
           allow create: if validAuth() && request.resource.data.userId == request.auth.uid && isStudent();
         }
 
         match /students/{student} {
-          // A round student can be read by the teacher and the specific student
+          // A round student can be read by the teacher and the specific student.
           allow read: if validAuth() && (isTeacher() || (isStudent() && request.auth.uid == student));
-          // Only the teacher can create or update a round student
+          // Only the teacher can create or update a round student.
           allow create, update: if validAuth() && isTeacher();
         }
 
         match /hostEvents/{hostEvents} {
-          // The host events are only created and read by the teacher
+          // The host events are only created and read by the teacher.
           allow create, read: if validAuth() && isTeacher();
         }
       }
@@ -84,34 +84,55 @@ service cloud.firestore {
         // and while there is not currently a round running in the session.
         allow create: if validAuth() && request.auth.uid == student && !hasCurrentRound();
 
-        // A session student can be updated or deleted by the teacher or that specific student
-        // TODO: potentially check what is being changed on the student (eg name shouldn't be editable by student)
+        // A session student can be updated or deleted by the teacher or that specific student.
+        // TODO: potentially check what is being changed on the student (eg name shouldn't be editable by student).
         allow update, delete: if validAuth() && ((request.auth.uid == student) || isTeacher());
       }
     }
 
     match /joinCodes/{joinCode} {
+      // For a brief overview of how join codes work, see:
+      // https://github.com/mn-pollinators/buzz-about/issues/144
 
+      // Join codes have an `updatedAt` field. Check how much time has passed since the join code was last updated.
+      // Have at least `hours` hours passed?
       function isOlderThan(hours) {
         return request.time.toMillis() - resource.data.updatedAt.toMillis() > hours * 60 * 60 * 1000;
       }
 
+      // When you're setting data on a joinCode document, the `updatedAt` field must be set to the current time.
       function timestampNow() {
         return request.resource.data.updatedAt.toMillis() == request.time.toMillis();
       }
 
-      function isTeacher() {
+      // When you're setting data on a joinCode document, check whether the *new* join code points to a session that
+      // you're hosting.
+      function isRequestTeacher() {
         return request.auth.uid
           == get(/databases/$(database)/documents/sessions/$(request.resource.data.sessionId)).data.hostId;
       }
 
+      // Check whether the *pre-existing* join code points to a session that you're hosting.
+      function isResourceTeacher() {
+        return request.auth.uid
+          == get(/databases/$(database)/documents/sessions/$(resource.data.sessionId)).data.hostId;
+      }
+
+      // Make sure that the join code's document ID is of the correct form (six digits).
       function validJoinCodeId() {
         return joinCode.matches('\\d{6}');
       }
 
-      allow create: if validAuth() && validJoinCodeId() && timestampNow() && isTeacher();
-      allow update: if validAuth() && validJoinCodeId() && timestampNow() && isOlderThan(1) && isTeacher();
+      allow create: if validAuth() && validJoinCodeId() && timestampNow() && isRequestTeacher();
+      allow update: if validAuth() && isOlderThan(1) && validJoinCodeId() && timestampNow() && isRequestTeacher();
+      allow delete: if validAuth() && isResourceTeacher();
 
+
+      allow get: if validAuth() && !isOlderThan(1);
+
+      // If you're querying the join codes, every join code your selects must satisfy these conditions.
+      // (Otherwise, the query won't go through.)
+      allow list: if validAuth() && isResourceTeacher();
 
     }
   }
