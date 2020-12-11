@@ -19,17 +19,20 @@ service cloud.firestore {
       }
 
       // Return whether the current user is a student in this session.
+      // This function is expensive to call; it has to make reads to the
+      // database, so if we can short-circuit before we make this check, that
+      // would be nice.
       function isStudent() {
         return exists(/databases/$(database)/documents/sessions/$(session)/students/$(request.auth.uid))
       }
 
       // A session can be read by the teacher and students
-      allow read: if validAuth() && (isTeacher() || isStudent());
+      allow read: if validAuth() && (isStudent() || isTeacher());
 
       // A session's hostId must equal the uid of the teacher creating it and the createdAt timestamp must be correct.
       allow create: if validAuth() && request.auth.uid == request.resource.data.hostId;
 
-      allow update: if validAuth() && isTeacher() && request.resource.data.hostId == resource.data.hostId;
+      allow update: if validAuth() && request.resource.data.hostId == resource.data.hostId && isTeacher();
 
       match /rounds/{round} {
         function isTeacher() {
@@ -40,15 +43,15 @@ service cloud.firestore {
         allow create, update: if validAuth() && isTeacher();
 
         // A round can be read by the teacher and students
-        allow read: if validAuth() && (isTeacher() || isStudent());
+        allow read: if validAuth() && (isStudent() || isTeacher());
 
         match /interactions/{interaction} {
 
           // Teachers and the student who created the interaction can read them
-          allow read: if validAuth() && (isTeacher() || (isStudent() && resource.data.userId == request.auth.uid));
+          allow read: if validAuth() && ((isStudent() && resource.data.userId == request.auth.uid) || isTeacher());
 
           // Interactions can only be created if the userId on the interaction matches the user adding them
-          allow create: if validAuth() && isStudent() && request.resource.data.userId == request.auth.uid;
+          allow create: if validAuth() && request.resource.data.userId == request.auth.uid && isStudent();
         }
 
         match /students/{student} {
@@ -75,7 +78,7 @@ service cloud.firestore {
         }
 
         // A session student can be read by the teacher and by that specific student.
-        allow read: if validAuth() && (isTeacher() || request.auth.uid == student);
+        allow read: if validAuth() && ((request.auth.uid == student) || isTeacher());
 
         // A session student must be created with the same ID as the user's UID
         // and while there is not currently a round running in the session.
@@ -83,7 +86,7 @@ service cloud.firestore {
 
         // A session student can be updated or deleted by the teacher or that specific student
         // TODO: potentially check what is being changed on the student (eg name shouldn't be editable by student)
-        allow update, delete: if validAuth() && (isTeacher() || request.auth.uid == student);
+        allow update, delete: if validAuth() && ((request.auth.uid == student) || isTeacher());
       }
     }
 
@@ -107,7 +110,7 @@ service cloud.firestore {
       }
 
       allow create: if validAuth() && validJoinCodeId() && timestampNow() && isTeacher();
-      allow update: if validAuth() && validJoinCodeId() && timestampNow() && isTeacher() && isOlderThan(1);
+      allow update: if validAuth() && validJoinCodeId() && timestampNow() && isOlderThan(1) && isTeacher();
 
 
     }
