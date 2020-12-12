@@ -27,7 +27,7 @@ service cloud.firestore {
       }
 
       // A session can be read by the teacher and students.
-      allow read: if validAuth() && (isStudent() || isTeacher());
+      allow read: if validAuth() && (isTeacher() || isStudent());
 
       // A session's hostId must equal the uid of the teacher creating it and the createdAt timestamp must be correct.
       allow create: if validAuth() && request.auth.uid == request.resource.data.hostId;
