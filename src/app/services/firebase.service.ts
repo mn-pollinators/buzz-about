@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
-import { JoinCode } from '../join-code';
+import { JoinCode, JoinCodeWithId } from '../join-code';
 
 export interface RoundPath {
   sessionId: string;
@@ -40,7 +40,7 @@ export class FirebaseService {
    * (In case you need the Firebase ID for later, it's saved as a property on
    * the SessionWithId objects emitted from the observable.)
    */
-  public getSession(id: string): Observable<SessionWithId | null> {
+  getSession(id: string): Observable<SessionWithId | null> {
     return this.getSessionDocument(id)
       .snapshotChanges()
       .pipe(map(action =>
@@ -50,26 +50,26 @@ export class FirebaseService {
       ));
   }
 
-  public getSessionStudent(sessionId: string, studentId: string): Observable<SessionStudentData> {
+  getSessionStudent(sessionId: string, studentId: string): Observable<SessionStudentData> {
     return this.getSessionDocument(sessionId)
       .collection('students')
       .doc<SessionStudentData>(studentId)
       .valueChanges();
   }
 
-  public createSession(sessionData: {hostId: string}): Promise<string> {
+  createSession(sessionData: {hostId: string}): Promise<string> {
     return this.angularFirestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
       doc.id
     );
   }
 
-  public getMostRecentSession(userId: string): Observable<SessionWithId | null> {
+  getMostRecentSession(userId: string): Observable<SessionWithId | null> {
     return this.angularFirestore
       .collection<Session>('sessions', ref => ref.where('hostId', '==', userId)
         .orderBy('createdAt', 'desc')
         .limit(1))
       .valueChanges({idField: 'id'}).pipe(
-        map(values => values.length > 0 ? values[0] : null)
+        map(values => values[0] ?? null)
       );
   }
 
@@ -77,11 +77,11 @@ export class FirebaseService {
    * Return an observable stream of the round data for the round whose
    * Firebase ID is `roundId` within the session denoted by `sessionId`.
    */
-  public getRound(roundPath: RoundPath): Observable<FirebaseRound> {
+  getRound(roundPath: RoundPath): Observable<FirebaseRound> {
     return this.getRoundDocument(roundPath).valueChanges();
   }
 
-  public getRoundStudent(roundPath: RoundPath, studentId: string): Observable<RoundStudentData> {
+  getRoundStudent(roundPath: RoundPath, studentId: string): Observable<RoundStudentData> {
     return this.getRoundDocument(roundPath)
       .collection('students')
       .doc<RoundStudentData>(studentId)
@@ -100,13 +100,13 @@ export class FirebaseService {
    * @param sessionID Session ID to which round will be added
    * @param roundData data for the round in FirebaseRound interface format
    */
-  public createRoundInSession(sessionId: string, roundData: FirebaseRound): Promise<RoundPath> {
+  createRoundInSession(sessionId: string, roundData: FirebaseRound): Promise<RoundPath> {
     return this.angularFirestore.collection('sessions/' + sessionId + '/rounds').add(roundData).then(doc =>
       ({sessionId, roundId: doc.id})
     );
   }
 
-  public setCurrentRound(roundPath: RoundPath) {
+  setCurrentRound(roundPath: RoundPath) {
     return this.angularFirestore.collection('sessions').doc(roundPath.sessionId)
       .update({currentRoundId: roundPath.roundId});
   }
@@ -172,11 +172,10 @@ export class FirebaseService {
   }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
-    return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
-      roundPath.roundId + '/interactions', ref =>
-      ref.where('userId', '==', studentId)
-        .orderBy('createdAt', 'desc'))
-        .valueChanges();
+    return this.angularFirestore.collection<Interaction>(
+      'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
+      ref => ref.where('userId', '==', studentId).orderBy('createdAt', 'desc'),
+    ).valueChanges();
   }
 
   /**
@@ -190,13 +189,36 @@ export class FirebaseService {
       .add({occurredAt: firestore.FieldValue.serverTimestamp(), ...eventData});
   }
 
-
-  public getJoinCode(id: string): Observable<JoinCode | undefined> {
+  /**
+   * Given a join code ID (ie, the six characters) return the join code
+   * document (which includes information like what session it belongs to,
+   * and a timestamp.)
+   */
+  getJoinCode(id: string): Observable<JoinCode | undefined> {
     return this.angularFirestore.collection('joinCodes').doc<JoinCode>(id).get().pipe(
       map(doc => (doc as firestore.DocumentSnapshot<JoinCode>).data())
     );
   }
 
+  /**
+   * Given a session ID, get all of its join codes (even the expired ones).
+   *
+   * The resulting list is ordered from most recent to least.
+   *
+   * @param limit The maximum number of entries to return. (When there are more
+   * entries in the database, we'll just truncate the old ones.)
+   */
+  getMostRecentSessionJoinCodes(sessionId: string, limit = 1): Observable<JoinCodeWithId[]> {
+    return this.angularFirestore.collection<JoinCode>(
+      'joinCodes',
+      ref => ref.where('sessionId', '==', sessionId)
+        .orderBy('updatedAt', 'desc')
+        .limit(limit)
+    ).valueChanges({idField: 'id'});
+  }
 
-
+  setJoinCode(id: string, sessionId: string) {
+    return this.angularFirestore.collection('joinCodes').doc<JoinCode>(id)
+    .set({updatedAt: firestore.FieldValue.serverTimestamp(), sessionId});
+  }
 }
