@@ -5,8 +5,8 @@
       <mat-card-title>Join Session</mat-card-title>
       <mat-card-content class="join-card-content">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Session ID</mat-label>
-          <input matInput class="session" formControlName="sessionControl" required>
+          <mat-label>Join Code</mat-label>
+          <input matInput class="joinCode" inputmode="numeric" pattern="[0-9]{6}" formControlName="joinCodeControl" required>
         </mat-form-field>
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>Name</mat-label>

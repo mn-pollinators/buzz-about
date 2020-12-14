@@ -14,7 +14,7 @@ export class JoinSessionComponent implements OnInit {
 
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
-    sessionControl: new FormControl('', Validators.required),
+    joinCodeControl: new FormControl('', Validators.required),
     nestControl: new FormControl('', [Validators.required, Validators.min(20), Validators.max(120),
       Validators.pattern('^[0-9]*$')])
   });
@@ -30,10 +30,10 @@ export class JoinSessionComponent implements OnInit {
    */
   joinSession() {
     const name = this.sessionFormGroup.controls.nameControl.value;
-    const sessionId = this.sessionFormGroup.controls.sessionControl.value;
+    const joinCode = this.sessionFormGroup.controls.joinCodeControl.value;
     const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
 
-    this.studentSessionService.joinSession({name, nestBarcode}, sessionId).then(() => {
+    this.studentSessionService.joinSession({name, nestBarcode}, joinCode).then(sessionId => {
       this.router.navigate(['/play', sessionId]);
     }, (reason) => {
       this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});

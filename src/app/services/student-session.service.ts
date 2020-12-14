@@ -82,6 +82,12 @@ export class StudentSessionService {
     this.sessionId$.next(sessionId);
   }
 
+  getSessionIdFromJoinCode(joinCodeId: string) {
+    return this.firebaseService.getJoinCode(joinCodeId).pipe(
+      map(joinCode => joinCode.sessionId)
+    );
+  }
+
   /**
    * Register the current student as one of the members of this session.
    *
@@ -91,10 +97,14 @@ export class StudentSessionService {
    * the `setCurrentSession()` method.)
    *
    * @param studentData the Student's data for this session
-   * @param session ID of the session the student should be added to
+   * @param joinCodeId join code of the session the student should be added to
+   *
+   * @returns the session ID of the session the student has joined
    */
-  async joinSession(studentData: SessionStudentData, sessionId: string) {
+  async joinSession(studentData: SessionStudentData, joinCodeId: string): Promise<string> {
     const user = await this.authService.currentUser$.pipe(take(1)).toPromise();
-    return this.firebaseService.addStudentToSession(user.uid, sessionId, studentData);
+    const sessionId = await this.getSessionIdFromJoinCode(joinCodeId).toPromise();
+    await this.firebaseService.addStudentToSession(user.uid, sessionId, studentData);
+    return sessionId;
   }
 }
