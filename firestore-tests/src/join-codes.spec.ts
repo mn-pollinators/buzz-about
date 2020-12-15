@@ -52,7 +52,7 @@ describe('Join Codes', () => {
 
     expiredJoinCode = {
       sessionId: alicesSession.id,
-      updatedAt: firestore.Timestamp.fromMillis(Date.now() - (JOIN_CODE_LIFESPAN + 10)),
+      updatedAt: firestore.Timestamp.fromMillis(Date.now() - (JOIN_CODE_LIFESPAN + 10000)),
     };
 
     futureJoinCode = {
