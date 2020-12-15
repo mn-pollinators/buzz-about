@@ -1,8 +1,7 @@
 import * as firebase from '@firebase/testing';
 import { firestore } from '@firebase/testing';
-import { JoinCode } from '../../src/app/join-code';
+import { JoinCode, JOIN_CODE_LIFESPAN } from '../../src/app/join-code';
 import {
-  milliseconds,
   createSession,
   createJoinCode,
   addStudentToSession,
@@ -53,12 +52,12 @@ describe('Join Codes', () => {
 
     expiredJoinCode = {
       sessionId: alicesSession.id,
-      updatedAt: firestore.Timestamp.fromMillis(Date.now() - milliseconds(1, 5, 0)),
+      updatedAt: firestore.Timestamp.fromMillis(Date.now() - (JOIN_CODE_LIFESPAN + 10)),
     };
 
     futureJoinCode = {
       sessionId: alicesSession.id,
-      updatedAt: firestore.Timestamp.fromMillis(Date.now() + milliseconds(1, 0, 0)),
+      updatedAt: firestore.Timestamp.fromMillis(Date.now() + 200000),
     };
   });
 

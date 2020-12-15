@@ -5,9 +5,14 @@
     <div></div>
     <div class="top-content-middle-section">
       <mat-card class="join-code">
-        <mat-card-content>Join at buzzabout.app</mat-card-content>
-        <mat-card-content>With the join code:</mat-card-content>
-        <mat-card-title>{{ teacherSessionService.sessionId$ | async }}</mat-card-title>
+        <ng-container *ngIf="(joinCode$ | async) as joinCode; else noJoinCode">
+          <mat-card-content>Join at buzzabout.app</mat-card-content>
+          <mat-card-content>With the join code:</mat-card-content>
+          <mat-card-title>{{ joinCode.id }}</mat-card-title>
+        </ng-container>
+        <ng-template #noJoinCode>
+
+        </ng-template>
       </mat-card>
     </div>
     <div class="top-content-right-section">

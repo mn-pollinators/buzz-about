@@ -27,6 +27,8 @@ export class SessionLobbyComponent implements OnInit {
 
   loadingRound$ = new BehaviorSubject<boolean>(false);
 
+  joinCode$ = this.teacherSessionService.activeJoinCode$;
+
   ngOnInit(): void {
   }
 

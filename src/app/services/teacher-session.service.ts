@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './../services/firebase.service';
 import { SessionStudentData, SessionWithId, Session } from './../session';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, from, defer, timer } from 'rxjs';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap, retry, takeWhile } from 'rxjs/operators';
 import { AuthService } from './../services/auth.service';
+import { isJoinCodeActive, JoinCode, joinCodesAreEqual, JoinCodeWithId } from '../join-code';
+import { firestore } from 'firebase';
+import { milliseconds } from '../utils/time-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +56,28 @@ export class TeacherSessionService {
   );
 
   /**
+   * There might be multiple active join codes. This is the most recent one,
+   * if there is one, or null otherwise.
+   */
+  activeJoinCode$: Observable<JoinCodeWithId | null> = this.sessionId$.pipe(
+    switchMap(sessionId => this.firebaseService.getMostRecentSessionJoinCodes(sessionId, 1)),
+    map(joinCodes => joinCodes[0] ?? null),
+    distinctUntilChanged(joinCodesAreEqual),
+    switchMap(joinCode =>
+      joinCode
+        ? timer(0, 1000).pipe(
+          map(() => isJoinCodeActive(joinCode) ? joinCode : null),
+          // `true` means that takeWhile is inclusive, ie, it will emit one
+          // `null` once the join code expires.
+          takeWhile(joinCodeOrNull => !!joinCodeOrNull, true)
+        )
+        : of(null)
+    ),
+    distinctUntilChanged(joinCodesAreEqual),
+    shareReplay(1)
+  );
+
+  /**
    * Mark a session as the currently playing one.
    *
    * @param sessionId The session that we want to play right now.
@@ -79,4 +104,19 @@ export class TeacherSessionService {
     });
   }
 
+  private randomJoinCode() {
+    return Math.random().toFixed(6).substr(2);
+  }
+
+  createJoinCode() {
+    const RETRY_COUNT = 5;
+    return this.sessionId$.pipe(
+      take(1),
+      switchMap(sessionId =>
+        defer(() => this.firebaseService.setJoinCode(this.randomJoinCode(), sessionId)).pipe(
+          retry(RETRY_COUNT)
+        )
+      )
+    );
+  }
 }
