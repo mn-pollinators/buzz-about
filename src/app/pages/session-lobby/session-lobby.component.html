@@ -8,10 +8,15 @@
         <ng-container *ngIf="(joinCode$ | async) as joinCode; else noJoinCode">
           <mat-card-content>Join at buzzabout.app</mat-card-content>
           <mat-card-content>With the join code:</mat-card-content>
-          <mat-card-title>{{ joinCode.id }}</mat-card-title>
+          <mat-card-title>
+            {{ joinCode.id }}
+            <button mat-icon-button (click)="deleteJoinCode()" aria-label="Disable join code">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-card-title>
         </ng-container>
         <ng-template #noJoinCode>
-
+          <button mat-raised-button color="primary" (click)="createJoinCode()" [disabled]="joinCodeButtonDisabled">Create join code</button>
         </ng-template>
       </mat-card>
     </div>

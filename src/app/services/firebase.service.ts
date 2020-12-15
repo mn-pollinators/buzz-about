@@ -71,7 +71,7 @@ export class FirebaseService {
       .snapshotChanges()
       .pipe(map(actions =>
         actions[0]?.payload.doc.exists
-          ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data()}
+          ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data({serverTimestamps: 'estimate'})}
           : null
       ));
   }
@@ -217,11 +217,28 @@ export class FirebaseService {
       ref => ref.where('sessionId', '==', sessionId)
         .orderBy('updatedAt', 'desc')
         .limit(limit)
-    ).valueChanges({idField: 'id'});
+    ).snapshotChanges().pipe(
+      map(snapshot => snapshot.map(s =>
+        s.payload.doc.exists
+          ? {
+            id: s.payload.doc.id,
+            // setting serverTimestamps: 'estimate' means that, in the local
+            // cache, we'll temporarily evaluate
+            // `firestore.FieldValue.serverTimestamp()` using the client's
+            // clock while we wait to hear back to the server.
+            ...s.payload.doc.data({serverTimestamps: 'estimate'})
+          }
+          : null
+      ))
+    );
   }
 
   setJoinCode(id: string, sessionId: string) {
     return this.angularFirestore.collection('joinCodes').doc<JoinCode>(id)
     .set({updatedAt: firestore.FieldValue.serverTimestamp(), sessionId});
+  }
+
+  deleteJoinCode(id: string) {
+    return this.angularFirestore.collection('joinCodes').doc<JoinCode>(id).delete();
   }
 }

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './../services/firebase.service';
-import { SessionStudentData, SessionWithId, Session } from './../session';
-import { Observable, BehaviorSubject, of, from, defer, timer } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged, take, tap, retry, takeWhile } from 'rxjs/operators';
+import { SessionStudentData, SessionWithId, } from './../session';
+import { Observable, BehaviorSubject, of, defer, timer, concat } from 'rxjs';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, retry, mapTo, filter } from 'rxjs/operators';
 import { AuthService } from './../services/auth.service';
-import { isJoinCodeActive, JoinCode, joinCodesAreEqual, JoinCodeWithId } from '../join-code';
-import { firestore } from 'firebase';
-import { milliseconds } from '../utils/time-utils';
+import { joinCodeExpiration, joinCodesAreEqual, JoinCodeWithId } from '../join-code';
+
+export function randomJoinCode(): string {
+  return Math.random().toFixed(6).substr(2);
+}
 
 @Injectable({
   providedIn: 'root'
@@ -65,11 +67,9 @@ export class TeacherSessionService {
     distinctUntilChanged(joinCodesAreEqual),
     switchMap(joinCode =>
       joinCode
-        ? timer(0, 1000).pipe(
-          map(() => isJoinCodeActive(joinCode) ? joinCode : null),
-          // `true` means that takeWhile is inclusive, ie, it will emit one
-          // `null` once the join code expires.
-          takeWhile(joinCodeOrNull => !!joinCodeOrNull, true)
+        ? concat(
+          of(joinCode),
+          timer(joinCodeExpiration(joinCode)).pipe(mapTo(null))
         )
         : of(null)
     ),
@@ -104,19 +104,40 @@ export class TeacherSessionService {
     });
   }
 
-  private randomJoinCode() {
-    return Math.random().toFixed(6).substr(2);
-  }
-
-  createJoinCode() {
+  /**
+   * Generate a join code that's not currently being used by any session.
+   *
+   * @return an observable that closes on success, or errors on failure.
+   *
+   * (The method looks for an open join code probabilistically, trying several
+   * random join codes until it finds one that's open. If it can't find one
+   * that's open, it'll give up after a while; that's the main error
+   * case.)
+   *
+   * To see the join code you generated, look at the `activeJoinCode$`
+   * observable.
+   */
+  createJoinCode(): Observable<void> {
     const RETRY_COUNT = 5;
     return this.sessionId$.pipe(
       take(1),
       switchMap(sessionId =>
-        defer(() => this.firebaseService.setJoinCode(this.randomJoinCode(), sessionId)).pipe(
+        defer(() => this.firebaseService.setJoinCode(randomJoinCode(), sessionId)).pipe(
           retry(RETRY_COUNT)
         )
       )
     );
+  }
+
+  /**
+   * Delete the currently active join code, if there is one.
+   *
+   * If there's not a join code active right now, this is a no-op.
+   */
+  async deleteCurrentJoinCode() {
+    const joinCode = await this.activeJoinCode$.pipe(take(1)).toPromise();
+    if (joinCode) {
+      return this.firebaseService.deleteJoinCode(joinCode.id);
+    }
   }
 }

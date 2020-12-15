@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TeacherSessionService } from './teacher-session.service';
+import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
 import { BehaviorSubject, of } from 'rxjs';
@@ -240,6 +240,14 @@ describe('TeacherSessionService', () => {
         expectedSessionData,
         studentLists,
       );
+    });
+  });
+
+  describe('Join codes', () => {
+    it('are 6 digit numeric strings', () => {
+      for (let i = 0; i < 10000; i++) {
+        expect(randomJoinCode()).toMatch(/^[0-9]{6}$/);
+      }
     });
   });
 });

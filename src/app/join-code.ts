@@ -34,7 +34,7 @@ export function joinCodesAreEqual(
   }
 }
 
-export function isJoinCodeActive(joinCode: JoinCode): boolean {
-  const updatedAt = joinCode.updatedAt as firestore.Timestamp;
-  return Date.now() - updatedAt.toMillis() < JOIN_CODE_LIFESPAN;
+export function joinCodeExpiration(joinCode: JoinCode): Date {
+  const joinCodeMs = (joinCode.updatedAt as firestore.Timestamp).toMillis();
+  return new Date(joinCodeMs + JOIN_CODE_LIFESPAN);
 }

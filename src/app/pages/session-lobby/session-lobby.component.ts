@@ -29,6 +29,8 @@ export class SessionLobbyComponent implements OnInit {
 
   joinCode$ = this.teacherSessionService.activeJoinCode$;
 
+  joinCodeButtonDisabled = false;
+
   ngOnInit(): void {
   }
 
@@ -52,5 +54,19 @@ export class SessionLobbyComponent implements OnInit {
         });
       }
     });
+  }
+
+  createJoinCode() {
+    this.joinCodeButtonDisabled = true;
+    this.teacherSessionService.createJoinCode().subscribe(() => {
+      this.joinCodeButtonDisabled = false;
+    }, err => {
+      // blah blah snackbar
+      this.joinCodeButtonDisabled = false;
+    });
+  }
+
+  deleteJoinCode() {
+    return this.teacherSessionService.deleteCurrentJoinCode();
   }
 }
