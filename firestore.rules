@@ -120,7 +120,7 @@ service cloud.firestore {
 
       // Make sure that the join code's document ID is of the correct form (six digits).
       function validJoinCodeId() {
-        return joinCode.matches('\\d{6}');
+        return joinCode.matches('[0-9]{6}');
       }
 
       allow create: if validAuth() && validJoinCodeId() && timestampNow() && isRequestTeacher();
