@@ -68,9 +68,12 @@ export class FirebaseService {
       .collection<Session>('sessions', ref => ref.where('hostId', '==', userId)
         .orderBy('createdAt', 'desc')
         .limit(1))
-      .valueChanges({idField: 'id'}).pipe(
-        map(values => values[0] ?? null)
-      );
+      .snapshotChanges()
+      .pipe(map(actions =>
+        actions[0]?.payload.doc.exists
+          ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data()}
+          : null
+      ));
   }
 
   /**
