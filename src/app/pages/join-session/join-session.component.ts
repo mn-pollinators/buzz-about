@@ -36,7 +36,11 @@ export class JoinSessionComponent implements OnInit {
     this.studentSessionService.joinSession({name, nestBarcode}, joinCode).then(sessionId => {
       this.router.navigate(['/play', sessionId]);
     }, (reason) => {
-      this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});
+      this.snackbar.open(
+        'Sorry, that join code is invalid.',
+        undefined,
+        { duration: 10000 },
+      );
     });
   }
 }
