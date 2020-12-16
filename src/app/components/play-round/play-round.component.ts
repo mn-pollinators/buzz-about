@@ -56,7 +56,7 @@ export class PlayRoundComponent implements OnInit {
     private sessionService: StudentSessionService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
-    ) {
+  ) {
     iconRegistry.addSvgIcon('arrow-flower', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-flower-icon.svg'));
     iconRegistry.addSvgIcon('arrow-home', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-home-icon.svg'));
   }
