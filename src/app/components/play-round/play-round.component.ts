@@ -5,6 +5,8 @@ import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
 import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -49,7 +51,15 @@ export class PlayRoundComponent implements OnInit {
     map(([flowerMarkers, nestMarker]) => flowerMarkers.concat([nestMarker])),
   );
 
-  constructor(public studentRoundService: StudentRoundService, private sessionService: StudentSessionService) { }
+  constructor(
+    public studentRoundService: StudentRoundService,
+    private sessionService: StudentSessionService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
+    iconRegistry.addSvgIcon('arrow-flower', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-flower-icon.svg'));
+    iconRegistry.addSvgIcon('arrow-home', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-home-icon.svg'));
+  }
 
   currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
 

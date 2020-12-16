@@ -88,5 +88,10 @@
   position: absolute;
   right: 16px;
   bottom: 16px;
-  transform: translate(-50%, -50%) scale(2);
+  width: 112px;
+  height: 112px;
+  .mat-icon {
+    width: 72px;
+    height: 72px;
+  }
 }
