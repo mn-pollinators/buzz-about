@@ -17,7 +17,7 @@ describe('StudentSessionService', () => {
     roundPaths: {[letterName: string]: RoundPath},
     students: {[letterName: string]: SessionStudentData},
     authUsers: {[letterName: string]: User},
-    joinCodes: {[letterName: string]: JoinCodeWithId},
+    joinCodes: {[letterName: string]: JoinCodeWithId },
   } = {
     sessionIds: {
       n: null,
@@ -103,6 +103,8 @@ describe('StudentSessionService', () => {
 
     joinCodes: {
       n: null,
+
+      // For session 1:
       1: {
         id: '111111',
         sessionId: '1',
@@ -110,15 +112,19 @@ describe('StudentSessionService', () => {
         // but it should still be active by the time the tests run. :)
         updatedAt: firestore.Timestamp.fromMillis(Date.now()),
       },
-      E: {
-        id: '1111111',
-        sessionId: '1',
-        updatedAt: firestore.Timestamp.fromMillis(0),
-      },
+
+      // For session 2:
       2: {
-        id: '2222222',
+        id: '222222',
         sessionId: '2',
         updatedAt: firestore.Timestamp.fromMillis(Date.now()),
+      },
+
+      // And an expired join code for session 1:
+      E: {
+        id: '000000',
+        sessionId: '1',
+        updatedAt: firestore.Timestamp.fromMillis(0),
       },
     },
   };
@@ -172,12 +178,20 @@ describe('StudentSessionService', () => {
       },
 
       getJoinCode(id) {
-        for (const jc of Object.values(values.joinCodes)) {
-          if (jc && jc.id === id) {
-            return of(jc);
-          }
+        switch (id) {
+          case '111111':
+            return of(values.joinCodes[1]);
+          case '222222':
+            return of(values.joinCodes[2]);
+          case '000001':
+            return throwError(new Error(
+              'That join code is expired--nyah nyah, too slow! 😜',
+            ));
+          default:
+            return throwError(new Error(
+              `Oh no! I couldn't find a join code with this id: ${id}`
+            ));
         }
-        return throwError(`Oh no! I couldn't find a join code with this id: ${id}`);
       }
     };
 
@@ -242,7 +256,37 @@ describe('StudentSessionService', () => {
       });
     });
 
-    // Todo: test the failure modes here.
+    describe('With a non-existent join code', () => {
+      it('Throws an error', done => {
+        service.joinSession(values.students.F, '123456').then(() => {
+          done.fail('Expected joinSession() to throw, but it didn\'t.');
+        }).catch(() => {
+          done();
+        });
+      });
+
+      it('Doesn\'t call FirebaseService.addStudentToSession', async(() => {
+        service.joinSession(values.students.F, '123456').finally(() => {
+          expect(addStudentToSessionSpy).toHaveBeenCalledTimes(0);
+        });
+      }));
+    });
+
+    describe('With an expired join code', () => {
+      it('Throws an error', done => {
+        service.joinSession(values.students.F, '000000').then(() => {
+          done.fail('Expected joinSession() to throw, but it didn\'t.');
+        }).catch(() => {
+          done();
+        });
+      });
+
+      it('Doesn\'t call FirebaseService.addStudentToSession', async(() => {
+        service.joinSession(values.students.F, '000000').finally(() => {
+          expect(addStudentToSessionSpy).toHaveBeenCalledTimes(0);
+        });
+      }));
+    });
   });
 
   describe('The setCurrentSession() method', () => {
@@ -495,7 +539,6 @@ describe('StudentSessionService', () => {
       ];
 
       cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
-
 
       expectObservable(service.sessionStudentData$).toBe(
         expectedStudentData,
