@@ -16,32 +16,41 @@
   display: flex;
   padding: 16px;
   > * {
-    flex: 1;
     display: flex;
   }
 }
 
 .top-content-middle-section {
   justify-content: center;
+  flex-grow: 1;
+  max-width: 800px;
 }
 
 .join-code {
-  text-align: center;
+  width: 100%;
+  mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    vertical-align: top;
+  }
 }
 
-.top-content-right-section {
-  justify-content: flex-end;
+.player-count-text{
+  font-size: 24px;
 }
 
 .player-count {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  align-items: center;
 }
 
-.number-of-players {
-  margin-bottom: 0px;
+.top-content-left-section {
+  flex: 1;
+}
+
+.top-content-right-section {
+  flex: 1;
 }
 
 .player-list {
@@ -51,4 +60,37 @@
 mat-spinner {
   margin: auto;
   margin-top: 16px;
+}
+
+.join-code-text {
+  font-weight: 500;
+  font-size: 112px;
+  line-height: 112px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  margin-bottom: 0px;
+}
+
+.above-join-code {
+  text-align: center;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 40px;
+}
+
+.create-join-code{
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  button {
+    height: 72px;
+    font-size: 28px;
+  }
+}
+
+.below-join-code-button {
+  margin-top: 8px;
+  text-align: center;
 }
