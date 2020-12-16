@@ -16,7 +16,7 @@
           </mat-card-title>
         </ng-container>
         <ng-template #noJoinCode>
-          <button mat-raised-button color="primary" (click)="createJoinCode()" [disabled]="joinCodeButtonDisabled">Create join code</button>
+          <button mat-raised-button color="primary" (click)="createJoinCode()" [disabled]="joinCodeButtonDisabled$ | async">Create join code</button>
         </ng-template>
       </mat-card>
     </div>
