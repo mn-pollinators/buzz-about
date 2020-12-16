@@ -82,7 +82,7 @@ export class StudentSessionService {
     this.sessionId$.next(sessionId);
   }
 
-  getSessionIdFromJoinCode(joinCodeId: string) {
+  private getSessionIdFromJoinCode(joinCodeId: string) {
     return this.firebaseService.getJoinCode(joinCodeId).pipe(
       map(joinCode => joinCode.sessionId)
     );

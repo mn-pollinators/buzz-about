@@ -189,7 +189,7 @@ describe('StudentSessionService', () => {
             ));
           default:
             return throwError(new Error(
-              `Oh no! I couldn't find a join code with this id: ${id}`
+              `Oh no! I couldn't find a join code with this id: ${id}`,
             ));
         }
       }
