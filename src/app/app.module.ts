@@ -60,7 +60,6 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
 import { AboutComponent } from './pages/about/about.component';
-import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { SentenceCasePipe } from './utils/string-utils';
 
 import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
@@ -120,7 +119,6 @@ const FIREBASE_MODULES = [
     RoundChooserDialogComponent,
     StudentRoundComponent,
     AboutComponent,
-    AnonAuthTestComponent,
     SentenceCasePipe,
   ],
   imports: [
