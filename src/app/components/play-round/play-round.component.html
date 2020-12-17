@@ -40,6 +40,7 @@
     (click)="clickInteract(marker)"
     aria-label="Interact"
   >
-    <mat-icon>arrow_upward</mat-icon>
+    <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
+    </mat-icon>
   </button>
 </ng-container>
