@@ -1,6 +1,6 @@
 import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 
 
 /**
@@ -58,5 +58,5 @@ export enum HostEventType {
 export interface HostEvent {
   eventType: HostEventType;
   timePeriod: number;
-  occurredAt: firestore.Timestamp;
+  occurredAt: firebase.firestore.Timestamp;
 }
