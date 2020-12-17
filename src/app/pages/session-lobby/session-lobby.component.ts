@@ -29,7 +29,7 @@ export class SessionLobbyComponent implements OnInit {
 
   joinCode$ = this.teacherSessionService.activeJoinCode$;
 
-  joinCodeButtonDisabled$ = new BehaviorSubject<boolean>(false)
+  joinCodeButtonDisabled$ = new BehaviorSubject<boolean>(false);
 
   ngOnInit(): void {
   }
