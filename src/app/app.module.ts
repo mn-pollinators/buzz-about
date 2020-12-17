@@ -63,6 +63,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { SentenceCasePipe } from './utils/string-utils';
 
+import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
+import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/firestore';
 
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
@@ -138,6 +140,14 @@ const FIREBASE_MODULES = [
     {
       provide: FIRESTORE_SETTINGS,
       useValue: environment.firestoreSettings,
+    },
+    {
+      provide: USE_FIRESTORE_EMULATOR,
+      useValue: environment.firestoreEmulator
+    },
+    {
+      provide: USE_AUTH_EMULATOR,
+      useValue: environment.authEmulator
     }
   ],
   bootstrap: [AppComponent]
