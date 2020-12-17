@@ -10,5 +10,7 @@ export const environment = {
     appId: '1:939350015320:web:b69fc713c8c9c7c120b92d',
     measurementId: 'G-B2856C83KR'
   },
-  firestoreSettings: {}
+  firestoreSettings: {},
+  firestoreEmulator: undefined,
+  authEmulator: undefined
 };

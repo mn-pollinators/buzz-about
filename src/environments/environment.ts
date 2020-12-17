@@ -15,10 +15,12 @@ export const environment = {
     measurementId: 'G-B2856C83KR'
   },
   firestoreSettings: {
-    host: 'localhost:8080',
-    ssl: false,
+    // host: 'localhost:8080',
+    // ssl: false,
     experimentalForceLongPolling: 'Cypress' in window
-  }
+  },
+  firestoreEmulator: ['localhost', 8080],
+  authEmulator: ['localhost', 9099]
 };
 
 /*

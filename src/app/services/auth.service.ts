@@ -4,6 +4,7 @@ import { FirebaseService } from './firebase.service';
 import { SessionStudentData } from '../session';
 import { switchMap, map, shareReplay } from 'rxjs/operators';
 import { from, of, Observable } from 'rxjs';
+import firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'

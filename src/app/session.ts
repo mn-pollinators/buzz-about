@@ -1,4 +1,4 @@
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 
 /**
  * Session data as it is stored in Firebase
@@ -6,7 +6,7 @@ import { firestore } from 'firebase';
 export interface Session {
   hostId: string;
   currentRoundId?: string;
-  createdAt: firestore.Timestamp;
+  createdAt: firebase.firestore.Timestamp;
 }
 
 

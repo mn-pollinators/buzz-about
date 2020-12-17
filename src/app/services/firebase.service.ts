@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
-import { firestore } from 'firebase';
+import firebase from 'firebase/app';
 
 export interface RoundPath {
   sessionId: string;
@@ -57,9 +57,9 @@ export class FirebaseService {
   }
 
   public createSession(sessionData: {hostId: string}): Promise<string> {
-    return this.angularFirestore.collection('sessions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...sessionData}).then(doc =>
-      doc.id
-    );
+    return this.angularFirestore.collection('sessions')
+      .add({createdAt: firebase.firestore.FieldValue.serverTimestamp(), ...sessionData})
+      .then(doc => doc.id);
   }
 
   public getMostRecentSession(userId: string): Observable<SessionWithId | null> {
@@ -170,7 +170,8 @@ export class FirebaseService {
    * @param data Information about this interaction (the ID of the student, the barcode they interacted with, etc.)
    */
   addInteraction(roundPath: RoundPath, data: Interaction): Promise<DocumentReference> {
-    return this.getRoundDocument(roundPath).collection('interactions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...data});
+    return this.getRoundDocument(roundPath).collection('interactions')
+    .add({createdAt: firebase.firestore.FieldValue.serverTimestamp(), ...data});
   }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
@@ -189,6 +190,6 @@ export class FirebaseService {
    */
   addHostEvent(roundPath: RoundPath, eventData: Partial<HostEvent>): Promise<DocumentReference> {
     return this.getRoundDocument(roundPath).collection('hostEvents')
-      .add({occurredAt: firestore.FieldValue.serverTimestamp(), ...eventData});
+      .add({occurredAt: firebase.firestore.FieldValue.serverTimestamp(), ...eventData});
   }
 }
