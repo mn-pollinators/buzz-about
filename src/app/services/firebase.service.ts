@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
 import { JoinCode, JoinCodeWithId } from '../join-code';
