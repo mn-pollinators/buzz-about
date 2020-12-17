@@ -65,6 +65,20 @@ import { SentenceCasePipe } from './utils/string-utils';
 import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/firestore';
 
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+// This is a hack to get auth emulation working at the moment
+// See https://github.com/firebase/firebase-js-sdk/issues/4110#issuecomment-747247923
+// We are forcing firebase auth to be setup before firestore
+// This should be removed when the issue is fixed upstream
+if (!environment.production) {
+  const app = firebase.initializeApp(environment.firebase, '[DEFAULT]');
+  // NOTE: Sequence may be important initialize Auth first.
+  app.auth().useEmulator('http://localhost:9099');
+  // app.firestore().settings({ host: 'localhost:8080',  ssl: false, ...environment.firestoreSettings });
+}
+
 const ANGULAR_MATERIAL_MODULES = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
@@ -86,8 +100,8 @@ const ANGULAR_MATERIAL_MODULES = [
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
-  AngularFirestoreModule,
-  AngularFireAuthModule
+  AngularFireAuthModule,
+  AngularFirestoreModule
 ];
 
 @NgModule({
