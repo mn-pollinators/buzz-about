@@ -116,6 +116,8 @@ export class TeacherSessionService {
    *
    * To see the join code you generated, look at the `activeJoinCode$`
    * observable.
+   *
+   * As a precondition, the teacher should currently be in a session.
    */
   createJoinCode(): Observable<void> {
     const RETRY_COUNT = 5;

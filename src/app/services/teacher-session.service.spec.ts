@@ -1,5 +1,4 @@
-import { TestBed } from '@angular/core/testing';
-
+import { async, inject, TestBed } from '@angular/core/testing';
 import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
@@ -7,6 +6,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { scheduledIt } from './../utils/karma-utils';
 import { firestore, User } from 'firebase';
 import { AuthService } from './../services/auth.service';
+import { JoinSessionComponent } from '../pages/join-session/join-session.component';
 
 describe('TeacherSessionService', () => {
 
@@ -112,7 +112,18 @@ describe('TeacherSessionService', () => {
           default:
             throw new Error(`FirebaseService.getSession(): Bad session id ${sessionId}`);
         }
-      }
+      },
+
+      /**
+       * We're not going to provide an implementation of setJoinCode here;
+       * instead, individual tests should stub it out however they want.
+       */
+      setJoinCode() {
+        throw new Error(
+          'Not implemented; if you need a mocked version of setJoinCode, '
+          + 'please use Jasmine\'s spyOn().and.callFake().'
+        );
+      },
     };
 
     const mockAuthService: Partial<AuthService> = {
@@ -136,7 +147,7 @@ describe('TeacherSessionService', () => {
     expectObservable(service.sessionId$).toBe('n-', values.sessionIds);
   });
 
-  describe('The joinSession() method', () => {
+  describe('The setCurrentSession() method', () => {
     scheduledIt('Causes sessionId$ to emit the new value', ({expectObservable, cold}) => {
       const [sessionsToJoin, expectedSessionIds] = [
         '----1-2-',
@@ -248,6 +259,74 @@ describe('TeacherSessionService', () => {
       for (let i = 0; i < 10000; i++) {
         expect(randomJoinCode()).toMatch(/^[0-9]{6}$/);
       }
+    });
+
+    describe('Creating a join code', () => {
+      beforeEach(() => {
+        // A new service is constructed for every test, so we don't have to
+        // worry about cleaning this up.
+        service.setCurrentSession(values.sessionIds[1]);
+      });
+
+      it(
+        'Tries to set a join code with the appropriate session ID',
+        async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+          const setJoinCodeSpy =
+            spyOn(firebaseService, 'setJoinCode')
+              .and.callFake(() => Promise.resolve());
+
+          service.createJoinCode().subscribe(() => {
+            expect(setJoinCodeSpy).toHaveBeenCalledTimes(1);
+            const [joinCodeId, sessionId] = setJoinCodeSpy.calls.mostRecent().args;
+
+            expect(joinCodeId).toMatch(/^[0-9]{6}$/);
+            expect(sessionId).toEqual(values.sessionIds[1]);
+          });
+        })),
+      );
+
+      it(
+        'Retries a few times if the first join code it chooses doesn\'t work',
+        async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+          /**
+           * This function returns a bad promise the first two times it's
+           * called, and then a good promise the third time.
+           */
+          function rejectTwoThenAccept() {
+            rejectTwoThenAccept.callCount++;
+            if (rejectTwoThenAccept.callCount < 3) {
+              return Promise.reject('I don\'t like that join code!');
+            } else {
+              return Promise.resolve();
+            }
+          }
+          rejectTwoThenAccept.callCount = 0;
+
+          const setJoinCodeSpy =
+            spyOn(firebaseService, 'setJoinCode')
+              .and.callFake(rejectTwoThenAccept);
+
+          // If createJoinCode() returns an observable that throws, the test
+          // will fail.
+          service.createJoinCode().subscribe(() => {
+            expect(setJoinCodeSpy).toHaveBeenCalledTimes(3);
+          });
+        })),
+      );
+
+      it(
+        'Gives up eventually if it can\'t find a valid join code',
+        async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+          spyOn(firebaseService, 'setJoinCode')
+            .and.callFake(() => Promise.reject());
+
+          service.createJoinCode().subscribe(() => {
+            fail('Expected createJoinCode() to throw, but it didn\'t.');
+          }, err => {
+            // All good!
+          });
+        })),
+      );
     });
   });
 });
