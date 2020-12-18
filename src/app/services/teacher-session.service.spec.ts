@@ -1,4 +1,4 @@
-import { async, inject, TestBed } from '@angular/core/testing';
+import { async, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
@@ -6,10 +6,10 @@ import { BehaviorSubject, of } from 'rxjs';
 import { scheduledIt } from './../utils/karma-utils';
 import { firestore, User } from 'firebase';
 import { AuthService } from './../services/auth.service';
-import { JoinSessionComponent } from '../pages/join-session/join-session.component';
+import { JoinCodeWithId } from '../join-code';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
 
 describe('TeacherSessionService', () => {
-
   // For marble testing, here are some objects that associate single-character
   // names with the values they represent.
   const values: {
@@ -124,6 +124,22 @@ describe('TeacherSessionService', () => {
           + 'please use Jasmine\'s spyOn().and.callFake().'
         );
       },
+
+      /**
+       * As with setJoinCode(), individual tests should stub out this method if
+       * they want to use it.
+       */
+      getMostRecentSessionJoinCodes() {
+        throw new Error(
+          'Not implemented; if you need a mocked version of setJoinCode, '
+          + 'please use Jasmine\'s spyOn().and.callFake().'
+        );
+      },
+
+
+      deleteJoinCode() {
+        return Promise.resolve();
+      }
     };
 
     const mockAuthService: Partial<AuthService> = {
@@ -262,11 +278,11 @@ describe('TeacherSessionService', () => {
     });
 
     describe('Creating a join code', () => {
-      beforeEach(() => {
+      beforeEach(async(() => {
         // A new service is constructed for every test, so we don't have to
         // worry about cleaning this up.
         service.setCurrentSession(values.sessionIds[1]);
-      });
+      }));
 
       it(
         'Tries to set a join code with the appropriate session ID',
@@ -324,6 +340,56 @@ describe('TeacherSessionService', () => {
             fail('Expected createJoinCode() to throw, but it didn\'t.');
           }, err => {
             // All good!
+          });
+        })),
+      );
+    });
+
+    describe('Deleting a join code', () => {
+
+      let deleteJoinCodeSpy: jasmine.Spy<FirebaseService['deleteJoinCode']>;
+
+      beforeEach(async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+        service.setCurrentSession(values.sessionIds[1]);
+
+        deleteJoinCodeSpy = spyOn(firebaseService, 'deleteJoinCode')
+          .and.callThrough();
+      })));
+
+      it(
+        'Tries to delete the current join code from firebase',
+        fakeAsync(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+          const fakeJoinCode: JoinCodeWithId = {
+            id: '111111',
+            sessionId: values.sessionIds[1],
+            updatedAt: firestore.Timestamp.now(),
+          };
+
+          spyOn(firebaseService, 'getMostRecentSessionJoinCodes')
+            .and.callFake(() => of([fakeJoinCode]));
+
+          service.deleteCurrentJoinCode();
+
+          tick(0);
+          expect(deleteJoinCodeSpy).toHaveBeenCalledTimes(1);
+          expect(deleteJoinCodeSpy).toHaveBeenCalledWith(fakeJoinCode.id);
+
+          // There's still a timer going in activeJoinCode$ (waiting for
+          // fakeJoinCode to expire).
+          discardPeriodicTasks();
+        })),
+      );
+
+      it(
+        'Doesn\'t do anything if there isn\'t a join code right now',
+        async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+          spyOn(firebaseService, 'getMostRecentSessionJoinCodes')
+            .and.callFake(() => of([]));
+
+          // This test fails if deleteCurrentJoinCode() errors instead of
+          // resolving.
+          service.deleteCurrentJoinCode().then(() => {
+            expect(deleteJoinCodeSpy).not.toHaveBeenCalled();
           });
         })),
       );
