@@ -257,13 +257,13 @@ describe('StudentSessionService', () => {
     });
 
     describe('With a non-existent join code', () => {
-      it('Throws an error', done => {
+      it('Throws an error', async(() => {
         service.joinSession(values.students.F, '123456').then(() => {
-          done.fail('Expected joinSession() to throw, but it didn\'t.');
+          fail('Expected joinSession() to throw, but it didn\'t.');
         }).catch(() => {
-          done();
+          // All good!
         });
-      });
+      }));
 
       it('Doesn\'t call FirebaseService.addStudentToSession', async(() => {
         service.joinSession(values.students.F, '123456').finally(() => {
