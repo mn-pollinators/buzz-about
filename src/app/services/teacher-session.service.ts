@@ -60,10 +60,19 @@ export class TeacherSessionService {
   /**
    * There might be multiple active join codes. This is the most recent one,
    * if there is one, or null otherwise.
+   *
+   * If there isn't currently a session, this observable emits null.
    */
   activeJoinCode$: Observable<JoinCodeWithId | null> = this.sessionId$.pipe(
-    switchMap(sessionId => this.firebaseService.getMostRecentSessionJoinCodes(sessionId, 1)),
+    // Get all the join codes for this session.
+    switchMap(sessionId =>
+      sessionId
+        ? this.firebaseService.getMostRecentSessionJoinCodes(sessionId, 1)
+        : of([])
+    ),
+    // Take the first one, if it exists.
     map(joinCodes => joinCodes[0] ?? null),
+    // Set it to expire after a certain amount of time (again, if it exists).
     distinctUntilChanged(joinCodesAreEqual),
     switchMap(joinCode =>
       joinCode
@@ -73,6 +82,7 @@ export class TeacherSessionService {
         )
         : of(null)
     ),
+    // And don't emit unless the join code has changed.
     distinctUntilChanged(joinCodesAreEqual),
     shareReplay(1)
   );
