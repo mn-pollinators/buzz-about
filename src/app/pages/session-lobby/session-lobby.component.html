@@ -23,7 +23,13 @@
               <mat-icon>person</mat-icon>
               <span class="player-count-text">&nbsp;{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</span>
             </div>
-            <button mat-icon-button (click)="deleteJoinCode()" aria-label="Disable join code" matTooltip="Remove join code" [disabled]="!(joinCode$ | async)">
+            <button
+              mat-icon-button
+              (click)="deleteJoinCode()"
+              aria-label="Remove join code"
+              matTooltip="Remove join code"
+              [disabled]="(joinCode$ | async) === null"
+            >
               <mat-icon>block</mat-icon>
             </button>
           </mat-card-actions>
