@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
-import { FirebaseService } from '../../services/firebase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 
 @Component({
   selector: 'app-join-session',
@@ -11,12 +11,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./join-session.component.scss']
 })
 export class JoinSessionComponent implements OnInit {
+  MIN_NEST_MARKER = MIN_NEST_MARKER;
+  MAX_NEST_MARKER = MAX_NEST_MARKER;
 
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
     joinCodeControl: new FormControl('', Validators.required),
-    nestControl: new FormControl('', [Validators.required, Validators.min(20), Validators.max(120),
-      Validators.pattern('^[0-9]*$')])
+    nestControl: new FormControl('', [
+      Validators.required, Validators.min(MIN_NEST_MARKER),
+      Validators.max(MAX_NEST_MARKER),
+      Validators.pattern('^[0-9]*$'),
+    ]),
   });
 
   constructor(public studentSessionService: StudentSessionService, public router: Router, private snackbar: MatSnackBar) {

@@ -1,7 +1,9 @@
 import { firestore } from 'firebase';
 import { JoinCode } from 'src/app/join-code';
+import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 import { Session } from 'src/app/session';
 import { FirebaseRound } from 'src/app/round';
+
 
 function clearAllSessions() {
   cy.callFirestore('delete', 'sessions', { recursive: true });
@@ -176,7 +178,11 @@ describe('The join page', () => {
         });
 
         context('Using the invalid nest number', () => {
-          for (const badNestNumber of [0, 19, 121]) {
+          for (const badNestNumber of [
+            0,
+            MIN_NEST_MARKER - 1,
+            MAX_NEST_MARKER + 1,
+          ]) {
             context(`…${badNestNumber}`, () => {
               it('Should disable the join-session button', () => {
                 fillOutForm({ ...goodFormInput, nest: badNestNumber });
