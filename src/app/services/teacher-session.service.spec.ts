@@ -131,8 +131,9 @@ describe('TeacherSessionService', () => {
        */
       getMostRecentSessionJoinCodes() {
         throw new Error(
-          'Not implemented; if you need a mocked version of setJoinCode, '
-          + 'please use Jasmine\'s spyOn().and.callFake().'
+          'Not implemented; if you need a mocked version of '
+          + 'getMostRecentSessionJoinCodes, please use Jasmine\'s '
+          + 'spyOn().and.callFake().'
         );
       },
 
@@ -238,7 +239,7 @@ describe('TeacherSessionService', () => {
         /// Firebase.
         session1StudentData,
         session2StudentData,
-        // These two marble strings represent the teacger joining and leaving
+        // These two marble strings represent the teacher joining and leaving
         // sessions.
         sessionsToJoin,
         whenToLeaveTheSession,
