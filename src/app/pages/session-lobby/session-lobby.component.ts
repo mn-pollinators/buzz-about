@@ -61,8 +61,12 @@ export class SessionLobbyComponent implements OnInit {
     this.teacherSessionService.createJoinCode().subscribe(() => {
       this.joinCodeButtonDisabled$.next(false);
     }, err => {
-      // blah blah snackbar
       this.joinCodeButtonDisabled$.next(false);
+      this.matSnackbar.open(
+        `Error: couldn't create a join code. Please try again later.\n(${err})`,
+        undefined,
+        { duration: 10000 },
+      );
     });
   }
 
