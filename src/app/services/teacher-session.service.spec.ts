@@ -2,20 +2,23 @@ import { async, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@
 import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { scheduledIt } from './../utils/karma-utils';
 import { firestore, User } from 'firebase';
 import { AuthService } from './../services/auth.service';
-import { JoinCodeWithId } from '../join-code';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { JoinCodeWithId, JOIN_CODE_LIFESPAN } from '../join-code';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 describe('TeacherSessionService', () => {
   // For marble testing, here are some objects that associate single-character
   // names with the values they represent.
   const values: {
-    sessionIds: {[letterName: string]: string},
-    sessions: {[letterName: string]: SessionWithId},
-    students: {[letterName: string]: SessionStudentData},
+    sessionIds: { [letterName: string]: string },
+    sessions: { [letterName: string]: SessionWithId },
+    students: { [letterName: string]: SessionStudentData },
+    joinCodeIds: { [letterName: string]: string },
+    listsOfJoinCodes: { [letterName: string]: JoinCodeWithId[] }
   } = {
     sessionIds: {
       n: null,
@@ -78,6 +81,58 @@ describe('TeacherSessionService', () => {
         nestBarcode: 20
       }
     },
+
+    joinCodeIds: {
+      n: null,
+      5: '555555',
+      6: '666666',
+      7: '777777',
+    },
+
+    listsOfJoinCodes: {
+      // No join codes
+      e: [],
+
+      // One active join code
+      5: [
+        {
+          id: '555555',
+          sessionId: '1',
+          // Date.now() will be evaluated as soon as the tests are loaded,
+          // but it should still be active by the time the tests run. :)
+          updatedAt: firestore.Timestamp.fromMillis(Date.now() - 3000),
+        }
+      ],
+
+      // Two active join codes
+      6: [
+        {
+          id: '666666',
+          sessionId: '1',
+          // Date.now() will be evaluated as soon as the tests are loaded,
+          // but it should still be active by the time the tests run. :)
+          updatedAt: firestore.Timestamp.fromMillis(Date.now()),
+        },
+        {
+          id: '555555',
+          sessionId: '1',
+          // Date.now() will be evaluated as soon as the tests are loaded,
+          // but it should still be active by the time the tests run. :)
+          updatedAt: firestore.Timestamp.fromMillis(Date.now() - 3000),
+        },
+      ],
+
+      // One active join code, for session 2
+      7: [
+        {
+          id: '777777',
+          sessionId: '1',
+          // Date.now() will be evaluated as soon as the tests are loaded,
+          // but it should still be active by the time the tests run. :)
+          updatedAt: firestore.Timestamp.fromMillis(Date.now() - 3000),
+        }
+      ],
+    }
   };
 
   const studentLists: {[letterName: string]: SessionStudentData[]} = {
@@ -394,6 +449,182 @@ describe('TeacherSessionService', () => {
           });
         })),
       );
+    });
+
+    describe('The activeJoinCode$ observable', () => {
+      // We're only going to check that the ids are right, and assume that the
+      // rest of the join codes are fine.
+      let activeJoinCodeIds$: Observable<string>;
+
+      const mockJoinCodesForSession1$: BehaviorSubject<JoinCodeWithId[]>
+        = new BehaviorSubject([]);
+
+      const mockJoinCodesForSession2$: BehaviorSubject<JoinCodeWithId[]>
+        = new BehaviorSubject([]);
+
+      beforeEach(async(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+        activeJoinCodeIds$ =
+          service.activeJoinCode$.pipe(map(jc => jc ? jc.id : null));
+
+        mockJoinCodesForSession1$.next([]);
+        mockJoinCodesForSession2$.next([]);
+
+        spyOn(firebaseService, 'getMostRecentSessionJoinCodes').and.callFake((sessionId) => {
+          if (sessionId === values.sessionIds[1]) {
+            return mockJoinCodesForSession1$;
+          } else if (sessionId === values.sessionIds[2]) {
+            return mockJoinCodesForSession2$;
+          } else {
+            return throwError(`I don't recognize the session ${sessionId}`);
+          }
+        });
+      })));
+
+      scheduledIt('Initially emits null', ({expectObservable}) => {
+        expectObservable(activeJoinCodeIds$).toBe('n-', values.joinCodeIds);
+      });
+
+      scheduledIt('Emits the first active join code given, if there is one', ({expectObservable, cold}) => {
+        const [
+          sessionsToJoin,
+          sessionOneJoinCodes,
+          expectedActiveJoinCodes,
+        ] = [
+          '------1---------n-',
+          '----5-----6-5-----',
+          'n-----5---6-5---n-',
+        ];
+        // We have to quit the session at the very end of the test.
+        // (Otherwise, the join code's expiration timer will just keep
+        // going).
+
+        cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+          service.setCurrentSession(id);
+        });
+
+        cold(sessionOneJoinCodes, values.listsOfJoinCodes).subscribe(mockJoinCodesForSession1$);
+
+
+        expectObservable(activeJoinCodeIds$).toBe(
+          expectedActiveJoinCodes,
+          values.joinCodeIds,
+        );
+      });
+
+      scheduledIt('Emits null if there are no active join codes', ({expectObservable, cold}) => {
+        const [
+          sessionsToJoin,
+          sessionOneJoinCodes,
+          expectedActiveJoinCodes,
+        ] = [
+          '------1-------------------n-',
+          '----5-----e-5-e-6-5-e-5-----',
+          'n-----5---n-5-n-6-5-n-5---n-',
+        ];
+
+        cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+          service.setCurrentSession(id);
+        });
+
+        cold(sessionOneJoinCodes, values.listsOfJoinCodes).subscribe(mockJoinCodesForSession1$);
+
+        expectObservable(activeJoinCodeIds$).toBe(
+          expectedActiveJoinCodes,
+          values.joinCodeIds,
+        );
+      });
+
+      scheduledIt('Changes when the current session changes', ({expectObservable, cold}) => {
+        const [
+          sessionsToJoin,
+          sessionOneJoinCodes,
+          sessionTwoJoinCodes,
+          expectedActiveJoinCodes,
+        ] = [
+          '------1-2-n-------2-1-2-1-n-',
+          '--5-----------6-------------',
+          '--7-------------------------',
+          'n-----5-7-n-------7-6-7-6-n-',
+        ];
+
+        cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+          service.setCurrentSession(id);
+        });
+
+        cold(sessionOneJoinCodes, values.listsOfJoinCodes).subscribe(mockJoinCodesForSession1$);
+        cold(sessionTwoJoinCodes, values.listsOfJoinCodes).subscribe(mockJoinCodesForSession2$);
+
+        expectObservable(activeJoinCodeIds$).toBe(
+          expectedActiveJoinCodes,
+          values.joinCodeIds,
+        );
+      });
+
+      scheduledIt('Is distinct until changed', ({expectObservable, cold}) => {
+        const [
+          sessionsToJoin,
+          sessionOneJoinCodes,
+          expectedActiveJoinCodes,
+        ] = [
+          '------1------------n-',
+          '----e------e-5-5-----',
+          'n------------5-----n-',
+        ];
+
+        cold(sessionsToJoin, values.sessionIds).subscribe(id => {
+          service.setCurrentSession(id);
+        });
+
+        cold(sessionOneJoinCodes, values.listsOfJoinCodes).subscribe(mockJoinCodesForSession1$);
+
+        expectObservable(activeJoinCodeIds$).toBe(
+          expectedActiveJoinCodes,
+          values.joinCodeIds,
+        );
+      });
+
+      it('Emits null after a join code expires', fakeAsync(() => {
+        const emittedJoinCodeIds = [];
+
+        // As always, we'll only be checking the ids of the join codes, and
+        // assuming that the rest of the fields are correct.
+        activeJoinCodeIds$.subscribe(jcId => {
+          emittedJoinCodeIds.push(jcId);
+        });
+
+        tick(0);
+        expect(emittedJoinCodeIds).toEqual([null]);
+
+        service.setCurrentSession(values.sessionIds[1]);
+
+        // It's important that we don't use one of our pre-made join codes,
+        // because those all have pretty old timestamps. We want to make
+        // a fresh one.
+        mockJoinCodesForSession1$.next([{
+          id: '123456',
+          sessionId: values.sessionIds[1],
+          updatedAt: firestore.Timestamp.now(),
+        }]);
+
+        tick(0);
+        expect(emittedJoinCodeIds).toEqual([null, '123456']);
+
+        // Check the emitted values one seconds before the join code is
+        // supposed to an expire, and the emitted values a one seconds after.
+        // They should have changed during that window of time.
+
+        // We're giving two seconds of leeway on either end because it takes a
+        // while to run the test. Because of this, our timekeeping won't be
+        // perfectly accurate; we need to be a bit forgiving.)
+
+        const LEEWAY = 1000;
+
+        tick(JOIN_CODE_LIFESPAN - LEEWAY);
+        expect(emittedJoinCodeIds).toEqual([null, '123456']);
+
+        tick(2 * LEEWAY);
+        expect(emittedJoinCodeIds).toEqual([null, '123456', null]);
+      }));
     });
   });
 });
