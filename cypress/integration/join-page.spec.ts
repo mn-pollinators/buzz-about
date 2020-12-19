@@ -173,6 +173,7 @@ describe('The join page', () => {
           it('Should display an error message in a snackbar', () => {
             fillOutForm({ ...goodFormInput, joinCodeId: '220910' });
             cy.get('[cy-data=joinSession]').should('not.be.disabled');
+            cy.get('[cy-data=joinSession]').click();
             cy.get('simple-snack-bar').should('exist');
           });
         });
