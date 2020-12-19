@@ -218,18 +218,26 @@ export class FirebaseService {
         .orderBy('updatedAt', 'desc')
         .limit(limit)
     ).snapshotChanges().pipe(
-      map(snapshot => snapshot.map(s =>
-        s.payload.doc.exists
-          ? {
+      // The local Firestore cache interacts *quite* poorly with join codes; it
+      // doesn't know how to handle `firestore.FieldValue.serverTimestamp()`,
+      // and it does not apply the firestore.rules to see if the join code can
+      // be read/written or not. As a result, we're going to take some steps to
+      // bypass the cache.
+      map(snapshot =>
+        snapshot.filter(s => s.payload.doc.exists)
+          .map(s => ({
             id: s.payload.doc.id,
-            // setting serverTimestamps: 'estimate' means that, in the local
+            // setting serverTimestamps: 'none' means that, in the local
             // cache, we'll temporarily evaluate
-            // `firestore.FieldValue.serverTimestamp()` using the client's
+            // `firestore.FieldValue.serverTimestamp()` to null
             // clock while we wait to hear back to the server.
-            ...s.payload.doc.data({serverTimestamps: 'estimate'})
-          }
-          : null
-      ))
+            ...s.payload.doc.data({serverTimestamps: 'none'})
+          }))
+          // Now, we ignore any join codes with updatedAt set to null. That
+          // way, we always wait until we get back the real data from the
+          // server, not the pretend cache data.
+          .filter(joinCode => joinCode.updatedAt !== null)
+      )
     );
   }
 
