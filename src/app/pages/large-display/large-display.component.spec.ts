@@ -14,6 +14,7 @@ import { FullscreenButtonComponent } from '../../components/fullscreen-button/fu
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { of, BehaviorSubject } from 'rxjs';
@@ -55,6 +56,7 @@ describe('LargeDisplayComponent', () => {
       imports: [
         MatButtonModule,
         MatIconModule,
+        MatDialogModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
         BrowserAnimationsModule,
