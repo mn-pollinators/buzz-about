@@ -151,9 +151,16 @@ describe('The join page', () => {
           for (const badJcId of [
             'likeZoinksScoob',
             '1',
+            '-123456',
+            '-12345',
             '1234567',
+            '0123456',
             // Eastern Arabic numerals, from Unicode.
             '٢٢٠٩١٠',
+            // Chinese/Japanese numerals
+            '一二三四五六',
+            // Fullwidth characters
+            '１２３４５６'
           ]) {
             context(`…${badJcId}`, () => {
               it('Should disable the join-session button', () => {

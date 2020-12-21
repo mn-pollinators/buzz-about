@@ -20,8 +20,8 @@
           <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl" required>
           <mat-hint>The number at the top of your nest marker</mat-hint>
           <mat-error *ngIf="sessionFormGroup.controls['nestControl'].invalid">
-            Invalid nest ID: your input isn't a number in the range
-            {{MIN_NEST_MARKER}}&ndash;{{MAX_NEST_MARKER}}. Please enter the ID
+            Invalid nest ID: join codes are numbers between
+            {{MIN_NEST_MARKER}} and {{MAX_NEST_MARKER}}. Please enter the ID
             number on your nest marker.
           </mat-error>
         </mat-form-field>

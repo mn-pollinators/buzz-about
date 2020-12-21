@@ -19,12 +19,8 @@ export function joinCodesAreEqual(
   first: JoinCodeWithId | null,
   second: JoinCodeWithId | null,
 ): boolean {
-  if (first === null && second === null) {
-    return true;
-  } else if (first === null && second !== null) {
-    return false;
-  } else if (first !== null && second === null) {
-    return false;
+  if (first === null || second === null) {
+    return first === second;
   } else {
     return (
       first.sessionId === second.sessionId
