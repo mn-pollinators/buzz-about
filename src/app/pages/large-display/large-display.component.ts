@@ -8,7 +8,7 @@ import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { RoundDataDialog } from 'src/app/components/round-data-dialog/round-data-dialog.component';
+import { RoundDataDialogComponent } from 'src/app/components/round-data-dialog/round-data-dialog.component';
 
 /**
  * Over the course of a session, the large display will show several
@@ -90,6 +90,6 @@ export class LargeDisplayComponent implements OnInit {
   }
 
   openRoundDataDialog() {
-    this.dialog.open(RoundDataDialog);
+    this.dialog.open(RoundDataDialogComponent);
   }
 }

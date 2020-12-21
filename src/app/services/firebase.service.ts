@@ -173,6 +173,11 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).collection('interactions').add({createdAt: firestore.FieldValue.serverTimestamp(), ...data});
   }
 
+  getAllInteractions(roundPath: RoundPath): Observable<Interaction[]> {
+    return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
+    roundPath.roundId + '/interactions').valueChanges()
+  }
+
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
     return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
       roundPath.roundId + '/interactions', ref =>

@@ -1,6 +1,10 @@
 <h2 mat-dialog-title>Round Data</h2>
 <div mat-dialog-content fxLayout="row" fxLayoutAlign="space-between">
-  This is a dialog
+  Flowers visited:
+  <div *ngIf="this.flowersVisited$ | async as flowers; else zero">
+    {{flowers}}
+  </div>
+  <ng-template #zero>0</ng-template>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button (click)="closeDialog()">Go back to Round</button>

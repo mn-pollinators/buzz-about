@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, HostEventType } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType, Interaction } from '../round';
 import { TimerService } from './timer.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay } from 'rxjs/operators';
+import { filter, take, map, shareReplay, switchMap } from 'rxjs/operators';
 import { RoundTemplate, TemplateBee } from '../round-template';
 
 @Injectable({
@@ -171,4 +171,11 @@ export class TeacherRoundService {
     }
     return newArray;
   }
+
+  allInteractions$: Observable<Interaction[]> =
+    this.teacherSessionService.currentRoundPath$.pipe(switchMap(roundPath =>
+      roundPath
+      ? this.firebaseService.getAllInteractions(roundPath)
+      : of([])
+    ));
 }
