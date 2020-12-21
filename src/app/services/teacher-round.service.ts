@@ -48,6 +48,13 @@ export class TeacherRoundService {
     shareReplay(1)
   );
 
+  allInteractions$: Observable<Interaction[]> =
+  this.teacherSessionService.currentRoundPath$.pipe(switchMap(roundPath =>
+    roundPath
+    ? this.firebaseService.getAllInteractions(roundPath)
+    : of([])
+  ));
+
   async addHostEvent(eventType: HostEventType) {
     const time = await this.timerService.currentTime$.pipe(take(1)).toPromise();
     const roundPath = await this.teacherSessionService.currentRoundPath$.pipe(take(1)).toPromise();
@@ -171,11 +178,4 @@ export class TeacherRoundService {
     }
     return newArray;
   }
-
-  allInteractions$: Observable<Interaction[]> =
-    this.teacherSessionService.currentRoundPath$.pipe(switchMap(roundPath =>
-      roundPath
-      ? this.firebaseService.getAllInteractions(roundPath)
-      : of([])
-    ));
 }
