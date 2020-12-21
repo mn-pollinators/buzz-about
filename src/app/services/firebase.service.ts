@@ -174,8 +174,7 @@ export class FirebaseService {
   }
 
   getAllInteractions(roundPath: RoundPath): Observable<Interaction[]> {
-    return this.angularFirestore.collection<Interaction>('sessions/' + roundPath.sessionId + '/rounds/' +
-    roundPath.roundId + '/interactions').valueChanges();
+    this.getRoundDocument(roundPath).collection<Interaction>('interactions').valueChanges();
   }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
