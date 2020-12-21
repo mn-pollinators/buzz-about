@@ -63,7 +63,7 @@ export class SessionLobbyComponent implements OnInit {
     }, err => {
       this.joinCodeButtonDisabled$.next(false);
       this.matSnackbar.open(
-        `Error: couldn't create a join code. Please try again later.\n(${err})`,
+        'Error: couldn't create a join code. Please try again later.',
         undefined,
         { duration: 10000 },
       );
