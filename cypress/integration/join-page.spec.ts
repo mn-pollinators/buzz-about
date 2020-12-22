@@ -146,15 +146,58 @@ describe('The join page', () => {
         });
       });
 
+      context('Using space characters in the join code', () => {
+        for (const goodJcId of [
+          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, ' '),
+          // NO-BREAK SPACE
+          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\u00A0'),
+          // CHARACTER TABULATION
+          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\u0009'),
+          // ZERO WIDTH NO-BREAK SPACE
+          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\uFEFF'),
+          mockJoinCodeId.replace(/\B(?=([0-9])+(?![0-9]))/g, ' '),
+          `   ${mockJoinCodeId.replace(/\B(?=([0-9]{2})+(?![0-9]))/g, '   ')}   `,
+        ]) {
+          context(`"${goodJcId}"`, () => {
+            it('Should enable the join-session button and not display a validation message', () => {
+              fillOutForm({ ...goodFormInput, joinCodeId: goodJcId });
+              cy.get('[cy-data=joinSession]').should('not.be.disabled');
+              cy.get('mat-error').should('not.exist');
+            });
+
+            describe('…and clicking the join-session button', () => {
+              it('Should redirect you to the right page and add you to the session in firebase', () => {
+                fillOutForm({ ...goodFormInput, joinCodeId: goodJcId });
+                cy.get('[cy-data=joinSession]').should('not.be.disabled');
+                cy.get('[cy-data=joinSession]').click();
+                cy.url().should('include', `/play/${mockSessionId}`);
+                cy.callFirestore('get', `sessions/${mockSessionId}/students`)
+                  .should('have.lengthOf', 1);
+                cy.callFirestore('get', `sessions/${mockSessionId}/students`)
+                  .its(0)
+                  .its('id')
+                  .should('equal', ourUid);
+              });
+            });
+          });
+        }
+
+      });
+
       context('Entering bad values into the form', () => {
         describe('Using the malformed join code', () => {
           for (const badJcId of [
             'likeZoinksScoob',
             '1',
+            '1     ',
+            '     1',
+            '   1  ',
             '-123456',
             '-12345',
             '1234567',
             '0123456',
+            '   12 34  5  67 ',
+            '01 2 34 5 6',
             // Eastern Arabic numerals, from Unicode.
             '٢٢٠٩١٠',
             // Chinese/Japanese numerals
@@ -162,7 +205,7 @@ describe('The join page', () => {
             // Fullwidth characters
             '１２３４５６'
           ]) {
-            context(`…${badJcId}`, () => {
+            context(`"${badJcId}"`, () => {
               it('Should disable the join-session button', () => {
                 fillOutForm({ ...goodFormInput, joinCodeId: badJcId });
                 cy.get('[cy-data=joinSession]').should('be.disabled');
