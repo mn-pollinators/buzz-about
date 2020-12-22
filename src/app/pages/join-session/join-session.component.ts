@@ -43,7 +43,7 @@ export class JoinSessionComponent implements OnInit {
     const joinCodeInput: string = this.sessionFormGroup.controls.joinCodeControl.value;
     const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
 
-    const joinCode = joinCodeInput.replace(' ', '');
+    const joinCode = joinCodeInput.replace(/\s+/g, '');
 
     this.studentSessionService.joinSession({name, nestBarcode}, joinCode).then(sessionId => {
       this.router.navigate(['/play', sessionId]);
