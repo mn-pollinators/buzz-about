@@ -34,9 +34,11 @@ export class JoinSessionComponent implements OnInit {
    * Calls firebase service to add currently logged in user and their preferred name to the database
    */
   joinSession() {
-    const name = this.sessionFormGroup.controls.nameControl.value;
-    const joinCode = this.sessionFormGroup.controls.joinCodeControl.value;
+    const name: string = this.sessionFormGroup.controls.nameControl.value;
+    const joinCodeInput: string = this.sessionFormGroup.controls.joinCodeControl.value;
     const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
+
+    const joinCode = joinCodeInput.replace(' ', '');
 
     this.studentSessionService.joinSession({name, nestBarcode}, joinCode).then(sessionId => {
       this.router.navigate(['/play', sessionId]);

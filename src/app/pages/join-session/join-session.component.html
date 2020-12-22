@@ -6,7 +6,7 @@
       <mat-card-content class="join-card-content">
         <mat-form-field appearance="outline" class="form-field" hideRequiredMarker>
           <mat-label>Join Code</mat-label>
-          <input matInput class="joinCode" inputmode="numeric" pattern="[0-9]{6}" formControlName="joinCodeControl" required>
+          <input matInput class="joinCode" inputmode="numeric" pattern="\s*([0-9]\s*){6}" formControlName="joinCodeControl" required>
           <mat-error *ngIf="sessionFormGroup.controls['joinCodeControl'].invalid">
             Invalid join code: the join code should be six digits long.
           </mat-error>
