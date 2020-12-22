@@ -18,9 +18,9 @@ export class JoinSessionComponent implements OnInit {
     nameControl: new FormControl('', Validators.required),
     joinCodeControl: new FormControl('', Validators.required),
     nestControl: new FormControl('', [
-      Validators.required, Validators.min(MIN_NEST_MARKER),
-      Validators.max(MAX_NEST_MARKER),
-      Validators.pattern('^[0-9]*$'),
+      Validators.required,
+      Validators.min(MIN_NEST_MARKER),
+      Validators.max(MAX_NEST_MARKER)
     ]),
   });
 
