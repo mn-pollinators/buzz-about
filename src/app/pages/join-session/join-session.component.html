@@ -35,7 +35,7 @@
           color="primary"
           class="join-button"
           type="submit"
-          [disabled]="!sessionFormGroup.valid"
+          [disabled]="!sessionFormGroup.valid || (joining$ | async)"
           cy-data="joinSession"
         >
           Join

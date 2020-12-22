@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-join-session',
@@ -24,6 +25,8 @@ export class JoinSessionComponent implements OnInit {
     ]),
   });
 
+  joining$ = new BehaviorSubject<boolean>(false);
+
   constructor(public studentSessionService: StudentSessionService, public router: Router, private snackbar: MatSnackBar) {
   }
 
@@ -34,6 +37,8 @@ export class JoinSessionComponent implements OnInit {
    * Calls firebase service to add currently logged in user and their preferred name to the database
    */
   joinSession() {
+    this.joining$.next(true);
+
     const name: string = this.sessionFormGroup.controls.nameControl.value;
     const joinCodeInput: string = this.sessionFormGroup.controls.joinCodeControl.value;
     const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
@@ -48,6 +53,7 @@ export class JoinSessionComponent implements OnInit {
         undefined,
         { duration: 10000 },
       );
+      this.joining$.next(false);
     });
   }
 }
