@@ -4,18 +4,18 @@
     <mat-card class="join-card">
       <mat-card-title>Join Session</mat-card-title>
       <mat-card-content class="join-card-content">
-        <mat-form-field appearance="outline" class="form-field">
+        <mat-form-field appearance="outline" class="form-field" hideRequiredMarker>
           <mat-label>Join Code</mat-label>
           <input matInput class="joinCode" inputmode="numeric" pattern="[0-9]{6}" formControlName="joinCodeControl" required>
           <mat-error *ngIf="sessionFormGroup.controls['joinCodeControl'].invalid">
             Invalid join code: the join code should be six digits long.
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="form-field">
+        <mat-form-field appearance="outline" class="form-field" hideRequiredMarker>
           <mat-label>Name</mat-label>
           <input matInput class="name" formControlName="nameControl" required>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="form-field">
+        <mat-form-field appearance="outline" class="form-field" hideRequiredMarker>
           <mat-label>Nest marker ID</mat-label>
           <input matInput inputmode="numeric" pattern="[0-9]*" class="nest" formControlName="nestControl" required>
           <mat-hint>The number at the top of your nest marker</mat-hint>
