@@ -48,12 +48,14 @@ export class TeacherRoundService {
     shareReplay(1)
   );
 
-  allInteractions$: Observable<Interaction[]> =
-  this.teacherSessionService.currentRoundPath$.pipe(switchMap(roundPath =>
-    roundPath
-    ? this.firebaseService.getAllInteractions(roundPath)
-    : of([])
-  ));
+  allInteractions$: Observable<Interaction[]> = this.teacherSessionService.currentRoundPath$.pipe(
+    switchMap(roundPath =>
+      roundPath
+      ? this.firebaseService.getAllInteractions(roundPath)
+      : of([])
+    ),
+    shareReplay(1)
+  );
 
   async addHostEvent(eventType: HostEventType) {
     const time = await this.timerService.currentTime$.pipe(take(1)).toPromise();
