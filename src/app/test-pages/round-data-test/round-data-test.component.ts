@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TeacherSessionService } from '../../services/teacher-session.service';
+import { SessionStudentData } from '../../session';
 
 @Component({
   selector: 'app-round-data-test',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoundDataTestComponent implements OnInit {
 
-  constructor() { }
+  constructor(public teacherSessionService: TeacherSessionService) { }
+
+  studentList$: Observable<SessionStudentData[]>;
 
   ngOnInit(): void {
+    this.studentList$ = this.teacherSessionService.studentsInCurrentSession$;
   }
 
 }

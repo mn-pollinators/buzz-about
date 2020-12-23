@@ -1,1 +1,5 @@
-<p>round-data-test works!</p>
+<div class="list-container">
+  <mat-card *ngFor="let student of studentList$ | async" class="student-card">
+    {{ student.name}}
+  </mat-card>
+</div>
