@@ -118,20 +118,39 @@ export class FirebaseService {
    * Returns an observable of all student data as an array of JSON objects
    * @param sessionID the ID of the session the students are in
    */
-  getStudentsInSession(sessionID: string): Observable<SessionStudentData[]> {
-    return this.angularFirestore.collection('sessions').doc(sessionID)
+  getStudentsInSession(sessionId: string): Observable<SessionStudentData[]> {
+    return  this.getSessionDocument(sessionId)
       .collection<SessionStudentData>('students')
       .valueChanges({idField: 'id'});
   }
 
   /**
    * Adds student to firestore
-   * @param id Student' id
+   * @param id The student's auth ID
    * @param sessionID id of the session that the student will be added to
    * @param studentData map of student's information including name
    */
-  addStudentToSession(id: string, sessionID: string, studentData: SessionStudentData) {
-    return this.angularFirestore.collection('sessions/' + sessionID + '/students').doc(id).set(studentData);
+  addStudentToSession(id: string, sessionId: string, studentData: SessionStudentData) {
+    return this.getSessionDocument(sessionId).collection('students').doc<SessionStudentData>(id).set(studentData);
+  }
+
+  /**
+   * Remove a student from the given session
+   * @param id The student's auth ID
+   * @param sessionID ID of the session that the student will be removed from
+   */
+  removeStudentFromSession(id: string, sessionId: string) {
+    return this.getSessionDocument(sessionId).collection('students').doc(id).delete();
+  }
+
+  /**
+   * Update a student in a session
+   * @param id The student's auth ID
+   * @param sessionID ID of the session that the student will be added to
+   * @param studentData the (partial) data to update the student with
+   */
+  updateStudentInSession(id: string, sessionId: string, studentData: Partial<SessionStudentData>) {
+    return this.getSessionDocument(sessionId).collection('students').doc<SessionStudentData>(id).update(studentData);
   }
 
   /**
