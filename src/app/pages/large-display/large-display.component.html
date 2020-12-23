@@ -43,7 +43,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #roundMenu="matMenu">
-          <button mat-menu-item (click)="openRoundDataDialog()">Review Round Data</button>
+          <button mat-menu-item [routerLink]="['/test', (this.teacherSessionService.currentSession$ | async)?.id]">Review Round Data</button>
         </mat-menu>
       </div>
     </app-bottom-bar>

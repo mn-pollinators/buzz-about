@@ -7,8 +7,6 @@ import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { RoundDataDialogComponent } from 'src/app/components/round-data-dialog/round-data-dialog.component';
 
 /**
  * Over the course of a session, the large display will show several
@@ -66,7 +64,6 @@ export class LargeDisplayComponent implements OnInit {
     public timerService: TimerService,
     public teacherRoundService: TeacherRoundService,
     public teacherSessionService: TeacherSessionService,
-    public dialog: MatDialog,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -87,9 +84,5 @@ export class LargeDisplayComponent implements OnInit {
     this.timerService.running$.pipe(take(1)).subscribe(running => {
       this.timerService.setRunning(!running);
     });
-  }
-
-  openRoundDataDialog() {
-    this.dialog.open(RoundDataDialogComponent);
   }
 }

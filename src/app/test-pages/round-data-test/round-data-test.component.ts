@@ -11,7 +11,7 @@ import { SessionStudentData } from '../../session';
 })
 export class RoundDataTestComponent implements OnInit {
 
-  constructor(public activatedRoute: ActivatedRoute, public teacherSessionService: TeacherSessionService) { }
+  constructor(private activatedRoute: ActivatedRoute, public teacherSessionService: TeacherSessionService) { }
 
   studentList$: Observable<SessionStudentData[]>;
 
@@ -19,7 +19,7 @@ export class RoundDataTestComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       this.teacherSessionService.setCurrentSession(params.get('sessionId'));
       this.studentList$ = this.teacherSessionService.studentsInCurrentSession$;
-    })
+    });
   }
 
 }
