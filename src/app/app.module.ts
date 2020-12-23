@@ -45,7 +45,11 @@ import { HomeComponent } from './pages/home/home.component';
 
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
-import { ConfirmRemoveStudentDialogComponent, JoinedStudentsComponent, RenameStudentDialogComponent } from './components/joined-students/joined-students.component';
+import {
+  ConfirmRemoveStudentDialogComponent,
+  JoinedStudentsComponent,
+  RenameStudentDialogComponent
+} from './components/joined-students/joined-students.component';
 import { SessionTestComponent } from './test-pages/session-test/session-test.component';
 import { JoinSessionComponent } from './pages/join-session/join-session.component';
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
