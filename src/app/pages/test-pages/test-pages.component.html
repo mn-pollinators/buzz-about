@@ -6,6 +6,10 @@
 		<li><a routerLink="/test/json-data-test">json-data-test</a></li>
 		<li><a routerLink="/test/session-test">session-test</a></li>
 		<li><a routerLink="/test/prepare-round-test">prepare-round-test</a></li>
-		<li><a routerLink="/test/round-template-test">round-template-test</a></li>
+    <li><a routerLink="/test/round-template-test">round-template-test</a></li>
+    Create a session to see a link to round-data-test
+    <li *ngIf="(this.teacherSessionService.mostRecentSession$ | async) as session">
+      <a [routerLink]="['/test', session.id]">round-data-test</a>
+    </li>
 	</ul>
 </nav>

@@ -63,6 +63,7 @@ import { StudentRoundComponent } from './pages/student-round/student-round.compo
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { SentenceCasePipe } from './utils/string-utils';
+import { RoundDataTestComponent } from './test-pages/round-data-test/round-data-test.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -122,6 +123,7 @@ const FIREBASE_MODULES = [
     AboutComponent,
     AnonAuthTestComponent,
     SentenceCasePipe,
+    RoundDataTestComponent,
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
+import { RoundDataTestComponent } from './test-pages/round-data-test/round-data-test.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -23,7 +24,8 @@ const testRoutes: Routes = [
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
-  {path: 'anon-test', component: AnonAuthTestComponent}
+  {path: 'anon-test', component: AnonAuthTestComponent},
+  {path: ':sessionId', component: RoundDataTestComponent}
 ];
 
 const routes: Routes = [
