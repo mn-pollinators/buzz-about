@@ -1,6 +1,9 @@
 import { firestore } from 'firebase';
+import { JoinCode } from 'src/app/join-code';
+import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 import { Session } from 'src/app/session';
 import { FirebaseRound } from 'src/app/round';
+
 
 function clearAllSessions() {
   cy.callFirestore('delete', 'sessions', { recursive: true });
@@ -22,16 +25,21 @@ function clearAllRounds(sessionId: string) {
   );
 }
 
+function clearAllJoinCodes() {
+  cy.callFirestore('delete', 'joinCodes', { recursive: true });
+}
+
+
 interface FormData {
-  sessionId: string;
+  joinCodeId: string;
   name: string;
   nest: number;
 }
 
 function fillOutForm(formData: Partial<FormData>) {
-  if ('sessionId' in formData) {
-    cy.get('input[formControlName=sessionControl]')
-      .type(formData.sessionId)
+  if ('joinCodeId' in formData) {
+    cy.get('input[formControlName=joinCodeControl]')
+      .type(formData.joinCodeId)
       .blur();
   }
   if ('name' in formData) {
@@ -59,13 +67,19 @@ describe('The join page', () => {
   describe('Joining a session', () => {
     const mockSessionId = '123Session';
     const mockSession: Session = {
-      hostId: 'scoobydoo',
+      hostId: 'ScoobyDoo',
       createdAt: firestore.Timestamp.now(),
+    };
+
+    const mockJoinCodeId = '123456';
+    const mockJoinCode: JoinCode = {
+      sessionId: mockSessionId,
+      updatedAt: firestore.Timestamp.now(),
     };
 
     // If you put in these values, you should be able to join the session.
     const goodFormInput: FormData = {
-      sessionId: mockSessionId,
+      joinCodeId: mockJoinCodeId,
       name: 'Fred',
       nest: 20,
     };
@@ -76,15 +90,18 @@ describe('The join page', () => {
       before(() => {
         clearAllStudents(mockSessionId);
         clearAllSessions();
+        clearAllJoinCodes();
       });
 
       beforeEach(() => {
         cy.callFirestore('set', `sessions/${mockSessionId}`, mockSession);
+        cy.callFirestore('set', `joinCodes/${mockJoinCodeId}`, mockJoinCode);
       });
 
       afterEach(() => {
         clearAllStudents(mockSessionId);
         clearAllSessions();
+        clearAllJoinCodes();
       });
 
       context('Entering acceptable values into the form', () => {
@@ -129,21 +146,94 @@ describe('The join page', () => {
         });
       });
 
+      context('Using space characters in the join code', () => {
+        for (const goodJcId of [
+          mockJoinCodeId.match(/[0-9]{3}/g).join(' '),
+          // NO-BREAK SPACE
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\u00A0'),
+          // CHARACTER TABULATION
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\t'),
+          // ZERO WIDTH NO-BREAK SPACE
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\uFEFF'),
+          mockJoinCodeId.split('').join(' '),
+          `   ${mockJoinCodeId.match(/[0-9]{2}/g).join('   ')}   `,
+        ]) {
+          context(`"${goodJcId}"`, () => {
+            it('Should enable the join-session button and not display a validation message', () => {
+              fillOutForm({ ...goodFormInput, joinCodeId: goodJcId });
+              cy.get('[cy-data=joinSession]').should('not.be.disabled');
+              cy.get('mat-error').should('not.exist');
+            });
+
+            describe('…and clicking the join-session button', () => {
+              it('Should redirect you to the right page and add you to the session in firebase', () => {
+                fillOutForm({ ...goodFormInput, joinCodeId: goodJcId });
+                cy.get('[cy-data=joinSession]').should('not.be.disabled');
+                cy.get('[cy-data=joinSession]').click();
+                cy.url().should('include', `/play/${mockSessionId}`);
+                cy.callFirestore('get', `sessions/${mockSessionId}/students`)
+                  .should('have.lengthOf', 1);
+                cy.callFirestore('get', `sessions/${mockSessionId}/students`)
+                  .its(0)
+                  .its('id')
+                  .should('equal', ourUid);
+              });
+            });
+          });
+        }
+
+      });
+
       context('Entering bad values into the form', () => {
-        context('Entering a bad session id', () => {
+        describe('Using the malformed join code', () => {
+          for (const badJcId of [
+            'likeZoinksScoob',
+            '1',
+            '1     ',
+            '     1',
+            '   1  ',
+            '-123456',
+            '-12345',
+            '1234567',
+            '0123456',
+            '   12 34  5  67 ',
+            '01 2 34 5 6',
+            // Eastern Arabic numerals, from Unicode.
+            '٢٢٠٩١٠',
+            // Chinese/Japanese numerals
+            '一二三四五六',
+            // Fullwidth characters
+            '１２３４５６'
+          ]) {
+            context(`"${badJcId}"`, () => {
+              it('Should disable the join-session button', () => {
+                fillOutForm({ ...goodFormInput, joinCodeId: badJcId });
+                cy.get('[cy-data=joinSession]').should('be.disabled');
+              });
+
+              it('Should display a validation message', () => {
+                fillOutForm({ ...goodFormInput, joinCodeId: badJcId });
+                cy.get('mat-error').should('exist');
+              });
+            });
+          }
+        });
+
+        context('Using a well-formed but non-existent join code', () => {
           it('Should display an error message in a snackbar', () => {
-            fillOutForm({ ...goodFormInput, sessionId: 'likezoinksscoob' });
+            fillOutForm({ ...goodFormInput, joinCodeId: '220910' });
             cy.get('[cy-data=joinSession]').should('not.be.disabled');
             cy.get('[cy-data=joinSession]').click();
-            // Checking the snackbar's text content is a bit brittle, but I
-            // want to make sure this test doesn't accidentally pass there's a
-            // snackbar that says "Done!" or "All good!" or something 🙃
-            cy.get('simple-snack-bar').should('contain', 'Error:');
+            cy.get('simple-snack-bar').should('exist');
           });
         });
 
-        context('Setting your nest to', () => {
-          for (const badNestNumber of [0, 19, 121]) {
+        context('Using the invalid nest number', () => {
+          for (const badNestNumber of [
+            0,
+            MIN_NEST_MARKER - 1,
+            MAX_NEST_MARKER + 1,
+          ]) {
             context(`…${badNestNumber}`, () => {
               it('Should disable the join-session button', () => {
                 fillOutForm({ ...goodFormInput, nest: badNestNumber });
@@ -160,9 +250,9 @@ describe('The join page', () => {
       });
 
       context('Omitting form values', () => {
-        context('Not providing a session ID', () => {
+        context('Not providing a join code', () => {
           it('Should disable the join-session button', () => {
-            const { sessionId, ...rest } = goodFormInput;
+            const { joinCodeId, ...rest } = goodFormInput;
             fillOutForm(rest);
             cy.get('[cy-data=joinSession]').should('be.disabled');
           });
@@ -199,6 +289,7 @@ describe('The join page', () => {
         clearAllRounds(mockSessionId);
         clearAllStudents(mockSessionId);
         clearAllSessions();
+        clearAllJoinCodes();
       });
 
       beforeEach(() => {
@@ -216,12 +307,15 @@ describe('The join page', () => {
           `sessions/${mockSessionId}`,
           { ...mockSession, currentRoundId: mockRoundId },
         );
+
+        cy.callFirestore('set', `joinCodes/${mockJoinCodeId}`, mockJoinCode);
       });
 
       afterEach(() => {
         clearAllRounds(mockSessionId);
         clearAllStudents(mockSessionId);
         clearAllSessions();
+        clearAllJoinCodes();
       });
 
       context('Even when you enter acceptable values into the form and click the join-session button', () => {
@@ -251,7 +345,7 @@ describe('The join page', () => {
           fillOutForm(goodFormInput);
           cy.get('[cy-data=joinSession]').should('not.be.disabled');
           cy.get('[cy-data=joinSession]').click();
-          cy.get('simple-snack-bar').should('contain', 'Error:');
+          cy.get('simple-snack-bar').should('exist');
         });
       });
     });
