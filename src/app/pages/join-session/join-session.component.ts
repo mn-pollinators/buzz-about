@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
-import { FirebaseService } from '../../services/firebase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-join-session',
@@ -11,13 +12,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./join-session.component.scss']
 })
 export class JoinSessionComponent implements OnInit {
+  MIN_NEST_MARKER = MIN_NEST_MARKER;
+  MAX_NEST_MARKER = MAX_NEST_MARKER;
 
   sessionFormGroup = new FormGroup({
     nameControl: new FormControl('', Validators.required),
-    sessionControl: new FormControl('', Validators.required),
-    nestControl: new FormControl('', [Validators.required, Validators.min(20), Validators.max(120),
-      Validators.pattern('^[0-9]*$')])
+    joinCodeControl: new FormControl('', Validators.required),
+    nestControl: new FormControl('', [
+      Validators.required,
+      Validators.min(MIN_NEST_MARKER),
+      Validators.max(MAX_NEST_MARKER)
+    ]),
   });
+
+  joining$ = new BehaviorSubject<boolean>(false);
 
   constructor(public studentSessionService: StudentSessionService, public router: Router, private snackbar: MatSnackBar) {
   }
@@ -29,14 +37,23 @@ export class JoinSessionComponent implements OnInit {
    * Calls firebase service to add currently logged in user and their preferred name to the database
    */
   joinSession() {
-    const name = this.sessionFormGroup.controls.nameControl.value;
-    const sessionId = this.sessionFormGroup.controls.sessionControl.value;
+    this.joining$.next(true);
+
+    const name: string = this.sessionFormGroup.controls.nameControl.value;
+    const joinCodeInput: string = this.sessionFormGroup.controls.joinCodeControl.value;
     const nestBarcode = parseInt(this.sessionFormGroup.controls.nestControl.value, 10);
 
-    this.studentSessionService.joinSession({name, nestBarcode}, sessionId).then(() => {
+    const joinCode = joinCodeInput.replace(/\s+/g, '');
+
+    this.studentSessionService.joinSession({name, nestBarcode}, joinCode).then(sessionId => {
       this.router.navigate(['/play', sessionId]);
     }, (reason) => {
-      this.snackbar.open(`Error: ${reason}`, undefined, {duration: 10000});
+      this.snackbar.open(
+        'Sorry, that join code is invalid.',
+        undefined,
+        { duration: 10000 },
+      );
+      this.joining$.next(false);
     });
   }
 }

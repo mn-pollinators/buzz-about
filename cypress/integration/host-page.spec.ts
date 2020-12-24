@@ -16,10 +16,6 @@ describe('The host page', () => {
 
   afterEach(clearAllSessions);
 
-  afterEach(() => {
-    // cy.logout();
-  });
-
   it('Should load', () => {
     cy.document().should('exist');
   });

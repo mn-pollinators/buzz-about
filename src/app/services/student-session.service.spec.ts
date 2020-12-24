@@ -2,10 +2,11 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { StudentSessionService } from './student-session.service';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { SessionWithId, SessionStudentData } from '../session';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { scheduledIt } from '../utils/karma-utils';
 import { AuthService } from './auth.service';
 import { User, firestore } from 'firebase';
+import { JoinCodeWithId } from '../join-code';
 
 describe('StudentSessionService', () => {
   // For marble testing, here are some objects that associate single-character
@@ -15,7 +16,8 @@ describe('StudentSessionService', () => {
     sessions: {[letterName: string]: SessionWithId},
     roundPaths: {[letterName: string]: RoundPath},
     students: {[letterName: string]: SessionStudentData},
-    authUsers: {[letterName: string]: User}
+    authUsers: {[letterName: string]: User},
+    joinCodes: {[letterName: string]: JoinCodeWithId },
   } = {
     sessionIds: {
       n: null,
@@ -99,6 +101,32 @@ describe('StudentSessionService', () => {
       u: undefined
     },
 
+    joinCodes: {
+      n: null,
+
+      // For session 1:
+      1: {
+        id: '111111',
+        sessionId: '1',
+        // Date.now() will be evaluated as soon as the tests are loaded,
+        // but it should still be active by the time the tests run. :)
+        updatedAt: firestore.Timestamp.fromMillis(Date.now()),
+      },
+
+      // For session 2:
+      2: {
+        id: '222222',
+        sessionId: '2',
+        updatedAt: firestore.Timestamp.fromMillis(Date.now()),
+      },
+
+      // And an expired join code for session 1:
+      E: {
+        id: '000000',
+        sessionId: '1',
+        updatedAt: firestore.Timestamp.fromMillis(0),
+      },
+    },
   };
 
   let service: StudentSessionService;
@@ -147,6 +175,23 @@ describe('StudentSessionService', () => {
 
       addStudentToSession() {
         return Promise.resolve();
+      },
+
+      getJoinCode(id) {
+        switch (id) {
+          case '111111':
+            return of(values.joinCodes[1]);
+          case '222222':
+            return of(values.joinCodes[2]);
+          case '000001':
+            return throwError(new Error(
+              'That join code is expired--nyah nyah, too slow! 😜',
+            ));
+          default:
+            return throwError(new Error(
+              `Oh no! I couldn't find a join code with this id: ${id}`,
+            ));
+        }
       }
     };
 
@@ -184,29 +229,63 @@ describe('StudentSessionService', () => {
       mockCurrentUser$.next(values.authUsers.X);
     }));
 
-    beforeEach(async(() => {
-      service.joinSession(values.students.F, values.sessionIds[1]);
-    }));
+    describe('With a valid, active join code', () => {
+      beforeEach(async(() => {
+        service.joinSession(values.students.F, values.joinCodes[1].id);
+      }));
 
-    it('Calls FirebaseService.addStudentToSession', () => {
-      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+      it('Calls FirebaseService.addStudentToSession', () => {
+        expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+      });
+
+      it('Passes the student data and the session ID through to the FirebaseService', () => {
+        expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+        const [_, sessionId, studentData] =
+          addStudentToSessionSpy.calls.mostRecent().args;
+
+        expect(studentData).toEqual(values.students.F);
+        expect(sessionId).toEqual(values.sessionIds[1]);
+      });
+
+      it('Passes the current user ID to the FirebaseService', () => {
+        expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+
+        const [userId] = addStudentToSessionSpy.calls.mostRecent().args;
+        expect(userId).toEqual(values.authUsers.X.uid);
+      });
     });
 
-    it('Passes the student data and the session ID through to the FirebaseService', () => {
-      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+    describe('With a non-existent join code', () => {
+      it('Throws an error', async(() => {
+        service.joinSession(values.students.F, '123456').then(() => {
+          fail('Expected joinSession() to throw, but it didn\'t.');
+        }).catch(() => {
+          // All good!
+        });
+      }));
 
-      const [_, sessionId, studentData] =
-        addStudentToSessionSpy.calls.mostRecent().args;
-
-      expect(studentData).toEqual(values.students.F);
-      expect(sessionId).toEqual(values.sessionIds[1]);
+      it('Doesn\'t call FirebaseService.addStudentToSession', async(() => {
+        service.joinSession(values.students.F, '123456').finally(() => {
+          expect(addStudentToSessionSpy).toHaveBeenCalledTimes(0);
+        });
+      }));
     });
 
-    it('Passes the current user ID to the FirebaseService', () => {
-      expect(addStudentToSessionSpy).toHaveBeenCalledTimes(1);
+    describe('With an expired join code', () => {
+      it('Throws an error', done => {
+        service.joinSession(values.students.F, '000000').then(() => {
+          done.fail('Expected joinSession() to throw, but it didn\'t.');
+        }).catch(() => {
+          done();
+        });
+      });
 
-      const [userId] = addStudentToSessionSpy.calls.mostRecent().args;
-      expect(userId).toEqual(values.authUsers.X.uid);
+      it('Doesn\'t call FirebaseService.addStudentToSession', async(() => {
+        service.joinSession(values.students.F, '000000').finally(() => {
+          expect(addStudentToSessionSpy).toHaveBeenCalledTimes(0);
+        });
+      }));
     });
   });
 
@@ -460,7 +539,6 @@ describe('StudentSessionService', () => {
       ];
 
       cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
-
 
       expectObservable(service.sessionStudentData$).toBe(
         expectedStudentData,

@@ -27,6 +27,10 @@ export class SessionLobbyComponent implements OnInit {
 
   loadingRound$ = new BehaviorSubject<boolean>(false);
 
+  joinCode$ = this.teacherSessionService.activeJoinCode$;
+
+  joinCodeButtonDisabled$ = new BehaviorSubject<boolean>(false);
+
   ngOnInit(): void {
   }
 
@@ -50,5 +54,23 @@ export class SessionLobbyComponent implements OnInit {
         });
       }
     });
+  }
+
+  createJoinCode() {
+    this.joinCodeButtonDisabled$.next(true);
+    this.teacherSessionService.createJoinCode().subscribe(() => {
+      this.joinCodeButtonDisabled$.next(false);
+    }, err => {
+      this.joinCodeButtonDisabled$.next(false);
+      this.matSnackbar.open(
+        'Error: couldn\'t create a join code. Please try again later.',
+        undefined,
+        { duration: 10000 },
+      );
+    });
+  }
+
+  deleteJoinCode() {
+    return this.teacherSessionService.deleteCurrentJoinCode();
   }
 }
