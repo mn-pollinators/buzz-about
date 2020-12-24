@@ -148,15 +148,15 @@ describe('The join page', () => {
 
       context('Using space characters in the join code', () => {
         for (const goodJcId of [
-          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, ' '),
+          mockJoinCodeId.match(/[0-9]{3}/g).join(' '),
           // NO-BREAK SPACE
-          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\u00A0'),
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\u00A0'),
           // CHARACTER TABULATION
-          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\u0009'),
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\t'),
           // ZERO WIDTH NO-BREAK SPACE
-          mockJoinCodeId.replace(/\B(?=([0-9]{3})+(?![0-9]))/g, '\uFEFF'),
-          mockJoinCodeId.replace(/\B(?=([0-9])+(?![0-9]))/g, ' '),
-          `   ${mockJoinCodeId.replace(/\B(?=([0-9]{2})+(?![0-9]))/g, '   ')}   `,
+          mockJoinCodeId.match(/[0-9]{3}/g).join('\uFEFF'),
+          mockJoinCodeId.split('').join(' '),
+          `   ${mockJoinCodeId.match(/[0-9]{2}/g).join('   ')}   `,
         ]) {
           context(`"${goodJcId}"`, () => {
             it('Should enable the join-session button and not display a validation message', () => {
