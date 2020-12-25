@@ -3,7 +3,7 @@ import { StudentSessionService } from '../../services/student-session.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
+import { MAX_NEST_MARKER, MIN_NEST_MARKER } from '../../markers';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

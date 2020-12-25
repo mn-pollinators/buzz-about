@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { roundTemplates } from 'src/app/round-template';
-import { FlowerSpecies } from 'src/app/flowers';
+import { roundTemplates } from '../../round-template';
+import { FlowerSpecies } from '../../flowers';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 
 @Component({

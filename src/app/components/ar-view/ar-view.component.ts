@@ -14,7 +14,7 @@ import {
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 import Info from 'info-monitor';
-import { ARMarker } from 'src/app/markers';
+import { ARMarker } from '../../markers';
 
 /**
  * The state of a marker

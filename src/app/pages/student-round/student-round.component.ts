@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StudentRoundService } from 'src/app/services/student-round.service';
+import { StudentRoundService } from '../../services/student-round.service';
 
 @Component({
   selector: 'app-student-round',

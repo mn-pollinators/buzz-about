@@ -4,9 +4,9 @@ import { FirebaseRound } from '../../round';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { allBeeSpecies } from '../../bees';
 import { Router } from '@angular/router';
-import { roundTemplates, RoundTemplate } from 'src/app/round-template';
+import { roundTemplates, RoundTemplate } from '../../round-template';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RoundChooserDialogComponent } from 'src/app/components/round-chooser-dialog/round-chooser-dialog.component';
+import { RoundChooserDialogComponent } from '../../components/round-chooser-dialog/round-chooser-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 

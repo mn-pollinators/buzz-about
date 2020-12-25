@@ -4,7 +4,7 @@ import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
-import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
+import { RoundMarker, roundMarkerFromRoundFlower } from '../../markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 

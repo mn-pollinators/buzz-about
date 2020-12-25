@@ -3,7 +3,7 @@ import { MatListModule } from '@angular/material/list';
 import { RoundChooserDialogComponent } from './round-chooser-dialog.component';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButton, MatButtonModule } from '@angular/material/button';
-import { FlowerSpecies, allFlowerSpecies } from 'src/app/flowers';
+import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 
 describe('RoundChooserDialogComponent', () => {
   let component: RoundChooserDialogComponent;

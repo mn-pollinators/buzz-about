@@ -1,13 +1,13 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
-import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
-import { allFlowerSpecies } from 'src/app/flowers';
-import { RoundMarker } from 'src/app/markers';
-import { Interaction, RoundFlower } from 'src/app/round';
-import { StudentRoundService } from 'src/app/services/student-round.service';
-import { StudentSessionService } from 'src/app/services/student-session.service';
-import { SessionStudentData } from 'src/app/session';
-import { Month, TimePeriod } from 'src/app/time-period';
+import { allBeeSpecies, BeeSpecies } from '../../bees';
+import { allFlowerSpecies } from '../../flowers';
+import { RoundMarker } from '../../markers';
+import { Interaction, RoundFlower } from '../../round';
+import { StudentRoundService } from '../../services/student-round.service';
+import { StudentSessionService } from '../../services/student-session.service';
+import { SessionStudentData } from '../../session';
+import { Month, TimePeriod } from '../../time-period';
 import { PlayRoundComponent } from './play-round.component';
 
 describe('PlayRoundComponent', () => {
