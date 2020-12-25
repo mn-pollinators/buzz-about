@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { BarcodeMarkerGenerator, MATRIX_5X5_BCH_2277 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
+import { BarcodeMarkerGenerator, MATRIX_4X4_BCH_1393, MATRIX_5X5_BCH_2277 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
-import { CustomBarcodeMarkerGenerator } from 'src/app/CustomBarcodeMarkerGenerator';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
+import { rangeArray } from 'src/app/utils/array-utils';
+import { MAX_FLOWER_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const fonts = {
@@ -18,6 +20,13 @@ const fonts = {
   }
 };
 
+const BARCODE_TYPE = MATRIX_4X4_BCH_1393;
+
+interface Page {
+  content: Content;
+  backgroundSVG: string;
+}
+
 @Component({
   selector: 'app-marker-generator',
   templateUrl: './marker-generator.component.html',
@@ -27,38 +36,62 @@ export class MarkerGeneratorComponent implements OnInit {
 
   constructor(public sanitizer: DomSanitizer) { }
 
-  test: BarcodeMarkerGenerator;
-
-  barcodeValue = '0';
-
-  getBarcodeSVGDataURI(value: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(this.getBarcode(value).asSVGDataURIWithSize(200));
-  }
-
-  getBarcode(value: string) {
-    return new CustomBarcodeMarkerGenerator(MATRIX_5X5_BCH_2277, parseInt(value, 10));
-  }
-
   ngOnInit(): void {
-    this.test = new BarcodeMarkerGenerator(MATRIX_5X5_BCH_2277, 1);
-    console.log(this.test.asSVG());
-    console.log(BarcodeMarkerGenerator.getMatrixTypes());
+
   }
 
-  makePdf(dl: boolean = false) {
+  getBarcode(value: number) {
+    return new CustomBarcodeMarkerGenerator(BARCODE_TYPE, value);
+  }
+
+  flowerBarcodes() {
+    return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val => ({val, barcode: this.getBarcode(val)}));
+  }
+
+  nestBarcodes(nestCount: number) {
+    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount).map(val => ({val, barcode: this.getBarcode(val)}));
+  }
+
+  pdfFromPages(pages: Page[], svgHeight: number): pdfMake.TCreatedPdf {
     const docDefinition: TDocumentDefinitions = {
-      content: [
-        `Buzz About Marker ${this.barcodeValue}`,
-        {
-          svg: this.getBarcode(this.barcodeValue).asSVGWithSize(400),
+      pageSize: 'LETTER',
+      pageOrientation: 'portrait',
+      content: pages.map(p => p.content),
+      background: (currentPage, pageSize) => {
+        return {
+          svg: pages[currentPage - 1].backgroundSVG,
+          alignment: 'center',
+          height: svgHeight,
+          margin: [0, (pageSize.height - svgHeight) / 2, 0, 0]
         }
-      ]
+      }
     };
-    if (dl) {
-      pdfMake.createPdf(docDefinition, null, fonts).download();
-    } else {
-      pdfMake.createPdf(docDefinition, null, fonts).open();
-    }
+    return pdfMake.createPdf(docDefinition, null, fonts);
+  }
+
+  makePdf(): pdfMake.TCreatedPdf {
+
+    const markerSize = 200;
+    const numNests = 100;
+
+    const flowers: Page[] = this.flowerBarcodes().map(({val, barcode}) =>
+    ({
+      content: {
+        text: `Flower ${val}`,
+        pageBreak: 'after'
+      },
+      backgroundSVG: barcode.asSVGWithSize(markerSize)
+    }));
+    const nests: Page[] = this.nestBarcodes(numNests).map(({val, barcode}, i, arr) =>
+    ({
+      content: {
+        text: `Nest ${val}`,
+        pageBreak: arr.length - 1 === i ? null : 'after'
+      },
+      backgroundSVG: barcode.asSVGWithSize(markerSize)
+    }));
+
+    return this.pdfFromPages([...flowers, ...nests], markerSize);
   }
 
 }
