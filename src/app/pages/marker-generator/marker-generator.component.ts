@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BarcodeMarkerGenerator, MATRIX_4X4_BCH_1393, MATRIX_5X5_BCH_2277 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
+import { MATRIX_4X4_BCH_1393 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
 import { rangeArray } from 'src/app/utils/array-utils';
