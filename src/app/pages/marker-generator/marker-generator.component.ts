@@ -44,26 +44,39 @@ export class MarkerGeneratorComponent implements OnInit {
     return new CustomBarcodeMarkerGenerator(BARCODE_TYPE, value);
   }
 
-  flowerBarcodes() {
-    return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val => ({val, barcode: this.getBarcode(val)}));
+  flowerPages(markerSize: number) {
+    return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val =>
+      ({
+        content: `Flower ${val}`,
+        backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
+      }));
   }
 
-  nestBarcodes(nestCount: number) {
-    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount).map(val => ({val, barcode: this.getBarcode(val)}));
+  nestPages(nestCount: number, markerSize: number) {
+    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount).map(val =>
+      ({
+        content: `Nest ${val}`,
+        backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
+      }));
   }
 
   pdfFromPages(pages: Page[], svgHeight: number): pdfMake.TCreatedPdf {
+    const content: Content[] = pages.map((p, i, arr) => ({
+      text: p.content,
+      pageBreak: arr.length - 1 === i ? null : 'after'
+    }));
+
     const docDefinition: TDocumentDefinitions = {
       pageSize: 'LETTER',
       pageOrientation: 'portrait',
-      content: pages.map(p => p.content),
+      content,
       background: (currentPage, pageSize) => {
         return {
           svg: pages[currentPage - 1].backgroundSVG,
           alignment: 'center',
           height: svgHeight,
           margin: [0, (pageSize.height - svgHeight) / 2, 0, 0]
-        }
+        };
       }
     };
     return pdfMake.createPdf(docDefinition, null, fonts);
@@ -74,24 +87,7 @@ export class MarkerGeneratorComponent implements OnInit {
     const markerSize = 200;
     const numNests = 100;
 
-    const flowers: Page[] = this.flowerBarcodes().map(({val, barcode}) =>
-    ({
-      content: {
-        text: `Flower ${val}`,
-        pageBreak: 'after'
-      },
-      backgroundSVG: barcode.asSVGWithSize(markerSize)
-    }));
-    const nests: Page[] = this.nestBarcodes(numNests).map(({val, barcode}, i, arr) =>
-    ({
-      content: {
-        text: `Nest ${val}`,
-        pageBreak: arr.length - 1 === i ? null : 'after'
-      },
-      backgroundSVG: barcode.asSVGWithSize(markerSize)
-    }));
-
-    return this.pdfFromPages([...flowers, ...nests], markerSize);
+    return this.pdfFromPages([...this.flowerPages(markerSize), ...this.nestPages(numNests, markerSize)], markerSize);
   }
 
 }
