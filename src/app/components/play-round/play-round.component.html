@@ -1,0 +1,46 @@
+<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+
+<div class="cards">
+  <mat-card class='pollen-card'>
+    <mat-icon
+      inline
+      color='accent'
+      *ngFor="let pollen of (this.beePollen$ | async)"
+    >
+      {{ pollen ? 'lens' : 'panorama_fish_eye' }}
+    </mat-icon>
+  </mat-card>
+
+  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
+    Pollen in nest:
+    <span class="nest-pollen-count">
+      {{(this.studentRoundService.currentNestPollen$ | async)}}
+    </span>
+  </mat-card>
+</div>
+
+<div class="marker-name" *ngIf="this.foundRoundMarker$ | async as marker">
+  {{marker.name | titlecase}}
+</div>
+
+<img
+  class="student-bee"
+  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
+  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
+  [alt]="bee.name"
+>
+
+<ng-container *ngIf="this.foundRoundMarker$ | async as marker">
+  <button
+    mat-fab
+    class="interact-button"
+    color="primary"
+    [disabled]="!marker.canVisit"
+    (click)="clickInteract(marker)"
+    aria-label="Interact"
+  >
+    <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
+    </mat-icon>
+  </button>
+</ng-container>

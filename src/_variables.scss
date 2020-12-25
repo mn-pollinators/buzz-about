@@ -1,6 +1,12 @@
 @import '@angular/material/theming';
 
-$primary: mat-palette($mat-green);
+$custom-mat-green: map-merge($mat-green, (
+  contrast: map-merge(map-get($mat-green, contrast), (
+    500: $light-primary-text
+  ))
+));
+
+$primary: mat-palette($custom-mat-green);
 $accent: mat-palette($mat-amber);
 $warn: mat-palette($mat-deep-orange);
 
@@ -9,3 +15,17 @@ $theme: mat-light-theme($primary, $accent, $warn);
 $foreground: map-get($theme, foreground);
 
 $background: map-get($theme, background);
+
+// 64px is the default menu bar height in Material; we use it for both our top
+// bars and our bottom bars.
+$menu-bar-height: 64px;
+$menu-bar-padding: 16px;
+
+// Some breakpoints for media queries.
+// See https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+$tablet-portrait-min-width: 600px;
+$tablet-landscape-min-width: 960px;
+// Note that the "tablets in portrait mode" size class is also a pretty
+// good estimation for phones in landscape mode. Right now we're not really
+// distinguishing between those size classes, but if you need to, consider
+// using a media query like `(orientation: portrait)`.

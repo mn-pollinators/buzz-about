@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
-import { FirebaseRound, RoundFlower, RoundStudentData } from '../round';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { FirebaseService } from './firebase.service';
@@ -146,13 +146,96 @@ export class StudentRoundService {
   );
 
   /**
+   * An observable stream of the list of times the student got pollen from a
+   * flower or dropped it off at a nest, sorted from most recent to least
+   * recent.
+   *
+   * If the user is not logged in or not in a round right now, then this the
+   * value of this observable is the empty array.
+   *
+   * This observable emits whenever it's subscribed to, and when the
+   * interactions in the database change. (Also if the round path or current
+   * user changes.)
+   */
+  interactions$: Observable<Interaction[]> = combineLatest([
+    this.sessionService.currentRoundPath$,
+    this.authService.currentUser$,
+  ]).pipe(
+    switchMap(([path, user]) =>
+      path && user
+        ? this.firebaseService.getStudentInteractions(path, user.uid)
+        : of([])
+    ),
+    shareReplay(1),
+  );
+
+  /**
+   * A list of every time the student has interacted with a flower during the
+   * current nest cycle.
+   *
+   * (This observable does *not* include the interaction with the nest itself.)
+   *
+   * A nest cycle is the period between visits to the nest when the student is
+   * running around the room collecting pollen. A new nest cycle starts when
+   * the round begins, or when the student deposits pollen at their nest.
+   *
+   * If the user is not logged in or not in a round right now, then this the
+   * value of this observable is the empty array.
+   *
+   * This observable emits whenever it's subscribed to, and whenever the
+   * interactions$ observable emits.
+   */
+  recentFlowerInteractions$: Observable<Interaction[]> = this.interactions$.pipe(
+    map(interactions => {
+      const recentFlowerInteractions = [];
+      for (const interaction of interactions) {
+        if (interaction.isNest) {
+          break;
+        }
+        recentFlowerInteractions.push(interaction);
+      }
+      return recentFlowerInteractions;
+    }),
+    shareReplay(1),
+  );
+
+  totalPollen$: Observable<number> = this.interactions$.pipe(
+    map(interactions =>
+      interactions.filter(interaction => !interaction.isNest).length
+    ),
+    shareReplay(1),
+  );
+
+  /**
+   * An observable that emits the amount of pollen a bee is currently carrying.
+   *
+   * If we're not in a round, or not logged in, or something like that, this
+   * observable will just emit 0.
+   */
+  currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
+    map(recentFlowerInteractions => recentFlowerInteractions.length),
+    distinctUntilChanged(),
+    shareReplay(1),
+  );
+
+  currentNestPollen$: Observable<number> = combineLatest([this.totalPollen$, this.currentBeePollen$]).pipe(
+    map(([totalPollen, beePollen]) =>
+      totalPollen - beePollen
+    ),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
+
+  /**
    * Records an interaction with a specific barcode value.
    *
    * @param barcodeValue the barcode value to submit in the interaction
+   * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number) {
+  interact(barcodeValue: number, isNest: boolean = false) {
     combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
-      ([path, user, time]) => this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, timePeriod: time.time})
+      ([path, user, time]) =>
+      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
     );
   }
 

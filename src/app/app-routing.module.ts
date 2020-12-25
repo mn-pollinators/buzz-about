@@ -13,6 +13,8 @@ import { StudentDisplayComponent } from './pages/student-display/student-display
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
+import { AboutComponent } from './pages/about/about.component';
+import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -21,7 +23,8 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent}
+  {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'anon-test', component: AnonAuthTestComponent}
 ];
 
 const routes: Routes = [
@@ -31,6 +34,7 @@ const routes: Routes = [
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'markers', component: MarkerGeneratorComponent},
+  {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes}
 ];

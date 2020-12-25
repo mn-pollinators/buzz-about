@@ -6,7 +6,7 @@ import { firestore } from 'firebase';
 export interface Session {
   hostId: string;
   currentRoundId?: string;
-  createdAt: firestore.Timestamp;
+  createdAt: firestore.Timestamp | firestore.FieldValue;
 }
 
 

@@ -9,9 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -27,11 +27,13 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CYPRESS_INSTALL_BINARY: 0
     - name: Build (npm run build)
       run: npm run build -- --prod
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master
       with:
-        args: deploy
+        args: deploy --force
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

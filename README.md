@@ -1,27 +1,55 @@
+<div align="center">
+
+<img alt="Buzz About Icon" src="https://raw.githubusercontent.com/mn-pollinators/buzz-about/master/src/assets/icons/icon-circle.svg?sanitize=true" width="150"/>
+
 # Buzz About
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.0.
+[![Angular tests status][Angular Tests badge]][Angular Tests page]
+[![Cypress tests status][Cypress Tests badge]][Cypress Tests page]
+[![Firebase tests status][Firebase Tests badge]][Firebase Tests page]
+[![Deployment status][Deploy badge]][Deploy page]
 
-## Development server
+</div align="center">
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Buzz About is a web app built with [Angular][] and [Firebase][].
 
-## Build
+## Usage
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+You can find Buzz About online at [buzzabout.app][].
 
-## Running unit tests
+## Contributing
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcome.
 
-## Running end-to-end tests
+For more information on how to contribute to Buzz About, see [the development guide][DEVELOPMENT.md].
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Code of Conduct
 
-## Further help
+All repositories in the Minnesota Pollinators organization are subject to our [Code of Conduct][].
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Acknowledgements
+
+Funding for this project was provided by the Minnesota Environment and Natural Resources Trust Fund as recommended by the [Legislative-Citizen Commission on Minnesota Resources (LCCMR)][LCCMR].
+
+The Trust Fund is a permanent fund constitutionally established by the citizens of Minnesota to assist in the protection, conservation, preservation, and enhancement of the state’s air, water, land, fish, wildlife, and other natural resources. Currently 40% of net Minnesota State Lottery proceeds are dedicated to growing the Trust Fund and ensuring future benefits for Minnesota’s environment and natural resources.
+
+
+[Angular Tests badge]: ../../workflows/Angular%20Tests/badge.svg
+[Angular Tests page]: ../../actions?query=workflow%3A"Angular+Tests"
+[Cypress Tests badge]: ../../workflows/Cypress%20Tests/badge.svg
+[Cypress Tests page]: ../../actions?query=workflow%3A"Cypress+Tests"
+[Firebase Tests badge]: ../../workflows/Firebase%20Tests/badge.svg
+[Firebase Tests page]: ../../actions?query=workflow%3A"Firebase+Tests"
+[Deploy badge]: ../../workflows/Firebase%20Deploy/badge.svg
+[Deploy page]: ../../actions?query=workflow%3A"Firebase+Deploy"
+[Angular]: https://angular.io/
+[Firebase]: https://firebase.google.com/
+[AR Markers]: ./AR_Markers.pdf
+[buzzabout.app]: https://buzzabout.app/
+[buzzabout.app/play]: https://buzzabout.app/play
+[DEVELOPMENT.md]: ./DEVELOPMENT.md
+[Code of Conduct]: https://github.com/mn-pollinators/code-of-conduct/blob/master/CODE_OF_CONDUCT.md
+[LCCMR]: https://www.lccmr.leg.mn/

@@ -18,5 +18,4 @@ export class HostSessionComponent implements OnInit {
   newSession() {
     this.teacherSessionService.createSession().then(sessionId => this.router.navigate(['host', sessionId]));
   }
-
 }

@@ -16,7 +16,8 @@ export const environment = {
   },
   firestoreSettings: {
     host: 'localhost:8080',
-    ssl: false
+    ssl: false,
+    experimentalForceLongPolling: 'Cypress' in window
   }
 };
 
