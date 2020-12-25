@@ -90,5 +90,6 @@
   "cSpell.enableFiletypes": [
     "firerules"
   ],
-  "markdown.extension.toc.levels": "2..6"
+  "markdown.extension.toc.levels": "2..6",
+  "typescript.preferences.importModuleSpecifier": "relative"
 }
