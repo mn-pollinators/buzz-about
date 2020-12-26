@@ -9,13 +9,9 @@ import { MAX_FLOWER_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/m
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const fonts = {
-  // Temporary: download default Roboto font from cdnjs.com
-  // TODO replace this with either Google's font CDN or move the Google fonts into this project's assets
   Roboto: {
-    normal: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Regular.ttf',
-    bold: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Medium.ttf',
-    italics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-Italic.ttf',
-    bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/fonts/Roboto/Roboto-MediumItalic.ttf'
+    // yep, it doesn't understand relative paths
+    normal: `${window.location.origin}/assets/fonts/Roboto/Roboto-Regular.ttf`,
   }
 };
 
