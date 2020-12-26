@@ -6,7 +6,7 @@ import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
 import { rangeArray } from 'src/app/utils/array-utils';
 import { MAX_FLOWER_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
-// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { buzzAbout as buzzAboutInfo } from '../../../../project-info.json';
 
 const fonts = {
   Roboto: {
@@ -106,7 +106,11 @@ export class MarkerGeneratorComponent implements OnInit {
           margin: [0, (pageSize.height - svgHeight) / 2, 0, 0]
         };
       },
-
+      info: {
+        title: `Buzz About Markers v${MARKERS_VERSION}`,
+        author: 'Minnesota Pollinators',
+        creator: `Buzz About ${buzzAboutInfo.version} (${buzzAboutInfo.git.hash})`
+      }
     };
     console.log(docDefinition);
     return pdfMake.createPdf(docDefinition, null, fonts);
