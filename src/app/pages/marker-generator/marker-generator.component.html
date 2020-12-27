@@ -4,14 +4,26 @@
     <mat-card class="marker-card">
       <mat-card-title>Generate Markers</mat-card-title>
       <mat-card-content class="marker-card-content">
-        <mat-form-field class="form-field" hideRequiredMarker>
-          <mat-label>Page Size</mat-label>
-          <mat-select required formControlName="pageSizeControl">
-            <mat-option value="LETTER">Letter</mat-option>
-            <mat-option value="A4">A4</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-slide-toggle class="form-field include-flowers" formControlName="includeFlowersControl">Flower Markers</mat-slide-toggle>
+        <div class="side-by-side">
+          <mat-form-field class="form-field" hideRequiredMarker>
+            <mat-label>Page Size</mat-label>
+            <mat-select required formControlName="pageSizeControl">
+              <mat-option value="LETTER">Letter (8.5" x 11")</mat-option>
+              <mat-option value="TABLOID">Tabloid (11" x 17")</mat-option>
+              <mat-option value="A3">A3</mat-option>
+              <mat-option value="A4">A4</mat-option>
+              <mat-option value="A5">A5</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="form-field" hideRequiredMarker>
+            <mat-label>Page Orientation</mat-label>
+            <mat-select required formControlName="pageOrientationControl">
+              <mat-option value="portrait">Portrait</mat-option>
+              <mat-option value="landscape">Landscape</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-slide-toggle class="form-field field-margin" formControlName="includeFlowersControl">Flower Markers</mat-slide-toggle>
         <mat-form-field class="form-field" hideRequiredMarker>
           <mat-label>Number of Nests</mat-label>
           <input matInput type="number" formControlName="numNestsControl" min="0" [max]="maxNumNests" required>

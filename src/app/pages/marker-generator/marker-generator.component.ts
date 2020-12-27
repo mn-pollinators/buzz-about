@@ -40,6 +40,7 @@ export class MarkerGeneratorComponent implements OnInit {
 
   markerFormGroup = new FormGroup({
     pageSizeControl: new FormControl('LETTER', Validators.required),
+    pageOrientationControl: new FormControl('portrait', Validators.required),
     includeFlowersControl: new FormControl(true, Validators.required),
     numNestsControl: new FormControl(30, [
       Validators.required,
@@ -147,6 +148,7 @@ export class MarkerGeneratorComponent implements OnInit {
   makePdf(): pdfMake.TCreatedPdf {
 
     const pageSize: PageSize = this.markerFormGroup.controls.pageSizeControl.value;
+    const orientation: PageOrientation = this.markerFormGroup.controls.pageOrientationControl.value;
     const includeFlowers: boolean = this.markerFormGroup.controls.includeFlowersControl.value;
     const numNests: number = this.markerFormGroup.controls.numNestsControl.value;
 
@@ -156,7 +158,7 @@ export class MarkerGeneratorComponent implements OnInit {
       [
         ...(includeFlowers ? this.flowerPages(markerSize) : []),
         ...this.nestPages(numNests, markerSize)
-      ], markerSize, pageSize);
+      ], markerSize, pageSize, orientation);
   }
 
   openPDF() {
