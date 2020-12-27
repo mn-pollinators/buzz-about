@@ -22,14 +22,6 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions align="end">
-        <!-- <button
-          mat-button
-          type="button"
-          (click)="openPDF()"
-          [disabled]="!markerFormGroup.valid"
-        >
-          Open PDF
-        </button> -->
         <button mat-button (click)="downloadPDF()" [disabled]="!markerFormGroup.valid" title="Download markers PDF">
           <mat-icon>download</mat-icon> Download
         </button>

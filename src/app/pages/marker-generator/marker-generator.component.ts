@@ -92,8 +92,6 @@ export class MarkerGeneratorComponent implements OnInit {
     pageSize: PageSize = 'LETTER',
     pageOrientation: PageOrientation = 'portrait'
   ): pdfMake.TCreatedPdf {
-    console.log(pages);
-
     const content: Content[] = pages.map((p, i, arr) => ({
       columns: [
         {
@@ -142,7 +140,7 @@ export class MarkerGeneratorComponent implements OnInit {
         creator: `Buzz About ${buzzAboutInfo.version} (${buzzAboutInfo.git.hash})`
       }
     };
-    console.log(docDefinition);
+
     return pdfMake.createPdf(docDefinition, null, fonts);
   }
 
