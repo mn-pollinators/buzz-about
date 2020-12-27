@@ -1,5 +1,39 @@
-
-<p>
-  <button (click)="makePdf().open()">Open PDF</button>
-  <button (click)="makePdf().download()">Download PDF</button>
-</p>
+<app-hill-background cover></app-hill-background>
+<div class="marker-generator-page">
+  <form [formGroup]="markerFormGroup" class="marker-form" autocomplete="off">
+    <mat-card class="marker-card">
+      <mat-card-title>Generate Markers</mat-card-title>
+      <mat-card-content class="marker-card-content">
+        <mat-form-field class="form-field" hideRequiredMarker>
+          <mat-label>Page Size</mat-label>
+          <mat-select required formControlName="pageSizeControl">
+            <mat-option value="LETTER">Letter</mat-option>
+            <mat-option value="A4">A4</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-slide-toggle class="form-field include-flowers" formControlName="includeFlowersControl">Flower Markers</mat-slide-toggle>
+        <mat-form-field class="form-field" hideRequiredMarker>
+          <mat-label>Number of Nests</mat-label>
+          <input matInput type="number" formControlName="numNestsControl" min="0" [max]="maxNumNests" required>
+          <mat-hint>Usually how many students in your class</mat-hint>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button
+          mat-button
+          type="button"
+          (click)="makePdf().open()"
+          [disabled]="!markerFormGroup.valid"
+        >
+          Open PDF
+        </button>
+        <button mat-icon-button (click)="makePdf().download()" [disabled]="!markerFormGroup.valid">
+          <mat-icon>download</mat-icon>
+        </button>
+        <button mat-icon-button (click)="makePdf().print()" [disabled]="!markerFormGroup.valid">
+          <mat-icon>print</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

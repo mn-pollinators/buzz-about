@@ -1,0 +1,27 @@
+.marker-generator-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.marker-form {
+  width: 400px;
+  margin: 16px;
+}
+
+.marker-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.marker-card {
+  mat-card-title {
+    margin-bottom: 16px;
+  }
+}
+
+.include-flowers {
+  margin-bottom: 16px;
+}

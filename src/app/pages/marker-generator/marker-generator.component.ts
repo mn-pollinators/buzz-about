@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MATRIX_4X4_BCH_1393 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, PageOrientation, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
 import { rangeArray } from 'src/app/utils/array-utils';
-import { MAX_FLOWER_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
+import { MAX_FLOWER_MARKER, MAX_NEST_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 import { buzzAbout as buzzAboutInfo } from '../../../../project-info.json';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 const fonts = {
   Roboto: {
@@ -35,11 +36,32 @@ interface Page {
 })
 export class MarkerGeneratorComponent implements OnInit {
 
+  maxNumNests = MAX_NEST_MARKER - MIN_NEST_MARKER + 1;
+
+  markerFormGroup = new FormGroup({
+    pageSizeControl: new FormControl('LETTER', Validators.required),
+    includeFlowersControl: new FormControl(true, Validators.required),
+    numNestsControl: new FormControl(30, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(this.maxNumNests)
+    ]),
+  },
+  {
+    validators: (fg: FormGroup) => {
+      return (
+        fg.controls.includeFlowersControl.value
+        || fg.controls.numNestsControl.value > 0
+        ) ? null : {'no-flowers-or-nests' : true};
+    }
+  });
+
   constructor(public sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
 
   }
+
 
   getBarcode(value: number) {
     return new CustomBarcodeMarkerGenerator(BARCODE_TYPE, value);
@@ -54,14 +76,22 @@ export class MarkerGeneratorComponent implements OnInit {
   }
 
   nestPages(nestCount: number, markerSize: number) {
-    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount).map(val =>
+    if (nestCount === 0) {
+      return [];
+    }
+    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount - 1).map(val =>
       ({
         content: `Nest ${val}`,
         backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
       }));
   }
 
-  pdfFromPages(pages: Page[], svgHeight: number): pdfMake.TCreatedPdf {
+  pdfFromPages(
+    pages: Page[],
+    svgHeight: number,
+    pageSize: PageSize = 'LETTER',
+    pageOrientation: PageOrientation = 'portrait'
+  ): pdfMake.TCreatedPdf {
     console.log(pages);
 
     const content: Content[] = pages.map((p, i, arr) => ({
@@ -95,15 +125,15 @@ export class MarkerGeneratorComponent implements OnInit {
     }));
 
     const docDefinition: TDocumentDefinitions = {
-      pageSize: 'LETTER',
-      pageOrientation: 'portrait',
+      pageSize,
+      pageOrientation,
       content,
-      background: (currentPage, pageSize) => {
+      background: (currentPage, currentPageSize) => {
         return {
           svg: pages[currentPage - 1].backgroundSVG,
           alignment: 'center',
           height: svgHeight,
-          margin: [0, (pageSize.height - svgHeight) / 2, 0, 0]
+          margin: [0, (currentPageSize.height - svgHeight) / 2, 0, 0]
         };
       },
       info: {
@@ -118,10 +148,17 @@ export class MarkerGeneratorComponent implements OnInit {
 
   makePdf(): pdfMake.TCreatedPdf {
 
-    const markerSize = 200;
-    const numNests = 100;
+    const pageSize: PageSize = this.markerFormGroup.controls.pageSizeControl.value;
+    const includeFlowers: boolean = this.markerFormGroup.controls.includeFlowersControl.value;
+    const numNests: number = this.markerFormGroup.controls.numNestsControl.value;
 
-    return this.pdfFromPages([...this.flowerPages(markerSize), ...this.nestPages(numNests, markerSize)], markerSize);
+    const markerSize = 200;
+
+    return this.pdfFromPages(
+      [
+        ...(includeFlowers ? this.flowerPages(markerSize) : []),
+        ...this.nestPages(numNests, markerSize)
+      ], markerSize, pageSize);
   }
 
 }

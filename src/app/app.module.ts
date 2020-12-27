@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './components/play-round/play-round.component';
@@ -82,6 +83,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatListModule,
   MatTooltipModule,
   MatExpansionModule,
+  MatSlideToggleModule,
 ];
 
 const FIREBASE_MODULES = [
