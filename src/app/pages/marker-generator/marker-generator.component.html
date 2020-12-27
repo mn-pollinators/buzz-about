@@ -22,15 +22,15 @@
         <button
           mat-button
           type="button"
-          (click)="makePdf().open()"
+          (click)="openPDF()"
           [disabled]="!markerFormGroup.valid"
         >
           Open PDF
         </button>
-        <button mat-icon-button (click)="makePdf().download()" [disabled]="!markerFormGroup.valid">
+        <button mat-icon-button (click)="downloadPDF()" [disabled]="!markerFormGroup.valid">
           <mat-icon>download</mat-icon>
         </button>
-        <button mat-icon-button (click)="makePdf().print()" [disabled]="!markerFormGroup.valid">
+        <button mat-icon-button (click)="printPDF()" [disabled]="!markerFormGroup.valid">
           <mat-icon>print</mat-icon>
         </button>
       </mat-card-actions>

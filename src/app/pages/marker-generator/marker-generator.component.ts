@@ -161,4 +161,16 @@ export class MarkerGeneratorComponent implements OnInit {
       ], markerSize, pageSize);
   }
 
+  openPDF() {
+    this.makePdf().open();
+  }
+
+  downloadPDF() {
+    this.makePdf().download(`Buzz About Markers v${MARKERS_VERSION}`);
+  }
+
+  printPDF() {
+    this.makePdf().print();
+  }
+
 }
