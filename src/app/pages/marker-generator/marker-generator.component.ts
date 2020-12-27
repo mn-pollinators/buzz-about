@@ -25,7 +25,8 @@ const MARKERS_VERSION = '4';
 const BARCODE_TYPE = MATRIX_4X4_BCH_1393;
 
 interface Page {
-  content: Content;
+  value: string;
+  type: string;
   backgroundSVG: string;
 }
 
@@ -71,7 +72,8 @@ export class MarkerGeneratorComponent implements OnInit {
   flowerPages(markerSize: number) {
     return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val =>
       ({
-        content: `Flower ${val}`,
+        value: `${val}`,
+        type: 'Flower',
         backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
       }));
   }
@@ -82,7 +84,8 @@ export class MarkerGeneratorComponent implements OnInit {
     }
     return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount - 1).map(val =>
       ({
-        content: `Nest ${val}`,
+        value: `${val}`,
+        type: 'Nest',
         backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
       }));
   }
@@ -103,19 +106,25 @@ export class MarkerGeneratorComponent implements OnInit {
               svg: beeSVG,
               height: 40,
               width: 40,
-              relativePosition: {x: 0, y: -(40 / 4)}
+              relativePosition: {x: 0, y: 0}
             }
           ],
           width: '*'
         },
         {
           width: 'auto',
-          text: `Buzz About Markers v${MARKERS_VERSION}`,
+          stack: [
+            p.type,
+            {
+              text: p.value,
+              fontSize: 24
+            }
+          ],
           alignment: 'center'
         },
         {
           width: '*',
-          text: p.content,
+          text: `Buzz About Markers v${MARKERS_VERSION}`,
           alignment: 'right'
         }
       ],
