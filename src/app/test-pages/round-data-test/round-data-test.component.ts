@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { TeacherSessionService } from '../../services/teacher-session.service';
-import { SessionStudentData } from '../../session';
 
 @Component({
   selector: 'app-round-data-test',
@@ -13,12 +13,15 @@ export class RoundDataTestComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, public teacherSessionService: TeacherSessionService) { }
 
-  studentList$: Observable<SessionStudentData[]>;
+  roundId$: Observable<string | null> = this.teacherSessionService.mostRecentSession$.pipe(
+    switchMap((session) =>  session.currentRoundId ?? of(null))
+  );
+
+  studentList$ = this.teacherSessionService.studentsInCurrentSession$;
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.teacherSessionService.setCurrentSession(params.get('sessionId'));
-      this.studentList$ = this.teacherSessionService.studentsInCurrentSession$;
     });
   }
 
