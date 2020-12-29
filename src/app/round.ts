@@ -1,6 +1,7 @@
 import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { firestore } from 'firebase';
+import { BeeSpecies } from './bees';
 
 
 /**
@@ -34,6 +35,11 @@ export class RoundFlower {
 export interface RoundStudentData {
   id?: string;
   beeSpecies?: string;
+}
+
+export interface RoundTestData {
+  name: string;
+  bee: BeeSpecies;
 }
 
 export interface Interaction {

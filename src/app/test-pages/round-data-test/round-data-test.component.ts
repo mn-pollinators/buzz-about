@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { RoundStudentData } from 'src/app/round';
+import { RoundStudentData, RoundTestData } from 'src/app/round';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
+import { allBeeSpecies } from 'src/app/bees';
 
 @Component({
   selector: 'app-round-data-test',
@@ -37,11 +38,12 @@ export class RoundDataTestComponent implements OnInit {
   sessionStudents$ = this.teacherSessionService.studentsInCurrentSession$;
 
 
-  roundData$ = combineLatest([this.sessionStudents$, this.roundStudents$]).pipe(
+  roundData$: Observable<RoundTestData[]> = combineLatest([this.sessionStudents$, this.roundStudents$]).pipe(
     map(([sessionStudents, roundStudents]) =>
       roundStudents.map(roundStudent => {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
-        return {...roundStudent, ...matchingSessionStudent};
+        const roundTestData: RoundTestData = { name: matchingSessionStudent.name, bee: allBeeSpecies[roundStudent.beeSpecies] };
+        return (roundTestData);
       })
     )
   );

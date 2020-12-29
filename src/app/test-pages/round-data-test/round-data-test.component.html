@@ -1,8 +1,11 @@
 <app-hill-background cover></app-hill-background>
 <ng-container *ngIf="(currentRound$ | async); else waitForRound">
   <mat-card *ngFor="let data of roundData$ | async" class="student-card">
-    {{data.name}}
-    {{data.beeSpecies}}
+    <mat-card-header>
+      <img mat-card-avatar src="/assets/art/500w/bees/{{data.bee.art_file}}">
+      <mat-card-title>{{data.name}}</mat-card-title>
+      <mat-card-subtitle>{{data.bee.name}}</mat-card-subtitle>
+    </mat-card-header>
   </mat-card>
 </ng-container>
 
