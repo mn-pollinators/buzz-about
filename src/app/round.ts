@@ -40,6 +40,7 @@ export interface RoundStudentData {
 export interface RoundTestData {
   name: string;
   bee: BeeSpecies;
+  interactions: Interaction[];
 }
 
 export interface Interaction {

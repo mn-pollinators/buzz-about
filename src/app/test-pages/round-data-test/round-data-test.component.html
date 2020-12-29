@@ -6,6 +6,15 @@
       <mat-card-title>{{data.name}}</mat-card-title>
       <mat-card-subtitle>{{data.bee.name}}</mat-card-subtitle>
     </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <div mat-subheader>{{data.name}}'s Interactions</div>
+        <mat-list-item *ngFor="let interaction of data.interactions">
+          <div mat-line>Barcode Value: {{interaction.barcodeValue}}</div>
+          <div mat-line>TimePeriod: {{interaction.timePeriod}}</div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
   </mat-card>
 </ng-container>
 

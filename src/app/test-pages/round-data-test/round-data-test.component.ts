@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { RoundStudentData, RoundTestData } from 'src/app/round';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { Interaction, RoundStudentData, RoundTestData } from 'src/app/round';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { allBeeSpecies } from 'src/app/bees';
@@ -20,7 +20,7 @@ export class RoundDataTestComponent implements OnInit {
     public firebaseService: FirebaseService) { }
 
   currentRound$: Observable<RoundPath | null> = this.teacherSessionService.mostRecentSession$.pipe(
-    map((session) =>
+    map(session =>
       session.currentRoundId
       ? this.RoundPathFromSession(session.id, session.currentRoundId)
       : null
@@ -28,21 +28,47 @@ export class RoundDataTestComponent implements OnInit {
   );
 
   roundStudents$: Observable<RoundStudentData[]> = this.currentRound$.pipe(
-    switchMap((currentRound) =>
+    switchMap(currentRound =>
       currentRound
       ? this.firebaseService.getStudentsInARound(currentRound)
       : of([])
-    )
+    ),
+    shareReplay(1)
   );
 
   sessionStudents$ = this.teacherSessionService.studentsInCurrentSession$;
 
+  allInteractions$: Observable<Interaction[]> = this.currentRound$.pipe(
+    switchMap(currentRound =>
+      currentRound
+      ? this.firebaseService.getAllInteractions(currentRound)
+      : of([])
+    ),
+    shareReplay(1)
+  );
 
-  roundData$: Observable<RoundTestData[]> = combineLatest([this.sessionStudents$, this.roundStudents$]).pipe(
-    map(([sessionStudents, roundStudents]) =>
+  roundFlowers$: Observable<string[]> = this.currentRound$.pipe(
+    switchMap(currentRound =>
+      currentRound
+      ? this.firebaseService.getRound(currentRound).pipe(
+        map((round) => round.flowerSpeciesIds)
+      )
+      : of([])
+    )
+  );
+
+
+  roundData$: Observable<RoundTestData[]> =
+  combineLatest([this.roundStudents$, this.sessionStudents$, this.allInteractions$, this.roundFlowers$]).pipe(
+    map(([roundStudents, sessionStudents, allInteractions, flowers]) =>
       roundStudents.map(roundStudent => {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
-        const roundTestData: RoundTestData = { name: matchingSessionStudent.name, bee: allBeeSpecies[roundStudent.beeSpecies] };
+        const matchingInteractions = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
+        const roundTestData: RoundTestData = {
+          name: matchingSessionStudent.name,
+          bee: allBeeSpecies[roundStudent.beeSpecies],
+          interactions: matchingInteractions
+        };
         return (roundTestData);
       })
     )
