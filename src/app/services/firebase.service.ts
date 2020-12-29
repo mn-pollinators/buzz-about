@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
-import { map } from 'rxjs/operators';
+import { map, mapTo } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
 import { firestore } from 'firebase';
 import { JoinCode, JoinCodeWithId } from '../join-code';
@@ -55,6 +55,14 @@ export class FirebaseService {
       .collection('students')
       .doc<SessionStudentData>(studentId)
       .valueChanges();
+  }
+
+  sessionStudentRemoved(sessionId: string, studentId: string): Observable<void> {
+    // This is a bit of a roundabout way to listen to 'removed' events, but it
+    // works! :-)
+    return this.getSessionDocument(sessionId)
+      .collection('students', ref => ref.where(firestore.FieldPath.documentId(), '==', studentId))
+      .stateChanges(['removed']).pipe(mapTo(undefined));
   }
 
   createSession(sessionData: {hostId: string}): Promise<string> {
