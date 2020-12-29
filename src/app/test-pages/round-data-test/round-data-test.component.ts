@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { RoundStudentData } from 'src/app/round';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
@@ -35,6 +35,16 @@ export class RoundDataTestComponent implements OnInit {
   );
 
   sessionStudents$ = this.teacherSessionService.studentsInCurrentSession$;
+
+
+  roundData$ = combineLatest([this.sessionStudents$, this.roundStudents$]).pipe(
+    map(([sessionStudents, roundStudents]) =>
+      roundStudents.map(roundStudent => {
+        const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
+        return {...roundStudent, ...matchingSessionStudent};
+      })
+    )
+  );
 
   RoundPathFromSession(sessionId: string, roundId: string) {
     const roundPath: RoundPath = {sessionId, roundId};
