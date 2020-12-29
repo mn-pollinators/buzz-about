@@ -1,7 +1,7 @@
 <app-hill-background cover></app-hill-background>
 <ng-container *ngIf="(currentRound$ | async); else waitForRound">
-  <mat-card *ngFor="let student of studentList$ | async" class="student-card">
-    {{student.name}}
+  <mat-card *ngFor="let student of roundStudents$ | async" class="student-card">
+    {{student.beeSpecies}}
   </mat-card>
 </ng-container>
 
