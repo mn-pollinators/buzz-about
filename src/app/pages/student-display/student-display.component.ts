@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -42,7 +42,6 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
   constructor(public sessionService: StudentSessionService, private activatedRoute: ActivatedRoute, public dialog: MatDialog) { }
 
   currentScreen$: Observable<ScreenId> = this.sessionService.currentSessionWithState$.pipe(
-    tap(x => console.log(x)),
     map(({heardBackFromFirebase, session}) =>
     heardBackFromFirebase
       ? (session
