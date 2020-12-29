@@ -89,9 +89,17 @@ export class JoinedStudentsComponent {
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         this.sessionService.removeStudent(student.id).then(() => {
-          this.matSnackbar.open(`Removed ${student.name} from the session.`, undefined, { duration: 5000 });
+          this.matSnackbar.open(
+            `Removed ${student.name} from the session.`,
+            undefined,
+            { duration: 2000, horizontalPosition: 'right', verticalPosition: 'top' }
+          );
         }, err => {
-          this.matSnackbar.open(`Error removing student: ${err}`, undefined, { duration: 10000 });
+          this.matSnackbar.open(
+            `Error removing student: ${err}`,
+            undefined,
+            { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' }
+          );
         });
       }
     });
@@ -105,9 +113,17 @@ export class JoinedStudentsComponent {
     dialogRef.afterClosed().subscribe(newName => {
       if (newName) {
         this.sessionService.renameStudent(student.id, newName).then(() => {
-          this.matSnackbar.open(`Renamed ${student.name} to ${newName}`, undefined, { duration: 5000 });
+          this.matSnackbar.open(
+            `Renamed ${student.name} to ${newName}`,
+            undefined,
+            { duration: 2000, horizontalPosition: 'right', verticalPosition: 'top' }
+          );
         }, err => {
-          this.matSnackbar.open(`Error renaming student: ${err}`, undefined, { duration: 10000 });
+          this.matSnackbar.open(
+            `Error renaming student: ${err}`,
+            undefined,
+            { duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' }
+          );
         });
       }
     });
