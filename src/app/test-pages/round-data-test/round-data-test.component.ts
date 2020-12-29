@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 
 @Component({
@@ -13,11 +14,20 @@ export class RoundDataTestComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, public teacherSessionService: TeacherSessionService) { }
 
-  roundId$: Observable<string | null> = this.teacherSessionService.mostRecentSession$.pipe(
-    switchMap((session) =>  session.currentRoundId ?? of(null))
+  studentList$ = this.teacherSessionService.studentsInCurrentSession$;
+
+  currentRound$: Observable<RoundPath | null> = this.teacherSessionService.mostRecentSession$.pipe(
+    map((session) =>
+      session.currentRoundId
+      ? this.RoundPathFromSession(session.id, session.currentRoundId)
+      : null
+    )
   );
 
-  studentList$ = this.teacherSessionService.studentsInCurrentSession$;
+  RoundPathFromSession(sessionId: string, roundId: string) {
+    const roundPath: RoundPath = {sessionId, roundId};
+    return(roundPath);
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {

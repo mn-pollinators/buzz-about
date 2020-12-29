@@ -1,11 +1,11 @@
 <app-hill-background cover></app-hill-background>
-<ng-container *ngIf="(roundId$ | async); else noRoundId">
+<ng-container *ngIf="(currentRound$ | async); else waitForRound">
   <mat-card *ngFor="let student of studentList$ | async" class="student-card">
     {{student.name}}
   </mat-card>
 </ng-container>
 
-<ng-template #noRoundId>
+<ng-template #waitForRound>
   <div class="centered-container">
     <mat-card>
       <mat-card-title>Waiting for round to begin&hellip;</mat-card-title>
