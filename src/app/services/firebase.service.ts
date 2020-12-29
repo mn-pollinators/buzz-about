@@ -114,6 +114,12 @@ export class FirebaseService {
       .update({currentRoundId: roundPath.roundId});
   }
 
+  getStudentsInARound(roundPath: RoundPath): Observable<RoundStudentData[]> {
+    return this.getRoundDocument(roundPath)
+      .collection<RoundStudentData>('students')
+      .valueChanges({idField: 'id'});
+  }
+
   /**
    * Returns an observable of all student data as an array of JSON objects
    * @param sessionID the ID of the session the students are in

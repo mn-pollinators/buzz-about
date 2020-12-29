@@ -32,6 +32,7 @@ export class RoundFlower {
 }
 
 export interface RoundStudentData {
+  id?: string;
   beeSpecies?: string;
 }
 
