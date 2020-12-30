@@ -40,7 +40,7 @@ export interface RoundStudentData {
 export interface RoundTestData {
   name: string;
   bee: BeeSpecies;
-  interactions: Interaction[];
+  interactions: InteractionWithName[];
 }
 
 export interface Interaction {
@@ -48,6 +48,10 @@ export interface Interaction {
   userId: string;
   barcodeValue: number;
   isNest: boolean;
+}
+
+export interface InteractionWithName extends Interaction {
+  name: string;
 }
 
 /**

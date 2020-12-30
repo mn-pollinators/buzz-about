@@ -60,14 +60,17 @@ export class RoundDataTestComponent implements OnInit {
 
   roundData$: Observable<RoundTestData[]> =
   combineLatest([this.roundStudents$, this.sessionStudents$, this.allInteractions$, this.roundFlowers$]).pipe(
-    map(([roundStudents, sessionStudents, allInteractions, flowers]) =>
+    map(([roundStudents, sessionStudents, allInteractions, roundFlowerNames]) =>
       roundStudents.map(roundStudent => {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
         const matchingInteractions = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
+        const interactionWithNames = matchingInteractions.filter((interaction) => !interaction.isNest).map((flowerInteraction) =>
+          ({name: roundFlowerNames[flowerInteraction.barcodeValue], ...flowerInteraction})
+        );
         const roundTestData: RoundTestData = {
           name: matchingSessionStudent.name,
           bee: allBeeSpecies[roundStudent.beeSpecies],
-          interactions: matchingInteractions
+          interactions: interactionWithNames
         };
         return (roundTestData);
       })
