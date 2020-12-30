@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SessionWithId, SessionStudentData } from '../session';
-import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, combineLatest, NEVER } from 'rxjs';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap, filter, mapTo, catchError } from 'rxjs/operators';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { AuthService } from './auth.service';
 
@@ -16,14 +16,20 @@ export class StudentSessionService {
   sessionId$ = new BehaviorSubject<string | null>(null);
 
 
-  currentSessionWithState$: Observable<{sessionIdSet: boolean, session: SessionWithId}> = this.sessionId$.pipe(
+  currentSessionWithState$: Observable<{heardBackFromFirebase: boolean, session: SessionWithId | null}> = this.sessionId$.pipe(
     switchMap(sessionId =>
       sessionId
-        ? this.firebaseService.getSession(sessionId).pipe(map(session => ({
-          sessionIdSet: true,
-          session
-        })))
-        : of({sessionIdSet: false, session: null})
+        ? this.firebaseService.getSession(sessionId).pipe(
+          map(session => ({
+            heardBackFromFirebase: true,
+            session
+          })),
+          catchError(() => of({
+            heardBackFromFirebase: true,
+            session: null
+          }))
+        )
+        : of({heardBackFromFirebase: false, session: null})
     ),
     shareReplay(1),
   );
@@ -61,6 +67,11 @@ export class StudentSessionService {
     switchMap(([sessionId, user]) => sessionId && user ? this.firebaseService.getSessionStudent(sessionId, user.uid) : of(null)),
     shareReplay(1)
   );
+
+  sessionStudentRemoved$: Observable<void> = combineLatest([this.sessionId$, this.authService.currentUser$]).pipe(
+    switchMap(([sessionId, user]) => sessionId && user ? this.firebaseService.sessionStudentRemoved(sessionId, user.uid) : NEVER)
+  );
+
 
   /**
    * Leave a session, if the student is connected to a session.
