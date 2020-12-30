@@ -152,4 +152,14 @@ export class TeacherSessionService {
       return this.firebaseService.deleteJoinCode(joinCode.id);
     }
   }
+
+  async removeStudent(id: string) {
+    const sessionId = await this.sessionId$.pipe(take(1)).toPromise();
+    return this.firebaseService.removeStudentFromSession(id, sessionId);
+  }
+
+  async renameStudent(id: string, name: string) {
+    const sessionId = await this.sessionId$.pipe(take(1)).toPromise();
+    return this.firebaseService.updateStudentInSession(id, sessionId, {name});
+  }
 }

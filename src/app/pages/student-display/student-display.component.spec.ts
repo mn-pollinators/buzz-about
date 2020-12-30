@@ -10,6 +10,7 @@ import { HillBackgroundComponent } from '../../components/hill-background/hill-b
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { firestore } from 'firebase';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('StudentDisplayComponent', () => {
   let component: StudentDisplayComponent;
@@ -67,9 +68,10 @@ describe('StudentDisplayComponent', () => {
         MatProgressSpinnerModule,
       ],
       providers: [
-        {provide: ActivatedRoute, useValue: mockActivatedRoute},
-        {provide: FirebaseService, useValue: mockFirebaseService},
-        {provide: AuthService, useValue: mockAuthService},
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        { provide: FirebaseService, useValue: mockFirebaseService },
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: MatDialog, useValue: null },
       ],
     })
     .compileComponents();
@@ -91,7 +93,7 @@ describe('StudentDisplayComponent', () => {
     }));
 
     describe('The currentScreen$ observable', () => {
-      it('Should initially be ScreenId.NoSession', fakeAsync(() => {
+      it('Should initially be ScreenId.Loading', fakeAsync(() => {
         component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
           expect(currentScreen).toBe(ScreenId.Loading);
         });

@@ -50,7 +50,7 @@ export class SessionLobbyComponent implements OnInit {
           this.loadingRound$.next(false);
         }, (err) => {
           this.loadingRound$.next(false);
-          this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000});
+          this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
         });
       }
     });
@@ -65,7 +65,7 @@ export class SessionLobbyComponent implements OnInit {
       this.matSnackbar.open(
         'Error: couldn\'t create a join code. Please try again later.',
         undefined,
-        { duration: 10000 },
+        { duration: 10000, panelClass: 'snackbar-host-screen', horizontalPosition: 'right', verticalPosition: 'top' },
       );
     });
   }
