@@ -68,7 +68,7 @@ export class MarkerGeneratorComponent implements OnInit {
   });
 
   compareOrientationAndNumPerPage(a: OrientationAndNumPerPage, b: OrientationAndNumPerPage) {
-    return a && b && a.pageOrientation === b.pageOrientation && a.numPerPage === b.numPerPage;
+    return a.pageOrientation === b.pageOrientation && a.numPerPage === b.numPerPage;
   }
 
   constructor(public sanitizer: DomSanitizer) { }
