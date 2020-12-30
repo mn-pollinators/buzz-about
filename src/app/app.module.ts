@@ -45,14 +45,21 @@ import { HomeComponent } from './pages/home/home.component';
 
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
-import { JoinedStudentsComponent } from './components/joined-students/joined-students.component';
+import {
+  ConfirmRemoveStudentDialogComponent,
+  JoinedStudentsComponent,
+  RenameStudentDialogComponent
+} from './components/joined-students/joined-students.component';
 import { SessionTestComponent } from './test-pages/session-test/session-test.component';
 import { JoinSessionComponent } from './pages/join-session/join-session.component';
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
-import { StudentDisplayComponent } from './pages/student-display/student-display.component';
+import {
+  StudentDisplayComponent,
+  StudentRemovedDialogComponent
+} from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
@@ -120,6 +127,9 @@ const FIREBASE_MODULES = [
     AboutComponent,
     AnonAuthTestComponent,
     SentenceCasePipe,
+    ConfirmRemoveStudentDialogComponent,
+    RenameStudentDialogComponent,
+    StudentRemovedDialogComponent,
   ],
   imports: [
     BrowserModule,
