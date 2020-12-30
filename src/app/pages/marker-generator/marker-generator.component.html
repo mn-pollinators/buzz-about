@@ -18,9 +18,10 @@
           </mat-form-field>
           <mat-form-field class="form-field" hideRequiredMarker>
             <mat-label>Page Orientation</mat-label>
-            <mat-select required formControlName="pageOrientationControl">
-              <mat-option value="portrait">Portrait</mat-option>
-              <mat-option value="landscape">Landscape</mat-option>
+            <mat-select required formControlName="pageOrientationControl" [compareWith]="compareOrientationAndNumPerPage">
+              <mat-option [value]="{pageOrientation: 'portrait', numPerPage: 1}">Portrait</mat-option>
+              <mat-option [value]="{pageOrientation: 'landscape', numPerPage: 1}">Landscape</mat-option>
+              <mat-option [value]="{pageOrientation: 'landscape', numPerPage: 2}">Landscape (2 per page)</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

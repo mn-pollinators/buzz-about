@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MATRIX_4X4_BCH_1393 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import { Content, PageOrientation, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Column, Content, ContentColumns, PageOrientation, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
-import { rangeArray } from 'src/app/utils/array-utils';
+import { chunk, rangeArray } from 'src/app/utils/array-utils';
 import { MAX_FLOWER_MARKER, MAX_NEST_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 import { buzzAbout as buzzAboutInfo } from '../../../../project-info.json';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -30,6 +30,11 @@ interface Page {
   backgroundSVG: string;
 }
 
+interface OrientationAndNumPerPage {
+  pageOrientation: PageOrientation;
+  numPerPage: 1 | 2;
+}
+
 @Component({
   selector: 'app-marker-generator',
   templateUrl: './marker-generator.component.html',
@@ -39,9 +44,10 @@ export class MarkerGeneratorComponent implements OnInit {
 
   maxNumNests = MAX_NEST_MARKER - MIN_NEST_MARKER + 1;
 
+
   markerFormGroup = new FormGroup({
     pageSizeControl: new FormControl('LETTER', Validators.required),
-    pageOrientationControl: new FormControl('portrait', Validators.required),
+    pageOrientationControl: new FormControl({value: {pageOrientation: 'portrait', numPerPage: 1}, disabled: false}, Validators.required),
     includeFlowersControl: new FormControl(true, Validators.required),
     includeNestsControl: new FormControl(true, Validators.required),
     numNestsControl: new FormControl(30, [
@@ -58,6 +64,10 @@ export class MarkerGeneratorComponent implements OnInit {
         ) ? null : {'no-flowers-or-nests' : true};
     }
   });
+
+  compareOrientationAndNumPerPage(a: OrientationAndNumPerPage, b: OrientationAndNumPerPage) {
+    return a && b && a.pageOrientation === b.pageOrientation && a.numPerPage === b.numPerPage;
+  }
 
   constructor(public sanitizer: DomSanitizer) { }
 
@@ -91,45 +101,64 @@ export class MarkerGeneratorComponent implements OnInit {
       }));
   }
 
+
   pdfFromPages(
     pages: Page[],
     svgHeight: number,
     pageSize: PageSize = 'LETTER',
-    pageOrientation: PageOrientation = 'portrait'
+    {pageOrientation, numPerPage}: OrientationAndNumPerPage = {pageOrientation: 'portrait', numPerPage: 1}
   ): pdfMake.TCreatedPdf {
-    const content: Content[] = pages.map((p, i, arr) => ({
-      columns: [
-        {
-          // nesting columns here to allow the outer column to have width '*'
-          // while allowing the SVG to have a valid width.
-          columns: [
-            {
-              svg: beeSVG,
-              height: 40,
-              width: 40,
-              relativePosition: {x: 0, y: 0}
-            }
-          ],
-          width: '*'
-        },
-        {
-          width: 'auto',
-          stack: [
-            p.type,
-            {
-              text: p.value,
-              fontSize: 24
-            }
-          ],
-          alignment: 'center'
-        },
-        {
-          width: '*',
-          text: `Buzz About Markers v${MARKERS_VERSION}`,
-          alignment: 'right'
-        }
-      ],
-      columnGap: 10,
+
+
+    const markerColumns: Column[][] = pages.map(p => ([
+      {
+        // nesting columns here to allow the outer column to have width '*'
+        // while allowing the SVG to have a valid width.
+        columns: [
+          {
+            svg: beeSVG,
+            height: 40,
+            width: 40,
+            relativePosition: {x: 0, y: 0}
+          }
+        ],
+        width: '*'
+      },
+      {
+        width: 'auto',
+        stack: [
+          p.type,
+          {
+            text: p.value,
+            fontSize: 24
+          }
+        ],
+        alignment: 'center'
+      },
+      {
+        width: '*',
+        text: `Buzz About Markers v${MARKERS_VERSION}`,
+        alignment: 'right'
+      }
+    ]));
+
+    const columnPages = chunk(markerColumns, numPerPage);
+
+    const backgroundSVGPages = chunk(pages.map(p => p.backgroundSVG), numPerPage);
+
+    const blankSVG = '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>';
+
+    if (numPerPage > 1 && pages.length % 2) {
+      columnPages.push([...columnPages.pop(), []]);
+      backgroundSVGPages.push([...backgroundSVGPages.pop(), blankSVG]);
+    }
+
+    const content: Content[] = columnPages.map((c, i, arr) => ({
+      columns: c.map(columns => ({
+        columns,
+        width: '*',
+        margin: 40
+      })),
       pageBreak: arr.length - 1 === i ? null : 'after'
     }));
 
@@ -137,19 +166,25 @@ export class MarkerGeneratorComponent implements OnInit {
       pageSize,
       pageOrientation,
       content,
-      background: (currentPage, currentPageSize) => {
-        return {
-          svg: pages[currentPage - 1].backgroundSVG,
-          alignment: 'center',
-          height: svgHeight,
-          margin: [0, (currentPageSize.height - svgHeight) / 2, 0, 0]
-        };
-      },
+      background: (currentPage, currentPageSize) => ({
+        columns: backgroundSVGPages[currentPage - 1].map(svg => ({
+          columns: [
+            {
+              svg,
+              alignment: 'center',
+              height: svgHeight,
+              relativePosition: {x: 0, y: (currentPageSize.height - svgHeight) / 2}
+            }
+          ],
+          width: '*'
+        })),
+      }),
       info: {
         title: `Buzz About Markers v${MARKERS_VERSION}`,
         author: 'Minnesota Pollinators',
         creator: `Buzz About ${buzzAboutInfo.version} (${buzzAboutInfo.git.hash})`
-      }
+      },
+      pageMargins: 0,
     };
 
     return pdfMake.createPdf(docDefinition, null, fonts);
@@ -158,7 +193,8 @@ export class MarkerGeneratorComponent implements OnInit {
   makePdf(): pdfMake.TCreatedPdf {
 
     const pageSize: PageSize = this.markerFormGroup.controls.pageSizeControl.value;
-    const orientation: PageOrientation = this.markerFormGroup.controls.pageOrientationControl.value;
+    const orientationAndNumPerPage: OrientationAndNumPerPage
+     = this.markerFormGroup.controls.pageOrientationControl.value;
     const includeFlowers: boolean = this.markerFormGroup.controls.includeFlowersControl.value;
     const includeNests: boolean = this.markerFormGroup.controls.includeNestsControl.value;
     const numNests: number = this.markerFormGroup.controls.numNestsControl.value;
@@ -169,7 +205,7 @@ export class MarkerGeneratorComponent implements OnInit {
       [
         ...(includeFlowers ? this.flowerPages(markerSize) : []),
         ...(includeNests ? this.nestPages(numNests, markerSize) : [])
-      ], markerSize, pageSize, orientation);
+      ], markerSize, pageSize, orientationAndNumPerPage);
   }
 
   openPDF() {
