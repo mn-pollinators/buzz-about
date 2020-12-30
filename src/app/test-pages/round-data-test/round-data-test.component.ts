@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
-import { Interaction, RoundStudentData, RoundTestData } from 'src/app/round';
+import { Interaction, InteractionWithName, RoundStudentData, RoundTestData } from 'src/app/round';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
-import { allBeeSpecies } from 'src/app/bees';
+import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
 
 @Component({
   selector: 'app-round-data-test',
@@ -63,13 +63,16 @@ export class RoundDataTestComponent implements OnInit {
     map(([roundStudents, sessionStudents, allInteractions, roundFlowerNames]) =>
       roundStudents.map(roundStudent => {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
-        const matchingInteractions = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
-        const interactionWithNames = matchingInteractions.filter((interaction) => !interaction.isNest).map((flowerInteraction) =>
-          ({name: roundFlowerNames[flowerInteraction.barcodeValue], ...flowerInteraction})
+        const studentBee: BeeSpecies = allBeeSpecies[roundStudent.beeSpecies];
+        const matchingInteractions: Interaction[] = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
+        const interactionWithNames: InteractionWithName[] = matchingInteractions.map((interaction) =>
+          interaction.isNest
+          ? ({name: studentBee.nest_type.name, ...interaction})
+          : ({name: roundFlowerNames[interaction.barcodeValue], ...interaction})
         );
         const roundTestData: RoundTestData = {
           name: matchingSessionStudent.name,
-          bee: allBeeSpecies[roundStudent.beeSpecies],
+          bee: studentBee,
           interactions: interactionWithNames
         };
         return (roundTestData);
