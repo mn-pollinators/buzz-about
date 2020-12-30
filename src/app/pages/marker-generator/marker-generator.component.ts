@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MATRIX_4X4_BCH_1393 } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import { Column, Content, ContentColumns, PageOrientation, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Column, Content, PageOrientation, PageSize, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { CustomBarcodeMarkerGenerator } from '../../custom-barcode-marker-generator';
 import { chunk, rangeArray } from 'src/app/utils/array-utils';
 import { MAX_FLOWER_MARKER, MAX_NEST_MARKER, MIN_FLOWER_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
@@ -49,7 +49,7 @@ export class MarkerGeneratorComponent implements OnInit {
 
   markerFormGroup = new FormGroup({
     pageSizeControl: new FormControl('LETTER', Validators.required),
-    pageOrientationControl: new FormControl({value: {pageOrientation: 'portrait', numPerPage: 1}, disabled: false}, Validators.required),
+    pageOrientationControl: new FormControl({pageOrientation: 'portrait', numPerPage: 1}, Validators.required),
     includeFlowersControl: new FormControl(true, Validators.required),
     includeNestsControl: new FormControl(true, Validators.required),
     numNestsControl: new FormControl(30, [
