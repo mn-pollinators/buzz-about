@@ -49,7 +49,7 @@ export class MarkerGeneratorComponent implements OnInit {
 
   markerFormGroup = new FormGroup({
     pageSizeControl: new FormControl('LETTER', Validators.required),
-    pageOrientationControl: new FormControl({pageOrientation: 'portrait', numPerPage: 1}, Validators.required),
+    pageOrientationControl: new FormControl({ pageOrientation: 'portrait', numPerPage: 1 }, Validators.required),
     includeFlowersControl: new FormControl(true, Validators.required),
     includeNestsControl: new FormControl(true, Validators.required),
     numNestsControl: new FormControl(30, [
@@ -58,14 +58,10 @@ export class MarkerGeneratorComponent implements OnInit {
       Validators.max(this.maxNumNests)
     ]),
   },
-  {
-    validators: (fg: FormGroup) => {
-      return (
-        fg.controls.includeFlowersControl.value
-        || fg.controls.includeNestsControl.value
-        ) ? null : {'no-flowers-or-nests' : true};
-    }
-  });
+    {
+      validators: (fg: FormGroup) =>
+        (fg.controls.includeFlowersControl.value || fg.controls.includeNestsControl.value) ? null : { 'no-flowers-or-nests': true }
+    });
 
   compareOrientationAndNumPerPage(a: OrientationAndNumPerPage, b: OrientationAndNumPerPage) {
     return a.pageOrientation === b.pageOrientation && a.numPerPage === b.numPerPage;
@@ -84,11 +80,11 @@ export class MarkerGeneratorComponent implements OnInit {
 
   flowerPages(markerSize: number) {
     return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val =>
-      ({
-        value: `${val}`,
-        type: 'Flower',
-        backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
-      }));
+    ({
+      value: `${val}`,
+      type: 'Flower',
+      backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
+    }));
   }
 
   nestPages(nestCount: number, markerSize: number) {
@@ -96,11 +92,11 @@ export class MarkerGeneratorComponent implements OnInit {
       return [];
     }
     return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount - 1).map(val =>
-      ({
-        value: `${val}`,
-        type: 'Nest',
-        backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
-      }));
+    ({
+      value: `${val}`,
+      type: 'Nest',
+      backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
+    }));
   }
 
 
@@ -108,7 +104,7 @@ export class MarkerGeneratorComponent implements OnInit {
     pages: Page[],
     svgHeight: number,
     pageSize: PageSize = 'LETTER',
-    {pageOrientation, numPerPage}: OrientationAndNumPerPage = {pageOrientation: 'portrait', numPerPage: 1}
+    { pageOrientation, numPerPage }: OrientationAndNumPerPage = { pageOrientation: 'portrait', numPerPage: 1 }
   ): pdfMake.TCreatedPdf {
 
 
@@ -121,7 +117,7 @@ export class MarkerGeneratorComponent implements OnInit {
             svg: beeSVG,
             height: 40,
             width: 40,
-            relativePosition: {x: 0, y: 0}
+            relativePosition: { x: 0, y: 0 }
           }
         ],
         width: '*'
@@ -176,7 +172,7 @@ export class MarkerGeneratorComponent implements OnInit {
               svg,
               alignment: 'center',
               height: svgHeight,
-              relativePosition: {x: 0, y: (currentPageSize.height - svgHeight) / 2}
+              relativePosition: { x: 0, y: (currentPageSize.height - svgHeight) / 2 }
             }
           ],
           width: '*'
@@ -196,8 +192,7 @@ export class MarkerGeneratorComponent implements OnInit {
   makePdf(): pdfMake.TCreatedPdf {
 
     const pageSize: PageSize = this.markerFormGroup.controls.pageSizeControl.value;
-    const orientationAndNumPerPage: OrientationAndNumPerPage
-     = this.markerFormGroup.controls.pageOrientationControl.value;
+    const orientationAndNumPerPage: OrientationAndNumPerPage = this.markerFormGroup.controls.pageOrientationControl.value;
     const includeFlowers: boolean = this.markerFormGroup.controls.includeFlowersControl.value;
     const includeNests: boolean = this.markerFormGroup.controls.includeNestsControl.value;
     const numNests: number = this.markerFormGroup.controls.numNestsControl.value;
@@ -205,10 +200,11 @@ export class MarkerGeneratorComponent implements OnInit {
     const markerSize = 200;
 
     return this.pdfFromPages(
-      [
-        ...(includeFlowers ? this.flowerPages(markerSize) : []),
-        ...(includeNests ? this.nestPages(numNests, markerSize) : [])
-      ], markerSize, pageSize, orientationAndNumPerPage);
+      [...(includeFlowers ? this.flowerPages(markerSize) : []), ...(includeNests ? this.nestPages(numNests, markerSize) : [])],
+      markerSize,
+      pageSize,
+      orientationAndNumPerPage
+    );
   }
 
   openPDF() {
