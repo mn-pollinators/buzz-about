@@ -24,10 +24,18 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <mat-slide-toggle class="form-field field-margin" formControlName="includeFlowersControl">Flower Markers</mat-slide-toggle>
-        <mat-form-field class="form-field" hideRequiredMarker>
+        <mat-checkbox class="form-field field-margin" color="primary" formControlName="includeFlowersControl">Flower Markers</mat-checkbox>
+        <mat-checkbox
+          class="form-field field-margin"
+          color="primary"
+          formControlName="includeNestsControl"
+          (change)="$event.checked ? markerFormGroup.controls.numNestsControl.enable() : markerFormGroup.controls.numNestsControl.disable()"
+        >
+          Nest Markers
+        </mat-checkbox>
+        <mat-form-field class="form-field" hideRequiredMarker >
           <mat-label>Number of Nests</mat-label>
-          <input matInput type="number" formControlName="numNestsControl" min="0" [max]="maxNumNests" required>
+          <input matInput type="number" formControlName="numNestsControl" min="1" [max]="maxNumNests" required>
           <mat-hint>Usually how many students in your class</mat-hint>
           <mat-error *ngIf="markerFormGroup.controls.numNestsControl.invalid">
             Please enter a value between 0 and {{maxNumNests}}.

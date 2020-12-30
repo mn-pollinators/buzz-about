@@ -43,9 +43,10 @@ export class MarkerGeneratorComponent implements OnInit {
     pageSizeControl: new FormControl('LETTER', Validators.required),
     pageOrientationControl: new FormControl('portrait', Validators.required),
     includeFlowersControl: new FormControl(true, Validators.required),
+    includeNestsControl: new FormControl(true, Validators.required),
     numNestsControl: new FormControl(30, [
       Validators.required,
-      Validators.min(0),
+      Validators.min(1),
       Validators.max(this.maxNumNests)
     ]),
   },
@@ -53,7 +54,7 @@ export class MarkerGeneratorComponent implements OnInit {
     validators: (fg: FormGroup) => {
       return (
         fg.controls.includeFlowersControl.value
-        || fg.controls.numNestsControl.value > 0
+        || fg.controls.includeNestsControl.value
         ) ? null : {'no-flowers-or-nests' : true};
     }
   });
@@ -159,6 +160,7 @@ export class MarkerGeneratorComponent implements OnInit {
     const pageSize: PageSize = this.markerFormGroup.controls.pageSizeControl.value;
     const orientation: PageOrientation = this.markerFormGroup.controls.pageOrientationControl.value;
     const includeFlowers: boolean = this.markerFormGroup.controls.includeFlowersControl.value;
+    const includeNests: boolean = this.markerFormGroup.controls.includeNestsControl.value;
     const numNests: number = this.markerFormGroup.controls.numNestsControl.value;
 
     const markerSize = 200;
@@ -166,7 +168,7 @@ export class MarkerGeneratorComponent implements OnInit {
     return this.pdfFromPages(
       [
         ...(includeFlowers ? this.flowerPages(markerSize) : []),
-        ...this.nestPages(numNests, markerSize)
+        ...(includeNests ? this.nestPages(numNests, markerSize) : [])
       ], markerSize, pageSize, orientation);
   }
 
