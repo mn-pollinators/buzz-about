@@ -103,4 +103,27 @@ export const roundTemplates: RoundTemplate[] = [
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
     tickSpeed: 5000
   },
+  {
+    name: 'Viable Ecosystem (8 flowers)',
+    flowerSpecies: [
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.cirsium_discolor,
+      allFlowerSpecies.echinacea_angustifolia,
+      allFlowerSpecies.rubus_occidentalis,
+      allFlowerSpecies.monarda_fistulosa,
+      allFlowerSpecies.prunus_americana,
+      allFlowerSpecies.rudbeckia_hirta,
+      allFlowerSpecies.solidago_rigida
+    ],
+    startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+    endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+    tickSpeed: 1000,
+    bees: [
+      { species: allBeeSpecies.agapostemon_virescens, weight: 0.2 },
+      { species: allBeeSpecies.augochloropsis_metallica, weight: 0.2 },
+      { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
+      { species: allBeeSpecies.anthidium_manicatum, weight: 0.2 },
+      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
+    ]
+  },
 ];
