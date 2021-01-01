@@ -15,22 +15,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {NgPipesModule} from 'ngx-pipes';
 
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatListModule } from '@angular/material/list';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './components/play-round/play-round.component';
@@ -62,7 +46,6 @@ import {
   StudentRemovedDialogComponent
 } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
@@ -71,27 +54,8 @@ import { StudentRoundComponent } from './pages/student-round/student-round.compo
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { SentenceCasePipe } from './utils/string-utils';
+import { SharedModule } from './shared.module';
 
-
-const ANGULAR_MATERIAL_MODULES = [
-  MatProgressSpinnerModule,
-  MatProgressBarModule,
-  MatToolbarModule,
-  MatButtonModule,
-  MatIconModule,
-  MatGridListModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatCardModule,
-  MatMenuModule,
-  MatSelectModule,
-  MatSnackBarModule,
-  MatDialogModule,
-  MatListModule,
-  MatTooltipModule,
-  MatExpansionModule,
-  MatCheckboxModule,
-];
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
@@ -105,7 +69,6 @@ const FIREBASE_MODULES = [
     ArViewComponent,
     PlayRoundComponent,
     LargeDisplayComponent,
-    FullscreenButtonComponent,
     TimerTestComponent,
     TimerProgressBarComponent,
     TimerProgressSpinnerComponent,
@@ -119,7 +82,6 @@ const FIREBASE_MODULES = [
     JoinSessionComponent,
     PrepareRoundTestComponent,
     BottomBarComponent,
-    HillBackgroundComponent,
     SessionLobbyComponent,
     StudentDisplayComponent,
     HostSessionComponent,
@@ -130,7 +92,6 @@ const FIREBASE_MODULES = [
     StudentRoundComponent,
     AboutComponent,
     AnonAuthTestComponent,
-    SentenceCasePipe,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
     StudentRemovedDialogComponent,
@@ -141,12 +102,7 @@ const FIREBASE_MODULES = [
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     FIREBASE_MODULES,
-    HttpClientModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ANGULAR_MATERIAL_MODULES,
-    NgPipesModule
+    SharedModule
   ],
   providers: [
     {
