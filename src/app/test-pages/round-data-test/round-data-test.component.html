@@ -9,11 +9,11 @@
       </mat-card-header>
       <mat-card-content>
         <mat-list>
-          <div mat-subheader>{{data.name}}'s Interactions</div>
+          <h3 matSubheader>{{data.name}}'s Interactions</h3>
           <mat-list-item *ngFor="let interaction of data.interactions">
-            <div mat-line>Name: {{interaction.name }}</div>
-            <div mat-line>Barcode Value: {{interaction.barcodeValue}}</div>
-            <div mat-line>TimePeriod: {{interaction.timePeriod}}</div>
+            <img matListAvatar src="/assets/art/500w/{{interaction.isNest ? 'nests': 'flowers'}}/{{interaction.art}}" />
+            <div matLine>Name: {{interaction.name}}</div>
+            <div matLine>TimePeriod: {{interaction.timePeriod}}</div>
           </mat-list-item>
         </mat-list>
       </mat-card-content>

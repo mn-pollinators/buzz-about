@@ -2,6 +2,7 @@ import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import { firestore } from 'firebase';
 import { BeeSpecies } from './bees';
+import { Nest } from './nests';
 
 
 /**
@@ -52,6 +53,7 @@ export interface Interaction {
 
 export interface InteractionWithName extends Interaction {
   name: string;
+  art: string;
 }
 
 /**

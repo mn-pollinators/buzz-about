@@ -6,6 +6,8 @@ import { Interaction, InteractionWithName, RoundStudentData, RoundTestData } fro
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
+import { allFlowerSpecies, FlowerSpecies } from 'src/app/flowers';
+import { Nest } from 'src/app/nests';
 
 @Component({
   selector: 'app-round-data-test',
@@ -65,11 +67,15 @@ export class RoundDataTestComponent implements OnInit {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
         const studentBee: BeeSpecies = allBeeSpecies[roundStudent.beeSpecies];
         const matchingInteractions: Interaction[] = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
-        const interactionWithNames: InteractionWithName[] = matchingInteractions.map((interaction) =>
-          interaction.isNest
-          ? ({name: studentBee.nest_type.name, ...interaction})
-          : ({name: roundFlowerNames[interaction.barcodeValue], ...interaction})
-        );
+        const interactionWithNames: InteractionWithName[] = matchingInteractions.map((interaction) => {
+          const studentNest: Nest = studentBee.nest_type;
+          const flower: FlowerSpecies = allFlowerSpecies[roundFlowerNames[interaction.barcodeValue]];
+          return (
+            interaction.isNest
+              ? ({name: studentNest.name , art: studentNest.art_file, ...interaction})
+              : ({name: flower.name , art: flower.art_file, ...interaction})
+          );
+        });
         const roundTestData: RoundTestData = {
           name: matchingSessionStudent.name,
           bee: studentBee,
