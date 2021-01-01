@@ -38,22 +38,11 @@ export interface RoundStudentData {
   beeSpecies?: string;
 }
 
-export interface RoundTestData {
-  name: string;
-  bee: BeeSpecies;
-  interactions: InteractionWithName[];
-}
-
 export interface Interaction {
   timePeriod: number;
   userId: string;
   barcodeValue: number;
   isNest: boolean;
-}
-
-export interface InteractionWithName extends Interaction {
-  name: string;
-  art: string;
 }
 
 /**

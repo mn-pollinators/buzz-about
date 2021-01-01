@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
-import { Interaction, InteractionWithName, RoundStudentData, RoundTestData } from 'src/app/round';
+import { Interaction, RoundStudentData } from 'src/app/round';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
@@ -97,4 +97,16 @@ export class RoundDataTestComponent implements OnInit {
     });
   }
 
+}
+
+export interface InteractionWithName extends Interaction {
+  name: string;
+  art: string;
+}
+
+
+export interface RoundTestData {
+  name: string;
+  bee: BeeSpecies;
+  interactions: InteractionWithName[];
 }
