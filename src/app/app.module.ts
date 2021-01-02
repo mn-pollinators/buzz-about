@@ -48,7 +48,6 @@ import {
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { StudentRoundComponent } from './pages/student-round/student-round.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -87,7 +86,6 @@ const FIREBASE_MODULES = [
     HostSessionComponent,
     RoundTemplateTestComponent,
     TestPagesComponent,
-    MarkerGeneratorComponent,
     RoundChooserDialogComponent,
     StudentRoundComponent,
     AboutComponent,

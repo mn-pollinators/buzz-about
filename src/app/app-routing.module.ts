@@ -33,10 +33,10 @@ const routes: Routes = [
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
-  {path: 'markers', component: MarkerGeneratorComponent},
   {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
-  {path: 'test', children: testRoutes}
+  {path: 'test', children: testRoutes},
+  { path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule) }
 ];
 
 @NgModule({
