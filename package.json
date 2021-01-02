@@ -45,8 +45,8 @@
     "material-design-icons-iconfont": "^6.1.0",
     "ngx-pipes": "^2.7.5",
     "rxjs": "~6.5.3",
-    "three": "^0.110.0",
-    "threear": "github:mn-pollinators/THREEAR#ts-fixes-2",
+    "three": "^0.122.0",
+    "threear": "github:JamesLMilner/THREEAR#v1.0.0",
     "tslib": "^1.10.0",
     "typeface-roboto": "^1.1.13",
     "zone.js": "~0.10.2"
