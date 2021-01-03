@@ -7,6 +7,9 @@ import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-te
 import { RoundTemplateTestComponent } from './round-template-test/round-template-test.component';
 import { SessionTestComponent } from './session-test/session-test.component';
 import { TimerTestComponent } from './timer-test/timer-test.component';
+import { TestPagesRoutingModule } from './test-pages-routing.module';
+import { TeacherPagesModule } from '../teacher-pages/teacher-pages.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -22,6 +25,10 @@ import { TimerTestComponent } from './timer-test/timer-test.component';
   ],
   imports: [
     SharedModule,
+    TestPagesRoutingModule,
+    TeacherPagesModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class TestPagesModule { }
