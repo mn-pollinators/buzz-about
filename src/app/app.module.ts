@@ -9,17 +9,12 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
 
-import { HttpClientModule } from '@angular/common/http';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {NgPipesModule} from 'ngx-pipes';
 
 
 import { ArViewComponent } from './components/ar-view/ar-view.component';
 import { PlayRoundComponent } from './components/play-round/play-round.component';
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
-import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './components/timer-progress-bar/timer-progress-bar.component';
 import { TimerProgressSpinnerComponent } from './components/timer-progress-spinner/timer-progress-spinner.component';
@@ -40,7 +35,6 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
-import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 import {
   StudentDisplayComponent,
   StudentRemovedDialogComponent
@@ -49,9 +43,8 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
-import { StudentRoundComponent } from './pages/student-round/student-round.component';
+import { StudentRoundComponent } from './components/student-round/student-round.component';
 import { AboutComponent } from './pages/about/about.component';
-import { SentenceCasePipe } from './utils/string-utils';
 import { SharedModule } from './shared.module';
 
 
