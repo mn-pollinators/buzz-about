@@ -12,7 +12,7 @@ const studentComponents = [
   StudentRoundComponent,
   PlayRoundComponent,
   ArViewComponent
-]
+];
 
 @NgModule({
   declarations: [
