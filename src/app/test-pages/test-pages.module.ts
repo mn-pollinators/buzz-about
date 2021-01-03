@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared.module';
-import { TestPagesComponent } from '../pages/test-pages/test-pages.component';
+import { TestPagesComponent } from './test-pages/test-pages.component';
 import { FlowerTestComponent } from './flower-test/flower-test.component';
 import { JsonDataTestComponent } from './json-data-test/json-data-test.component';
 import { PrepareRoundTestComponent } from './prepare-round-test/prepare-round-test.component';
