@@ -28,13 +28,13 @@ const testRoutes: Routes = [
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'play', component: JoinSessionComponent},
-  {path: 'play/:sessionId', component: StudentDisplayComponent},
+  {path: 'play/:sessionId', loadChildren: () => import('./pages/student-display/student-display.module').then(m => m.StudentDisplayModule)},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes},
-  { path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule) }
+  {path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule)},
 ];
 
 @NgModule({

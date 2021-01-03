@@ -12,8 +12,6 @@ import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular
 
 
 
-import { ArViewComponent } from './components/ar-view/ar-view.component';
-import { PlayRoundComponent } from './components/play-round/play-round.component';
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
 import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
 import { TimerProgressBarComponent } from './components/timer-progress-bar/timer-progress-bar.component';
@@ -36,14 +34,12 @@ import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepa
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import {
-  StudentDisplayComponent,
   StudentRemovedDialogComponent
 } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
-import { StudentRoundComponent } from './components/student-round/student-round.component';
 import { AboutComponent } from './pages/about/about.component';
 import { SharedModule } from './shared.module';
 
@@ -57,8 +53,6 @@ const FIREBASE_MODULES = [
 @NgModule({
   declarations: [
     AppComponent,
-    ArViewComponent,
-    PlayRoundComponent,
     LargeDisplayComponent,
     TimerTestComponent,
     TimerProgressBarComponent,
@@ -74,12 +68,10 @@ const FIREBASE_MODULES = [
     PrepareRoundTestComponent,
     BottomBarComponent,
     SessionLobbyComponent,
-    StudentDisplayComponent,
     HostSessionComponent,
     RoundTemplateTestComponent,
     TestPagesComponent,
     RoundChooserDialogComponent,
-    StudentRoundComponent,
     AboutComponent,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
