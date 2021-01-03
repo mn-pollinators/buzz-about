@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { rangeArray } from '../../utils/array-utils';
 import { TimePeriod, Month } from '../../time-period';
 
 @Component({
@@ -28,10 +29,6 @@ export class TimerProgressBarComponent implements OnInit {
 
   }
 
-  private *range(a, b) {
-    for (let i = a; i <= b; ++i) { yield i; }
-  }
-
   currentTimeFraction(): number {
     if (!this.currentTime || !this.startMonth || !this.endMonth) {
       return 0;
@@ -45,6 +42,6 @@ export class TimerProgressBarComponent implements OnInit {
     if (!this.startMonth || !this.endMonth) {
       return [];
     }
-    return Array.from(this.range(this.startMonth, this.endMonth));
+    return rangeArray(this.startMonth, this.endMonth);
   }
 }

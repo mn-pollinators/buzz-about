@@ -12,6 +12,7 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
+import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { RoundDataTestComponent } from './test-pages/round-data-test/round-data-test.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'play/:sessionId', component: StudentDisplayComponent},
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
+  {path: 'markers', component: MarkerGeneratorComponent},
   {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes}
