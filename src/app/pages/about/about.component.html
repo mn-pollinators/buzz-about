@@ -6,7 +6,7 @@
     </button>
     <mat-card>
       <mat-card-header>
-        <img mat-card-avatar src="/assets/icons/icon-circle.svg">
+        <img mat-card-avatar src="/assets/icons/icon-circle.svg" alt="Buzz About icon">
         <mat-card-title>Buzz About</mat-card-title>
         <mat-card-subtitle>Version {{buzzAboutInfo.version}} &ndash; <code>{{buzzAboutInfo.git.hash | shorten: 7}}</code></mat-card-subtitle>
       </mat-card-header>
@@ -51,7 +51,7 @@
       <mat-card-content>
         <mat-nav-list>
           <mat-list-item *ngFor="let contributor of allContributors">
-            <img matListAvatar src="{{contributor.avatarUrl}}&size=40" srcset="{{contributor.avatarUrl}}&size=80 2x, {{contributor.avatarUrl}}&size=160 4x">
+            <img matListAvatar src="{{contributor.avatarUrl}}&size=40" srcset="{{contributor.avatarUrl}}&size=80 2x, {{contributor.avatarUrl}}&size=160 4x" alt="{{contributor.username}} GitHub avatar">
             <a matLine [href]="contributor.url">{{contributor.name || contributor.username}}</a>
           </mat-list-item>
         </mat-nav-list>
@@ -63,7 +63,7 @@
       <mat-card-title>Funding</mat-card-title>
       <mat-card-content>
         <div class="enrtf-logo-container">
-          <img src="/assets/enrtf-logo.png">
+          <img src="/assets/enrtf-logo.png" alt="ENRTF logo">
         </div>
         <div class="enrtf-message">
           <p>
