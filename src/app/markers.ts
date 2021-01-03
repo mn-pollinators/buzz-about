@@ -33,6 +33,9 @@ export interface RoundMarker extends ARMarker {
   canVisit: boolean;
 }
 
+export const MIN_FLOWER_MARKER = 1;
+export const MAX_FLOWER_MARKER = 16;
+
 // The range of marker numbers used for nests (inclusive).
 export const MIN_NEST_MARKER = 20;
 export const MAX_NEST_MARKER = 120;
