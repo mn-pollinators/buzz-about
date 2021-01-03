@@ -31,9 +31,9 @@ interface Page {
    * The marker number.
    */
   value: string;
-  
+
   type: 'Flower' | 'Nest';
-  
+
   /**
    * The marker image, as SVG source code.
    */
@@ -153,9 +153,10 @@ export class MarkerGeneratorComponent implements OnInit {
 
     const backgroundSVGPages = chunk(pages.map(p => p.backgroundSVG), numPerPage);
 
-    if (numPerPage > 1 && pages.length % 2) {
-      columnPages.push([...columnPages.pop(), []]);
-      backgroundSVGPages.push([...backgroundSVGPages.pop(), blankSVG]);
+    if (numPerPage > 1 && pages.length % numPerPage) {
+      const extraColumns = numPerPage - (pages.length % numPerPage);
+      columnPages.push([...columnPages.pop(), ...new Array(extraColumns).fill([])]);
+      backgroundSVGPages.push([...backgroundSVGPages.pop(), ...new Array(extraColumns).fill(blankSVG)]);
     }
 
     const content: Content[] = columnPages.map((c, i, arr) => ({
