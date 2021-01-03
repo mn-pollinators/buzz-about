@@ -26,7 +26,11 @@ const testRoutes: Routes = [
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'play', component: JoinSessionComponent},
-  {path: 'play/:sessionId', loadChildren: () => import('./pages/student-display/student-display.module').then(m => m.StudentDisplayModule)},
+  {
+    path: 'play/:sessionId',
+    loadChildren: () => import('./pages/student-display/student-display.module').then(m => m.StudentDisplayModule),
+    data: {studentDisplay: true}
+  },
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'about', component: AboutComponent},

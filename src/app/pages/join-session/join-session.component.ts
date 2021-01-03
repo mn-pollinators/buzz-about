@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { LoadChildrenCallback, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAX_NEST_MARKER, MIN_NEST_MARKER } from 'src/app/markers';
 import { BehaviorSubject } from 'rxjs';
@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './join-session.component.html',
   styleUrls: ['./join-session.component.scss']
 })
-export class JoinSessionComponent implements OnInit {
+export class JoinSessionComponent implements OnInit, AfterViewInit {
   MIN_NEST_MARKER = MIN_NEST_MARKER;
   MAX_NEST_MARKER = MAX_NEST_MARKER;
 
@@ -31,6 +31,15 @@ export class JoinSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  // Using AfterViewInit to hopefully do this after everything has loaded
+  ngAfterViewInit(): void {
+    // Preload the student display module so it'll be ready when the student joins the session.
+    const preloadRoute = this.router.config.find(r => r.data?.studentDisplay);
+    if (preloadRoute && !preloadRoute.canActivate && preloadRoute.loadChildren) {
+      (preloadRoute.loadChildren as LoadChildrenCallback)?.();
+    }
   }
 
   /**
