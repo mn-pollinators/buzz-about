@@ -27,6 +27,11 @@ import { NgPipesModule } from 'ngx-pipes';
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 import { SentenceCasePipe } from './utils/string-utils';
+import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
+import { FlowerLayoutItemComponent } from './components/flower-layout-item/flower-layout-item.component';
+import { FlowerLayoutComponent } from './components/flower-layout/flower-layout.component';
+import { TimerProgressBarComponent } from './components/timer-progress-bar/timer-progress-bar.component';
+import { TimerProgressSpinnerComponent } from './components/timer-progress-spinner/timer-progress-spinner.component';
 
 
 
@@ -60,6 +65,14 @@ const sharedImportModules = [
   NgPipesModule,
 ];
 
+const largeDisplayComponents = [
+  TimerProgressBarComponent,
+  TimerProgressSpinnerComponent,
+  FlowerLayoutComponent,
+  FlowerLayoutItemComponent,
+  BottomBarComponent
+]
+
 const sharedComponents = [
   FullscreenButtonComponent,
   HillBackgroundComponent,
@@ -68,14 +81,16 @@ const sharedComponents = [
 
 @NgModule({
   declarations: [
-    ...sharedComponents
+    ...sharedComponents,
+    ...largeDisplayComponents
   ],
   imports: [
     ...sharedImportModules
   ],
   exports: [
     ...sharedImportModules,
-    ...sharedComponents
+    ...sharedComponents,
+    ...largeDisplayComponents
   ]
 })
 export class SharedModule { }

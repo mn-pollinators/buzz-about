@@ -1,29 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
-import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
-import { FlowerTestComponent } from './test-pages/flower-test/flower-test.component';
 import { HomeComponent } from './pages/home/home.component';
-import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
-import { SessionTestComponent } from './test-pages/session-test/session-test.component';
-import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
-import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { JoinSessionComponent } from './pages/join-session/join-session.component';
 import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
-import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 import { AboutComponent } from './pages/about/about.component';
-
-const testRoutes: Routes = [
-  {path: 'timer-test', component: TimerTestComponent},
-  {path: 'json-data-test', component: JsonDataTestComponent},
-  {path: 'prepare-round-test', component: PrepareRoundTestComponent},
-  {path: 'session-test', component: SessionTestComponent},
-  {path: 'round-template-test', component: RoundTemplateTestComponent},
-  {path: 'prepare-round-test', component: PrepareRoundTestComponent},
-  {path: 'flower-test', component: FlowerTestComponent}
-];
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -32,8 +14,7 @@ const routes: Routes = [
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
   {path: 'about', component: AboutComponent},
-  {path: 'test', component: TestPagesComponent},
-  {path: 'test', children: testRoutes},
+  {path: 'test', loadChildren: () => import('./test-pages/test-pages.module').then(m => m.TestPagesModule) },
   { path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule) }
 ];
 
