@@ -27,8 +27,16 @@ const MARKERS_VERSION = '4';
 const BARCODE_TYPE = MATRIX_4X4_BCH_1393;
 
 interface Page {
+  /**
+   * The marker number.
+   */
   value: string;
-  type: string;
+  
+  type: 'Flower' | 'Nest';
+  
+  /**
+   * The marker image, as SVG source code.
+   */
   backgroundSVG: string;
 }
 
@@ -78,21 +86,19 @@ export class MarkerGeneratorComponent implements OnInit {
     return new CustomBarcodeMarkerGenerator(BARCODE_TYPE, value);
   }
 
-  flowerPages(markerSize: number) {
-    return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val =>
-    ({
+  flowerPages(markerSize: number): Page[] {
+    return rangeArray(MIN_FLOWER_MARKER, MAX_FLOWER_MARKER).map(val => ({
       value: `${val}`,
       type: 'Flower',
       backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
     }));
   }
 
-  nestPages(nestCount: number, markerSize: number) {
+  nestPages(nestCount: number, markerSize: number): Page[] {
     if (nestCount === 0) {
       return [];
     }
-    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount - 1).map(val =>
-    ({
+    return rangeArray(MIN_NEST_MARKER, MIN_NEST_MARKER + nestCount - 1).map(val => ({
       value: `${val}`,
       type: 'Nest',
       backgroundSVG: this.getBarcode(val).asSVGWithSize(markerSize)
@@ -102,7 +108,7 @@ export class MarkerGeneratorComponent implements OnInit {
 
   pdfFromPages(
     pages: Page[],
-    svgHeight: number,
+    svgHeight: number, // height in points
     pageSize: PageSize = 'LETTER',
     { pageOrientation, numPerPage }: OrientationAndNumPerPage = { pageOrientation: 'portrait', numPerPage: 1 }
   ): pdfMake.TCreatedPdf {

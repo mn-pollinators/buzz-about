@@ -1,4 +1,3 @@
-
 import { BarcodeMarkerGenerator } from 'studio-backend/src/modules/marker/tools/barcode-marker-generator';
 
 // Code adapted from https://github.com/AR-js-org/studio-backend/blob/master/src/modules/marker/tools/barcode-marker-generator.js
@@ -23,14 +22,5 @@ export class CustomBarcodeMarkerGenerator extends BarcodeMarkerGenerator {
 
     svgStr += '</svg>';
     return svgStr;
-  }
-
-  asSVGDataURIWithSize(size: number) {
-    return (
-      `data:image/svg+xml,${
-      encodeURIComponent(this.asSVGWithSize(size))
-        .replace(/'/g, '%27')
-        .replace(/"/g, '%22')}`
-    );
   }
 }
