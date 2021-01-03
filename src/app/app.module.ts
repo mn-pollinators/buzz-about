@@ -1,16 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
-
-
-
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { LargeDisplayComponent } from './pages/large-display/large-display.component';
 import { TimerTestComponent } from './test-pages/timer-test/timer-test.component';
@@ -20,8 +17,6 @@ import { FlowerLayoutComponent } from './components/flower-layout/flower-layout.
 import { FlowerLayoutItemComponent } from './components/flower-layout-item/flower-layout-item.component';
 import { FlowerTestComponent } from './test-pages/flower-test/flower-test.component';
 import { HomeComponent } from './pages/home/home.component';
-
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { JsonDataTestComponent } from './test-pages/json-data-test/json-data-test.component';
 import {
   ConfirmRemoveStudentDialogComponent,
@@ -33,9 +28,7 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
-import {
-  StudentRemovedDialogComponent
-} from './pages/student-display/student-display.component';
+import { StudentRemovedDialogComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';

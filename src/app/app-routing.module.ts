@@ -9,10 +9,8 @@ import { SessionTestComponent } from './test-pages/session-test/session-test.com
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { JoinSessionComponent } from './pages/join-session/join-session.component';
-import { StudentDisplayComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
-import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 import { AboutComponent } from './pages/about/about.component';
 
 const testRoutes: Routes = [
