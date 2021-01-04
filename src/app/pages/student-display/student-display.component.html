@@ -4,6 +4,12 @@
     <div class="centered-container">
       <mat-card>
         <mat-card-title>Waiting for round to begin&hellip;</mat-card-title>
+        <mat-card-content>
+          Please wait for the host to start a round.
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button routerLink="/">Exit Session</button>
+        </mat-card-actions>
       </mat-card>
     </div>
   </ng-container>
@@ -17,6 +23,9 @@
     <div class="centered-container">
       <mat-card>
         <mat-card-title>Error: invalid session</mat-card-title>
+        <mat-card-actions align="end">
+          <button mat-button color="primary" routerLink="/">Go Back</button>
+        </mat-card-actions>
       </mat-card>
     </div>
 	</ng-container>
