@@ -71,6 +71,7 @@ import { StudentRoundComponent } from './pages/student-round/student-round.compo
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
 import { SentenceCasePipe } from './utils/string-utils';
+import { BackButtonComponent } from './components/back-button/back-button.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -134,6 +135,7 @@ const FIREBASE_MODULES = [
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
     StudentRemovedDialogComponent,
+    BackButtonComponent,
   ],
   imports: [
     BrowserModule,
