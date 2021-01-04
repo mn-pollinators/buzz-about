@@ -8,6 +8,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
+import { AngularFirePerformanceModule, PerformanceMonitoringService } from '@angular/fire/performance';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -96,7 +97,8 @@ const ANGULAR_MATERIAL_MODULES = [
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
   AngularFirestoreModule,
-  AngularFireAuthModule
+  AngularFireAuthModule,
+  AngularFirePerformanceModule
 ];
 
 @NgModule({
@@ -152,7 +154,8 @@ const FIREBASE_MODULES = [
     {
       provide: FIRESTORE_SETTINGS,
       useValue: environment.firestoreSettings,
-    }
+    },
+    PerformanceMonitoringService
   ],
   bootstrap: [AppComponent]
 })
