@@ -51,7 +51,7 @@
       <mat-card-content>
         <mat-nav-list>
           <mat-list-item *ngFor="let contributor of allContributors">
-            <img matListAvatar src="{{contributor.avatarUrl}}&size=40" srcset="{{contributor.avatarUrl}}&size=80 2x, {{contributor.avatarUrl}}&size=160 4x" alt="{{contributor.username}} GitHub avatar">
+            <img matListAvatar src="{{contributor.avatarUrl}}&size=40" srcset="{{contributor.avatarUrl}}&size=80 2x, {{contributor.avatarUrl}}&size=160 4x" alt="@{{contributor.username}}">
             <a matLine [href]="contributor.url">{{contributor.name || contributor.username}}</a>
           </mat-list-item>
         </mat-nav-list>
