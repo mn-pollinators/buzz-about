@@ -8,11 +8,10 @@
         <mat-card-subtitle>{{data.bee.name}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <mat-list>
-          <h3 matSubheader>{{data.name}}'s Interactions</h3>
+        <mat-list class="interaction-list">
           <mat-list-item *ngFor="let interaction of data.interactions">
-            <img matListAvatar src="/assets/art/500w/{{interaction.isNest ? 'nests': 'flowers'}}/{{interaction.art}}" />
-            <div matLine>Name: {{interaction.name}}</div>
+            <img matListAvatar src="/assets/art/500w/{{interaction.isNest ? 'nests': 'flowers'}}/{{interaction.type.art_file}}" />
+            <div matLine>Name: {{interaction.type.name}}</div>
             <div matLine>TimePeriod: {{interaction.timePeriod}}</div>
           </mat-list-item>
         </mat-list>

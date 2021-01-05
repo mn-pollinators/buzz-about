@@ -67,19 +67,18 @@ export class RoundDataTestComponent implements OnInit {
         const matchingSessionStudent = sessionStudents.find(sessionStudent => sessionStudent.id === roundStudent.id);
         const studentBee: BeeSpecies = allBeeSpecies[roundStudent.beeSpecies];
         const matchingInteractions: Interaction[] = allInteractions.filter((interaction) => roundStudent.id === interaction.userId);
-        const interactionWithNames: InteractionWithName[] = matchingInteractions.map((interaction) => {
-          const studentNest: Nest = studentBee.nest_type;
+        const interactionsWithType: InteractionWithType[] = matchingInteractions.map((interaction) => {
           const flower: FlowerSpecies = allFlowerSpecies[roundFlowerNames[interaction.barcodeValue]];
           return (
             interaction.isNest
-              ? ({name: studentNest.name , art: studentNest.art_file, ...interaction})
-              : ({name: flower.name , art: flower.art_file, ...interaction})
+              ? ({type: studentBee.nest_type, ...interaction})
+              : ({type: flower, ...interaction})
           );
         });
         const roundTestData: RoundTestData = {
           name: matchingSessionStudent.name,
           bee: studentBee,
-          interactions: interactionWithNames
+          interactions: interactionsWithType
         };
         return (roundTestData);
       })
@@ -99,14 +98,13 @@ export class RoundDataTestComponent implements OnInit {
 
 }
 
-export interface InteractionWithName extends Interaction {
-  name: string;
-  art: string;
+export interface InteractionWithType extends Interaction {
+  type: Nest | FlowerSpecies;
 }
 
 
 export interface RoundTestData {
   name: string;
   bee: BeeSpecies;
-  interactions: InteractionWithName[];
+  interactions: InteractionWithType[];
 }

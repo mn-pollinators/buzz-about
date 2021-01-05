@@ -2,8 +2,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: baseline;
 }
 
 .student-card {
   margin: 8px;
+}
+
+
+.interaction-list {
+  max-height: 300px;
+  overflow: auto;
 }
