@@ -26,7 +26,7 @@ export class StudentRoundComponent implements OnInit {
       ? this.roundService.currentBeeActive$.pipe(map(active => active ? ScreenId.Play : ScreenId.InactiveBee))
       : of(ScreenId.Paused)
     ),
-    shareReplay()
+    shareReplay(1)
   );
 
   ngOnInit(): void {

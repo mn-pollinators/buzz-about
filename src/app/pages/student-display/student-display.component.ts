@@ -51,7 +51,7 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
         : ScreenId.InvalidSession)
       : ScreenId.Loading
     ),
-    shareReplay()
+    shareReplay(1)
   );
 
   ngOnInit(): void {
