@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -51,6 +51,7 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
         : ScreenId.InvalidSession)
       : ScreenId.Loading
     ),
+    shareReplay()
   );
 
   ngOnInit(): void {
