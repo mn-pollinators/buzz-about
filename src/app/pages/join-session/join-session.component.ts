@@ -37,8 +37,13 @@ export class JoinSessionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // Preload the student display module so it'll be ready when the student joins the session.
     const preloadRoute = this.router.config.find(r => r.data?.studentDisplay);
-    if (preloadRoute && !preloadRoute.canActivate && preloadRoute.loadChildren) {
-      (preloadRoute.loadChildren as LoadChildrenCallback)?.();
+    if (
+      preloadRoute
+      && !preloadRoute.canActivate
+      && preloadRoute.loadChildren
+      && typeof preloadRoute.loadChildren === 'function'
+    ) {
+      preloadRoute.loadChildren();
     }
   }
 
