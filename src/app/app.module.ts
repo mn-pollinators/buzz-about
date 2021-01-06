@@ -28,7 +28,6 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
-import { StudentRemovedDialogComponent } from './pages/student-display/student-display.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { RoundTemplateTestComponent } from './test-pages/round-template-test/round-template-test.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
@@ -68,7 +67,6 @@ const FIREBASE_MODULES = [
     AboutComponent,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
-    StudentRemovedDialogComponent,
   ],
   imports: [
     BrowserModule,
