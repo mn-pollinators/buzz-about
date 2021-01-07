@@ -27,6 +27,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
+              "src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "node_modules/@mn-pollinators/assets/art-resized",
