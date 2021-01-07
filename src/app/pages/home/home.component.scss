@@ -51,6 +51,10 @@
   }
 }
 
+// We are setting the size of the Buzz About icon to 1x1 in the HTML
+// to hint to the browser what its aspect ratio is.
+// Because of that, we need to set `height: auto` here to allow it to
+// continue to scale by width.
 .mat-card-image {
   height: auto
 }
