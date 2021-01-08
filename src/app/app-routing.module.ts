@@ -15,6 +15,7 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { MarkerGeneratorComponent } from './pages/marker-generator/marker-generator.component';
 import { AboutComponent } from './pages/about/about.component';
 import { AnonAuthTestComponent } from './anon-auth-test/anon-auth-test.component';
+import { RoundMonitorComponent } from './test-pages/round-monitor/round-monitor.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -24,6 +25,7 @@ const testRoutes: Routes = [
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'prepare-round-test', component: PrepareRoundTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'round-monitor/:sessionId', component: RoundMonitorComponent},
   {path: 'anon-test', component: AnonAuthTestComponent}
 ];
 

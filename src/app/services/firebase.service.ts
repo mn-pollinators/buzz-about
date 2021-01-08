@@ -99,6 +99,12 @@ export class FirebaseService {
       .valueChanges();
   }
 
+  getStudentsInRound(roundPath: RoundPath): Observable<RoundStudentData[]> {
+    return  this.getRoundDocument(roundPath)
+      .collection<RoundStudentData>('students')
+      .valueChanges({idField: 'id'});
+  }
+
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
     this.angularFirestore.collection('sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/students')
       .doc(id)
@@ -205,6 +211,13 @@ export class FirebaseService {
     return this.angularFirestore.collection<Interaction>(
       'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
       ref => ref.where('userId', '==', studentId).orderBy('createdAt', 'desc'),
+    ).valueChanges();
+  }
+
+  getRoundInteractions(roundPath: RoundPath): Observable<Interaction[]> {
+    return this.angularFirestore.collection<Interaction>(
+      'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
+      ref => ref.orderBy('createdAt', 'desc'),
     ).valueChanges();
   }
 
