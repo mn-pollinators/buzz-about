@@ -22,6 +22,7 @@ import { ARMarker } from 'src/app/markers';
 export interface MarkerState {
   barcodeValue: number;
   found: boolean;
+  distance: number;
 }
 
 const ArResolution = {
@@ -124,7 +125,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @returns a promise that resolves when AR is ready.
    */
   private initAR(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this.clock = new THREE.Clock(); // setup the clock for keeping track of frametimes
 
       this.scene = new THREE.Scene(); // create the main scene
@@ -305,6 +306,23 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     /**
+     * Given a found barcode marker, return how far away the marker is from
+     * the center.
+     *
+     * Specifically, this number is the distance, in three-space, from the
+     * "straight ahead" line to the center of the barcode marker. (The units
+     * are arbitrary.)
+     *
+     * If it helps: imagine a metal pole is sticking out of your camera.
+     * Use a ruler to measure the distance from the pole to the marker.
+     * This function calculates that distance
+     */
+    private calculateObjectDistance(object: THREE.Object3D): number {
+      const {x, y, z} = object.position;
+      return Math.sqrt(x * x + y * y);
+    }
+
+    /**
      * Sets up marker events
      */
     private setupEvents() {
@@ -313,7 +331,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
           ({
             barcodeValue: barcode.barcodeValue,
-            found: barcode.found
+            found: barcode.found,
+            distance: this.calculateObjectDistance(barcode.markerObject)
           }) as MarkerState));
       });
       this.controller.addEventListener('markerLost', (event) => {
@@ -321,7 +340,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
           ({
             barcodeValue: barcode.barcodeValue,
-            found: barcode.found
+            found: barcode.found,
+            distance: this.calculateObjectDistance(barcode.markerObject)
           }) as MarkerState));
       });
     }
