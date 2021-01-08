@@ -70,7 +70,8 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
           bee: roundStudent ? allBeeSpecies[roundStudent.beeSpecies] as BeeSpecies : null,
           interactions,
           totalPollen: interactions.filter(interaction => !interaction.isNest).length,
-          currentPollen: recentFlowerInteractions
+          currentPollen: recentFlowerInteractions,
+          pollenArray: [recentFlowerInteractions > 0, recentFlowerInteractions > 1, recentFlowerInteractions > 2]
         };
       });
     })

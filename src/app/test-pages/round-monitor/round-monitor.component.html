@@ -7,19 +7,29 @@
       <mat-card-subtitle>{{student.bee?.name | sentenceCase}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
+      <p>Nest Barcode: {{student.nestBarcode}}</p>
+      <h3 class="mat-subheading-2">Pollen</h3>
       <table>
         <tr>
+          <th>Current</th>
           <th>Nest</th>
-          <th>Current Pollen</th>
-          <th>Total Pollen</th>
+          <th>Total</th>
         </tr>
         <tr>
-          <td>{{student.nestBarcode}}</td>
-          <td>{{student.currentPollen}}</td>
+          <td>
+              <mat-icon
+                inline
+                color='accent'
+                *ngFor="let pollen of student.pollenArray"
+              >
+              {{ pollen ? 'lens' : 'panorama_fish_eye' }}
+            </mat-icon>
+          </td>
+          <td>{{student.totalPollen - student.currentPollen}}</td>
           <td>{{student.totalPollen}}</td>
         </tr>
       </table>
-      <h3 class="mat-subheading-2 interactions-list-title">Interactions</h3>
+      <h3 class="mat-subheading-2">Interactions</h3>
       <mat-list class="interaction-list">
         <mat-list-item *ngFor="let interaction of student.interactions">
           <img matListAvatar [src]="interaction.isNest ? '/assets/art/512-square/nests/' + student.bee.nest_type.art_file : '/assets/art/512-square/flowers/' + interaction.flower.art_file">

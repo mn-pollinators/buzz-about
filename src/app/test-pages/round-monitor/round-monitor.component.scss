@@ -16,8 +16,8 @@
     animation: fadeIn ease 500ms;
   }
 }
-.interactions-list-title {
-  margin-bottom: 0px;
+.mat-subheading-2 {
+  margin-bottom: 4px;
 }
 
 @keyframes fadeIn {
@@ -27,8 +27,10 @@
 
 td {
   text-align:center;
+  width: 33%;
 }
 
 table {
   width: 100%;
+  margin-bottom: 8px;
 }
