@@ -22,6 +22,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 import { SentenceCasePipe } from './utils/string-utils';
+import { BackButtonComponent } from './components/back-button/back-button.component';
 
 
 
@@ -54,6 +55,7 @@ const sharedComponents = [
   FullscreenButtonComponent,
   HillBackgroundComponent,
   SentenceCasePipe,
+  BackButtonComponent,
 ];
 
 @NgModule({
