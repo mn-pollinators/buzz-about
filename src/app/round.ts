@@ -1,8 +1,9 @@
 import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
-import { firestore } from 'firebase';
 import { BeeSpecies } from './bees';
 import { Nest } from './nests';
+import * as firebase from 'firebase/app';
+import firestore = firebase.firestore;
 
 
 /**

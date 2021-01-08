@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 
 enum ScreenId {
@@ -25,7 +25,8 @@ export class StudentRoundComponent implements OnInit {
       running
       ? this.roundService.currentBeeActive$.pipe(map(active => active ? ScreenId.Play : ScreenId.InactiveBee))
       : of(ScreenId.Paused)
-    )
+    ),
+    shareReplay(1)
   );
 
   ngOnInit(): void {
