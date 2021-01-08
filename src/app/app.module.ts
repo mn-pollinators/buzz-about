@@ -67,7 +67,6 @@ const FIREBASE_MODULES = [
     AboutComponent,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
-    StudentRemovedDialogComponent,
   ],
   imports: [
     BrowserModule,
