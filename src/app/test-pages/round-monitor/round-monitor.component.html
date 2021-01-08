@@ -7,9 +7,18 @@
       <mat-card-subtitle>{{student.bee?.name | sentenceCase}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>Nest barcode: {{student.nestBarcode}}</p>
-      <p>Total Pollen: {{student.totalPollen}}</p>
-      <p>Current Pollen: {{student.currentPollen}}</p>
+      <table>
+        <tr>
+          <th>Nest</th>
+          <th>Current Pollen</th>
+          <th>Total Pollen</th>
+        </tr>
+        <tr>
+          <td>{{student.nestBarcode}}</td>
+          <td>{{student.currentPollen}}</td>
+          <td>{{student.totalPollen}}</td>
+        </tr>
+      </table>
       <h3 class="mat-subheading-2 interactions-list-title">Interactions</h3>
       <mat-list class="interaction-list">
         <mat-list-item *ngFor="let interaction of student.interactions">
