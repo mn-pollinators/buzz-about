@@ -4,14 +4,17 @@
     <mat-card-header>
       <img *ngIf="student.bee" mat-card-avatar src="/assets/art/500w/bees/{{student.bee.art_file}}">
       <mat-card-title>{{student.name}}</mat-card-title>
-      <mat-card-subtitle>{{student.bee?.name}} (Nest barcode: {{student.nestBarcode}})</mat-card-subtitle>
+      <mat-card-subtitle>{{student.bee?.name | sentenceCase}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <mat-list>
-        <h3 matSubheader>Interactions</h3>
+      <p>Nest barcode: {{student.nestBarcode}}</p>
+      <p>Total Pollen: {{student.totalPollen}}</p>
+      <p>Current Pollen: {{student.currentPollen}}</p>
+      <h3 class="mat-subheading-2 interactions-list-title">Interactions</h3>
+      <mat-list class="interaction-list">
         <mat-list-item *ngFor="let interaction of student.interactions">
           <img matListAvatar [src]="interaction.isNest ? '/assets/art/512-square/nests/' + student.bee.nest_type.art_file : '/assets/art/512-square/flowers/' + interaction.flower.art_file">
-          <h3 matLine> {{interaction.isNest ? student.bee.nest_type.name : interaction.flower.name}} </h3>
+          <h3 matLine> {{(interaction.isNest ? student.bee.nest_type.name : interaction.flower.name) | sentenceCase}} </h3>
           <p matLine>barcode: {{interaction.barcodeValue}} </p>
           <p matLine>time: {{interaction.timePeriod.toString()}} </p>
         </mat-list-item>

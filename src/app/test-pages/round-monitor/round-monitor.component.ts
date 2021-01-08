@@ -53,14 +53,24 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     this.roundStudents$,
     this.roundInteractionsWithFlowers$
   ]).pipe(
-    map(([sessionStudents, roundStudents, interactions]) => {
+    map(([sessionStudents, roundStudents, roundInteractions]) => {
       return sessionStudents.map(sessionStudent => {
         const roundStudent = roundStudents.find(x => x.id === sessionStudent.id);
+        const interactions = roundInteractions.filter(i => i.userId === sessionStudent.id);
+        let recentFlowerInteractions = 0;
+        for (const interaction of interactions) {
+          if (interaction.isNest) {
+            break;
+          }
+          recentFlowerInteractions++;
+        }
         return {
           ...sessionStudent,
           ...roundStudent,
           bee: roundStudent ? allBeeSpecies[roundStudent.beeSpecies] as BeeSpecies : null,
-          interactions: interactions.filter(i => i.userId === sessionStudent.id)
+          interactions,
+          totalPollen: interactions.filter(interaction => !interaction.isNest).length,
+          currentPollen: recentFlowerInteractions
         };
       });
     })

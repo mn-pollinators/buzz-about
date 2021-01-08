@@ -8,3 +8,19 @@
   width: 300px;
   margin: 8px;
 }
+.interaction-list {
+  padding-top: 0;
+  height: 88*4px;
+  overflow-y: scroll;
+  .mat-list-item {
+    animation: fadeIn ease 500ms;
+  }
+}
+.interactions-list-title {
+  margin-bottom: 0px;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
