@@ -7,8 +7,6 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class BackButtonComponent implements OnInit {
 
-  @Input() backRouterLink: any[] | string = '/';
-
   constructor() { }
 
   ngOnInit(): void {
