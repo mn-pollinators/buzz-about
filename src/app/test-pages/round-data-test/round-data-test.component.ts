@@ -75,10 +75,22 @@ export class RoundDataTestComponent implements OnInit {
               : ({type: flower, ...interaction})
           );
         });
+        const totalPollen = interactionsWithType.filter(interaction => !interaction.isNest).length;
+        const lastNestIndex = interactionsWithType.findIndex(interaction => interaction.isNest);
+        let nestPollen;
+
+        if (lastNestIndex === -1) {
+          nestPollen = 0;
+        } else {
+          nestPollen = totalPollen - lastNestIndex;
+        }
+        const beePollen = totalPollen - nestPollen;
         const roundTestData: RoundTestData = {
           name: matchingSessionStudent.name,
           bee: studentBee,
-          interactions: interactionsWithType
+          interactions: interactionsWithType,
+          carryingPollen: beePollen,
+          nestPollen
         };
         return (roundTestData);
       })
@@ -107,4 +119,6 @@ export interface RoundTestData {
   name: string;
   bee: BeeSpecies;
   interactions: InteractionWithType[];
+  carryingPollen: number;
+  nestPollen: number;
 }

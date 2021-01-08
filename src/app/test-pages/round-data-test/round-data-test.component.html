@@ -1,11 +1,28 @@
 <app-hill-background cover></app-hill-background>
 <ng-container *ngIf="(currentRound$ | async); else waitForRound">
   <div class="list-container">
-    <mat-card *ngFor="let data of roundData$ | async" class="student-card">
+    <mat-card *ngFor="let data of (roundData$ | async)" class="student-card">
       <mat-card-header>
         <img mat-card-avatar src="/assets/art/500w/bees/{{data.bee.art_file}}">
-        <mat-card-title>{{data.name}}</mat-card-title>
+        <mat-card-title>{{data.name | sentenceCase}}</mat-card-title>
         <mat-card-subtitle>{{data.bee.name}}</mat-card-subtitle>
+        <div class="cards">
+          <div class="pollen">
+            <mat-icon
+              inline
+              color='accent'
+              *ngFor="let number of [1,2,3]"
+            >
+              {{number <= data.carryingPollen ? 'lens' : 'panorama_fish_eye'}}
+            </mat-icon>
+          </div>
+          <div class="nest">
+            Pollen in nest:
+            <span>
+              {{data.nestPollen}}
+            </span>
+          </div>
+        </div>
       </mat-card-header>
       <mat-card-content>
         <mat-list class="interaction-list">

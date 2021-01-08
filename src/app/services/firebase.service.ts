@@ -208,7 +208,7 @@ export class FirebaseService {
   }
 
   getAllInteractions(roundPath: RoundPath): Observable<Interaction[]> {
-    return this.getRoundDocument(roundPath).collection<Interaction>('interactions').valueChanges();
+    return this.getRoundDocument(roundPath).collection<Interaction>('interactions', ref => ref.orderBy('createdAt', 'desc')).valueChanges();
   }
 
   getStudentInteractions(roundPath: RoundPath, studentId: string): Observable<Interaction[]> {
