@@ -74,7 +74,6 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
           interactions,
           totalPollen: interactions.filter(interaction => !interaction.isNest).length,
           currentPollen: recentFlowerInteractions,
-          pollenArray: [recentFlowerInteractions > 0, recentFlowerInteractions > 1, recentFlowerInteractions > 2]
         };
       });
     })

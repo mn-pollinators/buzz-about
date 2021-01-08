@@ -21,9 +21,9 @@
               <mat-icon
                 inline
                 color='accent'
-                *ngFor="let pollen of student.pollenArray"
+                *ngFor="let pollenCount of [1,2,3]"
               >
-              {{ pollen ? 'lens' : 'panorama_fish_eye' }}
+              {{ pollenCount <= student.currentPollen ? 'lens' : 'panorama_fish_eye' }}
             </mat-icon>
           </td>
           <td>{{student.totalPollen - student.currentPollen}}</td>
