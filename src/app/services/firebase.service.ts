@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map, mapTo } from 'rxjs/operators';
 import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
-import { firestore } from 'firebase';
 import { JoinCode, JoinCodeWithId } from '../join-code';
+import * as firebase from 'firebase/app';
+import firestore = firebase.firestore;
 
 export interface RoundPath {
   sessionId: string;

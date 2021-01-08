@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { JoinSessionComponent } from './join-session.component';
-import { AuthService } from '../../services/auth.service';
 
 xdescribe('JoinSessionComponent', () => {
   let component: JoinSessionComponent;
