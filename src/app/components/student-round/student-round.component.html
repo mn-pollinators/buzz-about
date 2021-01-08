@@ -1,23 +1,19 @@
 <ng-container [ngSwitch]="currentScreen$ | async">
-  <ng-container *ngSwitchCase="ScreenId.Play">
-    <app-play-round></app-play-round>
-  </ng-container>
 
-  <ng-container *ngSwitchCase="ScreenId.Paused">
+  <app-play-round *ngSwitchCase="ScreenId.Play"></app-play-round>
+
+  <ng-container *ngSwitchDefault>
     <app-hill-background cover></app-hill-background>
-    <div class="centered-container">
-      <mat-card>
+    <div class="centered-container" [ngSwitch]="currentScreen$ | async">
+
+      <mat-card *ngSwitchCase="ScreenId.Paused">
         <mat-card-title>Paused</mat-card-title>
       </mat-card>
-    </div>
-  </ng-container>
 
-  <ng-container *ngSwitchCase="ScreenId.InactiveBee">
-    <app-hill-background cover></app-hill-background>
-    <div class="centered-container">
-      <mat-card>
+      <mat-card *ngSwitchCase="ScreenId.InactiveBee">
         <mat-card-title>Your {{(roundService.currentBeeSpecies$ | async).name}} is currently inactive</mat-card-title>
       </mat-card>
+
     </div>
-	</ng-container>
+  </ng-container>
 </ng-container>

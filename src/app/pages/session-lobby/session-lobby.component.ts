@@ -36,7 +36,7 @@ export class SessionLobbyComponent implements OnInit {
 
   public quitSession() {
     this.teacherSessionService.leaveSession();
-    this.router.navigate(['host']);
+    this.router.navigate(['/']);
   }
 
   openRoundDialog(): void {

@@ -2,7 +2,7 @@
 <div class="home-container">
   <div class="main-section">
     <mat-card class="column">
-      <img mat-card-image src="/assets/icons/icon-square.svg" alt="">
+      <img width="1" height="1" mat-card-image src="/assets/icons/icon-square.svg" alt="">
       <mat-card-title>Welcome to Buzz About</mat-card-title>
     </mat-card>
     <div class="column">
@@ -26,10 +26,23 @@
         <span>
           Buzz About by Minnesota Pollinators
         </span>
-        <span>
+        <span class="about-buttons" fxHide.xs>
           <button mat-button routerLink="/markers">Markers</button>
           <button mat-button routerLink="/about">About</button>
           <!-- <button mat-button >Privacy Policy</button> -->
+        </span>
+        <span class="about-buttons" fxHide.gt-xs>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/markers">
+              Markers
+            </button>
+            <button mat-menu-item routerLink="/about">
+              About
+            </button>
+          </mat-menu>
         </span>
       </mat-card-content>
     </mat-card>
