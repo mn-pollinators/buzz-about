@@ -64,8 +64,14 @@ export class PlayRoundComponent implements OnInit {
   currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
 
   foundMarkerValue$: Observable<number | null> = this.currentMarkerStates$.pipe(
-    map(markers => markers.find(m => m.found)),
-    map(marker => marker ? marker.barcodeValue : null),
+    map(markers => markers.filter(m => m.found)),
+    map(markers =>
+      markers.length > 0
+        ? markers.reduce((prev, curr) =>
+          prev.distance < curr.distance ? prev : curr
+        ).barcodeValue
+        : null
+    ),
     distinctUntilChanged(),
     shareReplay(1)
   );
