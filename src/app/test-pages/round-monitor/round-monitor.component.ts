@@ -43,7 +43,7 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
   ]).pipe(
     map(([interactions, flowers]) => interactions.map(i => ({
       ...i,
-      flower: !i.isNest ? flowers[i.barcodeValue + 1] : null,
+      flower: !i.isNest ? flowers[i.barcodeValue - 1] : null,
       timePeriod: new TimePeriod(i.timePeriod)
     })))
   );
@@ -51,12 +51,14 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
   students$ = combineLatest([
     this.teacherSessionService.studentsInCurrentSession$,
     this.roundStudents$,
-    this.roundInteractionsWithFlowers$
+    this.roundInteractionsWithFlowers$,
+    this.studentRoundService.currentTime$
   ]).pipe(
-    map(([sessionStudents, roundStudents, roundInteractions]) => {
+    map(([sessionStudents, roundStudents, roundInteractions, time]) => {
       return sessionStudents.map(sessionStudent => {
         const roundStudent = roundStudents.find(x => x.id === sessionStudent.id);
         const interactions = roundInteractions.filter(i => i.userId === sessionStudent.id);
+        const bee = roundStudent ? allBeeSpecies[roundStudent.beeSpecies] as BeeSpecies : null;
         let recentFlowerInteractions = 0;
         for (const interaction of interactions) {
           if (interaction.isNest) {
@@ -67,7 +69,8 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
         return {
           ...sessionStudent,
           ...roundStudent,
-          bee: roundStudent ? allBeeSpecies[roundStudent.beeSpecies] as BeeSpecies : null,
+          bee,
+          beeActive: bee && time && bee.active_period.some(interval => time.fallsWithin(...interval)),
           interactions,
           totalPollen: interactions.filter(interaction => !interaction.isNest).length,
           currentPollen: recentFlowerInteractions,
@@ -89,6 +92,10 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.studentSessionService.leaveSession();
     this.teacherSessionService.leaveSession();
+  }
+
+  trackInteractions(a, b) {
+    return a.id === b.id;
   }
 
 
