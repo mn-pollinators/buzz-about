@@ -33,7 +33,6 @@ import { RoundTemplateTestComponent } from './test-pages/round-template-test/rou
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { AboutComponent } from './pages/about/about.component';
-import { SentenceCasePipe } from './utils/string-utils';
 import { RoundDataTestComponent } from './test-pages/round-data-test/round-data-test.component';
 import { SharedModule } from './shared.module';
 
@@ -68,7 +67,6 @@ const FIREBASE_MODULES = [
     TestPagesComponent,
     RoundChooserDialogComponent,
     AboutComponent,
-    SentenceCasePipe,
     RoundDataTestComponent,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
