@@ -23,9 +23,9 @@
       <mat-list class="interaction-list">
         <mat-list-item *ngFor="let interaction of student.interactions">
           <img matListAvatar [src]="interaction.isNest ? '/assets/art/512-square/nests/' + student.bee.nest_type.art_file : '/assets/art/512-square/flowers/' + interaction.flower.art_file">
-          <h3 matLine> {{(interaction.isNest ? student.bee.nest_type.name : interaction.flower.name) | sentenceCase}} </h3>
-          <p matLine>barcode: {{interaction.barcodeValue}} </p>
-          <p matLine>time: {{interaction.timePeriod.toString()}} </p>
+          <h3 matLine>{{(interaction.isNest ? student.bee.nest_type.name : interaction.flower.name) | sentenceCase}}</h3>
+          <p matLine>{{interaction.timePeriod.toString()}} ({{interaction.timePeriod.time}})</p>
+          <p matLine>Barcode {{interaction.barcodeValue}}</p>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
