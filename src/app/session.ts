@@ -1,4 +1,5 @@
-import { firestore } from 'firebase';
+import * as firebase from 'firebase/app';
+import firestore = firebase.firestore;
 
 /**
  * Session data as it is stored in Firebase

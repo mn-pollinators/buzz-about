@@ -2,8 +2,6 @@ import { Component, Inject, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { database } from 'firebase';
-import { switchMap } from 'rxjs/operators';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
 import { SessionStudentData } from '../../session';
 

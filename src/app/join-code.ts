@@ -1,5 +1,6 @@
-import { firestore } from 'firebase';
 import { milliseconds } from './utils/time-utils';
+import * as firebase from 'firebase/app';
+import firestore = firebase.firestore;
 
 export const JOIN_CODE_LIFESPAN = milliseconds(1, 0, 0);
 
