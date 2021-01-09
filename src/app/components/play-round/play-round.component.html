@@ -36,7 +36,7 @@
     mat-fab
     class="interact-button"
     color="primary"
-    [disabled]="!marker.canVisit"
+    [disabled]="marker.isNest ? (this.studentRoundService.currentBeePollen$ | async) === 0 : !marker.canVisit"
     (click)="clickInteract(marker)"
     aria-label="Interact"
   >
