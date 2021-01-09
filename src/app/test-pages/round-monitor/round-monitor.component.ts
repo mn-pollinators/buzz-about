@@ -93,8 +93,8 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     this.teacherSessionService.leaveSession();
   }
 
-  trackInteractions(a, b) {
-    return a.id === b.id;
+  trackInteractions(index, item: {id: string}) {
+    return item.id;
   }
 
 
