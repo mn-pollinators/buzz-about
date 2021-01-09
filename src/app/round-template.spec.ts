@@ -4,8 +4,8 @@ describe('Round Templates', () => {
   roundTemplates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
     describe(name, () => {
 
-      it('has 16 flowers', () => {
-        expect(flowerSpecies.length).toBe(16);
+      it('has either 8 or 16 flowers', () => {
+        expect([8, 16]).toContain(flowerSpecies.length);
       });
 
       if (bees) {
