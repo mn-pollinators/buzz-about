@@ -1,5 +1,5 @@
 <app-hill-background></app-hill-background>
-<div class="flowers">
+<div class="flowers" [ngClass]="'flowers-' + items.length">
   <app-flower-layout-item
   *ngFor="let item of items; trackBy:trackByFlower"
   [item]="item"
