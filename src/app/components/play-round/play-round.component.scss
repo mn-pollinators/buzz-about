@@ -60,14 +60,13 @@
   }
 }
 
-.marker-name {
+.marker-name, .nest-guide {
   margin-top: 16px;
   margin-bottom: 0;
   margin-right: 8px;
   margin-left: 8px;
   text-align: center;
 
-  @include responsive-font-size(2rem, 2.5rem, 3rem);
   font-weight: bold;
   color: white;
   // I played around with drop shadows for a while before settling on
@@ -75,6 +74,14 @@
   // (I tried a pure black shadow first, but it had a bit too much visual
   // noise.)
   text-shadow: 0 0 0.6em #111;
+}
+
+.marker-name {
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+}
+
+.nest_guide {
+  @include responsive-font-size(1.1rem, 1.5rem, 2rem);
 }
 
 .student-bee {

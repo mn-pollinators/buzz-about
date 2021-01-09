@@ -19,9 +19,16 @@
   </mat-card>
 </div>
 
-<div class="marker-name" *ngIf="this.foundRoundMarker$ | async as marker">
-  {{marker.name | titlecase}}
+<div *ngIf="this.foundRoundMarker$ | async as marker">
+  <div class="marker-name">
+    {{marker.name | titlecase}}
+  </div>
+  <div class="nest-guide" *ngIf="marker.isNest && (this.studentRoundService.currentBeePollen$ | async) === 0">
+    Gather Pollen to deposit them in your nest
+  </div>
 </div>
+
+
 
 <img
   class="student-bee"
