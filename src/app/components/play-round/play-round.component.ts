@@ -30,9 +30,7 @@ export class PlayRoundComponent implements OnInit {
           recentInteractions,
           // Because in the test we pass null as value of beeSpecies before each test. I did this to make test pass for now.
           // Perhaps, we want to emit something other than null for beeSpecies ?
-          bee
-            ? bee.flowers_accepted.map(flowerSpecies => flowerSpecies.name).includes(flower.species.name)
-            : false
+          bee?.flowers_accepted.some(flowerSpecies => flowerSpecies.id === flower.species.id) ?? false
         )
       )
     )
