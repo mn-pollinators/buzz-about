@@ -23,7 +23,7 @@
   <div class="marker-name">
     {{marker.name | titlecase}}
   </div>
-  <div class="nest-guide" *ngIf="marker.isNest && (this.studentRoundService.currentBeePollen$ | async) === 0">
+  <div class="nest-guide" *ngIf="marker.isNest && !marker.canVisit">
     Gather Pollen to deposit them in your nest
   </div>
 </div>
@@ -41,7 +41,7 @@
     mat-fab
     class="interact-button"
     color="primary"
-    [disabled]="marker.isNest ? (this.studentRoundService.currentBeePollen$ | async) === 0 : !marker.canVisit"
+    [disabled]="!marker.canVisit"
     (click)="clickInteract(marker)"
     aria-label="Interact"
   >
