@@ -83,7 +83,7 @@ export class PlayRoundComponent implements OnInit {
         ? of(null)
         : this.arMarkers$.pipe(
           map(markers => {
-            let foundMarker = markers.find(m => m.barcodeValue === val);
+            const foundMarker = markers.find(m => m.barcodeValue === val);
             this.showTip(foundMarker);
             return(foundMarker);
           }),
