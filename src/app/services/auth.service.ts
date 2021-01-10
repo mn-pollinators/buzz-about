@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { switchMap, map, shareReplay } from 'rxjs/operators';
 import { from, of, Observable } from 'rxjs';
+
+// Make sure that firebase/auth is included in the main bundle
+// (not lazy-loaded).
 import 'firebase/auth';
 
 @Injectable({
