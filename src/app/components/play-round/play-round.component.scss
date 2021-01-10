@@ -60,7 +60,7 @@
   }
 }
 
-.marker-name, .nest-guide {
+.marker-name, .marker-tip {
   margin-top: 16px;
   margin-bottom: 0;
   margin-right: 8px;
@@ -80,8 +80,8 @@
   @include responsive-font-size(2rem, 2.5rem, 3rem);
 }
 
-.nest_guide {
-  @include responsive-font-size(1.1rem, 1.5rem, 2rem);
+.marker-tip {
+  @include responsive-font-size(1rem, 1.5rem, 2rem);
 }
 
 .student-bee {

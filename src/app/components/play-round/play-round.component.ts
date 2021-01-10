@@ -114,4 +114,13 @@ export class PlayRoundComponent implements OnInit {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
+
+  showTip(marker: RoundMarker) {
+    if (marker.isNest && !marker.canVisit) {
+      return {message: 'Gather Pollen to deposit them in your nest'};
+    } else {
+      return null;
+    }
+  }
+
 }

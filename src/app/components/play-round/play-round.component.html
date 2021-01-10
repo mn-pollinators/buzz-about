@@ -23,8 +23,8 @@
   <div class="marker-name">
     {{marker.name | titlecase}}
   </div>
-  <div class="nest-guide" *ngIf="marker.isNest && !marker.canVisit">
-    Gather Pollen to deposit them in your nest
+  <div class="marker-tip" *ngIf="showTip(marker) as tip">
+    {{tip.message}}
   </div>
 </div>
 
