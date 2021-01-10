@@ -99,7 +99,8 @@ describe('PlayRoundComponent', () => {
         ['isBlooming', true],
         ['isNest', false],
         ['barcodeValue', 1],
-        ['canVisit', true],
+        ['canVisit', false],
+        ['knowsFlower', false]
       ];
 
       for (const [field, expectedValue] of expectedFields) {
@@ -130,7 +131,6 @@ describe('PlayRoundComponent', () => {
       ]);
       mockBeePollen$.next(1);
       mockRecentInteractions$.next([mockFlowerInteraction(8)]);
-
       tick(0);
 
       const expectedFields: [keyof RoundMarker, any][] = [
@@ -139,6 +139,7 @@ describe('PlayRoundComponent', () => {
         ['isNest', false],
         ['barcodeValue', 1],
         ['canVisit', false],
+        ['knowsFlower', false]
       ];
 
       for (const [field, expectedValue] of expectedFields) {

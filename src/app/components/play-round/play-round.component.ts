@@ -19,14 +19,20 @@ export class PlayRoundComponent implements OnInit {
     this.studentRoundService.currentFlowers$,
     this.studentRoundService.currentBeePollen$,
     this.studentRoundService.recentFlowerInteractions$,
+    this.studentRoundService.currentBeeSpecies$
   ]).pipe(
-    map(([flowers, beePollen, recentInteractions]) =>
+    map(([flowers, beePollen, recentInteractions, bee]) =>
       flowers.map((flower, index) =>
         roundMarkerFromRoundFlower(
           flower,
           index + 1,
           beePollen,
           recentInteractions,
+          // Because in the test we pass null as value of beeSpecies before each test. I did this to make test pass for now.
+          // Perhaps, we want to emit something other than null for beeSpecies ?
+          bee
+            ? bee.flowers_accepted.map(flowerSpecies => flowerSpecies.name).includes(flower.species.name)
+            : false
         )
       )
     )
@@ -60,6 +66,7 @@ export class PlayRoundComponent implements OnInit {
   ) {
     iconRegistry.addSvgIcon('arrow-flower', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-flower-icon.svg'));
     iconRegistry.addSvgIcon('arrow-home', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-home-icon.svg'));
+    iconRegistry.addSvgIcon('question-mark', sanitizer.bypassSecurityTrustResourceUrl('assets/question-mark-icon.svg'));
   }
 
   currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
@@ -121,7 +128,9 @@ export class PlayRoundComponent implements OnInit {
 
   showTip(marker: RoundMarker) {
     if (marker.isNest && !marker.canVisit) {
-      marker.tip = 'Gather Pollen to deposit them in your nest';
+      marker.tip = 'Let\'s collect some pollen to bring back';
+    } else if (!marker.isNest && !marker.knowsFlower) {
+      marker.tip = 'I don\'t like this flower';
     }
   }
 

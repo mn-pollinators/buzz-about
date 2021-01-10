@@ -31,6 +31,11 @@ export interface RoundMarker extends ARMarker {
   isNest: boolean;
 
   canVisit: boolean;
+
+  // The 'knowsFlower' field will indicate whether a bee knows the flower
+  // represented by the round marker and therefore interact with it.
+  knowsFlower?: boolean;
+
   // The 'tip' field will only be present if this round marker matches any conditional
   // to display a tip to the students
   tip?: string;
@@ -52,9 +57,13 @@ export function roundMarkerFromRoundFlower(
   flower: RoundFlower,
   barcodeValue: number,
   currentBeePollen: number,
-  recentFlowerInteractions: Interaction[]
+  recentFlowerInteractions: Interaction[],
+  knowsFlower: boolean
 ): RoundMarker {
-  const canVisit = canVisitFlower(
+  // The test definitely need to be changed with this approach
+  // Since canVisit could be false due to the value of 'knowsFlower'
+  // rather than the behavior the tests currently state
+  const canVisit = knowsFlower && canVisitFlower(
     barcodeValue,
     flower.isBlooming,
     currentBeePollen,
@@ -67,6 +76,10 @@ export function roundMarkerFromRoundFlower(
     isBlooming: flower.isBlooming,
     isNest: false,
     canVisit,
+    // I made this into a new field just so we can distinguish
+    // between when a bee can't visit a flower due to it not being
+    // on the accepted list
+    knowsFlower
   };
 }
 
