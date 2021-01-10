@@ -82,7 +82,11 @@ export class PlayRoundComponent implements OnInit {
       val === null
         ? of(null)
         : this.arMarkers$.pipe(
-          map(markers => markers.find(m => m.barcodeValue === val))
+          map(markers => {
+            let foundMarker = markers.find(m => m.barcodeValue === val);
+            this.showTip(foundMarker);
+            return(foundMarker);
+          }),
         )
     ),
     shareReplay(1)
@@ -117,9 +121,7 @@ export class PlayRoundComponent implements OnInit {
 
   showTip(marker: RoundMarker) {
     if (marker.isNest && !marker.canVisit) {
-      return {message: 'Gather Pollen to deposit them in your nest'};
-    } else {
-      return null;
+      marker.tip = 'Gather Pollen to deposit them in your nest';
     }
   }
 

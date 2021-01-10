@@ -23,8 +23,8 @@
   <div class="marker-name">
     {{marker.name | titlecase}}
   </div>
-  <div class="marker-tip" *ngIf="showTip(marker) as tip">
-    {{tip.message}}
+  <div class="marker-tip" *ngIf="marker.tip as tip">
+    {{tip}}
   </div>
 </div>
 
