@@ -13,6 +13,10 @@ export interface ARMarker {
   imgPath: string;
 }
 
+export function markersEqual(a: ARMarker, b: ARMarker) {
+  return a.barcodeValue === b.barcodeValue && a.imgPath === b.imgPath;
+}
+
 /**
  * This interface is like `ARMarker`, but it carries semantics about the
  * simulation.

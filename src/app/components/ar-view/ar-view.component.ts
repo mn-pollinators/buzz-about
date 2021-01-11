@@ -14,7 +14,7 @@ import {
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
 import Info from 'info-monitor';
-import { ARMarker } from 'src/app/markers';
+import { ARMarker, markersEqual } from 'src/app/markers';
 
 /**
  * The state of a marker
@@ -390,7 +390,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           const previous = change.previousValue as ARMarker[];
 
           // Get which markers have changed
-          const diff = current.filter(m => !previous.some(n => n.barcodeValue === m.barcodeValue && n.imgPath === m.imgPath));
+          const diff = current.filter(m => !previous.some(n => markersEqual(m, n)));
 
           // Send the markers that have been changed to updateMarkers to be updated or added.
           this.updateMarkers(diff);
