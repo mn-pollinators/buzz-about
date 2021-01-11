@@ -4,7 +4,7 @@ import { switchMap, map, shareReplay } from 'rxjs/operators';
 import { from, of, Observable } from 'rxjs';
 
 // Make sure that firebase/auth is included in the main bundle
-// (not lazy-loaded).
+// (not lazy-loaded, because relying on it to lazy-load was not working)
 import 'firebase/auth';
 
 @Injectable({
