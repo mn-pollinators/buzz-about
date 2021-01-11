@@ -19,7 +19,7 @@
   </mat-card>
 </div>
 
-<div *ngIf="this.foundRoundMarker$ | async as marker">
+<div class="marker-info" *ngIf="this.foundRoundMarker$ | async as marker">
   <div class="marker-name">
     {{marker.name | titlecase}}
   </div>

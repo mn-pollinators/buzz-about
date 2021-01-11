@@ -60,11 +60,15 @@
   }
 }
 
-.marker-name, .marker-tip {
+
+.marker-info {
   margin-top: 16px;
   margin-bottom: 0;
   margin-right: 8px;
   margin-left: 8px;
+}
+
+.marker-name, .marker-tip {
   text-align: center;
 
   font-weight: bold;
