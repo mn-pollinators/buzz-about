@@ -84,7 +84,7 @@ export class PlayRoundComponent implements OnInit {
         : this.arMarkers$.pipe(
           map(markers => {
             const foundMarker = markers.find(m => m.barcodeValue === val);
-            this.showTip(foundMarker);
+            foundMarker.tip = this.getTip(foundMarker);
             return(foundMarker);
           }),
         )
@@ -119,9 +119,11 @@ export class PlayRoundComponent implements OnInit {
     return ((scale - 1) * 0.2) + 1;
   }
 
-  showTip(marker: RoundMarker) {
+  getTip(marker: RoundMarker) {
     if (marker.isNest && !marker.canVisit) {
-      marker.tip = 'Gather Pollen to deposit them in your nest';
+      return 'Gather Pollen to deposit them in your nest';
+    } else {
+      return null;
     }
   }
 
