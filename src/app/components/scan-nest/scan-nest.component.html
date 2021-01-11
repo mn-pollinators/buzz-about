@@ -1,1 +1,10 @@
-<app-ar-view></app-ar-view>
+<app-ar-view (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<div>
+  Scan your nest marker
+</div>
+<mat-card *ngIf="(this.foundNestMarker$ | async)">
+  Marker Barcode:
+  <span>
+    {{(this.foundMarkerValue$ | async)}}
+  </span>
+</mat-card>
