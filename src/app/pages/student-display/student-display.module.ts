@@ -14,6 +14,9 @@ const studentComponents = [
   PlayRoundComponent,
   ArViewComponent,
   StudentRemovedDialogComponent,
+  // I am not sure how we could have students use AR to scan nest barcodes without loading AR into the main module.
+  // For now, I just put the ScanNestComponent here, so I can use the ARView Component without disturbing the existing structure
+  // too much.
   ScanNestComponent
 ];
 
