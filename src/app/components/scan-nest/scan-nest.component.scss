@@ -1,0 +1,41 @@
+@import "../../../variables";
+
+@mixin responsive-font-size(
+  $for-phone-portrait,
+  $for-tablet-portrait,
+  $for-tablet-landscape,
+) {
+  font-size: $for-phone-portrait;
+  line-height: $for-phone-portrait;
+  @media (min-width: $tablet-portrait-min-width) {
+    font-size: $for-tablet-portrait;
+    line-height: $for-tablet-portrait;
+  }
+  @media (min-width: $tablet-landscape-min-width) {
+    font-size: $for-tablet-landscape;
+    line-height: $for-tablet-landscape;
+  }
+}
+
+.nest-instruction {
+  margin-top: 16px;
+  margin-bottom: 0;
+  margin-right: 8px;
+  margin-left: 8px;
+  text-align: center;
+
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 0.6em #111;
+
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+}
+
+
+.scan-button {
+  position: absolute;
+  left: 40%;
+  bottom: 5%;
+  width: 150px;
+  height: 112px;
+}

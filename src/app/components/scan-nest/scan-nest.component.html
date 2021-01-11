@@ -1,5 +1,11 @@
 <app-ar-view [markers]="this.nestMarkers" (markerStates)="this.onMarkerState($event)"></app-ar-view>
-<mat-card>
-  Scan your nest marker.
+<div class="nest-instruction">
+  Hover over your nest marker to scan it
+  <br>
   Found Marker: {{(this.foundMarkerValue$ | async)}}
-</mat-card>
+</div>
+
+
+<ng-container *ngIf="(this.foundMarkerValue$ | async)">
+  <button mat-raised-button color="primary" class="scan-button">Scan Nest</button>
+</ng-container>
