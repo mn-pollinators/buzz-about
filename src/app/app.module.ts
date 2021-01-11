@@ -34,7 +34,6 @@ import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { RoundChooserDialogComponent } from './components/round-chooser-dialog/round-chooser-dialog.component';
 import { AboutComponent } from './pages/about/about.component';
 import { SharedModule } from './shared.module';
-import { ScanNestComponent } from './components/scan-nest/scan-nest.component';
 
 
 const FIREBASE_MODULES = [
@@ -68,7 +67,6 @@ const FIREBASE_MODULES = [
     AboutComponent,
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
-    ScanNestComponent,
   ],
   imports: [
     BrowserModule,
