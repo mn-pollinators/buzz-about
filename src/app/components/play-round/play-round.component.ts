@@ -43,7 +43,8 @@ export class PlayRoundComponent implements OnInit {
       isNest: true,
       canVisit: pollenCount !== 0,
       barcodeValue: student.nestBarcode,
-      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
+      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`,
+      tip: pollenCount === 0 ? 'Gather Pollen to deposit them in your nest' : null
     })),
     shareReplay(1),
   );
@@ -82,11 +83,7 @@ export class PlayRoundComponent implements OnInit {
       val === null
         ? of(null)
         : this.arMarkers$.pipe(
-          map(markers => {
-            const foundMarker = markers.find(m => m.barcodeValue === val);
-            foundMarker.tip = this.getTip(foundMarker);
-            return(foundMarker);
-          }),
+          map(markers => markers.find(m => m.barcodeValue === val)),
         )
     ),
     shareReplay(1)
@@ -118,13 +115,4 @@ export class PlayRoundComponent implements OnInit {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
-
-  getTip(marker: RoundMarker) {
-    if (marker.isNest && !marker.canVisit) {
-      return 'Gather Pollen to deposit them in your nest';
-    } else {
-      return null;
-    }
-  }
-
 }
