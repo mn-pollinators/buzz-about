@@ -402,16 +402,16 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
-    this.controller.markers.pattern.forEach((marker) => {
-      this.scene.remove(marker.markerObject);
+    this.controller?.markers.pattern.forEach((marker) => {
+      this.scene?.remove(marker.markerObject);
     });
 
-    if (this.source.domElement instanceof HTMLVideoElement && this.source.domElement.srcObject instanceof MediaStream) {
+    if (this.source?.domElement instanceof HTMLVideoElement && this.source?.domElement.srcObject instanceof MediaStream) {
       this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
     }
 
-    this.source.dispose();
-    this.controller.dispose();
+    this.source?.dispose();
+    this.controller?.dispose();
   }
 
 }
