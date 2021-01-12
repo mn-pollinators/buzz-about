@@ -85,6 +85,7 @@
 }
 
 .marker-tip {
+  margin-top: 8px;
   @include responsive-font-size(1rem, 1.5rem, 2rem);
 }
 
