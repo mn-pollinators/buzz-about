@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import * as THREE from 'three';
 import * as THREEAR from 'threear';
-import Info from 'info-monitor';
 import { ARMarker, markersEqual } from 'src/app/markers';
 
 /**
@@ -46,11 +45,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() markers: ARMarker[] = [];
 
   /**
-   * Turn on debug mode
-   */
-  @Input() debug = false;
-
-  /**
    * Outputs an event whenever a marker is found.
    */
   @Output() markerStates = new EventEmitter<MarkerState[]>();
@@ -70,10 +64,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   controller: THREEAR.Controller;
 
   arReady = false;
-
-  monitor1: Info;
-  monitor2: Info;
-  monitor3: Info;
 
   constructor() {
 
@@ -159,18 +149,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         displayHeight: ArResolution.height,
       });
 
-      if (this.debug) {
-        this.monitor1 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor1.getElement());
-        this.monitor1.displayPanel(0);
-        this.monitor2 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor2.getElement());
-        this.monitor2.displayPanel(1);
-        this.monitor3 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor3.getElement());
-        this.monitor3.displayPanel(2);
-      }
-
       // Initialize THREEAR
       THREEAR.initialize(
         {
@@ -236,11 +214,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    */
   private animate() {
     // Setup the next call
-    if (this.debug) {
-      this.monitor1.begin();
-      this.monitor2.begin();
-      this.monitor3.begin();
-    }
     this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
     this.totalTime += this.deltaTime; // Add to the current timestamp
 
@@ -249,11 +222,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // Render the markers
     this.renderer.render(this.scene, this.camera);
-    if (this.debug) {
-      this.monitor1.end();
-      this.monitor2.end();
-      this.monitor3.end();
-    }
+
     requestAnimationFrame(() => { this.animate(); });
   }
 
@@ -299,8 +268,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // Start tracking the marker
     this.controller.trackMarker(barcodeMarker);
-
-    if (this.debug) { console.log(barcodeMarker); }
 
     return barcodeMarker;
   }
@@ -379,7 +346,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.debug) { console.log(changes); }
     // Check if there is a change to the markers and make sure AR has started
     if (typeof changes.markers !== 'undefined' && this.arReady) {
       const change = changes.markers;

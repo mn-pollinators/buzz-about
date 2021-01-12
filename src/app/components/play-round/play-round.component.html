@@ -1,4 +1,4 @@
-<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<app-ar-view [markers]="arMarkers$ | async" (markerStates)="this.onMarkerState($event)"></app-ar-view>
 
 <div class="cards">
   <mat-card class='pollen-card'>
