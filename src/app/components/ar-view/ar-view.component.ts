@@ -64,6 +64,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   controller: THREEAR.Controller;
 
   arReady = false;
+  disposeQueued = false;
 
   constructor() {
 
@@ -92,6 +93,11 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngAfterViewInit() {
     this.initAR().then(() => { // init ar
+
+      if (this.disposeQueued) {
+        return;
+      }
+
       // Add initial set of markers passed into the component
       if (this.markers) {
         this.markers.forEach((marker) => this.addMarker(marker));
@@ -209,6 +215,12 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Animation and AR updating loop
    */
   private animate() {
+    // Stop the animate loop when the controller has been disposed
+    if (this.disposeQueued) {
+      this.dispose();
+      return;
+    }
+
     // Setup the next call
     this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
     this.totalTime += this.deltaTime; // Add to the current timestamp
@@ -290,7 +302,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    */
   private setupEvents() {
     this.controller.addEventListener('markerFound', (event) => {
-      // if (this.debug) console.log(event.marker);
       this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
         ({
           barcodeValue: barcode.barcodeValue,
@@ -299,7 +310,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         }) as MarkerState));
     });
     this.controller.addEventListener('markerLost', (event) => {
-      // if (this.debug) console.log(event.marker);
       this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
         ({
           barcodeValue: barcode.barcodeValue,
@@ -314,7 +324,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @param changedMarkers the markers that have been changed and need to be updated or added
    */
   private updateMarkers(changedMarkers: ARMarker[]) {
-
     // Loop through changed markers
     for (const changedMarker of changedMarkers) {
 
@@ -363,8 +372,9 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   }
 
-  ngOnDestroy() {
-    this.controller?.markers.pattern.forEach((marker) => {
+
+  private dispose() {
+    this.controller?.markers.barcode.forEach((marker) => {
       this.scene?.remove(marker.markerObject);
     });
 
@@ -372,8 +382,20 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
     }
 
-    this.source?.dispose();
+    if (this.source.domElement.parentNode) {
+      this.source?.dispose();
+    }
     this.controller?.dispose();
+    this.renderer?.renderLists.dispose();
+    this.renderer?.dispose();
+  }
+
+  ngOnDestroy() {
+    // Just set some flags. The next time a function like `animate()` or
+    // `updateMarkers` gets called, it'll check these flags and know to shut
+    // down.
+    this.disposeQueued = true;
+    this.arReady = false;
   }
 
 }
