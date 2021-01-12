@@ -87,10 +87,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ViewChild('container', { static: true })
   private containerRef: ElementRef;
 
-
-  @ViewChild('monitorContainer', { static: true })
-  private monitorContainerRef: ElementRef;
-
   ngOnInit() {
   }
 
