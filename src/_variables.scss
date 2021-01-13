@@ -29,3 +29,20 @@ $tablet-landscape-min-width: 960px;
 // good estimation for phones in landscape mode. Right now we're not really
 // distinguishing between those size classes, but if you need to, consider
 // using a media query like `(orientation: portrait)`.
+
+// We're adjusting the font sizes slightly, for two reasons.
+// First, larger font-sizes are a bit more kid-friendly.
+// Second, if your font sizes are smaller than 16px, iOS is a bit more
+// aggressive about zooming in:
+// https://stackoverflow.com/a/6394497
+//
+// See the base typography settings here:
+// https://github.com/angular/components/blob/master/src/material/core/typography/_typography.scss
+$custom-typography: mat-typography-config(
+  $title:         mat-typography-level(22px, 32px, 500),
+  $subheading-2:  mat-typography-level(18px, 28px, 400),
+  $subheading-1:  mat-typography-level(17px, 24px, 400),
+  $body-2:        mat-typography-level(16px, 24px, 500),
+  $body-1:        mat-typography-level(16px, 20px, 400),
+  $button:        mat-typography-level(16px, 16px, 500),
+);
