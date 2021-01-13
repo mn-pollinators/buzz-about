@@ -30,6 +30,12 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  // Prevent the user from selecting text elements.
+  -webkit-user-select: none;
+  user-select: none;
+
+  touch-action: none;
 }
 
 .cards {
@@ -82,6 +88,7 @@
   left: 50%;
   bottom: 0%;
   height: 50%;
+  pointer-events: none;
 }
 
 .interact-button {
