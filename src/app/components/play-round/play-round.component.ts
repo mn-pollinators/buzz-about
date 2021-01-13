@@ -7,6 +7,7 @@ import { StudentSessionService } from '../../services/student-session.service';
 import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { trackByIndex } from 'src/app/utils/array-utils';
 
 
 @Component({
@@ -50,6 +51,8 @@ export class PlayRoundComponent implements OnInit {
   arMarkers$: Observable<RoundMarker[]> = combineLatest([this.flowerArMarkers$, this.nestArMarker$]).pipe(
     map(([flowerMarkers, nestMarker]) => flowerMarkers.concat([nestMarker])),
   );
+
+  trackByIndex = trackByIndex;
 
   constructor(
     public studentRoundService: StudentRoundService,

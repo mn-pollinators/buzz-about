@@ -2,13 +2,7 @@
 
 <div class="cards">
   <mat-card class='pollen-card'>
-    <mat-icon
-      inline
-      color='accent'
-      *ngFor="let pollen of (this.beePollen$ | async)"
-    >
-      {{ pollen ? 'lens' : 'panorama_fish_eye' }}
-    </mat-icon>
+    <app-pollen-indicator *ngFor="let pollen of (this.beePollen$ | async); trackBy:trackByIndex" class="pollen-indicator" [full]="pollen"></app-pollen-indicator>
   </mat-card>
 
   <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
