@@ -2,7 +2,12 @@
 
 <div class="cards">
   <mat-card class='pollen-card'>
-    <app-pollen-indicator *ngFor="let pollen of (this.beePollen$ | async); trackBy:trackByIndex" class="pollen-indicator" [full]="pollen"></app-pollen-indicator>
+    <app-pollen-indicator
+      *ngFor="let pollenCount of rangeArray(1, MAX_CURRENT_POLLEN)"
+      class="pollen-indicator"
+      [full]="pollenCount <= (studentRoundService.currentBeePollen$ | async)"
+    >
+    </app-pollen-indicator>
   </mat-card>
 
   <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
