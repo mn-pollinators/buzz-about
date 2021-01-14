@@ -7,12 +7,12 @@
 @include angular-material-theme($theme);
 
 .debug {
-    margin-top: 60px;
-    div {
-        position: relative !important;
-        top: none !important;
-        left: none !important;
-    }
+  margin-top: 60px;
+  div {
+    position: relative !important;
+    top: none !important;
+    left: none !important;
+  }
 }
 
 html {
@@ -36,4 +36,14 @@ body {
   height: 100%;
   display: grid;
   place-items: center;
+}
+
+// These two rules prevent the little messages under form fields from
+// colliding.
+.mat-form-field-wrapper {
+  padding-bottom: 0.2em !important;
+}
+
+.mat-form-field-subscript-wrapper {
+  position: static !important;
 }
