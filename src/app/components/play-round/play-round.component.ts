@@ -8,7 +8,7 @@ import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { trackByIndex } from 'src/app/utils/array-utils';
-
+import anime from 'animejs/lib/anime.es';
 
 @Component({
   selector: 'app-play-round',
@@ -108,8 +108,29 @@ export class PlayRoundComponent implements OnInit {
     this.currentMarkerStates$.next(states);
   }
 
+  /**
+   * Animate the bee image so that it looks like it's interacting with the
+   * marker.
+   *
+   * @return A promise that completes when the animation is done.
+   */
+  animateBeeInteraction(marker: RoundMarker): Promise<void> {
+    return anime.timeline({
+      //easing: 'easeInOutQuad'
+    }).add({
+      targets: '.student-bee',
+      bottom: '25%',
+      height: '25%',
+    }).add({
+      targets: '.student-bee',
+      bottom: '0%',
+      height: '50%',
+    }).finished;
+  }
+
   clickInteract(marker: RoundMarker) {
     this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
+    this.animateBeeInteraction(marker);
   }
 
   calculateBeeScale(scale: number) {
