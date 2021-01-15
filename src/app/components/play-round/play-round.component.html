@@ -13,8 +13,13 @@
   </mat-card>
 </div>
 
-<div class="marker-name" *ngIf="this.foundRoundMarker$ | async as marker">
-  {{marker.name | titlecase}}
+<div class="marker-info" *ngIf="this.foundRoundMarker$ | async as marker">
+  <div class="marker-name">
+    {{marker.name | titlecase}}
+  </div>
+  <div class="marker-tip" *ngIf="marker.tip as tip">
+    {{tip}}
+  </div>
 </div>
 
 <img
