@@ -66,21 +66,33 @@
   }
 }
 
-.marker-name {
+
+.marker-info {
   margin-top: 16px;
   margin-bottom: 0;
   margin-right: 8px;
   margin-left: 8px;
+}
+
+.marker-name, .marker-tip {
   text-align: center;
 
-  @include responsive-font-size(2rem, 2.5rem, 3rem);
-  font-weight: bold;
+  font-weight: 500;
   color: white;
   // I played around with drop shadows for a while before settling on
   // a single, wide, dark-grey shadow, which seemed to be the most readable.
   // (I tried a pure black shadow first, but it had a bit too much visual
   // noise.)
   text-shadow: 0 0 0.6em #111;
+}
+
+.marker-name {
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+}
+
+.marker-tip {
+  margin-top: 8px;
+  @include responsive-font-size(1rem, 1.5rem, 2rem);
 }
 
 .student-bee {
