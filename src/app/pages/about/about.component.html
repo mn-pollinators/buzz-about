@@ -4,7 +4,7 @@
   <div class="about-cards">
     <app-back-button fxHide.gt-sm routerLink="/"></app-back-button>
 
-    <mat-card *ngIf="true || updates.isEnabled && (updates.available | async)">
+    <mat-card *ngIf="updates.isEnabled && (updates.available | async)">
       <mat-card-title>Update Available</mat-card-title>
       <mat-card-content>
         <p>A new version of Buzz About is available. Refresh the page to apply the update.</p>
