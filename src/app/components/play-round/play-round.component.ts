@@ -21,7 +21,6 @@ export class PlayRoundComponent implements OnInit {
     this.studentRoundService.currentBeePollen$,
     this.studentRoundService.recentFlowerInteractions$,
   ]).pipe(
-    filter(([bee]) => !!bee),
     map(([bee, flowers, beePollen, recentInteractions]) =>
       flowers.map((flower, index) =>
         roundMarkerFromRoundFlower(
