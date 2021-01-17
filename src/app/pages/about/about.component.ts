@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SwUpdate } from '@angular/service-worker';
 import { buzzAbout as buzzAboutInfo, assets as assetsInfo } from '../../../../project-info.json';
 
 @Component({
@@ -21,7 +22,7 @@ export class AboutComponent implements OnInit {
     this.assetsContributors.filter(x => !this.buzzAboutContributors.some(y => x.username === y.username))
   );
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, public updates: SwUpdate) {
     iconRegistry.addSvgIcon(
       'github',
       sanitizer.bypassSecurityTrustResourceUrl('assets/github.svg')
@@ -29,6 +30,10 @@ export class AboutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  applyUpdateAndRefresh() {
+    this.updates.activateUpdate().then(() => document.location.reload());
   }
 
 }
