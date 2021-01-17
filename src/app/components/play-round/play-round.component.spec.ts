@@ -79,6 +79,7 @@ describe('PlayRoundComponent', () => {
         lastEmittedFlowerMarkers = flowerMarkers;
       });
 
+      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockCurrentFlowers$.next([
         new RoundFlower(
           allFlowerSpecies.asclepias_syriaca,
@@ -122,6 +123,7 @@ describe('PlayRoundComponent', () => {
         lastEmittedFlowerMarkers = flowerMarkers;
       });
 
+      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockCurrentFlowers$.next([
         new RoundFlower(
           allFlowerSpecies.asclepias_syriaca,
@@ -160,6 +162,7 @@ describe('PlayRoundComponent', () => {
           lastEmittedFlowerMarkers = flowerMarkers;
         });
 
+        mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
         mockCurrentFlowers$.next([
           new RoundFlower(
             allFlowerSpecies.asclepias_syriaca,
@@ -188,6 +191,7 @@ describe('PlayRoundComponent', () => {
           lastEmittedFlowerMarkers = flowerMarkers;
         });
 
+        mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
         mockCurrentFlowers$.next([
           new RoundFlower(
             allFlowerSpecies.asclepias_syriaca,

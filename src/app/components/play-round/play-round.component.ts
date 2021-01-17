@@ -16,17 +16,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class PlayRoundComponent implements OnInit {
   flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
+    this.studentRoundService.currentBeeSpecies$,
     this.studentRoundService.currentFlowers$,
     this.studentRoundService.currentBeePollen$,
     this.studentRoundService.recentFlowerInteractions$,
   ]).pipe(
-    map(([flowers, beePollen, recentInteractions]) =>
+    filter(([bee]) => !!bee),
+    map(([bee, flowers, beePollen, recentInteractions]) =>
       flowers.map((flower, index) =>
         roundMarkerFromRoundFlower(
           flower,
           index + 1,
           beePollen,
           recentInteractions,
+          !bee.flowers_accepted.map(acceptedFlower => acceptedFlower.id).includes(flower.species.id)
         )
       )
     )
