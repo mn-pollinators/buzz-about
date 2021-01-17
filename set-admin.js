@@ -63,11 +63,11 @@ if(!email) {
   throw new Error('No email provided!');
 }
 
-if(args[1] !== 'true' && args[1] !== 'false') {
-  throw new Error('Invalid boolean argument');
+if(args[1] !== 'add' && args[1] !== 'remove') {
+  throw new Error('Invalid add/remove argument');
 }
 
-const isAdmin = args[1] === 'true'
+const addAdmin = args[1] === 'add'
 
 const serviceAccount = getServiceAccount();
 const projectId = process.env.GCLOUD_PROJECT || serviceAccount.project_id;
@@ -83,15 +83,16 @@ admin
   .then((user) => {
     console.log(`Found User ID ${user.uid} with email ${user.email}`);
     // Confirm user is verified.
-    if (user.emailVerified) {
+    if (user.emailVerified && addAdmin) {
       // Add custom claims for additional privileges.
       // This will be picked up by the user on token refresh or next sign in on new device.
-      console.log(`User email is verified, setting admin claim to ${isAdmin}`);
+      console.log(`User email is verified, setting admin claim`);
       return admin.auth().setCustomUserClaims(user.uid, {
-        admin: isAdmin,
+        admin: true,
       });
     } else {
-      throw new Error('User email not verified, admin claim was not set');
+      console.log(`Removing admin claim.`);
+      return admin.auth().setCustomUserClaims(user.uid, null);
     }
   })
   .catch((error) => {
