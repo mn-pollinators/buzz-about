@@ -1,0 +1,15 @@
+.container {
+  height: calc(100% - 64px);
+  @media (max-width: 599px) {
+    height: calc(100% - 56px);
+  }
+}
+
+.mat-toolbar {
+
+}
+
+.admin-background {
+  position: absolute;
+  //height: calc(100% - 64px);
+}
