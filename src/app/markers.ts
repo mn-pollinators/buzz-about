@@ -61,7 +61,7 @@ export function roundMarkerFromRoundFlower(
   recentFlowerInteractions: Interaction[],
   incompatibleFlower: boolean
 ): RoundMarker {
-  const lastVisitedIncompatible = visitingIncompatible(barcodeValue, recentFlowerInteractions);
+  const lastVisitedIncompatible = recentFlowerInteractions[0]?.incompatibleFlower && recentFlowerInteractions[0]?.barcodeValue === barcodeValue
   const canVisit = !lastVisitedIncompatible && canVisitFlower(
     barcodeValue,
     flower.isBlooming,
@@ -78,11 +78,6 @@ export function roundMarkerFromRoundFlower(
     incompatibleFlower,
     tip: lastVisitedIncompatible ? 'I don\'t like this flower. No Pollen collected' : null
   };
-}
-
-
-export function visitingIncompatible(currentBarcode: number, interactions: Interaction[]) {
-  return((interactions[0]?.barcodeValue === currentBarcode && interactions[0].incompatibleFlower) ?? false);
 }
 
 /**
