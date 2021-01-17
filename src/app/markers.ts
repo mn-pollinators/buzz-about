@@ -1,3 +1,4 @@
+import { BeeSpecies } from './bees';
 import { RoundFlower, Interaction } from './round';
 
 /**
@@ -59,9 +60,14 @@ export function roundMarkerFromRoundFlower(
   barcodeValue: number,
   currentBeePollen: number,
   recentFlowerInteractions: Interaction[],
-  incompatibleFlower: boolean
+  bee: BeeSpecies
 ): RoundMarker {
-  const lastVisitedIncompatible = recentFlowerInteractions[0]?.incompatibleFlower && recentFlowerInteractions[0]?.barcodeValue === barcodeValue
+  const incompatibleFlower = !bee.flowers_accepted.map(acceptedFlower =>
+    acceptedFlower.id).includes(flower.species.id);
+
+  const lastVisitedIncompatible = recentFlowerInteractions[0]?.incompatibleFlower &&
+    recentFlowerInteractions[0]?.barcodeValue === barcodeValue;
+
   const canVisit = !lastVisitedIncompatible && canVisitFlower(
     barcodeValue,
     flower.isBlooming,
