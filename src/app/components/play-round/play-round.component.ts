@@ -111,7 +111,7 @@ export class PlayRoundComponent implements OnInit {
   }
 
   clickInteract(marker: RoundMarker) {
-    this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
+    this.studentRoundService.interact(marker.barcodeValue, marker.isNest, marker.incompatibleFlower ?? false);
   }
 
   calculateBeeScale(scale: number) {

@@ -69,6 +69,7 @@ describe('PlayRoundComponent', () => {
         userId: 'me',
         barcodeValue,
         isNest: false,
+        incompatibleFlower: false
       };
     }
 

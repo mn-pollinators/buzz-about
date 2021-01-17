@@ -39,7 +39,7 @@ export interface RoundMarker extends ARMarker {
   // This field will only be present on round markers representing flowers.
   // It will be true or false depending on whether this flower species is
   // on a bee's 'flowers_accepted' list
-  incompatibleFlower?: boolean
+  incompatibleFlower?: boolean;
 }
 
 export const MIN_FLOWER_MARKER = 1;
