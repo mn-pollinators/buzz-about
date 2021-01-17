@@ -102,6 +102,7 @@ describe('PlayRoundComponent', () => {
         ['isNest', false],
         ['barcodeValue', 1],
         ['canVisit', true],
+        ['incompatibleFlower', false]
       ];
 
       for (const [field, expectedValue] of expectedFields) {
@@ -142,6 +143,7 @@ describe('PlayRoundComponent', () => {
         ['isNest', false],
         ['barcodeValue', 1],
         ['canVisit', false],
+        ['incompatibleFlower', false]
       ];
 
       for (const [field, expectedValue] of expectedFields) {
@@ -242,9 +244,10 @@ describe('PlayRoundComponent', () => {
 
         expect(lastEmittedNestMarker.imgPath).toMatch(/square/);
 
-        // Nest markers don't have an `isBlooming` field; that's only for
-        // flowers.
+        // Nest markers don't have an `isBlooming` or 'incompatibleFlower' field;
+        // that's only for flowers.
         expect('isBlooming' in lastEmittedNestMarker).toBe(false);
+        expect('incompatibleFlower' in lastEmittedNestMarker).toBe(false);
       }),
     );
 
