@@ -34,15 +34,17 @@ export class PlayRoundComponent implements OnInit {
 
   nestArMarker$: Observable<RoundMarker> = combineLatest([
     this.sessionService.sessionStudentData$,
-    this.studentRoundService.currentBeeSpecies$
+    this.studentRoundService.currentBeeSpecies$,
+    this.studentRoundService.currentBeePollen$
   ]).pipe(
     filter(([student, bee]) => !!student && !!bee),
-    map(([student, bee]) => ({
+    map(([student, bee, pollenCount]) => ({
       name: bee.nest_type.name,
       isNest: true,
-      canVisit: true,
+      canVisit: pollenCount !== 0,
       barcodeValue: student.nestBarcode,
-      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`
+      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`,
+      tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null
     })),
     shareReplay(1),
   );
@@ -81,7 +83,7 @@ export class PlayRoundComponent implements OnInit {
       val === null
         ? of(null)
         : this.arMarkers$.pipe(
-          map(markers => markers.find(m => m.barcodeValue === val))
+          map(markers => markers.find(m => m.barcodeValue === val)),
         )
     ),
     shareReplay(1)

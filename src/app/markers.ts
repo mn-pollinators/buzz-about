@@ -35,6 +35,10 @@ export interface RoundMarker extends ARMarker {
   isNest: boolean;
 
   canVisit: boolean;
+
+  // The 'tip' field will only be present if this round marker matches any conditional
+  // to display a tip to the students
+  tip?: string;
 }
 
 export const MIN_FLOWER_MARKER = 1;

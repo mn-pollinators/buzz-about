@@ -226,7 +226,7 @@ describe('PlayRoundComponent', () => {
           ['name', allBeeSpecies.apis_mellifera.nest_type.name],
           ['isNest', true],
           ['barcodeValue', 30],
-          ['canVisit', true],
+          ['canVisit', mockBeePollen$.value !== 0],
         ];
 
         for (const [field, expectedValue] of expectedFields) {
@@ -320,6 +320,30 @@ describe('PlayRoundComponent', () => {
       tick(0);
 
       expect(emittedNestMarkers.length).toBe(0);
+    }));
+
+    it('Can only be visited when current bee pollen count is non-zero', fakeAsync(() => {
+      const emittedNestMarkers: RoundMarker[] = [];
+
+      component.nestArMarker$.subscribe(nestMarker => {
+        emittedNestMarkers.push(nestMarker);
+      });
+
+      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
+      mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
+      tick(0);
+
+      // Clear the emittedNestMarkers array.
+      emittedNestMarkers.length = 0;
+      mockBeePollen$.next(0);
+      mockBeePollen$.next(1);
+      mockBeePollen$.next(0);
+      tick(0);
+
+      expect(emittedNestMarkers.length).toBe(3);
+      expect(emittedNestMarkers[0].canVisit).toBe(false);
+      expect(emittedNestMarkers[1].canVisit).toBe(true);
+      expect(emittedNestMarkers[2].canVisit).toBe(false);
     }));
   });
 });
