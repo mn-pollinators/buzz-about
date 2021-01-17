@@ -139,7 +139,8 @@ describe('Rounds', () => {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       });
       await firebase.assertSucceeds(alice.doc(doc.path).get());
       await firebase.assertSucceeds(bob.doc(doc.path).get());
@@ -153,37 +154,43 @@ describe('Rounds', () => {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(alice, round.path, {
         userId: 'alice',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'otheruser',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: null,
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
     });
 
@@ -192,13 +199,15 @@ describe('Rounds', () => {
         userId: 'carol',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
       await firebase.assertFails(addInteraction(carol, round.path, {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       }));
     });
 
@@ -207,7 +216,8 @@ describe('Rounds', () => {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       });
       await firebase.assertFails(alice.doc(doc.path).delete());
       await firebase.assertFails(bob.doc(doc.path).delete());
@@ -221,7 +231,8 @@ describe('Rounds', () => {
         userId: 'bob',
         timePeriod: 22,
         barcodeValue: 12,
-        isNest: false
+        isNest: false,
+        incompatibleFlower: false
       });
       await firebase.assertFails(alice.doc(doc.path).update({timePeriod: 23}));
       await firebase.assertFails(bob.doc(doc.path).update({timePeriod: 12}));
