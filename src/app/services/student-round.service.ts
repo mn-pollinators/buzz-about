@@ -201,7 +201,7 @@ export class StudentRoundService {
 
   totalPollen$: Observable<number> = this.interactions$.pipe(
     map(interactions =>
-      interactions.filter(interaction => !interaction.isNest).length
+      interactions.filter(interaction => (!interaction.isNest && !interaction.incompatibleFlower)).length
     ),
     shareReplay(1),
   );
@@ -213,7 +213,9 @@ export class StudentRoundService {
    * observable will just emit 0.
    */
   currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
-    map(recentFlowerInteractions => recentFlowerInteractions.length),
+    map(recentFlowerInteractions =>
+      recentFlowerInteractions.filter(interaction => !interaction.incompatibleFlower).length
+    ),
     distinctUntilChanged(),
     shareReplay(1),
   );
