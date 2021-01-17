@@ -25,7 +25,7 @@ describe('PlayRoundComponent', () => {
   beforeEach(() => {
     mockSessionStudentData$ = new BehaviorSubject(null);
     mockCurrentFlowers$ = new BehaviorSubject([]);
-    mockBeeSpecies$ = new BehaviorSubject(null);
+    mockBeeSpecies$ = new BehaviorSubject(allBeeSpecies.apis_mellifera);
     mockBeePollen$ = new BehaviorSubject(0);
     mockRecentInteractions$ = new BehaviorSubject([]);
   });
@@ -80,7 +80,6 @@ describe('PlayRoundComponent', () => {
         lastEmittedFlowerMarkers = flowerMarkers;
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockCurrentFlowers$.next([
         new RoundFlower(
           allFlowerSpecies.asclepias_syriaca,
@@ -125,7 +124,6 @@ describe('PlayRoundComponent', () => {
         lastEmittedFlowerMarkers = flowerMarkers;
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockCurrentFlowers$.next([
         new RoundFlower(
           allFlowerSpecies.asclepias_syriaca,
@@ -165,7 +163,6 @@ describe('PlayRoundComponent', () => {
           lastEmittedFlowerMarkers = flowerMarkers;
         });
 
-        mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
         mockCurrentFlowers$.next([
           new RoundFlower(
             allFlowerSpecies.asclepias_syriaca,
@@ -194,7 +191,6 @@ describe('PlayRoundComponent', () => {
           lastEmittedFlowerMarkers = flowerMarkers;
         });
 
-        mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
         mockCurrentFlowers$.next([
           new RoundFlower(
             allFlowerSpecies.asclepias_syriaca,
@@ -224,7 +220,6 @@ describe('PlayRoundComponent', () => {
           lastEmittedNestMarker = nestMarker;
         });
 
-        mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
         mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
 
         tick(0);
@@ -258,7 +253,6 @@ describe('PlayRoundComponent', () => {
         emittedNestMarkers.push(nestMarker);
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
       tick(0);
 
@@ -278,7 +272,6 @@ describe('PlayRoundComponent', () => {
         emittedNestMarkers.push(nestMarker);
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
       tick(0);
 
@@ -299,7 +292,6 @@ describe('PlayRoundComponent', () => {
         emittedNestMarkers.push(nestMarker);
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
       tick(0);
 
@@ -318,7 +310,6 @@ describe('PlayRoundComponent', () => {
         emittedNestMarkers.push(nestMarker);
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
       tick(0);
 
@@ -337,7 +328,6 @@ describe('PlayRoundComponent', () => {
         emittedNestMarkers.push(nestMarker);
       });
 
-      mockBeeSpecies$.next(allBeeSpecies.apis_mellifera);
       mockSessionStudentData$.next({ name: 'Fred', nestBarcode: 30 });
       tick(0);
 
