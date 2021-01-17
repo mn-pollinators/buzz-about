@@ -62,8 +62,7 @@ export function roundMarkerFromRoundFlower(
   recentFlowerInteractions: Interaction[],
   bee: BeeSpecies
 ): RoundMarker {
-  const incompatibleFlower = !bee.flowers_accepted.map(acceptedFlower =>
-    acceptedFlower.id).includes(flower.species.id);
+  const incompatibleFlower = !bee.flowers_accepted.map(acceptedFlower => acceptedFlower.id).includes(flower.species.id);
 
   const lastVisitedIncompatible = recentFlowerInteractions[0]?.incompatibleFlower &&
     recentFlowerInteractions[0]?.barcodeValue === barcodeValue;
