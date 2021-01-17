@@ -61,7 +61,8 @@ export function roundMarkerFromRoundFlower(
   recentFlowerInteractions: Interaction[],
   incompatibleFlower: boolean
 ): RoundMarker {
-  const canVisit = canVisitFlower(
+  const lastVisitedIncompatible = visitingIncompatible(barcodeValue, recentFlowerInteractions);
+  const canVisit = !lastVisitedIncompatible && canVisitFlower(
     barcodeValue,
     flower.isBlooming,
     currentBeePollen,
@@ -74,8 +75,14 @@ export function roundMarkerFromRoundFlower(
     isBlooming: flower.isBlooming,
     isNest: false,
     canVisit,
-    incompatibleFlower
+    incompatibleFlower,
+    tip: lastVisitedIncompatible ? 'I don\'t like this flower. No Pollen collected' : null
   };
+}
+
+
+export function visitingIncompatible(currentBarcode: number, interactions: Interaction[]) {
+  return((interactions[0]?.barcodeValue === currentBarcode && interactions[0].incompatibleFlower) ?? false);
 }
 
 /**
@@ -92,6 +99,7 @@ export function canVisitFlower(
   recentFlowerInteractions: Interaction[],
 ): boolean {
   const haveVisitedThisFlower = recentFlowerInteractions
+    .filter(interaction => !interaction.incompatibleFlower)
     .map(interaction => interaction.barcodeValue)
     .includes(barcodeValue);
   return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;
