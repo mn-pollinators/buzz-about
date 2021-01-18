@@ -12,10 +12,10 @@
       </mat-card-content>
     </mat-card>
     <mat-card>
-      <mat-card-title>Join Codes</mat-card-title>
+      <mat-card-title>Active Join Codes</mat-card-title>
       <mat-card-content>
         <mat-nav-list>
-          <mat-list-item *ngFor="let joinCode of joinCodes$ | async">
+          <mat-list-item *ngFor="let joinCode of adminService.activeJoinCodes$ | async">
             <a matLine [routerLink]="['sessions', joinCode.sessionId]">{{ joinCode.id | slice:0:3 }}&nbsp;{{ joinCode.id | slice:3:6 }}</a>
             <div matLine>Session: {{joinCode.sessionId}}</div>
             <div matLine>Updated {{joinCode.updatedAt | timeAgo}}</div>

@@ -12,8 +12,6 @@ export class AdminSessionsComponent implements OnInit {
 
   sessions$ = this.adminService.getRecentSessions();
 
-  joinCodes$ = this.adminService.getJoinCodes();
-
   ngOnInit(): void {
   }
 
