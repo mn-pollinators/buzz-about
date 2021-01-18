@@ -22,7 +22,7 @@
           </mat-list-item>
           <mat-list-item>
             <div mat-line>Service worker {{updates.isEnabled ? 'enabled' : 'disabled'}}</div>
-            <button mat-icon-button *ngIf="updates.isEnabled" (click)="applyUpdate()" title="Check for updates">
+            <button mat-icon-button *ngIf="updates.isEnabled" (click)="updates.checkForUpdate()" title="Check for updates">
               <mat-icon>update</mat-icon>
             </button>
             <button mat-icon-button *ngIf="updates.isEnabled && (updates.available | async)" (click)="applyUpdate()" title="Apply update and refresh">
