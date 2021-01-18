@@ -13,3 +13,15 @@
   position: absolute;
   //height: calc(100% - 64px);
 }
+
+.toolbar-icon {
+  display: block;
+  img {
+    height: 40px;
+    @media (max-width: 599px) {
+      height: 32px;
+    }
+  }
+  padding-top: 8px;
+  margin-right: 8px;
+}

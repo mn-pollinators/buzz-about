@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -17,7 +18,8 @@ const ANGULAR_MATERIAL_MODULES = [
   declarations: [
     AdminComponent,
     LoginComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    AdminSessionsComponent,
   ],
   imports: [
     SharedModule,

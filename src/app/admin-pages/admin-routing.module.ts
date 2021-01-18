@@ -8,6 +8,7 @@ import { AngularFireAuthGuard, canActivate, customClaims, redirectLoggedInTo } f
 import { pipe } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 
 const adminOnly = () =>  pipe(customClaims, map(claims => claims.admin ? true : ['admin', 'login']));
 const adminRedirect = () => pipe(customClaims, map(claims => claims.admin ? ['admin'] : true));
@@ -18,7 +19,8 @@ const routes: Routes = [
     component: AdminComponent,
     ...canActivate(adminOnly),
     children: [
-      { path: '', component: AdminHomeComponent }
+      { path: '', component: AdminHomeComponent },
+      { path: 'sessions', component: AdminSessionsComponent}
     ]
   },
   { path: 'login', component: LoginComponent, ...canActivate(adminRedirect) }
