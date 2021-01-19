@@ -21,7 +21,7 @@
           {{(roundService.currentBeeSpecies$ | async).name}} are currently inactive
         </mat-card-title>
         <mat-card-subtitle *ngIf="(nextActivePeriodText$| async) as nextActivePeriodText">
-          You will next be active in {{nextActivePeriodText}}
+          You will next be active during {{nextActivePeriodText}}
         </mat-card-subtitle>
       </mat-card>
 
