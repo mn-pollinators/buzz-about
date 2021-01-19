@@ -147,7 +147,11 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-
+ /**
+   * An observable stream of the next TimePeriod when the bee starts to be active
+   * in relation to the current time of the the round.
+   * - `null` if bee doesn't have anymore active periods in the current round
+   */
   nextActivePeriod$: Observable<TimePeriod | null> = combineLatest(
     [this.currentBeeSpecies$, this.currentTime$]
   ).pipe(

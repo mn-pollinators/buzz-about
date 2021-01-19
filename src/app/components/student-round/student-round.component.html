@@ -12,16 +12,16 @@
 
       <mat-card *ngSwitchCase="ScreenId.InactiveBee">
         <img
-        class="student-bee"
-        *ngIf="(roundService.currentBeeSpecies$ | async) as bee"
-        src="/assets/art/500w/bees/{{bee.art_file}}"
-        [alt]="bee.name"
-      >
+          class="student-bee"
+          *ngIf="(roundService.currentBeeSpecies$ | async) as bee"
+          src="/assets/art/500w/bees/{{bee.art_file}}"
+          [alt]="bee.name"
+        >
         <mat-card-title>
-          {{(roundService.currentBeeSpecies$ | async).name}} are currently inactive
+          {{(roundService.currentBeeSpecies$ | async).name | sentenceCase}} are currently inactive
         </mat-card-title>
         <mat-card-subtitle *ngIf="(nextActivePeriodText$| async) as nextActivePeriodText">
-          You will next be active during {{nextActivePeriodText}}
+          You will next be active in {{nextActivePeriodText}}
         </mat-card-subtitle>
       </mat-card>
 
