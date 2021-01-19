@@ -11,7 +11,12 @@
       </mat-card>
 
       <mat-card *ngSwitchCase="ScreenId.InactiveBee">
-        <mat-card-title>Your {{(roundService.currentBeeSpecies$ | async).name}} is currently inactive</mat-card-title>
+        <mat-card-title>
+          Your {{(roundService.currentBeeSpecies$ | async).name}} is currently inactive
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="(roundService.nextActivePeriod$ | async) as nextActivePeriod" class="next-active-period">
+          You will next be active in {{nextActivePeriod}}
+        </mat-card-subtitle>
       </mat-card>
 
     </div>

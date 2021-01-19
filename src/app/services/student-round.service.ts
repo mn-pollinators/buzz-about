@@ -145,6 +145,15 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
+
+  nextActivePeriod$: Observable<string | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
+    map(([species, time]) =>
+      species && time
+        ? species.active_period.find(interval => time.time < interval[0].time)?.[0].toString()
+        : null
+    )
+  );
+
   /**
    * An observable stream of the list of times the student got pollen from a
    * flower or dropped it off at a nest, sorted from most recent to least
