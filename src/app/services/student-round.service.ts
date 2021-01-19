@@ -157,7 +157,7 @@ export class StudentRoundService {
   ).pipe(
     filter(([species, time]) => !!species && !!time),
     map(([species, time]) =>
-        species.active_period.find(interval => time.time < interval[0].time)?.[0] ?? null
+      species.active_period.find(interval => time.time < interval[0].time)?.[0] ?? null
     ),
     shareReplay(1)
   );
