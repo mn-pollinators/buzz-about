@@ -81,7 +81,7 @@ export function roundMarkerFromRoundFlower(
     isNest: false,
     canVisit,
     incompatibleFlower,
-    tip: lastVisitedIncompatible ? 'I don\'t like this flower. No Pollen collected' : null
+    tip: lastVisitedIncompatible ? `${bee.name}s can't collect pollen from this flower` : null
   };
 }
 
