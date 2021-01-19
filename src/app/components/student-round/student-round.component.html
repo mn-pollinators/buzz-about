@@ -18,10 +18,10 @@
           [alt]="bee.name"
         >
         <mat-card-title>
-          {{(roundService.currentBeeSpecies$ | async).name | sentenceCase}} are currently inactive
+          {{(roundService.currentBeeSpecies$ | async).name | sentenceCase}}s are not active right now
         </mat-card-title>
         <mat-card-subtitle *ngIf="(nextActivePeriodText$| async) as nextActivePeriodText">
-          You will next be active in {{nextActivePeriodText}}
+          You will next be active {{nextActivePeriodText}}
         </mat-card-subtitle>
       </mat-card>
 
