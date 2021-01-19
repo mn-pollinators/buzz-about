@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 
 enum ScreenId {
@@ -27,6 +27,15 @@ export class StudentRoundComponent implements OnInit {
       : of(ScreenId.Paused)
     ),
     shareReplay(1)
+  );
+
+  activePeriodText$ = combineLatest([this.roundService.currentTime$, this.roundService.nextActivePeriod$]).pipe(
+    map(([currentTime, activePeriod]) =>
+      currentTime && activePeriod
+        ? currentTime.time + 2 < activePeriod.time ? `in ${activePeriod.monthString}` : 'soon'
+        : null
+    ),
+    distinctUntilChanged(),
   );
 
   ngOnInit(): void {
