@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
-import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, filter } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { FirebaseService } from './firebase.service';
@@ -135,7 +135,9 @@ export class StudentRoundService {
    * This observable emits when it is subscribed to, and whenever the bee
    * becomes active or inactive.
    */
-  currentBeeActive$: Observable<boolean | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
+  currentBeeActive$: Observable<boolean | null> = combineLatest(
+     [this.currentBeeSpecies$, this.currentTime$]
+    ).pipe(
     map(([species, time]) =>
       species && time
         ? species.active_period.some(interval => time.fallsWithin(...interval))
@@ -146,12 +148,14 @@ export class StudentRoundService {
   );
 
 
-  nextActivePeriod$: Observable<string | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
+  nextActivePeriod$: Observable<TimePeriod | null> = combineLatest(
+    [this.currentBeeSpecies$, this.currentTime$]
+  ).pipe(
+    filter(([species, time]) => !!species && !!time),
     map(([species, time]) =>
-      species && time
-        ? species.active_period.find(interval => time.time < interval[0].time)?.[0].toString()
-        : null
-    )
+        species.active_period.find(interval => time.time < interval[0].time)?.[0] ?? null
+    ),
+    shareReplay(1)
   );
 
   /**
