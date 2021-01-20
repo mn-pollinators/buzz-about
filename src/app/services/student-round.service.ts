@@ -218,7 +218,7 @@ export class StudentRoundService {
 
   totalPollen$: Observable<number> = this.interactions$.pipe(
     map(interactions =>
-      interactions.filter(interaction => !interaction.isNest).length
+      interactions.filter(interaction => (!interaction.isNest && !interaction.incompatibleFlower)).length
     ),
     shareReplay(1),
   );
@@ -230,7 +230,9 @@ export class StudentRoundService {
    * observable will just emit 0.
    */
   currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
-    map(recentFlowerInteractions => recentFlowerInteractions.length),
+    map(recentFlowerInteractions =>
+      recentFlowerInteractions.filter(interaction => !interaction.incompatibleFlower).length
+    ),
     distinctUntilChanged(),
     shareReplay(1),
   );
@@ -249,10 +251,10 @@ export class StudentRoundService {
    * @param barcodeValue the barcode value to submit in the interaction
    * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number, isNest: boolean = false) {
+  interact(barcodeValue: number, isNest: boolean = false, incompatibleFlower: boolean = false) {
     combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
       ([path, user, time]) =>
-      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
+      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, incompatibleFlower, timePeriod: time.time})
     );
   }
 

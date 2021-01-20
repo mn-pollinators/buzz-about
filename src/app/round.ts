@@ -41,6 +41,7 @@ export interface Interaction {
   userId: string;
   barcodeValue: number;
   isNest: boolean;
+  incompatibleFlower: boolean;
 }
 
 /**
