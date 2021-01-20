@@ -22,6 +22,9 @@ html {
 body {
   margin: 0;
   height: 100%;
+
+  // Disables pull-to-refresh but allows overscroll glow effects.
+  overscroll-behavior-y: contain;
 }
 
 .main-content {
@@ -36,4 +39,8 @@ body {
   height: 100%;
   display: grid;
   place-items: center;
+}
+
+.centered-text {
+  text-align: center;
 }
