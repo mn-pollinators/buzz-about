@@ -21,7 +21,12 @@ import { ARMarker, markersEqual } from 'src/app/markers';
 export interface MarkerState {
   barcodeValue: number;
   found: boolean;
-  distance: number;
+  screenPosition: {
+    xPixels: number;
+    yPixels: number;
+    xPercent: number;
+    yPercent: number;
+  };
 }
 
 const ArResolution = {
@@ -47,7 +52,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
    * Outputs an event whenever a marker is found.
    */
-  @Output() markerStates = new EventEmitter<MarkerState[]>();
+  @Output() foundMarker = new EventEmitter<MarkerState | null>();
 
   // https://github.com/stemkoski/AR-Examples/blob/master/texture.html
   // https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
@@ -87,6 +92,43 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   @ViewChild('container', { static: true })
   private containerRef: ElementRef;
+
+  /**
+   * Given an object in AR, return its x and y position.
+   *
+   * The position is measured from the bottom-left corner of the AR canvas;
+   * x increases to the right, and y increases to the top.
+   *
+   * x is returned as a percentage of the width of the AR canvas.
+   * y is returned as a percentage of the height of the AR canvas.
+   */
+  private toScreenPosition(obj: THREE.Object3D) {
+    const vector = new THREE.Vector3();
+
+    const canvas = this.renderer.getContext().canvas;
+
+    const widthHalf = 0.5 * canvas.width;
+    const heightHalf = 0.5 * canvas.height;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(this.camera);
+
+    // Convert from AR units to px
+    const xPixels = ( vector.x * widthHalf ) + widthHalf;
+    const yPixels = ( vector.y * heightHalf ) + heightHalf;
+
+    // Convert from px to %
+    const xPercent = 100 * xPixels / canvas.width;
+    const yPercent = 100 * yPixels / canvas.height;
+
+    return {
+      xPixels,
+      yPixels,
+      xPercent,
+      yPercent
+    };
+  }
 
   ngOnInit() {
   }
@@ -297,25 +339,34 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return Math.sqrt(x * x + y * y);
   }
 
+  private markerFoundorLost() {
+    const activeMarkers = this.controller.markers.barcode.filter(marker => marker.found);
+
+    if (activeMarkers.length > 0) {
+      const activeMarker = activeMarkers
+        .map(marker => ({ ...marker, distance: this.calculateObjectDistance(marker.markerObject) }))
+        .reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
+
+      this.foundMarker.emit({
+        barcodeValue: activeMarker.barcodeValue,
+        found: true,
+        screenPosition: this.toScreenPosition(activeMarker.markerObject)
+      });
+    } else {
+      this.foundMarker.emit(null);
+    }
+
+  }
+
   /**
    * Sets up marker events
    */
   private setupEvents() {
-    this.controller.addEventListener('markerFound', (event) => {
-      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-        ({
-          barcodeValue: barcode.barcodeValue,
-          found: barcode.found,
-          distance: this.calculateObjectDistance(barcode.markerObject)
-        }) as MarkerState));
+    this.controller.addEventListener('markerFound', () => {
+      this.markerFoundorLost();
     });
-    this.controller.addEventListener('markerLost', (event) => {
-      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-        ({
-          barcodeValue: barcode.barcodeValue,
-          found: barcode.found,
-          distance: this.calculateObjectDistance(barcode.markerObject)
-        }) as MarkerState));
+    this.controller.addEventListener('markerLost', () => {
+      this.markerFoundorLost();
     });
   }
 

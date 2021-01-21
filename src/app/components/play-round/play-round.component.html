@@ -1,4 +1,4 @@
-<app-ar-view [markers]="arMarkers$ | async" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<app-ar-view [markers]="arMarkers$ | async" (foundMarker)="this.onFoundMarker($event)"></app-ar-view>
 
 <div class="cards">
   <mat-card class='pollen-card'>
@@ -36,7 +36,7 @@
     class="interact-button"
     color="primary"
     [disabled]="!marker.canVisit"
-    (click)="clickInteract(marker)"
+    (click)="clickInteract()"
     aria-label="Interact"
   >
     <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
