@@ -119,17 +119,33 @@ export class PlayRoundComponent implements OnInit {
    * @return A promise that completes when the animation is done.
    */
   animateBeeInteraction(marker: RoundMarker): Promise<void> {
-    return anime.timeline({
-      //easing: 'easeInOutQuad'
-    }).add({
-      targets: '.student-bee',
-      bottom: '25%',
-      height: '25%',
-    }).add({
-      targets: '.student-bee',
-      bottom: '0%',
-      height: '50%',
-    }).finished;
+    if (marker.incompatibleFlower) {
+      // TODO
+    } else {
+      return anime.timeline({
+        targets: '.student-bee',
+      }).add({
+        // Move up and get smaller.
+        bottom: '25%',
+        height: '25%',
+        duration: 200,
+        easing: 'easeInBack'
+      }).add({
+        rotate: [
+          { value: '-30deg' },
+          { value: '0' },
+          { value: '+30deg' },
+          { value: '0' },
+        ],
+        duration: 300,
+        easing: 'linear'
+      }).add({
+        bottom: '0%',
+        height: '50%',
+        duration: 200,
+        easing: 'easeOutBack'
+      }).finished;
+    }
   }
 
   clickInteract(marker: RoundMarker) {
