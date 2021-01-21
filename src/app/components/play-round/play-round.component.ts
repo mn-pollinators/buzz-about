@@ -17,17 +17,19 @@ import anime from 'animejs/lib/anime.es';
 })
 export class PlayRoundComponent implements OnInit {
   flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
+    this.studentRoundService.currentBeeSpecies$,
     this.studentRoundService.currentFlowers$,
     this.studentRoundService.currentBeePollen$,
     this.studentRoundService.recentFlowerInteractions$,
   ]).pipe(
-    map(([flowers, beePollen, recentInteractions]) =>
+    map(([bee, flowers, beePollen, recentInteractions]) =>
       flowers.map((flower, index) =>
         roundMarkerFromRoundFlower(
           flower,
           index + 1,
           beePollen,
           recentInteractions,
+          bee
         )
       )
     )
@@ -131,7 +133,7 @@ export class PlayRoundComponent implements OnInit {
   }
 
   clickInteract(marker: RoundMarker) {
-    this.studentRoundService.interact(marker.barcodeValue, marker.isNest);
+    this.studentRoundService.interact(marker.barcodeValue, marker.isNest, marker.incompatibleFlower ?? false);
     this.animateBeeInteraction(marker);
   }
 

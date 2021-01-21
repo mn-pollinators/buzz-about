@@ -11,10 +11,9 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import * as THREE from 'three';
+import * as THREE from 'threear/node_modules/three';
 import * as THREEAR from 'threear';
-import Info from 'info-monitor';
-import { ARMarker } from 'src/app/markers';
+import { ARMarker, markersEqual } from 'src/app/markers';
 
 /**
  * The state of a marker
@@ -46,11 +45,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() markers: ARMarker[] = [];
 
   /**
-   * Turn on debug mode
-   */
-  @Input() debug = false;
-
-  /**
    * Outputs an event whenever a marker is found.
    */
   @Output() markerStates = new EventEmitter<MarkerState[]>();
@@ -70,10 +64,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   controller: THREEAR.Controller;
 
   arReady = false;
-
-  monitor1: Info;
-  monitor2: Info;
-  monitor3: Info;
+  disposeQueued = false;
 
   constructor() {
 
@@ -85,7 +76,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return this.canvasRef.nativeElement;
   }
 
-  @ViewChild('canvas', {static: true})
+  @ViewChild('canvas', { static: true })
   private canvasRef: ElementRef;
 
 
@@ -94,18 +85,19 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return this.containerRef.nativeElement;
   }
 
-  @ViewChild('container', {static: true})
+  @ViewChild('container', { static: true })
   private containerRef: ElementRef;
-
-
-  @ViewChild('monitorContainer', {static: true})
-  private monitorContainerRef: ElementRef;
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
     this.initAR().then(() => { // init ar
+
+      if (this.disposeQueued) {
+        return;
+      }
+
       // Add initial set of markers passed into the component
       if (this.markers) {
         this.markers.forEach((marker) => this.addMarker(marker));
@@ -131,8 +123,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.scene = new THREE.Scene(); // create the main scene
 
       // Set lighting
-      const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.5 );
-      this.scene.add( ambientLight );
+      const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+      this.scene.add(ambientLight);
 
       // Setup camera
       this.camera = new THREE.Camera();
@@ -140,13 +132,13 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
       // Setup renderer
       this.renderer = new THREE.WebGLRenderer({
-        antialias : true,
+        antialias: true,
         alpha: true,
         canvas: this.canvas // Point the renderer at the canvas element in the HTML
       });
 
       this.renderer.setClearColor(new THREE.Color('lightgrey'), 0);
-      this.renderer.setSize( ArResolution.width, ArResolution.height ); // TODO: resize to entire component size
+      this.renderer.setSize(ArResolution.width, ArResolution.height); // TODO: resize to entire component size
 
       // Setup the THREEAR Source with the parent div and the renderer and camera we setup
       this.source = new THREEAR.Source({
@@ -158,18 +150,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         displayWidth: ArResolution.width,
         displayHeight: ArResolution.height,
       });
-
-      if (this.debug) {
-        this.monitor1 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor1.getElement());
-        this.monitor1.displayPanel(0);
-        this.monitor2 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor2.getElement());
-        this.monitor2.displayPanel(1);
-        this.monitor3 = new Info();
-        this.monitorContainerRef.nativeElement.appendChild(this.monitor3.getElement());
-        this.monitor3.displayPanel(2);
-      }
 
       // Initialize THREEAR
       THREEAR.initialize(
@@ -214,204 +194,208 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
           imageSmoothingEnabled: true
         }
-        ).then((controller: THREEAR.Controller) => {
-          // Initialize returns a controller, set this.controller to that so we have a reference to it
-          this.controller = controller;
+      ).then((controller: THREEAR.Controller) => {
+        // Initialize returns a controller, set this.controller to that so we have a reference to it
+        this.controller = controller;
 
-          // Call animate for the first time
-          this.animate();
+        // Call animate for the first time
+        this.animate();
 
-          // Resolve the initAR Promise
-          resolve();
+        // Resolve the initAR Promise
+        resolve();
 
-        }).catch(error => {
-          reject(error);
-        });
+      }).catch(error => {
+        reject(error);
       });
+    });
+  }
+
+
+  /**
+   * Animation and AR updating loop
+   */
+  private animate() {
+    // Stop the animate loop when the controller has been disposed
+    if (this.disposeQueued) {
+      this.dispose();
+      return;
     }
 
+    // Setup the next call
+    this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
+    this.totalTime += this.deltaTime; // Add to the current timestamp
 
-    /**
-     * Animation and AR updating loop
-     */
-    private animate() {
-      // Setup the next call
-      if (this.debug) {
-        this.monitor1.begin();
-        this.monitor2.begin();
-        this.monitor3.begin();
-      }
-      this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
-      this.totalTime += this.deltaTime; // Add to the current timestamp
+    // Update the state of the THREEAR Controller
+    this.controller.update(this.source.domElement);
 
-      // Update the state of the THREEAR Controller
-      this.controller.update( this.source.domElement );
+    // Render the markers
+    this.renderer.render(this.scene, this.camera);
 
-      // Render the markers
-      this.renderer.render( this.scene, this.camera );
-      if (this.debug) {
-        this.monitor1.end();
-        this.monitor2.end();
-        this.monitor3.end();
-      }
-      requestAnimationFrame(() => {this.animate(); });
-    }
+    requestAnimationFrame(() => { this.animate(); });
+  }
 
 
-    /**
-     * Adds a marker to the scene and controller
-     * @param barcodeValue the number of the barcode for the marker
-     * @param imgPath the path to the image to display for the marker
-     */
-    public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
+  /**
+   * Adds a marker to the scene and controller
+   * @param barcodeValue the number of the barcode for the marker
+   * @param imgPath the path to the image to display for the marker
+   */
+  public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
 
-      // Setup the three group for this marker
-      const markerGroup = new THREE.Group();
-      // Add the group to the scene that contains all the markers
-      this.scene.add(markerGroup);
+    // Setup the three group for this marker
+    const markerGroup = new THREE.Group();
+    // Add the group to the scene that contains all the markers
+    this.scene.add(markerGroup);
 
-      // Create the geometry the texture will be placed on
-      const geometry1 = new THREE.PlaneBufferGeometry(1.5, 1.5, 4, 4);
+    // Create the geometry the texture will be placed on
+    const geometry1 = new THREE.PlaneBufferGeometry(1.5, 1.5, 4, 4);
 
-      // Create the basic image texture
-      const loader = new THREE.TextureLoader();
-      const texture = loader.load(marker.imgPath);
-      const material1 = new THREE.MeshBasicMaterial( { map: texture, transparent: true } );
+    // Create the basic image texture
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load(marker.imgPath);
+    const material1 = new THREE.MeshBasicMaterial({ map: texture, transparent: true });
 
-      // create a mesh of the image texture on the geometry
-      const mesh1 = new THREE.Mesh( geometry1, material1 );
+    // create a mesh of the image texture on the geometry
+    const mesh1 = new THREE.Mesh(geometry1, material1);
 
-      // Rotate the mesh so the image is flat on the marker
-      mesh1.rotation.x = -Math.PI / 2;
+    // Rotate the mesh so the image is flat on the marker
+    mesh1.rotation.x = -Math.PI / 2;
 
-      // Add the mesh to the group
-      markerGroup.add( mesh1 );
+    // Add the mesh to the group
+    markerGroup.add(mesh1);
 
-      // Create the THREEAR BarcodeMarker object for this marker
-      const barcodeMarker = new THREEAR.BarcodeMarker({
-        barcodeValue: marker.barcodeValue,
-        markerObject: markerGroup,
-        size: 1,
-        minConfidence: 0.2
-      });
+    // Create the THREEAR BarcodeMarker object for this marker
+    const barcodeMarker = new THREEAR.BarcodeMarker({
+      barcodeValue: marker.barcodeValue,
+      markerObject: markerGroup,
+      size: 1,
+      minConfidence: 0.2
+    });
 
 
 
-      // Start tracking the marker
-      this.controller.trackMarker(barcodeMarker);
+    // Start tracking the marker
+    this.controller.trackMarker(barcodeMarker);
 
-      if (this.debug) { console.log(barcodeMarker); }
+    return barcodeMarker;
+  }
 
-      return barcodeMarker;
-    }
+  /**
+   * Given a found barcode marker, return how far away the marker is from
+   * the center.
+   *
+   * Specifically, this number is the distance, in three-space, from the
+   * "straight ahead" line to the center of the barcode marker. (The units
+   * are arbitrary.)
+   *
+   * If it helps: imagine a metal pole is sticking out of your camera.
+   * Use a ruler to measure the distance from the pole to the marker.
+   * This function calculates that distance
+   */
+  private calculateObjectDistance(object: THREE.Object3D): number {
+    const { x, y, z } = object.position;
+    return Math.sqrt(x * x + y * y);
+  }
 
-    /**
-     * Given a found barcode marker, return how far away the marker is from
-     * the center.
-     *
-     * Specifically, this number is the distance, in three-space, from the
-     * "straight ahead" line to the center of the barcode marker. (The units
-     * are arbitrary.)
-     *
-     * If it helps: imagine a metal pole is sticking out of your camera.
-     * Use a ruler to measure the distance from the pole to the marker.
-     * This function calculates that distance
-     */
-    private calculateObjectDistance(object: THREE.Object3D): number {
-      const {x, y, z} = object.position;
-      return Math.sqrt(x * x + y * y);
-    }
+  /**
+   * Sets up marker events
+   */
+  private setupEvents() {
+    this.controller.addEventListener('markerFound', (event) => {
+      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
+        ({
+          barcodeValue: barcode.barcodeValue,
+          found: barcode.found,
+          distance: this.calculateObjectDistance(barcode.markerObject)
+        }) as MarkerState));
+    });
+    this.controller.addEventListener('markerLost', (event) => {
+      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
+        ({
+          barcodeValue: barcode.barcodeValue,
+          found: barcode.found,
+          distance: this.calculateObjectDistance(barcode.markerObject)
+        }) as MarkerState));
+    });
+  }
 
-    /**
-     * Sets up marker events
-     */
-    private setupEvents() {
-      this.controller.addEventListener('markerFound', (event) => {
-        // if (this.debug) console.log(event.marker);
-        this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-          ({
-            barcodeValue: barcode.barcodeValue,
-            found: barcode.found,
-            distance: this.calculateObjectDistance(barcode.markerObject)
-          }) as MarkerState));
-      });
-      this.controller.addEventListener('markerLost', (event) => {
-        // if (this.debug) console.log(event.marker);
-        this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-          ({
-            barcodeValue: barcode.barcodeValue,
-            found: barcode.found,
-            distance: this.calculateObjectDistance(barcode.markerObject)
-          }) as MarkerState));
-      });
-    }
+  /**
+   * Updates existing markers or adds new ones based on a list of markers that have changed.
+   * @param changedMarkers the markers that have been changed and need to be updated or added
+   */
+  private updateMarkers(changedMarkers: ARMarker[]) {
+    // Loop through changed markers
+    for (const changedMarker of changedMarkers) {
 
-    /**
-     * Updates existing markers or adds new ones based on a list of markers that have changed.
-     * @param changedMarkers the markers that have been changed and need to be updated or added
-     */
-    private updateMarkers(changedMarkers: ARMarker[]) {
+      // Get the current marker with the same barcode value as the current changed marker if it exists
+      const oldMarker = this.controller.markers.barcode.find((value) =>
+        changedMarker.barcodeValue === value.barcodeValue);
 
-      // Loop through changed markers
-      for (const changedMarker of changedMarkers) {
+      // If there is already a marker for this ID
+      if (oldMarker) {
+        // Find the existing marker's mesh
+        const object = oldMarker.markerObject as THREE.Group;
+        const mesh = object.children[0] as THREE.Mesh;
 
-        // Get the current marker with the same barcode value as the current changed marker if it exists
-        const oldMarker = this.controller.markers.barcode.find((value) =>
-          changedMarker.barcodeValue === value.barcodeValue);
+        // Replace the existing marker's texture with a new one from the changed image path.
+        const loader = new THREE.TextureLoader();
+        const texture = loader.load(changedMarker.imgPath);
+        const material = mesh.material as THREE.MeshBasicMaterial;
+        material.map = texture;
 
-        // If there is already a marker for this ID
-        if (oldMarker) {
-          // Find the existing marker's mesh
-          const object = oldMarker.markerObject as THREE.Group;
-          const mesh = object.children[0] as THREE.Mesh;
-
-          // Replace the existing marker's texture with a new one from the changed image path.
-          const loader = new THREE.TextureLoader();
-          const texture = loader.load(changedMarker.imgPath);
-          const material = mesh.material as THREE.MeshBasicMaterial;
-          material.map = texture;
-
-        } else {
-          // If there is not an existing marker for the ID, add a new one.
-          this.addMarker(changedMarker);
-        }
+      } else {
+        // If there is not an existing marker for the ID, add a new one.
+        this.addMarker(changedMarker);
       }
     }
+  }
 
-    ngOnChanges(changes: SimpleChanges) {
-      if (this.debug) { console.log(changes); }
-      // Check if there is a change to the markers and make sure AR has started
-      if (typeof changes.markers !== 'undefined' && this.arReady) {
-        const change = changes.markers;
+  ngOnChanges(changes: SimpleChanges) {
+    // Check if there is a change to the markers and make sure AR has started
+    if (typeof changes.markers !== 'undefined' && this.arReady) {
+      const change = changes.markers;
 
-        // We don't want to do this on the first change because that is when we are already setting the markers
-        if (change.previousValue) {
-          const current = change.currentValue as ARMarker[];
-          const previous = change.previousValue as ARMarker[];
+      // We don't want to do this on the first change because that is when we are already setting the markers
+      if (change.previousValue) {
+        const current = change.currentValue as ARMarker[];
+        const previous = change.previousValue as ARMarker[];
 
-          // Get which markers have changed
-          const diff = current.filter(m => !previous.some(n => n.barcodeValue === m.barcodeValue && n.imgPath === m.imgPath));
+        // Get which markers have changed
+        const diff = current.filter(m => !previous.some(n => markersEqual(m, n)));
 
-          // Send the markers that have been changed to updateMarkers to be updated or added.
-          this.updateMarkers(diff);
-        } else {
-          this.updateMarkers(change.currentValue as ARMarker[]);
-        }
+        // Send the markers that have been changed to updateMarkers to be updated or added.
+        this.updateMarkers(diff);
+      } else {
+        this.updateMarkers(change.currentValue as ARMarker[]);
       }
-
-    }
-
-    ngOnDestroy() {
-      this.controller.markers.pattern.forEach((marker) => {
-        this.scene.remove(marker.markerObject);
-      });
-
-      if (this.source.domElement instanceof HTMLVideoElement && this.source.domElement.srcObject instanceof MediaStream) {
-        this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
-      }
-
-      this.source.dispose();
-      this.controller.dispose();
     }
 
   }
+
+
+  private dispose() {
+    this.controller?.markers.barcode.forEach((marker) => {
+      this.scene?.remove(marker.markerObject);
+    });
+
+    if (this.source?.domElement instanceof HTMLVideoElement && this.source?.domElement.srcObject instanceof MediaStream) {
+      this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
+    }
+
+    if (this.source.domElement.parentNode) {
+      this.source?.dispose();
+    }
+    this.controller?.dispose();
+    this.renderer?.renderLists.dispose();
+    this.renderer?.dispose();
+  }
+
+  ngOnDestroy() {
+    // Just set some flags. The next time a function like `animate()` or
+    // `updateMarkers` gets called, it'll check these flags and know to shut
+    // down.
+    this.disposeQueued = true;
+    this.arReady = false;
+  }
+
+}
