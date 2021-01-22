@@ -22,6 +22,8 @@ export interface MarkerState {
   barcodeValue: number;
   found: boolean;
   screenPosition: {
+    xPixelsCropped: number;
+    yPixelsCropped: number;
     xPixels: number;
     yPixels: number;
     xPercent: number;
@@ -105,12 +107,25 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private toScreenPosition(obj: THREE.Object3D) {
     const vector = new THREE.Vector3();
 
-    const canvas = this.renderer.getContext().canvas;
+    const canvas = ArResolution;
 
     const widthHalf = 0.5 * canvas.width;
     const heightHalf = 0.5 * canvas.height;
+    const canvasAspectRatio = canvas.width / canvas.height; // Should be 4/3
 
-    obj.updateMatrixWorld();
+    const containerWidth = this.container.clientWidth;
+    const containerHeight = this.container.clientHeight;
+    const containerAspectRatio = containerWidth / containerHeight;
+
+    let croppedWidth = canvas.width;
+    let croppedHeight = canvas.height;
+
+    if (containerAspectRatio < canvasAspectRatio) {
+      croppedWidth = (canvas.height / containerHeight) * containerWidth;
+    } else {
+      croppedHeight = (canvas.width / containerWidth) * containerHeight;
+    }
+
     vector.setFromMatrixPosition(obj.matrixWorld);
     vector.project(this.camera);
 
@@ -118,11 +133,16 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const xPixels = ( vector.x * widthHalf ) + widthHalf;
     const yPixels = ( vector.y * heightHalf ) + heightHalf;
 
+    const xPixelsCropped = xPixels - ((canvas.width - croppedWidth) * 0.5);
+    const yPixelsCropped = yPixels - ((canvas.height - croppedHeight) * 0.5);
+
     // Convert from px to %
-    const xPercent = 100 * xPixels / canvas.width;
-    const yPercent = 100 * yPixels / canvas.height;
+    const xPercent = 100 * xPixelsCropped / croppedWidth;
+    const yPercent = 100 * yPixelsCropped / croppedHeight;
 
     return {
+      xPixelsCropped,
+      yPixelsCropped,
       xPixels,
       yPixels,
       xPercent,
