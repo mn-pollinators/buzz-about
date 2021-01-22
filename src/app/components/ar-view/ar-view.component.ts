@@ -74,6 +74,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   arReady = false;
   disposeQueued = false;
 
+  lastActiveMarker: number;
+
   constructor() {
 
   }
@@ -368,16 +370,20 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         .map(marker => ({ ...marker, distance: this.calculateObjectDistance(marker.markerObject) }))
         .reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
 
-      this.foundMarker.emit({
-        barcodeValue: activeMarker.barcodeValue,
-        found: true,
-        screenPosition: new Observable(obs => {
-          obs.next(this.toScreenPosition(activeMarker.markerObject));
-          obs.complete();
-        })
-      });
+      if (this.lastActiveMarker !== activeMarker.barcodeValue) {
+        this.foundMarker.emit({
+          barcodeValue: activeMarker.barcodeValue,
+          found: true,
+          screenPosition: new Observable(obs => {
+            obs.next(this.toScreenPosition(activeMarker.markerObject));
+            obs.complete();
+          })
+        });
+        this.lastActiveMarker = activeMarker.barcodeValue;
+      }
     } else {
       this.foundMarker.emit(null);
+      this.lastActiveMarker = null;
     }
 
   }
