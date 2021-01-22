@@ -14,6 +14,7 @@ import {
 import * as THREE from 'threear/node_modules/three';
 import * as THREEAR from 'threear';
 import { ARMarker, markersEqual } from 'src/app/markers';
+import { Observable } from 'rxjs';
 
 /**
  * The state of a marker
@@ -21,14 +22,14 @@ import { ARMarker, markersEqual } from 'src/app/markers';
 export interface MarkerState {
   barcodeValue: number;
   found: boolean;
-  screenPosition: {
+  screenPosition: Observable<{
     xPixelsCropped: number;
     yPixelsCropped: number;
     xPixels: number;
     yPixels: number;
     xPercent: number;
     yPercent: number;
-  };
+  }>;
 }
 
 const ArResolution = {
@@ -359,7 +360,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return Math.sqrt(x * x + y * y);
   }
 
-  private markerFoundorLost() {
+  private markerFoundOrLost() {
     const activeMarkers = this.controller.markers.barcode.filter(marker => marker.found);
 
     if (activeMarkers.length > 0) {
@@ -370,7 +371,10 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.foundMarker.emit({
         barcodeValue: activeMarker.barcodeValue,
         found: true,
-        screenPosition: this.toScreenPosition(activeMarker.markerObject)
+        screenPosition: new Observable(obs => {
+          obs.next(this.toScreenPosition(activeMarker.markerObject));
+          obs.complete();
+        })
       });
     } else {
       this.foundMarker.emit(null);
@@ -383,10 +387,10 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    */
   private setupEvents() {
     this.controller.addEventListener('markerFound', () => {
-      this.markerFoundorLost();
+      this.markerFoundOrLost();
     });
     this.controller.addEventListener('markerLost', () => {
-      this.markerFoundorLost();
+      this.markerFoundOrLost();
     });
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MarkerState } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay, switchMap, filter, take, } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, switchMap, filter, take, tap, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
 import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -111,16 +111,18 @@ export class PlayRoundComponent implements OnInit {
    *
    * @return A promise that completes when the animation is done.
    */
-  animateBeeInteraction(roundMarker: RoundMarker, markerState: MarkerState): Promise<void> {
+  async animateBeeInteraction(roundMarker: RoundMarker, markerState: MarkerState): Promise<void> {
     if (roundMarker.incompatibleFlower) {
       // TODO
     } else {
+      const screenPosition = await markerState.screenPosition.toPromise();
+
       return anime.timeline({
         targets: '.student-bee',
       }).add({
         // Move up and get smaller.
-        bottom: markerState.screenPosition.yPercent + '%',
-        left: markerState.screenPosition.xPercent + '%',
+        bottom: screenPosition.yPercent + '%',
+        left: screenPosition.xPercent + '%',
         height: '25%',
         duration: 200,
         easing: 'easeInBack'
