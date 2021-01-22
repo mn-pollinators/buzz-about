@@ -6,15 +6,6 @@
 
 @include angular-material-theme($theme);
 
-.debug {
-    margin-top: 60px;
-    div {
-        position: relative !important;
-        top: none !important;
-        left: none !important;
-    }
-}
-
 html {
   height: 100%;
 }

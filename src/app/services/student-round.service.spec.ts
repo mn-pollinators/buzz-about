@@ -1144,6 +1144,7 @@ describe('StudentRoundService', () => {
         timePeriod: values.rounds.q.currentTime,
         barcodeValue: 5,
         isNest: false,
+        incompatibleFlower: false
       });
 
       interactionSpy.calls.reset();
@@ -1158,6 +1159,7 @@ describe('StudentRoundService', () => {
         timePeriod: values.rounds.r.currentTime,
         barcodeValue: 7,
         isNest: false,
+        incompatibleFlower: false
       });
     }));
 
