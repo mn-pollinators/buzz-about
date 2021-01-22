@@ -366,7 +366,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const activeMarkers = this.controller.markers.barcode.filter(marker => marker.found);
 
     if (activeMarkers.length > 0) {
-      const activeMarker = activeMarkers
+      const activeMarker = activeMarkers.length === 1 ? activeMarkers[0] : activeMarkers
         .map(marker => ({ ...marker, distance: this.calculateObjectDistance(marker.markerObject) }))
         .reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
 
