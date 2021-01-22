@@ -26,7 +26,7 @@
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
   src="/assets/art/500w/bees/{{bee.art_file}}"
-  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
   [alt]="bee.name"
 >
 
