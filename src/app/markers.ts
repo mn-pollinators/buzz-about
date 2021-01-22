@@ -1,3 +1,4 @@
+import { BeeSpecies } from './bees';
 import { RoundFlower, Interaction } from './round';
 
 /**
@@ -11,6 +12,10 @@ import { RoundFlower, Interaction } from './round';
 export interface ARMarker {
   barcodeValue: number;
   imgPath: string;
+}
+
+export function markersEqual(a: ARMarker, b: ARMarker) {
+  return a.barcodeValue === b.barcodeValue && a.imgPath === b.imgPath;
 }
 
 /**
@@ -35,6 +40,11 @@ export interface RoundMarker extends ARMarker {
   // The 'tip' field will only be present if this round marker matches any conditional
   // to display a tip to the students
   tip?: string;
+
+  // This field will only be present on round markers representing flowers.
+  // It will be true or false depending on whether this flower species is
+  // on a bee's 'flowers_accepted' list
+  incompatibleFlower?: boolean;
 }
 
 export const MIN_FLOWER_MARKER = 1;
@@ -53,9 +63,15 @@ export function roundMarkerFromRoundFlower(
   flower: RoundFlower,
   barcodeValue: number,
   currentBeePollen: number,
-  recentFlowerInteractions: Interaction[]
+  recentFlowerInteractions: Interaction[],
+  bee: BeeSpecies
 ): RoundMarker {
-  const canVisit = canVisitFlower(
+  const incompatibleFlower = !bee.flowers_accepted.map(acceptedFlower => acceptedFlower.id).includes(flower.species.id);
+
+  const lastVisitedIncompatible = recentFlowerInteractions[0]?.incompatibleFlower &&
+    recentFlowerInteractions[0]?.barcodeValue === barcodeValue;
+
+  const canVisit = !lastVisitedIncompatible && canVisitFlower(
     barcodeValue,
     flower.isBlooming,
     currentBeePollen,
@@ -68,6 +84,8 @@ export function roundMarkerFromRoundFlower(
     isBlooming: flower.isBlooming,
     isNest: false,
     canVisit,
+    incompatibleFlower,
+    tip: lastVisitedIncompatible ? `${bee.name}s can't collect pollen from this flower` : null
   };
 }
 
@@ -85,6 +103,7 @@ export function canVisitFlower(
   recentFlowerInteractions: Interaction[],
 ): boolean {
   const haveVisitedThisFlower = recentFlowerInteractions
+    .filter(interaction => !interaction.incompatibleFlower)
     .map(interaction => interaction.barcodeValue)
     .includes(barcodeValue);
   return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;

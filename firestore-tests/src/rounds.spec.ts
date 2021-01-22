@@ -124,6 +124,12 @@ describe('Rounds', () => {
 
   describe('Interactions', () => {
     let round;
+    let commonInteractionData =  {
+      timePeriod: 22,
+      barcodeValue: 12,
+      isNest: false,
+      incompatibleFlower: false
+    };
 
     beforeEach(async () => {
       await addStudentToSession(admin, 'carol', session.id, {
@@ -137,9 +143,7 @@ describe('Rounds', () => {
     it('can only be read by the teacher and the student who made the interaction', async () => {
       const doc = await addInteraction(admin, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       });
       await firebase.assertSucceeds(alice.doc(doc.path).get());
       await firebase.assertSucceeds(bob.doc(doc.path).get());
@@ -151,63 +155,45 @@ describe('Rounds', () => {
     it('can only be added to the round if you\'re a student', async () => {
       await firebase.assertSucceeds(addInteraction(bob, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(alice, round.path, {
         userId: 'alice',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'otheruser',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(otherUser, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(noAuth, round.path, {
         userId: null,
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
     });
 
     it('can only be added if the userId matches', async () => {
       await firebase.assertSucceeds(addInteraction(carol, round.path, {
         userId: 'carol',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
       await firebase.assertFails(addInteraction(carol, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       }));
     });
 
     it('cannot be deleted by anyone', async () => {
       const doc = await addInteraction(admin, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       });
       await firebase.assertFails(alice.doc(doc.path).delete());
       await firebase.assertFails(bob.doc(doc.path).delete());
@@ -219,9 +205,7 @@ describe('Rounds', () => {
     it('cannot be updated by anyone', async () => {
       const doc = await addInteraction(admin, round.path, {
         userId: 'bob',
-        timePeriod: 22,
-        barcodeValue: 12,
-        isNest: false
+        ...commonInteractionData
       });
       await firebase.assertFails(alice.doc(doc.path).update({timePeriod: 23}));
       await firebase.assertFails(bob.doc(doc.path).update({timePeriod: 12}));
