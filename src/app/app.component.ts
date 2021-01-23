@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { buzzAbout as buzzAboutInfo, assets as assetsInfo } from '../../project-info.json';
 import { environment } from '../environments/environment';
+import { GITHUB_ICON } from './app-icon-svgs';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,10 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
 
-  constructor() {}
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    // Setup the GitHub icon so its available for use anywhere in the app.
+    iconRegistry.addSvgIconLiteral('github', sanitizer.bypassSecurityTrustHtml(GITHUB_ICON));
+  }
 
   ngOnInit() {
     console.log(`Buzz About v${buzzAboutInfo.version} (Assets v${assetsInfo.version}) loaded.`);
