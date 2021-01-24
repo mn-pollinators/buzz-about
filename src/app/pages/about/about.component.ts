@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { SwUpdate } from '@angular/service-worker';
 import { buzzAbout as buzzAboutInfo, assets as assetsInfo } from '../../../../project-info.json';
 
+
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',

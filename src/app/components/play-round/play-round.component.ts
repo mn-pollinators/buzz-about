@@ -7,7 +7,7 @@ import { StudentSessionService } from '../../services/student-session.service';
 import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { ARROW_FLOWER_ICON, ARROW_HOME_ICON } from './play-round-icon-svgs';
 
 @Component({
   selector: 'app-play-round',
@@ -61,8 +61,8 @@ export class PlayRoundComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer
   ) {
-    iconRegistry.addSvgIcon('arrow-flower', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-flower-icon.svg'));
-    iconRegistry.addSvgIcon('arrow-home', sanitizer.bypassSecurityTrustResourceUrl('assets/arrow-home-icon.svg'));
+    iconRegistry.addSvgIconLiteral('arrow-flower', sanitizer.bypassSecurityTrustHtml(ARROW_FLOWER_ICON));
+    iconRegistry.addSvgIconLiteral('arrow-home', sanitizer.bypassSecurityTrustHtml(ARROW_HOME_ICON));
   }
 
   currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
