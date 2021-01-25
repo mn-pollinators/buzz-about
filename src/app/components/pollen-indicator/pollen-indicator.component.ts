@@ -1,10 +1,11 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-pollen-indicator',
   templateUrl: './pollen-indicator.component.html',
   styleUrls: ['./pollen-indicator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('full', [
       state('false', style({
