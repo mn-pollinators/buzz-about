@@ -453,10 +453,19 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   }
 
+  private disposeMarkerObject(markerObject: THREE.Object3D) {
+    const mesh = markerObject.children[0] as THREE.Mesh;
+    const material = mesh.material as THREE.MeshBasicMaterial;
+    material.map.dispose();
+    material.dispose();
+    mesh.geometry.dispose();
+  }
+
 
   private dispose() {
     this.controller?.markers.barcode.forEach((marker) => {
       this.scene?.remove(marker.markerObject);
+      this.disposeMarkerObject(marker.markerObject);
     });
 
     if (this.source?.domElement instanceof HTMLVideoElement && this.source?.domElement.srcObject instanceof MediaStream) {
