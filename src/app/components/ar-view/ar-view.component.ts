@@ -22,14 +22,14 @@ import { Observable } from 'rxjs';
 export interface MarkerState {
   barcodeValue: number;
   found: boolean;
-  screenPosition: Observable<{
+  getScreenPosition: () => {
     xPixelsCropped: number;
     yPixelsCropped: number;
     xPixels: number;
     yPixels: number;
     xPercent: number;
     yPercent: number;
-  }>;
+  };
 }
 
 const ArResolution = {
@@ -374,10 +374,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.foundMarker.emit({
           barcodeValue: activeMarker.barcodeValue,
           found: true,
-          screenPosition: new Observable(obs => {
-            obs.next(this.toScreenPosition(activeMarker.markerObject));
-            obs.complete();
-          })
+          getScreenPosition: () => this.toScreenPosition(activeMarker.markerObject)
         });
         this.lastActiveMarker = activeMarker.barcodeValue;
       }
