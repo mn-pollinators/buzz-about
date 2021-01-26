@@ -113,11 +113,22 @@ export class PlayRoundComponent implements OnInit {
    * @return A promise that completes when the animation is done.
    */
   animateBeeInteraction(roundMarker: RoundMarker, markerState: MarkerState): Promise<void> {
+
     if (roundMarker.incompatibleFlower) {
-      // TODO
+      return anime({
+        targets: '.student-bee',
+        rotate: [
+          { value: '-15deg' },
+          { value: '0' },
+          { value: '+15deg' },
+          { value: '0' },
+        ],
+        loop: 2,
+        duration: 300,
+        easing: 'linear'
+      }).finished;
     } else {
       const screenPosition = markerState.getScreenPosition();
-
       return anime.timeline({
         targets: '.student-bee',
       }).add({
