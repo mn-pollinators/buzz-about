@@ -40,7 +40,6 @@
 
 .nest-card, .pollen-card {
   margin: 4px;
-  padding: 0.4em;
   @include responsive-font-size(1.5rem, 2rem, 2.5rem);
 }
 
@@ -50,6 +49,14 @@
   justify-content: space-around;
   align-content: space-around;
   align-items: center;
+}
+
+.pollen-indicator {
+  // Set the SVG's height in terms of the font size.
+  height: 1em;
+  &:not(:last-child) {
+    margin-right: 0.20em;
+  }
 }
 
 .nest-card {
@@ -93,7 +100,7 @@
   position: absolute;
   left: 50%;
   bottom: 0%;
-  height: 50%;
+  z-index: -1;
 }
 
 .interact-button {
@@ -106,4 +113,8 @@
     width: 72px;
     height: 72px;
   }
+}
+
+app-ar-view {
+  z-index: -2;
 }

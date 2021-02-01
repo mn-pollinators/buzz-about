@@ -14,6 +14,7 @@ import {
 import * as THREE from 'threear/node_modules/three';
 import * as THREEAR from 'threear';
 import { ARMarker, markersEqual } from 'src/app/markers';
+import { Observable } from 'rxjs';
 
 /**
  * The state of a marker
@@ -21,7 +22,14 @@ import { ARMarker, markersEqual } from 'src/app/markers';
 export interface MarkerState {
   barcodeValue: number;
   found: boolean;
-  distance: number;
+  getScreenPosition: () => {
+    xPixelsCropped: number;
+    yPixelsCropped: number;
+    xPixels: number;
+    yPixels: number;
+    xPercent: number;
+    yPercent: number;
+  };
 }
 
 const ArResolution = {
@@ -47,7 +55,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
    * Outputs an event whenever a marker is found.
    */
-  @Output() markerStates = new EventEmitter<MarkerState[]>();
+  @Output() foundMarker = new EventEmitter<MarkerState | null>();
 
   // https://github.com/stemkoski/AR-Examples/blob/master/texture.html
   // https://github.com/JamesMilnerUK/THREEAR/blob/master/examples/basic-barcode.html
@@ -65,6 +73,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   arReady = false;
   disposeQueued = false;
+
+  lastActiveMarker: number;
 
   constructor() {
 
@@ -87,6 +97,61 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   @ViewChild('container', { static: true })
   private containerRef: ElementRef;
+
+  /**
+   * Given an object in AR, return its x and y position.
+   *
+   * The position is measured from the bottom-left corner of the AR canvas;
+   * x increases to the right, and y increases to the top.
+   *
+   * x is returned as a percentage of the width of the AR canvas.
+   * y is returned as a percentage of the height of the AR canvas.
+   */
+  private toScreenPosition(obj: THREE.Object3D) {
+    const vector = new THREE.Vector3();
+
+    const canvas = ArResolution;
+
+    const widthHalf = 0.5 * canvas.width;
+    const heightHalf = 0.5 * canvas.height;
+    const canvasAspectRatio = canvas.width / canvas.height; // Should be 4/3
+
+    const containerWidth = this.container.clientWidth;
+    const containerHeight = this.container.clientHeight;
+    const containerAspectRatio = containerWidth / containerHeight;
+
+    let croppedWidth = canvas.width;
+    let croppedHeight = canvas.height;
+
+    if (containerAspectRatio < canvasAspectRatio) {
+      croppedWidth = (canvas.height / containerHeight) * containerWidth;
+    } else {
+      croppedHeight = (canvas.width / containerWidth) * containerHeight;
+    }
+
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(this.camera);
+
+    // Convert from AR units to px
+    const xPixels = ( vector.x * widthHalf ) + widthHalf;
+    const yPixels = ( vector.y * heightHalf ) + heightHalf;
+
+    const xPixelsCropped = xPixels - ((canvas.width - croppedWidth) * 0.5);
+    const yPixelsCropped = yPixels - ((canvas.height - croppedHeight) * 0.5);
+
+    // Convert from px to %
+    const xPercent = 100 * xPixelsCropped / croppedWidth;
+    const yPercent = 100 * yPixelsCropped / croppedHeight;
+
+    return {
+      xPixelsCropped,
+      yPixelsCropped,
+      xPixels,
+      yPixels,
+      xPercent,
+      yPercent
+    };
+  }
 
   ngOnInit() {
   }
@@ -297,25 +362,38 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return Math.sqrt(x * x + y * y);
   }
 
+  private markerFoundOrLost() {
+    const activeMarkers = this.controller.markers.barcode.filter(marker => marker.found);
+
+    if (activeMarkers.length > 0) {
+      const activeMarker = activeMarkers.length === 1 ? activeMarkers[0] : activeMarkers
+        .map(marker => ({ ...marker, distance: this.calculateObjectDistance(marker.markerObject) }))
+        .reduce((prev, curr) => prev.distance < curr.distance ? prev : curr);
+
+      if (this.lastActiveMarker !== activeMarker.barcodeValue) {
+        this.foundMarker.emit({
+          barcodeValue: activeMarker.barcodeValue,
+          found: true,
+          getScreenPosition: () => this.toScreenPosition(activeMarker.markerObject)
+        });
+        this.lastActiveMarker = activeMarker.barcodeValue;
+      }
+    } else {
+      this.foundMarker.emit(null);
+      this.lastActiveMarker = null;
+    }
+
+  }
+
   /**
    * Sets up marker events
    */
   private setupEvents() {
-    this.controller.addEventListener('markerFound', (event) => {
-      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-        ({
-          barcodeValue: barcode.barcodeValue,
-          found: barcode.found,
-          distance: this.calculateObjectDistance(barcode.markerObject)
-        }) as MarkerState));
+    this.controller.addEventListener('markerFound', () => {
+      this.markerFoundOrLost();
     });
-    this.controller.addEventListener('markerLost', (event) => {
-      this.markerStates.emit(this.controller.markers.barcode.map(barcode =>
-        ({
-          barcodeValue: barcode.barcodeValue,
-          found: barcode.found,
-          distance: this.calculateObjectDistance(barcode.markerObject)
-        }) as MarkerState));
+    this.controller.addEventListener('markerLost', () => {
+      this.markerFoundOrLost();
     });
   }
 
@@ -372,10 +450,19 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   }
 
+  private disposeMarkerObject(markerObject: THREE.Object3D) {
+    const mesh = markerObject.children[0] as THREE.Mesh;
+    const material = mesh.material as THREE.MeshBasicMaterial;
+    material.map.dispose();
+    material.dispose();
+    mesh.geometry.dispose();
+  }
+
 
   private dispose() {
     this.controller?.markers.barcode.forEach((marker) => {
       this.scene?.remove(marker.markerObject);
+      this.disposeMarkerObject(marker.markerObject);
     });
 
     if (this.source?.domElement instanceof HTMLVideoElement && this.source?.domElement.srcObject instanceof MediaStream) {

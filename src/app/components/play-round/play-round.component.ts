@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MarkerState } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay, switchMap, filter, } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, switchMap, filter, take, tap, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
 import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ARROW_FLOWER_ICON, ARROW_HOME_ICON } from './play-round-icon-svgs';
+import { trackByIndex } from 'src/app/utils/array-utils';
+import anime from 'animejs/lib/anime.es';
 
 @Component({
   selector: 'app-play-round',
@@ -55,6 +57,8 @@ export class PlayRoundComponent implements OnInit {
     map(([flowerMarkers, nestMarker]) => flowerMarkers.concat([nestMarker])),
   );
 
+  trackByIndex = trackByIndex;
+
   constructor(
     public studentRoundService: StudentRoundService,
     private sessionService: StudentSessionService,
@@ -65,17 +69,10 @@ export class PlayRoundComponent implements OnInit {
     iconRegistry.addSvgIconLiteral('arrow-home', sanitizer.bypassSecurityTrustHtml(ARROW_HOME_ICON));
   }
 
-  currentMarkerStates$ = new BehaviorSubject<MarkerState[]>([]);
+  foundMarkerState$ = new BehaviorSubject<MarkerState>(null);
 
-  foundMarkerValue$: Observable<number | null> = this.currentMarkerStates$.pipe(
-    map(markers => markers.filter(m => m.found)),
-    map(markers =>
-      markers.length > 0
-        ? markers.reduce((prev, curr) =>
-          prev.distance < curr.distance ? prev : curr
-        ).barcodeValue
-        : null
-    ),
+  foundMarkerValue$: Observable<number | null> = this.foundMarkerState$.pipe(
+    map(marker => marker ? marker.barcodeValue : null),
     distinctUntilChanged(),
     shareReplay(1)
   );
@@ -105,12 +102,72 @@ export class PlayRoundComponent implements OnInit {
   ngOnInit() {
   }
 
-  onMarkerState(states: MarkerState[]) {
-    this.currentMarkerStates$.next(states);
+  onFoundMarker(states: MarkerState) {
+    this.foundMarkerState$.next(states);
   }
 
-  clickInteract(marker: RoundMarker) {
-    this.studentRoundService.interact(marker.barcodeValue, marker.isNest, marker.incompatibleFlower ?? false);
+  /**
+   * Animate the bee image so that it looks like it's interacting with the
+   * marker.
+   *
+   * @return A promise that completes when the animation is done.
+   */
+  animateBeeInteraction(roundMarker: RoundMarker, markerState: MarkerState): Promise<void> {
+
+    if (roundMarker.incompatibleFlower) {
+      return anime({
+        targets: '.student-bee',
+        rotate: [
+          { value: '-15deg' },
+          { value: '0' },
+          { value: '+15deg' },
+          { value: '0' },
+        ],
+        loop: 2,
+        duration: 300,
+        easing: 'linear'
+      }).finished;
+    } else {
+      const screenPosition = markerState.getScreenPosition();
+      return anime.timeline({
+        targets: '.student-bee',
+      }).add({
+        // Move up and get smaller.
+        bottom: screenPosition.yPercent + '%',
+        left: screenPosition.xPercent + '%',
+        height: '25%',
+        duration: 200,
+        easing: 'easeInBack'
+      }).add({
+        rotate: [
+          { value: '-30deg' },
+          { value: '0' },
+          { value: '+30deg' },
+          { value: '0' },
+        ],
+        duration: 300,
+        easing: 'linear'
+      }).add({
+        left: '50%',
+        bottom: '0%',
+        height: '50%',
+        duration: 200,
+        easing: 'easeOutBack'
+      }).finished;
+    }
+  }
+
+  async clickInteract() {
+    const [
+      roundMarker,
+      markerState
+    ] = await combineLatest([
+      this.foundRoundMarker$,
+      this.foundMarkerState$
+    ]).pipe(take(1)).toPromise();
+
+    this.studentRoundService.interact(roundMarker.barcodeValue, roundMarker.isNest, roundMarker.incompatibleFlower ?? false);
+    this.animateBeeInteraction(roundMarker, markerState);
   }
 
   calculateBeeScale(scale: number) {
