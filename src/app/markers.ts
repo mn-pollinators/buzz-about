@@ -1,5 +1,6 @@
 import { BeeSpecies } from './bees';
 import { RoundFlower, Interaction } from './round';
+import { SentenceCasePipe } from './utils/string-utils';
 
 /**
  * A barcode marker for AR.
@@ -85,7 +86,7 @@ export function roundMarkerFromRoundFlower(
     isNest: false,
     canVisit,
     incompatibleFlower,
-    tip: lastVisitedIncompatible ? `${bee.name}s can't collect pollen from this flower` : null
+    tip: lastVisitedIncompatible ? `${new SentenceCasePipe().transform(bee.name)}s can't collect pollen from this flower` : null
   };
 }
 
