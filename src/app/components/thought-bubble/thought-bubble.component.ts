@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
  * Each message will show a different icon to the user.
  */
 export enum ThoughtBubbleType {
-  INCOMPATIBLE_FLOWER,
+  INCOMPATIBLE_FLOWER = 1,
   GET_POLLEN,
   GO_TO_NEST
 }
