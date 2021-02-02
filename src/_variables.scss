@@ -29,3 +29,7 @@ $tablet-landscape-min-width: 960px;
 // good estimation for phones in landscape mode. Right now we're not really
 // distinguishing between those size classes, but if you need to, consider
 // using a media query like `(orientation: portrait)`.
+
+$typography-config: mat-typography-config();
+
+$pollen-color: mat-palette($mat-amber);

@@ -30,6 +30,8 @@
   [alt]="bee.name"
 >
 
+<app-thought-bubble class="thought-bubble" [type]="ThoughtBubbleType.GO_TO_NEST"></app-thought-bubble>
+
 <ng-container *ngIf="this.foundRoundMarker$ | async as marker">
   <button
     mat-fab

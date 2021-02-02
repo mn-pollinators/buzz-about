@@ -30,12 +30,19 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  // Prevent the user from selecting text elements.
+  -webkit-user-select: none;
+  user-select: none;
+
+  touch-action: none;
 }
 
 .cards {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  pointer-events: none;
 }
 
 .nest-card, .pollen-card {
@@ -63,7 +70,7 @@
   text-align: center;
 
   .nest-pollen-count {
-    font-weight: bold;
+    font-weight: 700;
   }
 }
 
@@ -97,10 +104,26 @@
 }
 
 .student-bee {
+  // We're setting height in [ngStyle]; that way, when AnimeJS changes the
+  // height, it doesn't flicker as much.
   position: absolute;
   left: 50%;
   bottom: 0%;
   z-index: -1;
+}
+
+.thought-bubble {
+  height: 16%;
+  position: absolute;
+  bottom: 30%;
+  // This calculation is a little bit weird, but here's what's happening.
+  // 50% gets us to the center of the screen, and then we add a bit of an
+  // offset to move us farther leftward.
+  // The offset is defined in terms of view height, so if the view height is
+  // halved, the offset is halved.
+  // (This is the same way we're scaling the bee image; if the view height is
+  // halved, the bee image is halved.)
+  right: calc(50% + 8vh);
 }
 
 .interact-button {

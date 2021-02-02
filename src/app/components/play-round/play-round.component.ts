@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ARROW_FLOWER_ICON, ARROW_HOME_ICON } from './play-round-icon-svgs';
 import { trackByIndex } from 'src/app/utils/array-utils';
 import anime from 'animejs/lib/anime.es';
+import { ThoughtBubbleType } from '../thought-bubble/thought-bubble.component';
 
 @Component({
   selector: 'app-play-round',
@@ -17,6 +18,9 @@ import anime from 'animejs/lib/anime.es';
   styleUrls: ['./play-round.component.scss']
 })
 export class PlayRoundComponent implements OnInit {
+
+  ThoughtBubbleType = ThoughtBubbleType;
+
   flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
     this.studentRoundService.currentBeeSpecies$,
     this.studentRoundService.currentFlowers$,
