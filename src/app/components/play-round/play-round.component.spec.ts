@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { BehaviorSubject } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
 import { allFlowerSpecies } from 'src/app/flowers';
-import { RoundMarker } from 'src/app/markers';
+import { MAX_CURRENT_POLLEN, RoundMarker } from 'src/app/markers';
 import { Interaction, RoundFlower } from 'src/app/round';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 import { StudentSessionService } from 'src/app/services/student-session.service';
@@ -155,7 +155,7 @@ describe('PlayRoundComponent', () => {
     }));
 
     it(
-      'Sets canVisit to false if you\'re already carrying 3 pollen',
+      `Sets canVisit to false if you\'re already carrying ${MAX_CURRENT_POLLEN} pollen`,
       fakeAsync(() => {
         let lastEmittedFlowerMarkers: RoundMarker[];
 
@@ -169,7 +169,7 @@ describe('PlayRoundComponent', () => {
             TimePeriod.fromMonthAndQuarter(Month.December, 1),
           ),
         ]);
-        mockBeePollen$.next(3);
+        mockBeePollen$.next(MAX_CURRENT_POLLEN);
         mockRecentInteractions$.next([
           mockFlowerInteraction(8),
           mockFlowerInteraction(9),

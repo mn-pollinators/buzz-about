@@ -4,13 +4,13 @@ import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, switchMap, filter, take, tap, } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
-import { RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
+import { MAX_CURRENT_POLLEN, RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ARROW_FLOWER_ICON, ARROW_HOME_ICON } from './play-round-icon-svgs';
-import { trackByIndex } from 'src/app/utils/array-utils';
 import anime from 'animejs/lib/anime.es';
 import { ThoughtBubbleType } from '../thought-bubble/thought-bubble.component';
+import { rangeArray, trackByIndex } from 'src/app/utils/array-utils';
 
 @Component({
   selector: 'app-play-round',
@@ -61,7 +61,8 @@ export class PlayRoundComponent implements OnInit {
     map(([flowerMarkers, nestMarker]) => flowerMarkers.concat([nestMarker])),
   );
 
-  trackByIndex = trackByIndex;
+  rangeArray = rangeArray;
+  MAX_CURRENT_POLLEN = MAX_CURRENT_POLLEN;
 
   constructor(
     public studentRoundService: StudentRoundService,
@@ -90,17 +91,6 @@ export class PlayRoundComponent implements OnInit {
         )
     ),
     shareReplay(1)
-  );
-
-  beePollen$: Observable<boolean[]> = this.studentRoundService.currentBeePollen$.pipe(
-    map(pollenCount => {
-      const pollenArray: boolean[] = [false, false, false];
-      for (let i = 0; i < pollenCount; i++) {
-        pollenArray[i] = true;
-      }
-      return pollenArray;
-    }),
-    shareReplay(1),
   );
 
   ngOnInit() {

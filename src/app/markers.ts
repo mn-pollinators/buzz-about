@@ -89,6 +89,8 @@ export function roundMarkerFromRoundFlower(
   };
 }
 
+export const MAX_CURRENT_POLLEN = 3;
+
 /**
  * Given some information about a flower, return whether the bee can
  * interact with it right now.
@@ -106,7 +108,7 @@ export function canVisitFlower(
     .filter(interaction => !interaction.incompatibleFlower)
     .map(interaction => interaction.barcodeValue)
     .includes(barcodeValue);
-  return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;
+  return isBlooming && currentBeePollen < MAX_CURRENT_POLLEN && !haveVisitedThisFlower;
 }
 
 function imagePathForFlower(flower: RoundFlower): string {
