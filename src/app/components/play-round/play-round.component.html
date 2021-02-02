@@ -35,7 +35,11 @@
   [alt]="bee.name"
 >
 
-<app-thought-bubble class="thought-bubble" [type]="ThoughtBubbleType.GO_TO_NEST"></app-thought-bubble>
+<app-thought-bubble
+  *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
+  class="thought-bubble"
+  [type]="thoughtBubble"
+></app-thought-bubble>
 
 <ng-container *ngIf="this.foundRoundMarker$ | async as marker">
   <button

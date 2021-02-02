@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { MarkerState } from '../ar-view/ar-view.component';
 import { StudentRoundService } from '../../services/student-round.service';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay, switchMap, filter, take, tap, } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, switchMap, filter, take } from 'rxjs/operators';
 import { StudentSessionService } from '../../services/student-session.service';
-import { MAX_CURRENT_POLLEN, RoundMarker, roundMarkerFromRoundFlower } from 'src/app/markers';
+import { MAX_CURRENT_POLLEN, RoundMarker } from 'src/app/markers';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ARROW_FLOWER_ICON, ARROW_HOME_ICON } from './play-round-icon-svgs';
 import anime from 'animejs/lib/anime.es';
 import { ThoughtBubbleType } from '../thought-bubble/thought-bubble.component';
 import { rangeArray, trackByIndex } from 'src/app/utils/array-utils';
+import { Interaction, RoundFlower } from 'src/app/round';
+import { BeeSpecies } from 'src/app/bees';
 
 @Component({
   selector: 'app-play-round',
@@ -29,7 +31,7 @@ export class PlayRoundComponent implements OnInit {
   ]).pipe(
     map(([bee, flowers, beePollen, recentInteractions]) =>
       flowers.map((flower, index) =>
-        roundMarkerFromRoundFlower(
+        this.roundMarkerFromRoundFlower(
           flower,
           index + 1,
           beePollen,
@@ -52,7 +54,8 @@ export class PlayRoundComponent implements OnInit {
       canVisit: pollenCount !== 0,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`,
-      tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null
+      tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null,
+      thoughtBubble: pollenCount === 0 ? ThoughtBubbleType.GET_POLLEN : null
     })),
     shareReplay(1),
   );
@@ -160,12 +163,81 @@ export class PlayRoundComponent implements OnInit {
       this.foundMarkerState$
     ]).pipe(take(1)).toPromise();
 
+    await this.animateBeeInteraction(roundMarker, markerState);
     this.studentRoundService.interact(roundMarker.barcodeValue, roundMarker.isNest, roundMarker.incompatibleFlower ?? false);
-    this.animateBeeInteraction(roundMarker, markerState);
   }
 
   calculateBeeScale(scale: number) {
     // Normalize scale
     return ((scale - 1) * 0.2) + 1;
   }
+
+  /**
+   * Given a RoundFlower instance and some supplemental information, construct
+   * a RoundMarker.
+   */
+  roundMarkerFromRoundFlower(
+    flower: RoundFlower,
+    barcodeValue: number,
+    currentBeePollen: number,
+    recentFlowerInteractions: Interaction[],
+    bee: BeeSpecies
+  ): RoundMarker {
+    const incompatibleFlower = !bee.flowers_accepted.map(acceptedFlower => acceptedFlower.id).includes(flower.species.id);
+
+    // We'll check !isLastVisited to make sure that the tip doesn't pop up
+    // until you look away from the current marker.
+    // (That isn't a perfect criterion, but it's a good first approximation.)
+    const isLastVisited = recentFlowerInteractions[0]?.barcodeValue === barcodeValue;
+
+    const lastVisitedAndIncompatible = recentFlowerInteractions[0]?.incompatibleFlower && isLastVisited;
+
+    const haveVisitedThisFlower = recentFlowerInteractions
+      .filter(interaction => !interaction.incompatibleFlower)
+      .map(interaction => interaction.barcodeValue)
+      .includes(barcodeValue);
+
+
+    let tip: string = null;
+    let thoughtBubble: ThoughtBubbleType = null;
+
+    if (currentBeePollen >= MAX_CURRENT_POLLEN && !isLastVisited) {
+      tip = `You have all the pollen you can carry`;
+      thoughtBubble = ThoughtBubbleType.GO_TO_NEST;
+    } else if (!flower.isBlooming) {
+      tip = `This flower is not blooming right now`;
+    } else if (lastVisitedAndIncompatible) {
+      tip = `${bee.name}s can't collect pollen from this flower`;
+      thoughtBubble = ThoughtBubbleType.INCOMPATIBLE_FLOWER;
+    } else if (haveVisitedThisFlower && !isLastVisited) {
+      tip = `You were just at this flower`;
+    }
+
+    const canVisit = (
+      flower.isBlooming
+      && currentBeePollen < MAX_CURRENT_POLLEN
+      && !haveVisitedThisFlower
+      && !lastVisitedAndIncompatible
+    );
+
+    return {
+      barcodeValue,
+      imgPath: this.imagePathForFlower(flower),
+      name: flower.species.name,
+      isBlooming: flower.isBlooming,
+      isNest: false,
+      canVisit,
+      incompatibleFlower,
+      tip,
+      thoughtBubble
+    };
+  }
+
+  imagePathForFlower(flower: RoundFlower): string {
+    return (
+      `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}`
+      + `/flowers/${flower.species.art_file}`
+    );
+  }
+
 }
