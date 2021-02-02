@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { trackByIndex } from 'src/app/utils/array-utils';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 
 @Component({
@@ -12,15 +13,11 @@ export class FlowerLayoutComponent implements OnInit {
 
   @Input() tooltips = false;
 
+  trackByIndex = trackByIndex;
+
   constructor() { }
 
   ngOnInit() {
-  }
-
-  trackByFlower(index: number, item: FlowerLayoutItem) {
-    // Our flower items are designed to take any changes to the flower
-    // and don't need to be recreated for every change to the array.
-    return index;
   }
 
 }

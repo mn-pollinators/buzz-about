@@ -1,0 +1,8 @@
+@use '../../../variables' as *;
+
+.pollen-svg {
+  width: inherit;
+  height: inherit;
+  fill: mat-color($accent);
+  stroke: mat-color($accent);
+}
