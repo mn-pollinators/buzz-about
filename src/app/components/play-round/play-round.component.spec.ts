@@ -194,7 +194,7 @@ describe('PlayRoundComponent', () => {
         mockCurrentFlowers$.next([
           new RoundFlower(
             allFlowerSpecies.asclepias_syriaca,
-            TimePeriod.fromMonthAndQuarter(Month.December, 1),
+            TimePeriod.fromMonthAndQuarter(Month.July, 1),
           ),
         ]);
         mockBeePollen$.next(2);
@@ -208,6 +208,121 @@ describe('PlayRoundComponent', () => {
         expect(lastEmittedFlowerMarkers[0].canVisit).toBe(false);
       }),
     );
+
+    describe('How it deals with incompatible flowers', () => {
+      beforeEach(() => {
+        // H. modestus (the modest masked bee) like A. syriaca flowers,
+        // but dislikes C. discolor.
+        mockBeeSpecies$.next(allBeeSpecies.hylaeus_modestus);
+      });
+
+      it('Transforms incompatible, blooming flowers correctly', fakeAsync(() => {
+        let lastEmittedFlowerMarkers: RoundMarker[];
+
+        component.flowerArMarkers$.subscribe(flowerMarkers => {
+          lastEmittedFlowerMarkers = flowerMarkers;
+        });
+
+        mockCurrentFlowers$.next([
+          new RoundFlower(
+            allFlowerSpecies.cirsium_discolor,
+            TimePeriod.fromMonthAndQuarter(Month.July, 1),
+          ),
+        ]);
+        mockBeePollen$.next(1);
+        mockRecentInteractions$.next([
+          // Add in an irrelevant flower interaction.
+          mockFlowerInteraction(8),
+        ]);
+
+        tick(0);
+
+        const expectedFields: [keyof RoundMarker, any][] = [
+          ['name', allFlowerSpecies.cirsium_discolor.name],
+          ['isBlooming', true],
+          ['isNest', false],
+          ['barcodeValue', 1],
+          ['canVisit', true],
+          ['incompatibleFlower', true]
+        ];
+
+        for (const [field, expectedValue] of expectedFields) {
+          expect(lastEmittedFlowerMarkers[0][field])
+            .withContext(`RoundMarker field ${field} should be ${expectedValue}`)
+            .toEqual(expectedValue);
+        }
+
+        expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/square/);
+        expect(lastEmittedFlowerMarkers[0].imgPath).not.toMatch(/grayscale/);
+      }));
+
+      it('Transforms incompatible, non-blooming flowers correctly', fakeAsync(() => {
+        let lastEmittedFlowerMarkers: RoundMarker[];
+
+        component.flowerArMarkers$.subscribe(flowerMarkers => {
+          lastEmittedFlowerMarkers = flowerMarkers;
+        });
+
+        mockCurrentFlowers$.next([
+          new RoundFlower(
+            allFlowerSpecies.cirsium_discolor,
+            TimePeriod.fromMonthAndQuarter(Month.December, 1),
+          ),
+        ]);
+        mockBeePollen$.next(1);
+        mockRecentInteractions$.next([
+          // Add in an irrelevant flower interaction.
+          mockFlowerInteraction(8),
+        ]);
+
+        tick(0);
+
+        const expectedFields: [keyof RoundMarker, any][] = [
+          ['name', allFlowerSpecies.cirsium_discolor.name],
+          ['isBlooming', false],
+          ['isNest', false],
+          ['barcodeValue', 1],
+          ['canVisit', false],
+          ['incompatibleFlower', true]
+        ];
+
+        for (const [field, expectedValue] of expectedFields) {
+          expect(lastEmittedFlowerMarkers[0][field])
+            .withContext(`RoundMarker field ${field} should be ${expectedValue}`)
+            .toEqual(expectedValue);
+        }
+
+        expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/square/);
+        expect(lastEmittedFlowerMarkers[0].imgPath).toMatch(/grayscale/);
+      }));
+
+      it(
+        'Sets canVisit to false if you\'ve already interacted with an incompatible flower this nest cycle',
+        fakeAsync(() => {
+          let lastEmittedFlowerMarkers: RoundMarker[];
+
+          component.flowerArMarkers$.subscribe(flowerMarkers => {
+            lastEmittedFlowerMarkers = flowerMarkers;
+          });
+
+          mockCurrentFlowers$.next([
+            new RoundFlower(
+              allFlowerSpecies.cirsium_discolor,
+              TimePeriod.fromMonthAndQuarter(Month.July, 1),
+            ),
+          ]);
+          mockBeePollen$.next(2);
+          mockRecentInteractions$.next([
+            { ...mockFlowerInteraction(1), incompatibleFlower: true },
+            mockFlowerInteraction(8),
+          ]);
+
+          tick(0);
+
+          expect(lastEmittedFlowerMarkers[0].canVisit).toBe(false);
+        }),
+      );
+    });
   });
 
   describe('The nestArMarker$ observable', () => {
