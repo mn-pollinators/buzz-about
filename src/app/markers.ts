@@ -1,4 +1,4 @@
-import { ThoughtBubbleType } from "./components/thought-bubble/thought-bubble.component";
+import { ThoughtBubbleType } from './components/thought-bubble/thought-bubble.component';
 
 /**
  * A barcode marker for AR.
