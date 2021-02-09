@@ -257,6 +257,4 @@ export class StudentRoundService {
     ).pipe(take(1)).toPromise();
     return this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, incompatibleFlower, timePeriod: time.time});
   }
-
-  // TODO: interact(interaction) creates interaction
 }
