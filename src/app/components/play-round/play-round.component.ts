@@ -13,11 +13,32 @@ import { ThoughtBubbleType } from '../thought-bubble/thought-bubble.component';
 import { rangeArray, trackByIndex } from 'src/app/utils/array-utils';
 import { Interaction, RoundFlower } from 'src/app/round';
 import { BeeSpecies } from 'src/app/bees';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-play-round',
   templateUrl: './play-round.component.html',
-  styleUrls: ['./play-round.component.scss']
+  styleUrls: ['./play-round.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('100ms', style({ opacity: 0 }))
+      ])
+    ]),
+    trigger('thoughtBubbleEnterLeave', [
+      transition(':enter', [
+        style({ transform: 'scale(0)' }),
+        animate('100ms', style({ transform: 'scale(1)' })),
+      ]),
+      transition(':leave', [
+        animate('100ms', style({ transform: 'scale(0)' }))
+      ])
+    ]),
+  ]
 })
 export class PlayRoundComponent implements OnInit {
 

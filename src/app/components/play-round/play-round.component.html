@@ -10,7 +10,7 @@
     </app-pollen-indicator>
   </mat-card>
 
-  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
+  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest" @fadeInOut>
     Pollen in nest:
     <span class="nest-pollen-count">
       {{(this.studentRoundService.currentNestPollen$ | async)}}
@@ -18,7 +18,7 @@
   </mat-card>
 </div>
 
-<div class="marker-info" *ngIf="this.foundRoundMarker$ | async as marker">
+<div class="marker-info" *ngIf="this.foundRoundMarker$ | async as marker" @fadeInOut>
   <div class="marker-name">
     {{marker.name | titlecase}}
   </div>
@@ -36,6 +36,7 @@
 >
 
 <app-thought-bubble
+  @thoughtBubbleEnterLeave
   *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
   class="thought-bubble"
   [type]="thoughtBubble"
@@ -43,6 +44,7 @@
 
 
 <button
+  @fadeInOut
   *ngIf="this.foundRoundMarker$ | async as marker"
   mat-fab
   class="interact-button"
