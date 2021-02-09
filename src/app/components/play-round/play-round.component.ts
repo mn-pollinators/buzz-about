@@ -54,8 +54,7 @@ export class PlayRoundComponent implements OnInit {
       canVisit: pollenCount !== 0,
       barcodeValue: student.nestBarcode,
       imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`,
-      tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null,
-      thoughtBubble: pollenCount === 0 ? ThoughtBubbleType.GET_POLLEN : null
+      tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null
     })),
     shareReplay(1),
   );
