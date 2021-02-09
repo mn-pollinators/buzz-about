@@ -23,6 +23,8 @@ export class PlayRoundComponent implements OnInit {
 
   ThoughtBubbleType = ThoughtBubbleType;
 
+  interactionInProgress = false;
+
   flowerArMarkers$: Observable<RoundMarker[]> = combineLatest([
     this.studentRoundService.currentBeeSpecies$,
     this.studentRoundService.currentFlowers$,
@@ -154,6 +156,8 @@ export class PlayRoundComponent implements OnInit {
   }
 
   async clickInteract() {
+    this.interactionInProgress = true;
+
     const [
       roundMarker,
       markerState
@@ -163,7 +167,9 @@ export class PlayRoundComponent implements OnInit {
     ]).pipe(take(1)).toPromise();
 
     await this.animateBeeInteraction(roundMarker, markerState);
-    this.studentRoundService.interact(roundMarker.barcodeValue, roundMarker.isNest, roundMarker.incompatibleFlower ?? false);
+    await this.studentRoundService.interact(roundMarker.barcodeValue, roundMarker.isNest, roundMarker.incompatibleFlower ?? false);
+
+    this.interactionInProgress = false;
   }
 
   calculateBeeScale(scale: number) {

@@ -41,16 +41,17 @@
   [type]="thoughtBubble"
 ></app-thought-bubble>
 
-<ng-container *ngIf="this.foundRoundMarker$ | async as marker">
-  <button
-    mat-fab
-    class="interact-button"
-    color="primary"
-    [disabled]="!marker.canVisit"
-    (click)="clickInteract()"
-    aria-label="Interact"
-  >
-    <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
-    </mat-icon>
-  </button>
-</ng-container>
+
+<button
+  *ngIf="this.foundRoundMarker$ | async as marker"
+  mat-fab
+  class="interact-button"
+  color="primary"
+  [disabled]="interactionInProgress || !marker.canVisit"
+  (click)="clickInteract()"
+  aria-label="Interact"
+>
+  <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
+  </mat-icon>
+</button>
+
