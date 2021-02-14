@@ -4,12 +4,6 @@ svg {
   height: 100%;
 }
 
-.mat-icon {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  height: 50%;
-}
-
 .default-font-bold {
   font-family: mat-font-family($typography-config);
   font-weight: 700;
@@ -23,6 +17,6 @@ svg {
   fill: mat-color($primary);
 }
 
-.material-icons-font {
-  font-family: 'Material Icons';
+.thought-bubble-text {
+  font-size: 120px;
 }
