@@ -1,5 +1,20 @@
 <app-ar-view [markers]="arMarkers$ | async" (foundMarker)="this.onFoundMarker($event)"></app-ar-view>
 
+<img
+  class="student-bee"
+  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
+  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
+  [alt]="bee.name"
+>
+
+<app-thought-bubble
+  *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
+  class="thought-bubble"
+  [type]="thoughtBubble"
+></app-thought-bubble>
+
+
 <div class="cards">
   <mat-card class='pollen-card'>
     <app-pollen-indicator
@@ -26,21 +41,6 @@
     {{tip | sentenceCase }}
   </div>
 </div>
-
-<img
-  class="student-bee"
-  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
-  src="/assets/art/500w/bees/{{bee.art_file}}"
-  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
-  [alt]="bee.name"
->
-
-<app-thought-bubble
-  *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
-  class="thought-bubble"
-  [type]="thoughtBubble"
-></app-thought-bubble>
-
 
 <button
   *ngIf="this.foundRoundMarker$ | async as marker"
