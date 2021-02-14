@@ -23,6 +23,7 @@ import { FullscreenButtonComponent } from './components/fullscreen-button/fullsc
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 import { SentenceCasePipe } from './utils/string-utils';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-indicator.component';
 
 
 
@@ -56,6 +57,7 @@ const sharedComponents = [
   HillBackgroundComponent,
   SentenceCasePipe,
   BackButtonComponent,
+  PollenIndicatorComponent,
 ];
 
 @NgModule({
