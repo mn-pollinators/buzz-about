@@ -12,7 +12,6 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AboutComponent } from './pages/about/about.component';
-import { AnimationsTestComponent } from './test-pages/animations-test/animations-test.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -21,7 +20,6 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
-  {path: 'animations', component: AnimationsTestComponent}
 ];
 
 const routes: Routes = [

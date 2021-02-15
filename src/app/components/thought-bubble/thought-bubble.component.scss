@@ -1,0 +1,22 @@
+@use "../../../variables" as *;
+
+svg {
+  height: 100%;
+}
+
+.default-font-bold {
+  font-family: mat-font-family($typography-config);
+  font-weight: 700;
+}
+
+.blue-fill {
+  fill: mat-color(mat-palette($mat-blue));
+}
+
+.primary-fill {
+  fill: mat-color($primary);
+}
+
+.thought-bubble-text {
+  font-size: 120px;
+}

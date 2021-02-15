@@ -2,7 +2,7 @@
 
 // Set up a theme for angular material.
 
-@include mat-core();
+@include mat-core($typography-config);
 
 @include angular-material-theme($theme);
 

@@ -6,19 +6,21 @@ import { SharedModule } from 'src/app/shared.module';
 import { ArViewComponent } from 'src/app/components/ar-view/ar-view.component';
 import { PlayRoundComponent } from 'src/app/components/play-round/play-round.component';
 import { StudentRoundComponent } from 'src/app/components/student-round/student-round.component';
+import { ThoughtBubbleComponent } from '../../components/thought-bubble/thought-bubble.component';
 
 
 const studentComponents = [
   StudentRoundComponent,
   PlayRoundComponent,
   ArViewComponent,
-  StudentRemovedDialogComponent
+  StudentRemovedDialogComponent,
+  ThoughtBubbleComponent
 ];
 
 @NgModule({
   declarations: [
     ...studentComponents,
-    StudentDisplayComponent
+    StudentDisplayComponent,
   ],
   imports: [
     SharedModule,
