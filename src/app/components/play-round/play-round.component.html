@@ -1,8 +1,28 @@
 <app-ar-view [markers]="arMarkers$ | async" (foundMarker)="this.onFoundMarker($event)"></app-ar-view>
 
+<img
+  class="student-bee"
+  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
+  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
+  [alt]="bee.name"
+>
+
+<app-thought-bubble
+  *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
+  class="thought-bubble"
+  [type]="thoughtBubble"
+></app-thought-bubble>
+
+
 <div class="cards">
   <mat-card class='pollen-card'>
-    <app-pollen-indicator *ngFor="let pollen of (this.beePollen$ | async); trackBy:trackByIndex" class="pollen-indicator" [full]="pollen"></app-pollen-indicator>
+    <app-pollen-indicator
+      *ngFor="let pollenCount of rangeArray(1, MAX_CURRENT_POLLEN)"
+      class="pollen-indicator"
+      [full]="pollenCount <= (studentRoundService.currentBeePollen$ | async)"
+    >
+    </app-pollen-indicator>
   </mat-card>
 
   <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
@@ -22,24 +42,16 @@
   </div>
 </div>
 
-<img
-  class="student-bee"
-  *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
-  src="/assets/art/500w/bees/{{bee.art_file}}"
-  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
-  [alt]="bee.name"
+<button
+  *ngIf="this.foundRoundMarker$ | async as marker"
+  mat-fab
+  class="interact-button"
+  color="primary"
+  [disabled]="interactionInProgress || !marker.canVisit"
+  (click)="clickInteract()"
+  aria-label="Interact"
 >
+  <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
+  </mat-icon>
+</button>
 
-<ng-container *ngIf="this.foundRoundMarker$ | async as marker">
-  <button
-    mat-fab
-    class="interact-button"
-    color="primary"
-    [disabled]="!marker.canVisit"
-    (click)="clickInteract()"
-    aria-label="Interact"
-  >
-    <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
-    </mat-icon>
-  </button>
-</ng-container>
