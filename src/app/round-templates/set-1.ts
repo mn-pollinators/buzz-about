@@ -19,6 +19,7 @@ const commonAttributes = {
 };
 
 export const set1: RoundTemplateSet = {
+  id: 'set-1',
   name: 'Set #1 (8 flower markers)',
   description: 'These rounds demonstrate the differences between having a monoculture or having more variety.',
   templates: [

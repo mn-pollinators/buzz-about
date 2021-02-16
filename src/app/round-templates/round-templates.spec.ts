@@ -1,6 +1,12 @@
 import { defaultRoundSets } from './round-templates';
 
 describe('Sets of Round Templates', () => {
+
+  it('all have unique IDs', () => {
+    const setIds = defaultRoundSets.map(set => set.id);
+    expect(new Set(defaultRoundSets).size).toEqual(setIds.length);
+  });
+
   defaultRoundSets.forEach(({name: setName, templates}) => {
     describe(setName, () => {
       it('Contains at least one round', () => {
@@ -11,46 +17,48 @@ describe('Sets of Round Templates', () => {
         expect(setName.length).toBeGreaterThan(0);
       });
 
-      templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
-        describe(name, () => {
+      describe('the round templates', () => {
 
-          it('has a name', () => {
-            expect(name.length).toBeGreaterThan(0);
-          });
+        it('all have unique IDs', () => {
+          const templateIds = templates.map(template => template.id);
+          expect(new Set(templateIds).size).toEqual(templateIds.length);
+        });
 
-          it('has either 8 or 16 flowers', () => {
-            expect([8, 16]).toContain(flowerSpecies.length);
-          });
+        templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
+          describe(name, () => {
 
-          if (bees) {
-            describe('if there are bees', () => {
-              it('has at least 1 bee', () => {
-                expect(bees.length).toBeGreaterThanOrEqual(1);
-              });
-              it('bee weights add to 1', () => {
-                expect(bees.reduce((prev, curr) => prev + curr.weight, 0)).toBeCloseTo(1, 10);
-              });
+            it('has a name', () => {
+              expect(name.length).toBeGreaterThan(0);
             });
-          }
 
-          it('has a reasonable tickSpeed', () => {
-            expect(tickSpeed).toBeGreaterThanOrEqual(100);
-            expect(tickSpeed).toBeLessThan(100000);
-          });
+            it('has either 8 or 16 flowers', () => {
+              expect([8, 16]).toContain(flowerSpecies.length);
+            });
 
-          it('has chronological startTime and endTime', () => {
-            expect(startTime.time).toBeLessThan(endTime.time);
+            if (bees) {
+              describe('if there are bees', () => {
+                it('has at least 1 bee', () => {
+                  expect(bees.length).toBeGreaterThanOrEqual(1);
+                });
+                it('bee weights add to 1', () => {
+                  expect(bees.reduce((prev, curr) => prev + curr.weight, 0)).toBeCloseTo(1, 10);
+                });
+              });
+            }
+
+            it('has a reasonable tickSpeed', () => {
+              expect(tickSpeed).toBeGreaterThanOrEqual(100);
+              expect(tickSpeed).toBeLessThan(100000);
+            });
+
+            it('has chronological startTime and endTime', () => {
+              expect(startTime.time).toBeLessThan(endTime.time);
+            });
           });
         });
       });
-    });
-  });
-});
 
-describe('All Round Templates', () => {
-  const allRoundTemplates = defaultRoundSets.flatMap(set => set.templates);
-  it('have unique IDs', () => {
-    const templateIds = allRoundTemplates.map(template => template.id);
-    expect(new Set(templateIds).size).toEqual(templateIds.length);
+
+    });
   });
 });

@@ -23,6 +23,9 @@ export interface RoundTemplate {
 }
 
 export interface RoundTemplateSet {
+  // `id` should a globally unique identifier.
+  id: string;
+  // `name` should be a human-readable identifier.
   name: string;
   description?: string;
   templates: RoundTemplate[];

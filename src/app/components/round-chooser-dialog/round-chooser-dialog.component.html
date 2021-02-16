@@ -8,12 +8,15 @@
   </mat-selection-list>
   <div fxFlex="70" class="set-container">
     <p>{{currentSets[0].description}}</p>
-    <mat-horizontal-stepper #stepper>
-      <mat-step *ngFor="let template of currentSets[0].templates" [completed]="false">
+    <mat-horizontal-stepper #stepper [@.disabled]="true" class="horizontal-stepper-no-padding">
+      <mat-step *ngFor="let template of currentSets[0].templates; index as i" [completed]="false">
         <ng-template matStepLabel>{{template.name}}</ng-template>
-        <div class="template-information">
+        <div class="template-information" *ngIf="stepper.selectedIndex === i">
           <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
-          <div class="template-description mat-body">{{template.description}}</div>
+          <div class="template-description mat-body">
+            <h2>{{template.name}}</h2>
+            <p>{{template.description}}</p>
+          </div>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

@@ -1,6 +1,7 @@
 <h1>Round Templates</h1>
 <div *ngFor="let set of roundSets">
   <h2>{{set.name}}</h2>
+  <p>ID: {{set.id}}</p>
   <p>Description: {{set.description}}</p>
   <div *ngFor="let template of set.templates">
     <h3>{{template.name}}</h3>
