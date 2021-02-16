@@ -18,112 +18,51 @@ export interface RoundTemplate {
 
 export const roundTemplates: RoundTemplate[] = [
   {
-    name: 'Viable Ecosystem',
+    name: 'Field #1: Three Flower Species',
     flowerSpecies: [
-      allFlowerSpecies.asclepias_syriaca,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.echinacea_angustifolia,
-      allFlowerSpecies.rubus_occidentalis,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.prunus_americana,
       allFlowerSpecies.rudbeckia_hirta,
-      allFlowerSpecies.solidago_rigida,
-      allFlowerSpecies.taraxacum_officinale,
       allFlowerSpecies.trifolium_repens,
-      allFlowerSpecies.vaccinium_angustifolium,
-      allFlowerSpecies.helianthus_maximiliani,
-      allFlowerSpecies.rubus_occidentalis,
+      allFlowerSpecies.trifolium_repens,
+      allFlowerSpecies.rudbeckia_hirta,
+      allFlowerSpecies.trifolium_repens,
       allFlowerSpecies.monarda_fistulosa,
       allFlowerSpecies.rudbeckia_hirta,
-      allFlowerSpecies.taraxacum_officinale
+      allFlowerSpecies.trifolium_repens
     ],
     startTime: TimePeriod.fromMonthAndQuarter(4, 1),
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-    tickSpeed: 1000,
+    // This round takes about 8 minutes to run.
+    // (13 seconds per tick * 36 ticks)
+    tickSpeed: 13000,
     bees: [
       { species: allBeeSpecies.agapostemon_virescens, weight: 0.2 },
-      { species: allBeeSpecies.augochloropsis_metallica, weight: 0.2 },
-      { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
-      { species: allBeeSpecies.anthidium_manicatum, weight: 0.2 },
-      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
+      { species: allBeeSpecies.anthophora_bomboides, weight: 0.2 },
+      { species: allBeeSpecies.augochlora_pura, weight: 0.2 },
+      { species: allBeeSpecies.bombus_affinis, weight: 0.2 },
+      { species: allBeeSpecies.xylocopa_virginica, weight: 0.2 }
     ]
   },
   {
-    name: 'Non-viable Ecosystem',
-    flowerSpecies: [
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.taraxacum_officinale,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.taraxacum_officinale,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.taraxacum_officinale,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.taraxacum_officinale,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.taraxacum_officinale,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.cirsium_discolor
-    ],
-    startTime: TimePeriod.fromMonthAndQuarter(4, 1),
-    endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-    tickSpeed: 1000,
-    bees: [
-      { species: allBeeSpecies.apis_mellifera, weight: 0.2 },
-      { species: allBeeSpecies.colletes_simulans, weight: 0.2 },
-      { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
-      { species: allBeeSpecies.hylaeus_modestus, weight: 0.2 },
-      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
-    ]
-  },
-  {
-    name: 'Demo Round',
+    name: 'Field #1: Eight Flower Species',
     flowerSpecies: [
       allFlowerSpecies.asclepias_syriaca,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.echinacea_angustifolia,
-      allFlowerSpecies.helianthus_maximiliani,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.prunus_americana,
       allFlowerSpecies.rubus_occidentalis,
+      allFlowerSpecies.echinacea_angustifolia,
+      allFlowerSpecies.monarda_fistulosa,
       allFlowerSpecies.rudbeckia_hirta,
       allFlowerSpecies.solidago_rigida,
-      allFlowerSpecies.taraxacum_officinale,
       allFlowerSpecies.trifolium_repens,
-      allFlowerSpecies.vaccinium_angustifolium,
-      allFlowerSpecies.asclepias_syriaca,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.echinacea_angustifolia,
-      allFlowerSpecies.helianthus_maximiliani,
+      allFlowerSpecies.zizia_aurea
     ],
     startTime: TimePeriod.fromMonthAndQuarter(4, 1),
     endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-    tickSpeed: 5000
-  },
-  {
-    name: 'Viable Ecosystem (8 flowers)',
-    flowerSpecies: [
-      allFlowerSpecies.asclepias_syriaca,
-      allFlowerSpecies.cirsium_discolor,
-      allFlowerSpecies.echinacea_angustifolia,
-      allFlowerSpecies.rubus_occidentalis,
-      allFlowerSpecies.monarda_fistulosa,
-      allFlowerSpecies.prunus_americana,
-      allFlowerSpecies.rudbeckia_hirta,
-      allFlowerSpecies.solidago_rigida
-    ],
-    startTime: TimePeriod.fromMonthAndQuarter(4, 1),
-    endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-    tickSpeed: 1000,
+    tickSpeed: 13000,
     bees: [
       { species: allBeeSpecies.agapostemon_virescens, weight: 0.2 },
-      { species: allBeeSpecies.augochloropsis_metallica, weight: 0.2 },
-      { species: allBeeSpecies.megachile_pugnata, weight: 0.2 },
-      { species: allBeeSpecies.anthidium_manicatum, weight: 0.2 },
-      { species: allBeeSpecies.bombus_affinis, weight: 0.2 }
+      { species: allBeeSpecies.anthophora_bomboides, weight: 0.2 },
+      { species: allBeeSpecies.augochlora_pura, weight: 0.2 },
+      { species: allBeeSpecies.bombus_affinis, weight: 0.2 },
+      { species: allBeeSpecies.xylocopa_virginica, weight: 0.2 }
     ]
   },
 ];
