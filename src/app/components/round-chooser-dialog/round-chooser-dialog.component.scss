@@ -18,6 +18,14 @@ app-flower-layout {
   left: 0;
   right: 0;
   height: 25%;
-  background-color: rgba($color: white, $alpha: 0.8);
+  background-color: rgba($color: white, $alpha: 0.85);
   padding: 16px;
+
+  .template-name{
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
 }
