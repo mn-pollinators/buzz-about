@@ -1,7 +1,8 @@
 import { FlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { BeeSpecies } from '../bees';
-import { field1 } from './field-1';
+import { set1 } from './set-1';
+import { testRounds } from './test-rounds';
 
 export interface TemplateBee {
   species: BeeSpecies;
@@ -9,7 +10,11 @@ export interface TemplateBee {
 }
 
 export interface RoundTemplate {
+  // `id` should a globally unique identifier.
+  id: string;
+  // `name` should be a human-readable identifier.
   name: string;
+  description?: string;
   flowerSpecies: FlowerSpecies[];
   startTime: TimePeriod;
   endTime: TimePeriod;
@@ -19,9 +24,10 @@ export interface RoundTemplate {
 
 export interface RoundTemplateSet {
   name: string;
+  description?: string;
   templates: RoundTemplate[];
 }
 
-export const defaultSets: RoundTemplateSet[] = [
-  field1,
+export const defaultRoundSets: RoundTemplateSet[] = [
+  set1
 ];

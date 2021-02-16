@@ -2,3 +2,21 @@ mat-selection-list {
   margin-right: 16px;
   overflow: auto;
 }
+
+app-flower-layout {
+
+}
+
+.template-information {
+  position: relative;
+}
+
+.template-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 25%;
+  background-color: rgba($color: white, $alpha: 0.8);
+  padding: 16px;
+}

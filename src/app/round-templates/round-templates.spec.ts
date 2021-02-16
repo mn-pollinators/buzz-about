@@ -1,14 +1,23 @@
-import { defaultSets } from './round-template';
+import { defaultRoundSets } from './round-templates';
 
 describe('Sets of Round Templates', () => {
-  defaultSets.forEach(({name: setName, templates}) => {
+  defaultRoundSets.forEach(({name: setName, templates}) => {
     describe(setName, () => {
       it('Contains at least one round', () => {
         expect(templates.length).toBeGreaterThan(0);
       });
 
+      it('has a name', () => {
+        expect(setName.length).toBeGreaterThan(0);
+      });
+
       templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
         describe(name, () => {
+
+          it('has a name', () => {
+            expect(name.length).toBeGreaterThan(0);
+          });
+
           it('has either 8 or 16 flowers', () => {
             expect([8, 16]).toContain(flowerSpecies.length);
           });
@@ -35,5 +44,13 @@ describe('Sets of Round Templates', () => {
         });
       });
     });
+  });
+});
+
+describe('All Round Templates', () => {
+  const allRoundTemplates = defaultRoundSets.flatMap(set => set.templates);
+  it('have unique IDs', () => {
+    const templateIds = allRoundTemplates.map(template => template.id);
+    expect(new Set(templateIds).size).toEqual(templateIds.length);
   });
 });

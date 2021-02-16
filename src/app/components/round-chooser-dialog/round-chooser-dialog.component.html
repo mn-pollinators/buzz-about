@@ -1,12 +1,22 @@
 <h1 mat-dialog-title>Select a Round</h1>
 <div mat-dialog-content fxLayout="row" fxLayoutAlign="space-between">
-  <mat-selection-list #templates [multiple]="false" fxFlex="30">
-    <mat-list-option *ngFor="let template of roundTemplates" [value]="template">
-      {{template.name}}
+  <mat-selection-list [multiple]="false" fxFlex="30" [(ngModel)]="currentSets">
+    <div mat-subheader>Round Sets</div>
+    <mat-list-option *ngFor="let set of roundSets" [value]="set">
+      {{set.name}}
     </mat-list-option>
   </mat-selection-list>
-  <div>
-    <app-flower-layout [items]="getFlowers(templates.selectedOptions.selected[0]?.value.flowerSpecies || [])" tooltips="true"></app-flower-layout>
+  <div fxFlex="70" class="set-container">
+    <p>{{currentSets[0].description}}</p>
+    <mat-horizontal-stepper #stepper>
+      <mat-step *ngFor="let template of currentSets[0].templates" [completed]="false">
+        <ng-template matStepLabel>{{template.name}}</ng-template>
+        <div class="template-information">
+          <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
+          <div class="template-description mat-body">{{template.description}}</div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </div>
 </div>
 <div mat-dialog-actions align="end">
@@ -14,8 +24,7 @@
   <button
     color="primary"
     mat-button
-    [disabled]="templates.selectedOptions.isEmpty()"
-    [mat-dialog-close]="templates.selectedOptions.selected[0]?.value"
+    [mat-dialog-close]="currentSets[0].templates[stepper.selectedIndex]"
   >
     Start
   </button>

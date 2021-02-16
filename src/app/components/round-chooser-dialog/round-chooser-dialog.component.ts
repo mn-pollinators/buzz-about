@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { roundTemplates } from 'src/app/round-template';
 import { FlowerSpecies } from 'src/app/flowers';
+import { defaultRoundSets, RoundTemplateSet } from 'src/app/round-templates/round-templates';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 
 @Component({
@@ -15,7 +15,9 @@ export class RoundChooserDialogComponent implements OnInit {
 
   }
 
-  roundTemplates = roundTemplates;
+  roundSets = defaultRoundSets;
+
+  currentSets: RoundTemplateSet[] = [this.roundSets[0]];
 
   onCancel(): void {
     this.dialogRef.close();
