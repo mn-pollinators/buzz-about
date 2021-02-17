@@ -32,5 +32,6 @@ export interface RoundTemplateSet {
 }
 
 export const defaultRoundSets: RoundTemplateSet[] = [
-  set1
+  set1,
+  testRounds
 ];
