@@ -30,7 +30,7 @@ export const testRounds: RoundTemplateSet = {
       ],
       startTime: TimePeriod.fromMonthAndQuarter(4, 1),
       endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-      tickSpeed: 1000000,
+      tickSpeed: 99999,
       bees: [
         { species: allBeeSpecies.bombus_affinis, weight: 1 / 2 },
         { species: allBeeSpecies.apis_mellifera, weight: 1 / 2 }
