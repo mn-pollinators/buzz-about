@@ -20,14 +20,13 @@ const commonAttributes = {
 
 export const set1: RoundTemplateSet = {
   id: 'set-1',
-  name: 'Set #1 (8 flower markers)',
-  description: 'These rounds demonstrate the differences between having a monoculture or having more variety.',
+  name: 'Exploring Biodiversity (8 flower markers)',
+  description: 'These rounds demonstrate how bees are affected when there\'s more or less biodiversity of flowers.',
   templates: [
     {
       id: 'set-1-monoculture',
       name: 'Three Flower Species',
-      // FIXME
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      description: 'In this first round, we\'ve only planted a few different species of flowers.',
       flowerSpecies: [
         allFlowerSpecies.rudbeckia_hirta,
         allFlowerSpecies.trifolium_repens,
@@ -43,6 +42,7 @@ export const set1: RoundTemplateSet = {
     {
       id: 'set-1-semi-monoculture',
       name: 'Four Flower Species',
+      description: 'Next, we\'ve added milkweed flowers to the prairie, so that there are four species of flowers.',
       flowerSpecies: [
         allFlowerSpecies.asclepias_syriaca,
         allFlowerSpecies.trifolium_repens,
@@ -58,6 +58,7 @@ export const set1: RoundTemplateSet = {
     {
       id: 'set-1-polyculture',
       name: 'Eight Flower Species',
+      description: 'Finally, we\'ve planted many different species of flowers.',
       flowerSpecies: [
         allFlowerSpecies.asclepias_syriaca,
         allFlowerSpecies.rubus_occidentalis,
