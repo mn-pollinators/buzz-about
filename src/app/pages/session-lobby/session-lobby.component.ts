@@ -40,13 +40,13 @@ export class SessionLobbyComponent implements OnInit {
   }
 
   openRoundDialog(): void {
-    const dialogRef: MatDialogRef<RoundChooserDialogComponent, RoundTemplate> =
+    const dialogRef: MatDialogRef<RoundChooserDialogComponent, {setId: string, template: RoundTemplate}> =
       this.matDialog.open(RoundChooserDialogComponent);
 
-    dialogRef.afterClosed().subscribe(template => {
-      if (template) {
+    dialogRef.afterClosed().subscribe(setAndTemplate => {
+      if (setAndTemplate) {
         this.loadingRound$.next(true);
-        this.teacherRoundService.startNewRound(template).then(() => {
+        this.teacherRoundService.startNewRound(setAndTemplate).then(() => {
           this.loadingRound$.next(false);
         }, (err) => {
           this.loadingRound$.next(false);

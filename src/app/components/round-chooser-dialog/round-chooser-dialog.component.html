@@ -26,7 +26,7 @@
   <button
     color="primary"
     mat-button
-    [mat-dialog-close]="currentSets[0].templates[stepper.selectedIndex]"
+    [mat-dialog-close]="{setId: currentSets[0].id, template: currentSets[0].templates[stepper.selectedIndex]}"
   >
     Start
   </button>

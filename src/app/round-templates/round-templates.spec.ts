@@ -7,7 +7,7 @@ describe('Sets of Round Templates', () => {
     expect(new Set(defaultRoundSets).size).toEqual(setIds.length);
   });
 
-  defaultRoundSets.forEach(({name: setName, templates}) => {
+  defaultRoundSets.forEach(({id: setId, name: setName, templates}) => {
     describe(setName, () => {
       it('Contains at least one round', () => {
         expect(templates.length).toBeGreaterThan(0);
@@ -17,6 +17,10 @@ describe('Sets of Round Templates', () => {
         expect(setName.length).toBeGreaterThan(0);
       });
 
+      it('has an id', () => {
+        expect(setId.length).toBeGreaterThan(0);
+      });
+
       describe('the round templates', () => {
 
         it('all have unique IDs', () => {
@@ -24,11 +28,15 @@ describe('Sets of Round Templates', () => {
           expect(new Set(templateIds).size).toEqual(templateIds.length);
         });
 
-        templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
+        templates.forEach(({id, name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
           describe(name, () => {
 
             it('has a name', () => {
               expect(name.length).toBeGreaterThan(0);
+            });
+
+            it('has an id', () => {
+              expect(id.length).toBeGreaterThan(0);
             });
 
             it('has either 8 or 16 flowers', () => {

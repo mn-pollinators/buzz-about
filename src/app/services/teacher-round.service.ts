@@ -62,9 +62,7 @@ export class TeacherRoundService {
    * active round, set its initial state, and hook up the TimerService so that
    * when the timer ticks, the round updates.
    */
-  // In the future, we might get sessionId from a TeacherSessionService, rather
-  // than passing it in as a parameter.
-  async startNewRound(template: RoundTemplate) {
+  async startNewRound({setId, template}: {setId: string, template: RoundTemplate}) {
 
     this.roundTemplate$.next(template);
 
@@ -73,6 +71,8 @@ export class TeacherRoundService {
       status: 'start',
       running: false,
       currentTime: template.startTime.time
+      setId,
+      templateId: template.id
     };
 
     const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
