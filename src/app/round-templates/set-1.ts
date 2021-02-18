@@ -20,8 +20,8 @@ const commonAttributes = {
 
 export const set1: RoundTemplateSet = {
   id: 'set-1',
-  name: 'Exploring Biodiversity (8 flower markers)',
-  description: 'These rounds demonstrate how bees are affected when there\'s more or less biodiversity of flowers.',
+  name: 'Exploring Biodiversity',
+  description: 'These rounds demonstrate how bees are affected when there\'s more or less biodiversity of flowers (8 flower markers).',
   templates: [
     {
       id: 'set-1-monoculture',
