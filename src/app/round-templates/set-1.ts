@@ -8,7 +8,7 @@ const commonAttributes = {
   endTime: TimePeriod.fromMonthAndQuarter(11, 4),
   // This round takes about 8 minutes to run.
   // (13 seconds per tick * 36 ticks)
-  tickSpeed: 13000,
+  tickSpeed: 10000,
   bees: [
     { species: allBeeSpecies.agapostemon_virescens, weight: 0.2 },
     { species: allBeeSpecies.anthophora_bomboides, weight: 0.2 },
