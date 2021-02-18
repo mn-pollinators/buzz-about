@@ -10,6 +10,7 @@ app-flower-layout {
 .template-information {
   position: relative;
   margin-top: 16px;
+  max-height: 50vh;
 }
 
 .template-description {
@@ -17,7 +18,7 @@ app-flower-layout {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 25%;
+  height: 30%;
   background-color: rgba($color: white, $alpha: 0.85);
   padding: 16px;
 
@@ -27,5 +28,24 @@ app-flower-layout {
 
   p {
     margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
+
+  overflow-y: auto;
+}
+
+.set-container {
+  overflow-y: hidden;
+}
+
+.set-list {
+  overflow-y: auto;
+}
+
+.dialog-content {
+  min-width: 50vw;
+  max-width: 100vh;
 }
