@@ -250,7 +250,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize(new TimePeriod(0), null, 1, true);
+          timerService.initialize(new TimePeriod(0), null, 100, true);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();

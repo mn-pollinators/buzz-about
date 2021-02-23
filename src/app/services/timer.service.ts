@@ -15,20 +15,24 @@ interface TimerState {
   tickSpeed: number;
 
   /**
-   * What the current TimePeriod is.
+   * What the current fractional TimePeriod time is. (A real number between 0
+   * and 48, inclusive.)
    */
-  currentTime: TimePeriod;
+  currentTime: number;
 
   /**
    * When the timer reaches this time period, it will emit a tick for the
    * end time, and then pause itself.
    *
-   * (The end time is an inclusive endpoint.)
+   * (An integer between 0 and 47, inclusive.)
    *
    * If `endTime` is null, the timer will run forever.
    */
-  endTime: TimePeriod;
+  endTime: number;
 }
+
+// the base rate the timer ticks at in ms
+const baseTickSpeed = 100;
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +50,8 @@ export class TimerService {
    */
   currentTime$: Observable<TimePeriod>;
 
+  currentTimePrecise$: Observable<number>;
+
   /**
    * Whether the timer is currently running.
    *
@@ -62,14 +68,15 @@ export class TimerService {
             // We're going to be mutating state, so emit a copy, not the real
             // thing.
             of(Object.assign({}, state)),
-            interval(state.tickSpeed).pipe(
+            interval(baseTickSpeed).pipe(
               // Use map instead of tap to make sure that the pipe waits for
               // the callback to complete.
               map(() => {
-                if (state.endTime !== null && state.currentTime.equals(state.endTime)) {
+                if (state.endTime !== null && state.currentTime >= state.endTime + 1) {
+                  state.currentTime = state.endTime + 1;
                   this.setRunning(false);
                 } else {
-                  state.currentTime = state.currentTime.next();
+                  state.currentTime += baseTickSpeed / state.tickSpeed;
                 }
               }),
               map(() => Object.assign({}, state)),
@@ -80,8 +87,18 @@ export class TimerService {
     );
     this.timerState$.subscribe(() => {});
 
+    this.currentTimePrecise$ = this.timerState$.pipe(
+      map(state => state.currentTime),
+      distinctUntilChanged(),
+      shareReplay(1)
+    );
+    this.currentTimePrecise$.subscribe(() => {});
+
     this.currentTime$ = this.timerState$.pipe(
-      // Don't emit if
+      map(({running, currentTime, endTime}) => ({
+        running,
+        currentTime: new TimePeriod(Math.min(Math.floor(currentTime), endTime ?? Infinity) % 48)
+      })),
       distinctUntilChanged((previousState, currentState) =>
         // the time didn't change
         previousState.currentTime.equals(currentState.currentTime)
@@ -117,7 +134,8 @@ export class TimerService {
    *
    * @param running Whether the timer is currently paused.
    *
-   * @param tickSpeed How many milliseconds there are per tick.
+   * @param tickSpeed How many milliseconds there are per tick. (Note that
+   * there is a limit to the resolution of the timer.)
    *
    * @param startTime The initial time period.
    *
@@ -129,7 +147,7 @@ export class TimerService {
    * If `endTime` is null, the timer will run forever.
    */
   initialize(startTime: TimePeriod, endTime: TimePeriod, tickSpeed: number, running = false) {
-    this.events$.next({currentTime: startTime, endTime, tickSpeed, running});
+    this.events$.next({currentTime: startTime.time, endTime: endTime?.time, tickSpeed, running});
   }
 
   /**
@@ -150,7 +168,7 @@ export class TimerService {
    * timer is running, it will stay running.
    */
   setTime(newTime: TimePeriod) {
-    this.events$.next({currentTime: newTime});
+    this.events$.next({currentTime: newTime.time});
   }
 
 }
