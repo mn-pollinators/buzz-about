@@ -250,18 +250,19 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize(new TimePeriod(0), null, 100, true);
+          const tickSpeed = 100;
+          timerService.initialize(new TimePeriod(0), null, tickSpeed, true);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.updateRoundData).toHaveBeenCalled();
           expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
             {currentTime: 1},
           );
 
           firebaseService.updateRoundData.calls.reset();
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.updateRoundData).toHaveBeenCalled();
           expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
             {currentTime: 2},
@@ -317,7 +318,8 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize(new TimePeriod(0), null, 1, false);
+          const tickSpeed = 100;
+          timerService.initialize(new TimePeriod(0), null, tickSpeed, false);
 
           tick(0);
           expect(firebaseService.addHostEvent.calls.count()).toBe(1);
@@ -327,13 +329,13 @@ describe('TeacherRoundService', () => {
 
           timerService.setRunning(true);
 
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(2);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Play, timePeriod: 0}
           );
 
-          tick(5);
+          tick(5 * tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(2);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Play, timePeriod: 0}
@@ -341,7 +343,7 @@ describe('TeacherRoundService', () => {
 
           timerService.setRunning(false);
 
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(3);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Pause, timePeriod: 6}
