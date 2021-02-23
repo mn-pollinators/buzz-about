@@ -204,12 +204,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1000, false);
           tick(0);
           timerService.setRunning(true);
           tick(0);
@@ -234,12 +229,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1000, false);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();
@@ -260,12 +250,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: true,
-            tickSpeed: 1,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1, true);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();
@@ -292,12 +277,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1000, false);
           tick(0);
           expect(firebaseService.addHostEvent).toHaveBeenCalled();
           expect(firebaseService.addHostEvent.calls.count()).toBe(1);
@@ -315,12 +295,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1000, false);
           tick(0);
           firebaseService.addHostEvent.calls.reset();
           timerService.setRunning(true);
@@ -342,12 +317,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), null, 1, false);
 
           tick(0);
           expect(firebaseService.addHostEvent.calls.count()).toBe(1);

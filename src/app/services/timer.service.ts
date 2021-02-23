@@ -3,8 +3,7 @@ import { Subject, Observable, interval, of, concat } from 'rxjs';
 import { startWith, scan, share, switchMap, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 import { TimePeriod } from '../time-period';
 
-
-export interface TimerState {
+interface TimerState {
   /**
    * Whether the timer is currently paused.
    */
@@ -35,9 +34,9 @@ export interface TimerState {
   providedIn: 'root'
 })
 export class TimerService {
-  events$: Subject<Partial<TimerState>> = new Subject();
+  private events$: Subject<Partial<TimerState>> = new Subject();
 
-  timerState$: Observable<TimerState>;
+  private timerState$: Observable<TimerState>;
 
   /**
    * This is a stream of all of the times emitted by the timer.
@@ -115,9 +114,22 @@ export class TimerService {
    *
    * - You can re-initialize the timer if you want to completely override its
    *   state.
+   *
+   * @param running Whether the timer is currently paused.
+   *
+   * @param tickSpeed How many milliseconds there are per tick.
+   *
+   * @param startTime The initial time period.
+   *
+   * @param endTime When the timer reaches this time period, it will emit a
+   * tick for the end time, and then pause itself.
+   *
+   * (The end time is an inclusive endpoint.)
+   *
+   * If `endTime` is null, the timer will run forever.
    */
-  initialize(startState: TimerState) {
-    this.events$.next(startState);
+  initialize(startTime: TimePeriod, endTime: TimePeriod, tickSpeed: number, running = false) {
+    this.events$.next({currentTime: startTime, endTime, tickSpeed, running});
   }
 
   /**

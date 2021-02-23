@@ -82,12 +82,7 @@ export class TeacherRoundService {
 
     await this.firebaseService.setCurrentRound(roundPath);
 
-    this.timerService.initialize({
-      running: false,
-      tickSpeed: template.tickSpeed,
-      currentTime: template.startTime,
-      endTime: template.endTime
-    });
+    this.timerService.initialize(template.startTime, template.endTime, template.tickSpeed, false);
 
     this.teacherSessionService.currentRoundPath$.next(roundPath);
   }
