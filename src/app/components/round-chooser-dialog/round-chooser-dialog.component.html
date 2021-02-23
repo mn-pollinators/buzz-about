@@ -7,13 +7,13 @@
     </mat-list-option>
   </mat-selection-list>
   <div fxFlex="70" class="set-container">
-    <mat-horizontal-stepper #stepper [@.disabled]="true" class="horizontal-stepper-no-padding">
-      <mat-step *ngFor="let template of currentSets[0].templates; index as i" [label]="template.name" [completed]="false">
+    <mat-horizontal-stepper #stepper [@.disabled]="true" class="horizontal-stepper-no-padding" *ngFor="let currentSet of currentSets">
+      <mat-step *ngFor="let template of currentSet.templates; index as i" [label]="template.name" [completed]="false">
         <div class="template-information" *ngIf="stepper.selectedIndex === i">
           <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
           <div class="template-description mat-body">
-            <h2 class="template-name">{{currentSets[0].name}}: {{template.name}}</h2>
-            <p class="mat-body-2">{{currentSets[0].description}}</p>
+            <h2 class="template-name">{{currentSet.name}}: {{template.name}}</h2>
+            <p class="mat-body-2">{{currentSet.description}}</p>
             <p>{{template.description}}</p>
           </div>
         </div>
@@ -26,7 +26,8 @@
   <button
     color="primary"
     mat-button
-    [mat-dialog-close]="currentSets[0].templates[stepper.selectedIndex]"
+    [disabled]="!currentSets[0]"
+    (click)="startRound()"
   >
     Start
   </button>
