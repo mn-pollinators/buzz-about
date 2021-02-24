@@ -40,9 +40,6 @@ describe('Sets of Round Templates', () => {
                 it('has at least 1 bee', () => {
                   expect(bees.length).toBeGreaterThanOrEqual(1);
                 });
-                it('bee weights add to 1', () => {
-                  expect(bees.reduce((prev, curr) => prev + curr.weight, 0)).toBeCloseTo(1, 10);
-                });
               });
             }
 
