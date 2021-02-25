@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { TimePeriod, Month } from '../../time-period';
 
 /**
@@ -13,6 +13,7 @@ import { TimePeriod, Month } from '../../time-period';
   // View encapsulation disabled because we are styling
   // sub elements of other components that are created dynamically
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimerProgressSpinnerComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class TimerProgressSpinnerComponent implements OnInit {
    * currentTime is allowed to be undefined, in which case the spinner will
    * display as an empty circle. (Which is probably completely invisible.)
    */
-  @Input() currentTime: TimePeriod;
+  @Input() currentTimePrecise: number;
 
   /**
    * The first time period of the round.
@@ -62,9 +63,9 @@ export class TimerProgressSpinnerComponent implements OnInit {
    * should be filled in.
    */
   spinnerPercent(): number {
-    if (!this.currentTime || !this.startTime || !this.endTime) {
+    if (!this.currentTimePrecise || !this.startTime || !this.endTime) {
       return 0;
     }
-    return 100 * (this.endTime.time - this.currentTime.time) / (this.endTime.time - this.startTime.time);
+    return 100 * (this.endTime.time + 1 - this.currentTimePrecise) / (this.endTime.time + 1 - this.startTime.time);
   }
 }

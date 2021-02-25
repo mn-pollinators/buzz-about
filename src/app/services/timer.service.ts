@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, interval, of, concat } from 'rxjs';
-import { startWith, scan, share, switchMap, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
-import { TimePeriod } from '../time-period';
+import { scan, switchMap, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { Month, TimePeriod } from '../time-period';
 
 interface TimerState {
   running: boolean;
@@ -17,7 +17,7 @@ interface TimerState {
 }
 
 // the base rate the timer ticks at in ms
-const baseTickSpeed = 100;
+const baseTickSpeed = 500;
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,8 @@ export class TimerService {
   currentTimePeriod$: Observable<TimePeriod>;
 
   currentTimePrecise$: Observable<number>;
+
+  currentMonth$: Observable<Month>;
 
   /**
    * Whether the timer is currently running.
@@ -93,6 +95,13 @@ export class TimerService {
       shareReplay(1)
     );
     this.currentTimePeriod$.subscribe(() => {});
+
+    this.currentMonth$ = this.currentTimePeriod$.pipe(
+      map(timePeriod => timePeriod.month),
+      distinctUntilChanged(),
+      shareReplay(1)
+    );
+    this.currentMonth$.subscribe();
 
     this.running$ = this.timerState$.pipe(
       map(state => state.running),

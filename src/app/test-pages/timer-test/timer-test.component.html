@@ -19,6 +19,6 @@
       <button (click)="setTimeButton()">Set Time</button>
   </p>
 
-  <app-timer-progress-bar [currentTime]="timer.currentTime$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month"></app-timer-progress-bar>
-  <app-timer-progress-spinner [currentTime]="timer.currentTime$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
+  <app-timer-progress-bar [currentTimePrecise]="timer.currentTimePrecise$ | async" [startMonth]="this.startTime.month" [endMonth]="this.endTime.month" [currentMonth]="timer.currentMonth$ | async"></app-timer-progress-bar>
+  <app-timer-progress-spinner [currentTimePrecise]="timer.currentTimePrecise$ | async" [startTime]="this.startTime" [endTime]="this.endTime"></app-timer-progress-spinner>
 </div>
