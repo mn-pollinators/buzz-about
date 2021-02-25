@@ -4,14 +4,7 @@ import { startWith, scan, share, switchMap, map, distinctUntilChanged, shareRepl
 import { TimePeriod } from '../time-period';
 
 interface TimerState {
-  /**
-   * Whether the timer is currently paused.
-   */
   running: boolean;
-
-  /**
-   * How many milliseconds there are per tick.
-   */
   tickSpeed: number;
 
   /**
@@ -20,14 +13,6 @@ interface TimerState {
    */
   currentTime: number;
 
-  /**
-   * When the timer reaches this time period, it will emit a tick for the
-   * end time, and then pause itself.
-   *
-   * (An integer between 0 and 47, inclusive.)
-   *
-   * If `endTime` is null, the timer will run forever.
-   */
   endTime: number;
 }
 
@@ -72,11 +57,10 @@ export class TimerService {
               // Use map instead of tap to make sure that the pipe waits for
               // the callback to complete.
               map(() => {
-                if (state.endTime !== null && state.currentTime >= state.endTime + 1) {
+                state.currentTime += baseTickSpeed / state.tickSpeed;
+                if (state.currentTime >= state.endTime + 1) {
                   state.currentTime = state.endTime + 1;
                   this.setRunning(false);
-                } else {
-                  state.currentTime += baseTickSpeed / state.tickSpeed;
                 }
               }),
               map(() => Object.assign({}, state)),
@@ -97,7 +81,7 @@ export class TimerService {
     this.currentTime$ = this.timerState$.pipe(
       map(({running, currentTime, endTime}) => ({
         running,
-        currentTime: new TimePeriod(Math.min(Math.floor(currentTime), endTime ?? Infinity) % 48)
+        currentTime: new TimePeriod(Math.min(Math.floor(currentTime), endTime))
       })),
       distinctUntilChanged((previousState, currentState) =>
         // the time didn't change
@@ -139,15 +123,18 @@ export class TimerService {
    *
    * @param startTime The initial time period.
    *
-   * @param endTime When the timer reaches this time period, it will emit a
-   * tick for the end time, and then pause itself.
+   * @param endTime When the timer reaches this time period, it will tick all
+   * the way through the end time, and then pause itself.
    *
    * (The end time is an inclusive endpoint.)
    *
-   * If `endTime` is null, the timer will run forever.
+   * @throws {@link RangeError} if startTime is greater than to endTime
    */
   initialize(startTime: TimePeriod, endTime: TimePeriod, tickSpeed: number, running = false) {
-    this.events$.next({currentTime: startTime.time, endTime: endTime?.time, tickSpeed, running});
+    if (startTime.time > endTime.time) {
+      throw new RangeError('Cannot initialize timer: startTime should come before endTime.');
+    }
+    this.events$.next({currentTime: startTime.time, endTime: endTime.time, tickSpeed, running});
   }
 
   /**
