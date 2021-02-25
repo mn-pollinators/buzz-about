@@ -33,7 +33,7 @@ export class TimerService {
    * It emits whenever the time changes, or whenever the timer is
    * unpaused.
    */
-  currentTime$: Observable<TimePeriod>;
+  currentTimePeriod$: Observable<TimePeriod>;
 
   currentTimePrecise$: Observable<number>;
 
@@ -78,7 +78,7 @@ export class TimerService {
     );
     this.currentTimePrecise$.subscribe(() => {});
 
-    this.currentTime$ = this.timerState$.pipe(
+    this.currentTimePeriod$ = this.timerState$.pipe(
       map(({running, currentTime, endTime}) => ({
         running,
         currentTime: new TimePeriod(Math.min(Math.floor(currentTime), endTime))
@@ -92,7 +92,7 @@ export class TimerService {
       map(state => state.currentTime),
       shareReplay(1)
     );
-    this.currentTime$.subscribe(() => {});
+    this.currentTimePeriod$.subscribe(() => {});
 
     this.running$ = this.timerState$.pipe(
       map(state => state.running),

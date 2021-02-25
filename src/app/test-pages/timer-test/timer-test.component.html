@@ -1,10 +1,10 @@
 <div #contents>
   <br>
   <p>
-    Time: {{ (timer.currentTime$ | async)?.time }}
+    Time: {{ (timer.currentTimePeriod$ | async)?.time }}
   </p>
   <p>
-    {{timer.currentTime$ | async}}
+    {{timer.currentTimePeriod$ | async}}
   </p>
   <p>
     Running: {{ timer.running$ | async }}

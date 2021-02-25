@@ -35,7 +35,7 @@ describe('TimerService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('The currentTime$ observable', () => {
+  describe('The currentTimePeriod$ observable', () => {
     it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
       const previousState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
@@ -52,7 +52,7 @@ describe('TimerService', () => {
       };
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -92,7 +92,7 @@ describe('TimerService', () => {
       tick(0);
 
       const emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
       expect(emittedTimes.pop()).toEqual(initialState.startTime);
@@ -115,7 +115,7 @@ describe('TimerService', () => {
       };
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -157,7 +157,7 @@ describe('TimerService', () => {
       };
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -197,7 +197,7 @@ describe('TimerService', () => {
       };
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -237,7 +237,7 @@ describe('TimerService', () => {
       };
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -278,7 +278,7 @@ describe('TimerService', () => {
       ];
 
       const emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -319,7 +319,7 @@ describe('TimerService', () => {
       ];
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
@@ -358,7 +358,7 @@ describe('TimerService', () => {
         const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
 
         let emittedTimes: TimePeriod[] = [];
-        service.currentTime$.subscribe(currentTime => {
+        service.currentTimePeriod$.subscribe(currentTime => {
           emittedTimes.push(currentTime);
         });
 
@@ -392,7 +392,7 @@ describe('TimerService', () => {
         const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
 
         let emittedTimes: TimePeriod[] = [];
-        service.currentTime$.subscribe(currentTime => {
+        service.currentTimePeriod$.subscribe(currentTime => {
           emittedTimes.push(currentTime);
         });
 
@@ -425,7 +425,7 @@ describe('TimerService', () => {
       const newTime = previousTime;
 
       let emittedTimes: TimePeriod[] = [];
-      service.currentTime$.subscribe(currentTime => {
+      service.currentTimePeriod$.subscribe(currentTime => {
         emittedTimes.push(currentTime);
       });
 
