@@ -1,5 +1,5 @@
 import { TestBed, async, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { TimerService } from './timer.service';
+import { baseTickSpeed, TimerService } from './timer.service';
 import { TimePeriod } from '../time-period';
 import { TestScheduler } from 'rxjs/testing';
 import { NEVER, of } from 'rxjs';
@@ -41,14 +41,14 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: false,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 2),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: false,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       let emittedTimes: TimePeriod[] = [];
@@ -80,7 +80,7 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(1, 1),
         endTime: TimePeriod.fromMonthAndQuarter(1, 2),
         running: false,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       service.initialize(
@@ -104,14 +104,14 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: false,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: true,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       let emittedTimes: TimePeriod[] = [];
@@ -146,14 +146,14 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: false,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
         running: false,
-        tickSpeed: 3,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       let emittedTimes: TimePeriod[] = [];
@@ -186,14 +186,14 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: true,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
         running: false,
-        tickSpeed: 3,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       let emittedTimes: TimePeriod[] = [];
@@ -226,14 +226,14 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(3, 3),
         running: true,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(2, 1),
         endTime: TimePeriod.fromMonthAndQuarter(5, 1),
         running: true,
-        tickSpeed: 3,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       let emittedTimes: TimePeriod[] = [];
@@ -263,7 +263,7 @@ describe('TimerService', () => {
     }));
 
     it('Runs for 2 ticks', fakeAsync(() => {
-      const tickSpeed = 100;
+      const tickSpeed = baseTickSpeed;
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(1, 1),
@@ -304,7 +304,7 @@ describe('TimerService', () => {
     }));
 
     it('Works fine if you initialize it as paused and then set running to true', fakeAsync(() => {
-      const tickSpeed = 300;
+      const tickSpeed = baseTickSpeed * 2;
 
       const initialState = {
         startTime: TimePeriod.fromMonthAndQuarter(1, 1),
@@ -347,7 +347,7 @@ describe('TimerService', () => {
 
     describe('Emits when setTime() changes the time', () => {
       it('...when running', fakeAsync(() => {
-        const tickSpeed = 1000;
+        const tickSpeed = baseTickSpeed * 2;
         const previousState = {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(12, 4),
@@ -386,7 +386,7 @@ describe('TimerService', () => {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(12, 4),
           running: false,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         const newTime = TimePeriod.fromMonthAndQuarter(2, 2);
@@ -418,7 +418,7 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(1, 1),
         endTime: TimePeriod.fromMonthAndQuarter(12, 4),
         running: false,
-        tickSpeed: 100,
+        tickSpeed: baseTickSpeed,
       };
 
       const previousTime = previousState.startTime;
@@ -450,7 +450,7 @@ describe('TimerService', () => {
         startTime: TimePeriod.fromMonthAndQuarter(1, 1),
         endTime: TimePeriod.fromMonthAndQuarter(1, 2),
         running: true,
-        tickSpeed: 2,
+        tickSpeed: 3 * baseTickSpeed,
       };
 
       service.initialize(
@@ -475,14 +475,14 @@ describe('TimerService', () => {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: false,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         const initialState = {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: true,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         let emittedValues: boolean[] = [];
@@ -516,14 +516,14 @@ describe('TimerService', () => {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: false,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         const initialState = {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: true,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         let emittedValues: boolean[] = [];
@@ -559,14 +559,14 @@ describe('TimerService', () => {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: true,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         const initialState = {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: false,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         service.initialize(
@@ -596,7 +596,7 @@ describe('TimerService', () => {
           startTime: TimePeriod.fromMonthAndQuarter(1, 1),
           endTime: TimePeriod.fromMonthAndQuarter(1, 1),
           running: true,
-          tickSpeed: 100,
+          tickSpeed: baseTickSpeed,
         };
 
         let emittedValues: boolean[] = [];

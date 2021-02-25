@@ -17,7 +17,7 @@ interface TimerState {
 }
 
 // the base rate the timer ticks at in ms
-const baseTickSpeed = 500;
+export const baseTickSpeed = 500;
 
 @Injectable({
   providedIn: 'root'
