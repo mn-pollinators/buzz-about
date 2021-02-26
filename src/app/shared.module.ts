@@ -18,6 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgPipesModule } from 'ngx-pipes';
+import { NgxScreenfullModule } from '@ngx-extensions/screenfull';
 
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
@@ -50,6 +51,7 @@ const sharedImportModules = [
   ReactiveFormsModule,
   HttpClientModule,
   NgPipesModule,
+  NgxScreenfullModule,
 ];
 
 const sharedComponents = [
