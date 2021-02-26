@@ -296,10 +296,7 @@ describe('TimerService', () => {
         expect(emittedTimes.pop()).toEqual(time);
       }
 
-      // We really expect the timer to stop after one more tick
-      // But just in case there are floating-point math deltas, tick a bit
-      // over
-      tick(2 * tickSpeed);
+      tick(tickSpeed);
       expect(emittedTimes.length).toEqual(0);
     }));
 
@@ -341,7 +338,7 @@ describe('TimerService', () => {
         expect(emittedTimes.pop()).toEqual(time);
       }
 
-      tick(2 * tickSpeed);
+      tick(tickSpeed);
       expect(emittedTimes.length).toEqual(0);
     }));
 
