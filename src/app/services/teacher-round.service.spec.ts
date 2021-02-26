@@ -1,7 +1,7 @@
 import { TestBed, fakeAsync, inject, tick, discardPeriodicTasks, async } from '@angular/core/testing';
 import { TeacherRoundService } from './teacher-round.service';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { TimerService } from './timer.service';
+import { baseTickSpeed, TimerService } from './timer.service';
 import { TimePeriod } from '../time-period';
 import { allBeeSpecies } from '../bees';
 import { TeacherSessionService } from './teacher-session.service';
@@ -250,7 +250,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          const tickSpeed = 100;
+          const tickSpeed = 5 * baseTickSpeed;
           timerService.initialize(new TimePeriod(0), new TimePeriod(47), tickSpeed, true);
           tick(0);
 
@@ -318,7 +318,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          const tickSpeed = 100;
+          const tickSpeed = 5 * baseTickSpeed;
           timerService.initialize(new TimePeriod(0), new TimePeriod(47), tickSpeed, false);
 
           tick(0);
