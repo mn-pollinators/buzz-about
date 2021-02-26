@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TimePeriod, Month } from '../../time-period';
+import { TimePeriod } from '../../time-period';
 
 describe('TimerProgressSpinnerComponent', () => {
   let component: TimerProgressSpinnerComponent;
@@ -35,16 +35,16 @@ describe('TimerProgressSpinnerComponent', () => {
         expectedSpinnerPercent: 100,
       },
       {
-        currentTimePrecise: TimePeriod.fromMonthAndQuarter(6, 4).time,
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(7, 1).time,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 0,
       },
       {
-        currentTimePrecise: TimePeriod.fromMonthAndQuarter(1, 4).time,
-        startTime: TimePeriod.fromMonthAndQuarter(1, 3),
-        endTime: TimePeriod.fromMonthAndQuarter(2, 2),
-        expectedSpinnerPercent: 100 * 2 / 3,
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(2, 2).time,
+        startTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(2, 4),
+        expectedSpinnerPercent: 100 * 3 / 4,
       },
       {
         currentTimePrecise: undefined,

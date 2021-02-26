@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { TimePeriod, Month } from '../../time-period';
+import { TimePeriod } from '../../time-period';
 
 /**
  * This is a timer shaped like a pie chart that displays how much time is left in the
