@@ -120,8 +120,18 @@ describe('TimerService', () => {
       expect(emittedTimes.pop()).toEqual(initialState.startTime.time);
     }));
 
-    [baseTickSpeed, baseTickSpeed * 1.5, baseTickSpeed * 2, baseTickSpeed * 3].forEach((tickSpeed) => {
+    [
+      baseTickSpeed,
+      baseTickSpeed * 1.33,
+      baseTickSpeed * 1.5,
+      baseTickSpeed * 1.66,
+      baseTickSpeed * 2,
+      baseTickSpeed * 3
+    ].forEach((tickSpeed) => {
       describe(`With a tickSpeed of ${tickSpeed}`, () => {
+
+        const roundedTickSpeed = Math.round(tickSpeed / baseTickSpeed) * baseTickSpeed;
+
         it('Runs for 2 ticks and emits endTime + 1', fakeAsync(() => {
           const initialState = {
             startTime: TimePeriod.fromMonthAndQuarter(1, 1),
@@ -147,14 +157,11 @@ describe('TimerService', () => {
           tick(0);
           expect(emittedTimes.pop()).toEqual(initialTime);
 
-          tick(tickSpeed * 2);
-          tick(tickSpeed);
-          expect(emittedTimes.length).toEqual(((endTime - initialTime) * tickSpeed) / baseTickSpeed);
+          tick(roundedTickSpeed * 2);
           expect(emittedTimes.pop()).toEqual(endTime);
         }));
       });
     });
-
   });
 
   describe('The currentTimePeriod$ observable', () => {
@@ -384,7 +391,17 @@ describe('TimerService', () => {
       discardPeriodicTasks();
     }));
 
-    [baseTickSpeed, baseTickSpeed * 2, baseTickSpeed * 3].forEach((tickSpeed) => {
+    [
+      baseTickSpeed,
+      baseTickSpeed * 1.33,
+      baseTickSpeed * 1.5,
+      baseTickSpeed * 1.66,
+      baseTickSpeed * 2,
+      baseTickSpeed * 3
+    ].forEach((tickSpeed) => {
+
+      const roundedTickSpeed = Math.round(tickSpeed / baseTickSpeed) * baseTickSpeed;
+
       describe(`With a tickSpeed of ${tickSpeed}`, () => {
         it('Runs for 2 ticks', fakeAsync(() => {
           const initialState = {
@@ -414,11 +431,11 @@ describe('TimerService', () => {
           expect(emittedTimes.pop()).toEqual(initialTime);
 
           for (const time of subsequentTimes) {
-            tick(tickSpeed);
+            tick(roundedTickSpeed);
             expect(emittedTimes.pop()).toEqual(time);
           }
 
-          tick(tickSpeed);
+          tick(roundedTickSpeed);
           expect(emittedTimes.length).toEqual(0);
         }));
       });
