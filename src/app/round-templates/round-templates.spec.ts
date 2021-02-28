@@ -1,3 +1,4 @@
+import { baseTickSpeed } from '../services/timer.service';
 import { defaultRoundSets } from './round-templates';
 
 describe('Sets of Round Templates', () => {
@@ -47,8 +48,8 @@ describe('Sets of Round Templates', () => {
             }
 
             it('has a reasonable tickSpeed', () => {
-              expect(tickSpeed).toBeGreaterThanOrEqual(100);
-              expect(tickSpeed).toBeLessThan(100000);
+              expect(tickSpeed).toBeGreaterThanOrEqual(baseTickSpeed); // the minimum our timer can deal with
+              expect(tickSpeed).toBeLessThan(150000); // 2hr round
             });
 
             it('has chronological startTime and endTime', () => {
