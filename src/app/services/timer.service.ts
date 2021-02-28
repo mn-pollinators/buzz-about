@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { tick } from '@angular/core/testing';
 import { Subject, Observable, interval, of, concat } from 'rxjs';
 import { scan, switchMap, map, distinctUntilChanged, shareReplay, take } from 'rxjs/operators';
 import { Month, TimePeriod } from '../time-period';
@@ -7,33 +8,19 @@ interface TimerState {
   running: boolean;
 
   /**
-   * Every [this many] base ticks, the timer will emit one tick.
-   *
-   * This value should be a positive integer.
-   *
-   * A timer tick marks the passing of one `TimePeriod`; the base tick is a
-   * subdivision of the tick, the smallest unit of time the timer can measure.
-   *
-   * Exactly how many base ticks comprise a tick is something that varies
-   * depending on how you set the timer.
+   * How many milliseconds per full TimePeriod tick.
    */
-  baseTicksPerTick: number;
+  tickSpeed: number;
 
   /**
-   * The number of base ticks that have passed since the timer started.
+   * The number of milliseconds that have elapsed (adjusted for startTime).
    */
-  baseTicks: number;
+  currentMs: number;
 
   /**
-   * The number of base ticks that will have passed when the timer completes.
-   *
-   * (You could calculate this from startTime, endTime, and baseTicksPerTick,
-   * but for efficiency's sake we'll just do those calculations ahead of time.)
+   * The time in ms to stop the timer.
    */
-  totalBaseTicks: number;
-
-  startTime: number;
-  endTime: number;
+  endTimeMs: number;
 }
 
 /**
@@ -95,9 +82,10 @@ export class TimerService {
               // Use map instead of tap to make sure that the pipe waits for
               // the callback to complete.
               map(() => {
-                state.baseTicks += 1;
+                state.currentMs += baseTickSpeed;
                 // When we get to the end, stop the timer.
-                if (state.baseTicks >= state.totalBaseTicks) {
+                if (state.currentMs >= state.endTimeMs) {
+                  state.currentMs = state.endTimeMs;
                   this.setRunning(false);
                 }
               }),
@@ -110,8 +98,8 @@ export class TimerService {
     this.timerState$.subscribe(() => {});
 
     this.currentTimePrecise$ = this.timerState$.pipe(
-      map(({startTime, baseTicks, baseTicksPerTick}) =>
-        startTime + baseTicks / baseTicksPerTick
+      map(({currentMs, tickSpeed}) =>
+        currentMs / tickSpeed
       ),
       distinctUntilChanged(),
       shareReplay(1)
@@ -119,20 +107,17 @@ export class TimerService {
     this.currentTimePrecise$.subscribe(() => {});
 
     this.currentTimePeriod$ = this.timerState$.pipe(
-      map(({running, startTime, endTime, baseTicks, baseTicksPerTick}) => ({
+      map(({running, endTimeMs, currentMs, tickSpeed}) => ({
         running,
-        currentTime: new TimePeriod(Math.min(
-          startTime + Math.floor(baseTicks / baseTicksPerTick),
-          endTime,
-        ))
+        currentTime: Math.floor(Math.min(currentMs, endTimeMs - tickSpeed) / tickSpeed)
       })),
       distinctUntilChanged((previousState, currentState) =>
         // the time didn't change
-        previousState.currentTime.equals(currentState.currentTime)
+        previousState.currentTime === currentState.currentTime
           // and the timer wasn't just unpaused.
           && !(!previousState.running && currentState.running)
       ),
-      map(state => state.currentTime),
+      map(state => new TimePeriod(state.currentTime)),
       shareReplay(1)
     );
     this.currentTimePeriod$.subscribe(() => {});
@@ -172,18 +157,18 @@ export class TimerService {
    *
    * (Note that there is a limit to the resolution of the timer; it can't
    * distinguish between intervals smaller than `baseTickSpeed` milliseconds.
-   * Because of this, we recommend that all tick speeds be a multiple of
+   * Because of this, all tick speeds will be rounded to a multiple of
    * `baseTickSpeed`.)
    *
-   * @param startTime The initial time period.
+   * @param startTime The initial TimePeriod.
    *
-   * @param endTime When the timer reaches this time period, it will tick all
+   * @param endTime When the timer reaches this TimePeriod, it will tick all
    * the way through the end time, and then pause itself.
    *
    * (The end time is an inclusive endpoint.)
    *
    * @throws {@link RangeError} if startTime is greater than endTime
-   * @throws {@link ValueError} if tickSpeed is less than baseTickSpeed
+   * @throws {@link RangeError} if tickSpeed is less than baseTickSpeed
    */
   initialize(startTime: TimePeriod, endTime: TimePeriod, tickSpeed: number, running = false) {
     if (startTime.time > endTime.time) {
@@ -192,18 +177,17 @@ export class TimerService {
     if (tickSpeed < baseTickSpeed) {
       throw new RangeError(
         `Cannot initialize timer: timer service doesn't have fine enough`
-        + `resolution to measure durations of ${tickSpeed} milliseconds.`
+        + ` resolution to measure durations of ${tickSpeed} milliseconds.`
       );
     }
 
-    const baseTicksPerTick = Math.round(tickSpeed / baseTickSpeed);
+    // coerce tickSpeed to a multiple of baseTickSpeed
+    tickSpeed = Math.round(tickSpeed / baseTickSpeed) * baseTickSpeed;
 
     const initialState: TimerState = {
-      baseTicks: 0,
-      startTime: startTime.time,
-      endTime: endTime.time,
-      totalBaseTicks: (endTime.time + 1 - startTime.time) * baseTicksPerTick,
-      baseTicksPerTick,
+      endTimeMs: (endTime.time + 1) * tickSpeed, // saves us a bit of math in the main timer loop
+      currentMs: startTime.time * tickSpeed,
+      tickSpeed,
       running
     };
 
@@ -226,12 +210,13 @@ export class TimerService {
    *
    * This method does not pause the timer; if you call `setTime()` while the
    * timer is running, it will stay running.
+   *
+   * @param newTime the new TimePeriod to set the timer to.
    */
-  setTime(newTime: TimePeriod) {
-    this.timerState$.pipe(take(1)).subscribe(({startTime, baseTicksPerTick}) => {
-      this.events$.next({
-        baseTicks: (newTime.time - startTime) * baseTicksPerTick
-      });
+  async setTime(newTime: TimePeriod) {
+    const {tickSpeed} = await this.timerState$.pipe(take(1)).toPromise();
+    this.events$.next({
+      currentMs: newTime.time * tickSpeed
     });
   }
 }
