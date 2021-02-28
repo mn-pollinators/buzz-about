@@ -7,14 +7,36 @@ import { allBeeSpecies } from '../bees';
 import { TeacherSessionService } from './teacher-session.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { SessionStudentData } from '../session';
-import { RoundTemplate, TemplateBee, roundTemplates } from '../round-template';
+import { RoundTemplate, TemplateBee } from '../round-templates/round-templates';
 import { HostEventType } from '../round';
+import { allFlowerSpecies } from '../flowers';
 
 describe('TeacherRoundService', () => {
   let service: TeacherRoundService;
   const fakeSessionId = 'fake-session-id';
   const fakeRoundPath = {sessionId: fakeSessionId, roundId: 'demo-round'};
-  const fakeRoundData: RoundTemplate = roundTemplates[0];
+  const fakeBeeData: TemplateBee[] = [
+    {species: allBeeSpecies.apis_mellifera, weight: 0.8},
+    {species: allBeeSpecies.colletes_simulans, weight: 0.2},
+  ];
+  const fakeRoundData: RoundTemplate = {
+    id: 'x',
+    name: 'Fake Round',
+    tickSpeed: 1000,
+    flowerSpecies: [
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+      allFlowerSpecies.asclepias_syriaca,
+    ],
+    startTime: TimePeriod.fromMonthAndQuarter(4, 1),
+    endTime: TimePeriod.fromMonthAndQuarter(11, 4),
+    bees: fakeBeeData,
+  };
   const fakeStudentData: SessionStudentData[] = [
     {name: 'Bob', id: '1', nestBarcode: 0},
     {name: 'Sam', id: '2', nestBarcode: 0},
@@ -22,10 +44,6 @@ describe('TeacherRoundService', () => {
     {name: 'Jim', id: '4', nestBarcode: 0}
   ];
   const anotherStudent: SessionStudentData = {name: 'Ace', id: '5', nestBarcode: 0};
-  const fakeBeeData: TemplateBee[] = [
-    {species: allBeeSpecies.apis_mellifera, weight: 0.8},
-    {species: allBeeSpecies.colletes_simulans, weight: 0.2},
-  ];
 
   beforeEach(() => {
     const mockCurrentRoundPath$ = new BehaviorSubject<RoundPath>(null);

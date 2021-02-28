@@ -4,6 +4,8 @@ import { RoundChooserDialogComponent } from './round-chooser-dialog.component';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { FlowerSpecies, allFlowerSpecies } from 'src/app/flowers';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatStepperModule } from '@angular/material/stepper';
 
 describe('RoundChooserDialogComponent', () => {
   let component: RoundChooserDialogComponent;
@@ -19,6 +21,8 @@ describe('RoundChooserDialogComponent', () => {
         MatButtonModule,
         MatDialogModule,
         MatListModule,
+        MatStepperModule,
+        NoopAnimationsModule
       ],
       declarations: [
         RoundChooserDialogComponent,
