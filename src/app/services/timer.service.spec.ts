@@ -35,6 +35,28 @@ describe('TimerService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('The initialize() function', () => {
+    it('Throws a RangeError when provided startTime > endTime', () => {
+      expect(() => service.initialize(
+        TimePeriod.fromMonthAndQuarter(11, 1),
+        TimePeriod.fromMonthAndQuarter(2, 4),
+        baseTickSpeed * 2)
+      ).toThrowError(RangeError);
+    });
+    it('Throws a RangeError when provided tickSpeed < baseTickSpeed', () => {
+      expect(() => service.initialize(
+        TimePeriod.fromMonthAndQuarter(2, 1),
+        TimePeriod.fromMonthAndQuarter(11, 4),
+        baseTickSpeed / 2)
+      ).toThrowError(RangeError);
+      expect(() => service.initialize(
+        TimePeriod.fromMonthAndQuarter(2, 1),
+        TimePeriod.fromMonthAndQuarter(11, 4),
+        baseTickSpeed - 1)
+      ).toThrowError(RangeError);
+    });
+  })
+
   describe('The currentTimePeriod$ observable', () => {
     it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
       const previousState = {
