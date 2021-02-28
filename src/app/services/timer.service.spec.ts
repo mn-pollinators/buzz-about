@@ -55,7 +55,104 @@ describe('TimerService', () => {
         baseTickSpeed - 1)
       ).toThrowError(RangeError);
     });
-  })
+  });
+
+  describe('The currentTimePrecise$ observable', () => {
+    it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
+      const previousState = {
+        startTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+        running: false,
+        tickSpeed: 3 * baseTickSpeed,
+      };
+
+      const initialState = {
+        startTime: TimePeriod.fromMonthAndQuarter(2, 2),
+        endTime: TimePeriod.fromMonthAndQuarter(3, 3),
+        running: false,
+        tickSpeed: 3 * baseTickSpeed,
+      };
+
+      let emittedTimes: number[] = [];
+      service.currentTimePrecise$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(
+        previousState.startTime,
+        previousState.endTime,
+        previousState.tickSpeed,
+        previousState.running
+      );
+      tick(0);
+
+      emittedTimes = [];
+      service.initialize(
+        initialState.startTime,
+        initialState.endTime,
+        initialState.tickSpeed,
+        initialState.running
+      );
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialState.startTime.time);
+    }));
+
+    it('Saves the last value and emits it to any new subscribers', fakeAsync(() => {
+      const initialState = {
+        startTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2),
+        running: false,
+        tickSpeed: 3 * baseTickSpeed,
+      };
+
+      service.initialize(
+        initialState.startTime,
+        initialState.endTime,
+        initialState.tickSpeed,
+        initialState.running
+      );
+      tick(0);
+
+      const emittedTimes: number[] = [];
+      service.currentTimePrecise$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+      expect(emittedTimes.pop()).toEqual(initialState.startTime.time);
+    }));
+
+
+    it('Runs for 2 ticks and emits endTime + 1', fakeAsync(() => {
+      const tickSpeed = baseTickSpeed;
+
+      const initialState = {
+        startTime: TimePeriod.fromMonthAndQuarter(1, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(1, 2),
+        running: true,
+        tickSpeed,
+      };
+
+      const initialTime = initialState.startTime.time;
+      const endTime = initialState.endTime.time + 1;
+
+      const emittedTimes: number[] = [];
+      service.currentTimePrecise$.subscribe(currentTime => {
+        emittedTimes.push(currentTime);
+      });
+
+      service.initialize(
+        initialState.startTime,
+        initialState.endTime,
+        initialState.tickSpeed,
+        initialState.running
+      );
+      tick(0);
+      expect(emittedTimes.pop()).toEqual(initialTime);
+
+      tick(tickSpeed * 2);
+      tick(tickSpeed);
+      expect(emittedTimes.pop()).toEqual(endTime);
+    }));
+  });
 
   describe('The currentTimePeriod$ observable', () => {
     it('Emits the value passed to initialize(), if that value is different than the previous value', fakeAsync(() => {
