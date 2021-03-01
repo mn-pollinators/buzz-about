@@ -149,19 +149,24 @@ describe('StudentRoundService', () => {
       n: null,
       E: [],
       P: [
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
       ],
       N: [
-        {barcodeValue: 5, isNest: false} as Interaction,
-        {barcodeValue: 6, isNest: false} as Interaction,
-        {barcodeValue: 0, isNest: true} as Interaction,
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 0, isNest: true, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
       ],
       // This one is just N without the nest interaction. Used to test totalPollen$
       W: [
-        {barcodeValue: 5, isNest: false} as Interaction,
-        {barcodeValue: 6, isNest: false} as Interaction,
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+      ],
+      X: [
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: true} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: true} as Interaction,
       ]
     },
   };
@@ -921,9 +926,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the totalPollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.totalPollen$).toBe(
@@ -972,6 +974,16 @@ describe('StudentRoundService', () => {
       mockCurrentUser$.next(values.authUsers.Z);
       expectObservable(service.totalPollen$).toBe(
         '3-',
+        values.numbers,
+      );
+    });
+
+    scheduledIt('Filters out incompatible flowers', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Z);
+      mockInteractionsZ$.next(values.interactions.X);
+      expectObservable(service.totalPollen$).toBe(
+        '1-',
         values.numbers,
       );
     });
@@ -1104,6 +1116,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
     }));
 
@@ -1114,6 +1127,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
         values.roundPaths.A,
@@ -1125,6 +1139,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
         values.roundPaths.B,
@@ -1138,6 +1153,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
         userId: values.authUsers.X.uid,
@@ -1153,6 +1169,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(7);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
         userId: values.authUsers.Y.uid,

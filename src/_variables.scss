@@ -46,3 +46,7 @@ $custom-typography: mat-typography-config(
   $body-1:        mat-typography-level(16px, 20px, 400),
   $button:        mat-typography-level(16px, 16px, 500),
 );
+
+$typography-config: $custom-typography;
+
+$pollen-color: mat-palette($mat-amber);
