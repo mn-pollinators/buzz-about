@@ -18,6 +18,13 @@ body {
   overscroll-behavior-y: contain;
 }
 
+// The browser usually shrinks monospace font text unless the font is set in absolute units.
+// This fixes it so the font size is respected when we use relative units like rem.
+// See https://code.iamkate.com/html-and-css/fixing-browsers-broken-monospace-font-handling/
+pre, code, kbd, samp, tt{
+  font-family: monospace, monospace;
+}
+
 .main-content {
   height: 100%;
 }
