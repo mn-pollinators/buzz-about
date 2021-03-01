@@ -36,15 +36,14 @@ Funding for this project was provided by the Minnesota Environment and Natural R
 
 The Trust Fund is a permanent fund constitutionally established by the citizens of Minnesota to assist in the protection, conservation, preservation, and enhancement of the state’s air, water, land, fish, wildlife, and other natural resources. Currently 40% of net Minnesota State Lottery proceeds are dedicated to growing the Trust Fund and ensuring future benefits for Minnesota’s environment and natural resources.
 
-
-[Angular Tests badge]: ../../workflows/Angular%20Tests/badge.svg
-[Angular Tests page]: ../../actions?query=workflow%3A"Angular+Tests"
-[Cypress Tests badge]: ../../workflows/Cypress%20Tests/badge.svg
-[Cypress Tests page]: ../../actions?query=workflow%3A"Cypress+Tests"
-[Firebase Tests badge]: ../../workflows/Firebase%20Tests/badge.svg
-[Firebase Tests page]: ../../actions?query=workflow%3A"Firebase+Tests"
-[Deploy badge]: ../../workflows/Firebase%20Deploy/badge.svg
-[Deploy page]: ../../actions?query=workflow%3A"Firebase+Deploy"
+[Angular Tests badge]: ../../actions/workflows/angular-tests.yml/badge.svg
+[Angular Tests page]: ../../actions/workflows/angular-tests.yml
+[Cypress Tests badge]: ../../actions/workflows/cypress.yml/badge.svg
+[Cypress Tests page]: ../../actions/workflows/cypress.yml
+[Firebase Tests badge]: ../../actions/workflows/firebase-tests.yml/badge.svg
+[Firebase Tests page]: ../../actions/workflows/firebase-tests.yml
+[Deploy badge]: ../../actions/workflows/deploy.yml/badge.svg
+[Deploy page]: ../../actions/workflows/deploy.yml
 [Angular]: https://angular.io/
 [Firebase]: https://firebase.google.com/
 [AR Markers]: ./AR_Markers.pdf
