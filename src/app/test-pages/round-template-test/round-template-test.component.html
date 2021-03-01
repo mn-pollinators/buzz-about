@@ -1,36 +1,43 @@
 <h1>Round Templates</h1>
-<div *ngFor="let template of roundTemplates">
-  <h2>{{template.name}}</h2>
-  <div class="template-grid-container">
-    <div>
-      <ul>
-        <li>
-          Flowers
-          <ol>
-            <li *ngFor="let flower of template.flowerSpecies">{{flower.name}} ({{flower.sci_name}})</li>
-          </ol>
-        </li>
-        <li>
-          Bees {{template.bees ? '' : '- randomly selected'}}
-          <ul>
-            <li *ngFor="let bee of template.bees">{{bee.species.name}} ({{bee.species.sci_name}}) - {{bee.weight}}</li>
-          </ul>
-        </li>
-        <li>
-          Timer
-          <ul>
-            <li>Start time: {{template.startTime.toString()}}</li>
-            <li>End time: {{template.endTime.toString()}}</li>
-            <li>tick speed: {{template.tickSpeed}}ms</li>
-            <li>Round length: {{((template.endTime.time - template.startTime.time) * template.tickSpeed) / 1000}}s</li>
-          </ul>
-      </ul>
-    </div>
-    <div>
-      <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
-      <app-timer-progress-bar [startMonth]="template.startTime.month" [endMonth]="template.endTime.month" [currentTimePrecise]="template.startTime.time" [currentMonth]="template.startTime.month"></app-timer-progress-bar>
+<div *ngFor="let set of roundSets">
+  <h2>{{set.name}}</h2>
+  <p>ID: {{set.id}}</p>
+  <p>Description: {{set.description}}</p>
+  <div *ngFor="let template of set.templates">
+    <h3>{{template.name}}</h3>
+    <p>ID: {{template.id}}</p>
+    <p>Description: {{template.description}}</p>
+    <div class="template-grid-container">
       <div>
-        <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.species.art_file}}" width="100px" title="{{bee.species.name}}">
+        <ul>
+          <li>
+            Flowers
+            <ol>
+              <li *ngFor="let flower of template.flowerSpecies">{{flower.name}} ({{flower.sci_name}})</li>
+            </ol>
+          </li>
+          <li>
+            Bees {{template.bees ? '' : '- randomly selected'}}
+            <ul>
+              <li *ngFor="let bee of template.bees">{{bee.species.name}} ({{bee.species.sci_name}}) - {{bee.weight}}</li>
+            </ul>
+          </li>
+          <li>
+            Timer
+            <ul>
+              <li>Start time: {{template.startTime.toString()}}</li>
+              <li>End time: {{template.endTime.toString()}}</li>
+              <li>tick speed: {{template.tickSpeed}}ms</li>
+              <li>Round length: {{((template.endTime.time - template.startTime.time) * template.tickSpeed) / 1000}}s</li>
+            </ul>
+        </ul>
+      </div>
+      <div>
+        <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
+        <app-timer-progress-bar [startMonth]="template.startTime.month" [endMonth]="template.endTime.month" [currentTimePrecise]="template.startTime.time" [currentMonth]="template.startTime.month"></app-timer-progress-bar>
+        <div>
+          <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.species.art_file}}" width="100px" title="{{bee.species.name}}">
+        </div>
       </div>
     </div>
   </div>
