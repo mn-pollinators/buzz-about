@@ -42,3 +42,7 @@ pre, code, kbd, samp, tt{
 .centered-text {
   text-align: center;
 }
+
+.horizontal-stepper-no-padding > .mat-horizontal-content-container {
+  padding: 0;
+}
