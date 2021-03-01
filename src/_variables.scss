@@ -1,4 +1,5 @@
-@import '@angular/material/theming';
+@import "@angular/material/theming";
+@import "@material/typography/variables.import";
 
 $custom-mat-green: map-merge($mat-green, (
   contrast: map-merge(map-get($mat-green, contrast), (
@@ -38,14 +39,43 @@ $tablet-landscape-min-width: 960px;
 //
 // See the base typography settings here:
 // https://github.com/angular/components/blob/9.2.x/src/material/core/typography/_typography.scss
+// $custom-typography: mat-typography-config(
+//   $headline:      mat-typography-level(26px, 34px, 400),
+//   $title:         mat-typography-level(22px, 34px, 500),
+//   $subheading-2:  mat-typography-level(18px, 30px, 400),
+//   $subheading-1:  mat-typography-level(17px, 26px, 400),
+//   $body-2:        mat-typography-level(16px, 26px, 500),
+//   $body-1:        mat-typography-level(16px, 22px, 400),
+//   $caption:       mat-typography-level(14px, 20px, 400),
+//   $input:         mat-typography-level(16px, 1.125, 400)
+// );
+
+// Converts an MDC typography level config to an Angular Material one.
+@function mat-typography-config-level-from-mdc($mdc-level) {
+  $mdc-level-config: map-get($mdc-typography-styles, $mdc-level);
+
+  @return mat-typography-level(
+    map-get($mdc-level-config, font-size),
+    map-get($mdc-level-config, line-height),
+    map-get($mdc-level-config, font-weight),
+    map-get($mdc-level-config, font-family),
+    map-get($mdc-level-config, letter-spacing)
+  );
+}
+
 $custom-typography: mat-typography-config(
-  $headline:      mat-typography-level(26px, 34px, 400),
-  $title:         mat-typography-level(22px, 34px, 500),
-  $subheading-2:  mat-typography-level(18px, 30px, 400),
-  $subheading-1:  mat-typography-level(17px, 26px, 400),
-  $body-2:        mat-typography-level(16px, 26px, 500),
-  $body-1:        mat-typography-level(16px, 22px, 400),
-  $caption:       mat-typography-level(14px, 20px, 400),
+  $display-4: mat-typography-config-level-from-mdc(headline1),
+  $display-3: mat-typography-config-level-from-mdc(headline2),
+  $display-2: mat-typography-config-level-from-mdc(headline3),
+  $display-1: mat-typography-config-level-from-mdc(headline4),
+  $headline: mat-typography-config-level-from-mdc(headline5),
+  $title: mat-typography-config-level-from-mdc(headline6),
+  $subheading-2: mat-typography-config-level-from-mdc(subtitle1),
+  $subheading-1: mat-typography-config-level-from-mdc(subtitle2),
+  $body-2: mat-typography-config-level-from-mdc(body1),
+  $body-1: mat-typography-config-level-from-mdc(body2),
+  $caption: mat-typography-config-level-from-mdc(caption),
+  $button: mat-typography-config-level-from-mdc(button),
 );
 
 $typography-config: $custom-typography;
