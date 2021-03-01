@@ -26,6 +26,16 @@ describe('Sanity Tests', () => {
 describe('TimerService', () => {
   let service: TimerService;
 
+  const testTickSpeeds = [
+    baseTickSpeed,
+    baseTickSpeed * 1.33,
+    baseTickSpeed * 1.5,
+    baseTickSpeed * 1.66,
+    baseTickSpeed * 2,
+    baseTickSpeed * 3,
+    baseTickSpeed * 20
+  ]
+
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [TimerService] });
     service = TestBed.inject(TimerService);
@@ -120,15 +130,8 @@ describe('TimerService', () => {
       expect(emittedTimes.pop()).toEqual(initialState.startTime.time);
     }));
 
-    [
-      baseTickSpeed,
-      baseTickSpeed * 1.33,
-      baseTickSpeed * 1.5,
-      baseTickSpeed * 1.66,
-      baseTickSpeed * 2,
-      baseTickSpeed * 3
-    ].forEach((tickSpeed) => {
-      describe(`With a tickSpeed of ${tickSpeed}`, () => {
+    testTickSpeeds.forEach((tickSpeed) => {
+      describe(`With a tickSpeed of ${tickSpeed}ms`, () => {
 
         const roundedTickSpeed = Math.round(tickSpeed / baseTickSpeed) * baseTickSpeed;
 
@@ -391,18 +394,11 @@ describe('TimerService', () => {
       discardPeriodicTasks();
     }));
 
-    [
-      baseTickSpeed,
-      baseTickSpeed * 1.33,
-      baseTickSpeed * 1.5,
-      baseTickSpeed * 1.66,
-      baseTickSpeed * 2,
-      baseTickSpeed * 3
-    ].forEach((tickSpeed) => {
+    testTickSpeeds.forEach((tickSpeed) => {
 
       const roundedTickSpeed = Math.round(tickSpeed / baseTickSpeed) * baseTickSpeed;
 
-      describe(`With a tickSpeed of ${tickSpeed}`, () => {
+      describe(`With a tickSpeed of ${tickSpeed}ms`, () => {
         it('Runs for 2 ticks', fakeAsync(() => {
           const initialState = {
             startTime: TimePeriod.fromMonthAndQuarter(1, 1),
