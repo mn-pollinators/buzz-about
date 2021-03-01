@@ -34,7 +34,7 @@ describe('TimerService', () => {
     baseTickSpeed * 2,
     baseTickSpeed * 3,
     baseTickSpeed * 20
-  ]
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({ providers: [TimerService] });
