@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -41,6 +42,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatDialogModule,
   MatListModule,
   MatTooltipModule,
+  MatStepperModule,
 ];
 
 const sharedImportModules = [

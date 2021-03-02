@@ -7,7 +7,7 @@ import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
-import { RoundTemplate, TemplateBee } from '../round-template';
+import { RoundTemplate, TemplateBee } from '../round-templates/round-templates';
 
 @Injectable({
   providedIn: 'root'
