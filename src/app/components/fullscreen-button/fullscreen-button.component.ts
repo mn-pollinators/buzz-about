@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ScreenfullService } from '@ngx-extensions/screenfull';
+import { FullscreenService } from 'src/app/services/fullscreen.service';
 
 @Component({
   selector: 'app-fullscreen-button',
@@ -9,10 +9,7 @@ import { ScreenfullService } from '@ngx-extensions/screenfull';
 })
 export class FullscreenButtonComponent implements OnInit {
 
-  constructor(public readonly screenfullService: ScreenfullService) { }
+  constructor(public fullScreenService: FullscreenService) { }
 
-  ngOnInit() {
-
-  }
-
+  ngOnInit() {}
 }

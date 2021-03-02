@@ -1,6 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxScreenfullModule } from '@ngx-extensions/screenfull';
-
 import { FullscreenButtonComponent } from './fullscreen-button.component';
 
 xdescribe('FullscreenButtonComponent', () => {
@@ -9,7 +7,6 @@ xdescribe('FullscreenButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NgxScreenfullModule],
       declarations: [ FullscreenButtonComponent ]
     })
     .compileComponents();
