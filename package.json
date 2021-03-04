@@ -46,6 +46,7 @@
     "ngx-pipes": "^2.7.5",
     "pdfmake": "^0.1.69",
     "rxjs": "~6.5.3",
+    "screenfull": "^5.1.0",
     "studio-backend": "github:AR-js-org/studio-backend#v0.21.0",
     "threear": "github:JamesLMilner/THREEAR#v1.0.0",
     "tslib": "^1.10.0",
