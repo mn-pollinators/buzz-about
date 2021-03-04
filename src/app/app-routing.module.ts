@@ -20,6 +20,7 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'field-guide-test', component: FlowerTestComponent},
 ];
 
 const routes: Routes = [

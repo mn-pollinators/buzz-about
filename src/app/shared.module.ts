@@ -25,6 +25,7 @@ import { HillBackgroundComponent } from './components/hill-background/hill-backg
 import { SentenceCasePipe } from './utils/string-utils';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-indicator.component';
+import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
 
 
 
@@ -64,7 +65,8 @@ const sharedComponents = [
 
 @NgModule({
   declarations: [
-    ...sharedComponents
+    ...sharedComponents,
+    FieldGuideDialogComponent
   ],
   imports: [
     ...sharedImportModules
