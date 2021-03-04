@@ -1,0 +1,27 @@
+@use '../../../variables' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  .title {
+    margin-bottom: 4px;
+    font: {
+      size: mat-font-size($typography-config, headline);
+      weight: mat-font-weight($typography-config, title);
+    }
+  }
+
+  .subtitle {
+    color: mat-color($foreground, secondary-text);
+    font: {
+      size :mat-font-size($typography-config, body-1);
+      style: italic;
+    }
+  }
+
+  .header-image {
+    //width: 152px;
+    height: 152px
+  }
+}

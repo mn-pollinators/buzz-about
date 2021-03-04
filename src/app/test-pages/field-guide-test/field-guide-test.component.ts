@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FieldGuideDialogComponent, FieldGuideDialogData } from 'src/app/components/field-guide-dialog/field-guide-dialog.component';
+import { allFlowerSpecies } from 'src/app/flowers';
 
 @Component({
   selector: 'app-field-guide-test',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FieldGuideTestComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    const dialogData: FieldGuideDialogData = {
+      type: 'flower',
+      value: allFlowerSpecies.zizia_aurea
+    };
+
+    this.dialog.open(FieldGuideDialogComponent, { data: dialogData });
   }
 
 }
