@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RoundChooserDialogComponent } from 'src/app/components/round-chooser-dialog/round-chooser-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FullscreenService } from 'src/app/services/fullscreen.service';
 
 @Component({
   selector: 'app-session-lobby',
@@ -22,7 +23,8 @@ export class SessionLobbyComponent implements OnInit {
     public teacherRoundService: TeacherRoundService,
     public router: Router,
     public matDialog: MatDialog,
-    public matSnackbar: MatSnackBar
+    public matSnackbar: MatSnackBar,
+    public fullscreenService: FullscreenService
   ) {  }
 
   loadingRound$ = new BehaviorSubject<boolean>(false);
@@ -36,6 +38,7 @@ export class SessionLobbyComponent implements OnInit {
 
   public quitSession() {
     this.teacherSessionService.leaveSession();
+    this.fullscreenService.exit();
     this.router.navigate(['/']);
   }
 
