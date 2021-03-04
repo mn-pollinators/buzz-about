@@ -1,7 +1,7 @@
 import { TestBed, fakeAsync, inject, tick, discardPeriodicTasks, async } from '@angular/core/testing';
 import { TeacherRoundService } from './teacher-round.service';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { TimerService } from './timer.service';
+import { baseTickSpeed, TimerService } from './timer.service';
 import { TimePeriod } from '../time-period';
 import { allBeeSpecies, BeeSpecies } from '../bees';
 import { TeacherSessionService } from './teacher-session.service';
@@ -224,12 +224,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), 1000, false);
           tick(0);
           timerService.setRunning(true);
           tick(0);
@@ -254,12 +249,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), 1000, false);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();
@@ -280,23 +270,19 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: true,
-            tickSpeed: 1,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          const tickSpeed = 5 * baseTickSpeed;
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), tickSpeed, true);
           tick(0);
 
           firebaseService.updateRoundData.calls.reset();
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.updateRoundData).toHaveBeenCalled();
           expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
             {currentTime: 1},
           );
 
           firebaseService.updateRoundData.calls.reset();
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.updateRoundData).toHaveBeenCalled();
           expect(firebaseService.updateRoundData.calls.mostRecent().args[1]).toEqual(
             {currentTime: 2},
@@ -312,12 +298,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), 1000, false);
           tick(0);
           expect(firebaseService.addHostEvent).toHaveBeenCalled();
           expect(firebaseService.addHostEvent.calls.count()).toBe(1);
@@ -335,12 +316,7 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1000,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), 1000, false);
           tick(0);
           firebaseService.addHostEvent.calls.reset();
           timerService.setRunning(true);
@@ -362,12 +338,8 @@ describe('TeacherRoundService', () => {
           timerService: TimerService,
           firebaseService: jasmine.SpyObj<Partial<FirebaseService>>,
         ) => {
-          timerService.initialize({
-            running: false,
-            tickSpeed: 1,
-            currentTime: new TimePeriod(0),
-            endTime: null,
-          });
+          const tickSpeed = 5 * baseTickSpeed;
+          timerService.initialize(new TimePeriod(0), new TimePeriod(47), tickSpeed, false);
 
           tick(0);
           expect(firebaseService.addHostEvent.calls.count()).toBe(1);
@@ -377,13 +349,13 @@ describe('TeacherRoundService', () => {
 
           timerService.setRunning(true);
 
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(2);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Play, timePeriod: 0}
           );
 
-          tick(5);
+          tick(5 * tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(2);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Play, timePeriod: 0}
@@ -391,7 +363,7 @@ describe('TeacherRoundService', () => {
 
           timerService.setRunning(false);
 
-          tick(1);
+          tick(tickSpeed);
           expect(firebaseService.addHostEvent.calls.count()).toBe(3);
           expect(firebaseService.addHostEvent.calls.mostRecent().args[1]).toEqual(
             {eventType: HostEventType.Pause, timePeriod: 6}

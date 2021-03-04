@@ -7,7 +7,8 @@
     <div class="large-display-content during-the-round">
       <app-timer-progress-bar
         *ngIf="teacherRoundService.roundTemplate$ | async as template"
-        [currentTime]="timerService.currentTime$ | async"
+        [currentTimePrecise]="timerService.currentTimePrecise$ | async"
+        [currentMonth]="timerService.currentMonth$ | async"
         [startMonth]="template.startTime.month"
         [endMonth]="template.endTime.month"
       >
@@ -17,7 +18,7 @@
 
       <app-timer-progress-spinner
         *ngIf="teacherRoundService.roundTemplate$ | async as template"
-        [currentTime]="timerService.currentTime$ | async"
+        [currentTimePrecise]="timerService.currentTimePrecise$ | async"
         [startTime]="template.startTime"
         [endTime]="template.endTime"
       >
