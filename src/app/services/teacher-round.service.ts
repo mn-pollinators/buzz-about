@@ -7,7 +7,8 @@ import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
 import { filter, take, map, shareReplay } from 'rxjs/operators';
-import { RoundTemplate, TemplateBee } from '../round-templates/round-templates';
+import { RoundTemplate } from '../round-templates/round-templates';
+import { shuffleArray } from '../utils/array-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class TeacherRoundService {
       this.firebaseService.updateRoundData(roundPath, {running});
     });
 
-    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTime$]).pipe(
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTimePeriod$]).pipe(
       filter(([roundPath]) => roundPath !== null),
     ).subscribe(([roundPath, timePeriod]) => {
       this.firebaseService.updateRoundData(roundPath, {
@@ -43,13 +44,13 @@ export class TeacherRoundService {
 
   public readonly roundTemplate$ = new BehaviorSubject<RoundTemplate | null>(null);
 
-  currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTime$]).pipe(
+  currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTimePeriod$]).pipe(
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
     shareReplay(1)
   );
 
   async addHostEvent(eventType: HostEventType) {
-    const time = await this.timerService.currentTime$.pipe(take(1)).toPromise();
+    const time = await this.timerService.currentTimePeriod$.pipe(take(1)).toPromise();
     const roundPath = await this.teacherSessionService.currentRoundPath$.pipe(take(1)).toPromise();
     if (!roundPath) {
       return Promise.reject();
@@ -82,27 +83,32 @@ export class TeacherRoundService {
 
     await this.firebaseService.setCurrentRound(roundPath);
 
-    this.timerService.initialize({
-      running: false,
-      tickSpeed: template.tickSpeed,
-      currentTime: template.startTime,
-      endTime: template.endTime
-    });
+    this.timerService.initialize(template.startTime, template.endTime, template.tickSpeed, false);
 
     this.teacherSessionService.currentRoundPath$.next(roundPath);
   }
 
-  async assignBees(currentRoundPath: RoundPath, bees?: TemplateBee[]) {
+  /**
+   * When no list of bees to use in the round is provided, randomly assign a bee to each student from the list of all bee species.
+   * When an array of bee species is provided, randomly assign a bee to each student from that list.
+   * Note: It does so by randomizing the list of bees and using the new order to assign a bee to each student,
+   * cycling around when the number of students is greater than the number of bees.
+   * @param currentRoundPath the current round's path
+   * @param bees The list of bees to be assigned
+   */
+  async assignBees(currentRoundPath: RoundPath, bees: BeeSpecies[] = Object.values(allBeeSpecies)) {
     const studentList = await this.firebaseService.getStudentsInSession(currentRoundPath.sessionId)
       .pipe(take(1))
       .toPromise();
 
-    // Get the list of students in the session
-    if (bees) {
-      return this.customAssign(studentList, bees, currentRoundPath);
-    } else {
-      return this.defaultAssign(studentList, currentRoundPath);
-    }
+    const shuffledBees = shuffleArray<BeeSpecies>(bees);
+
+    await Promise.all(studentList.map((student, studentIndex) => {
+      const beeIndex = studentIndex % shuffledBees.length;
+
+      return this.firebaseService.addStudentToRound(student.id, currentRoundPath,
+        {beeSpecies: shuffledBees[beeIndex].id});
+    }));
   }
 
   /**
@@ -114,61 +120,5 @@ export class TeacherRoundService {
     await this.firebaseService.setCurrentRound({sessionId, roundId: null});
     this.teacherSessionService.currentRoundPath$.next(null);
     this.roundTemplate$.next(null);
-  }
-
-  /**
-   * When no list of bees to use in the round is provided, randomly assign a bee to each student
-   * Note: It does so by randomizing the list of bees and using the new order to assign a bee to each student
-   * @param studentList the list of students to be assigned
-   * @param path the current round's path
-   */
-  private async defaultAssign(studentList: SessionStudentData[], path: RoundPath) {
-    const shuffledBees = this.shuffleArray<BeeSpecies>(Object.values(allBeeSpecies));
-
-    await Promise.all(studentList.map((student, studentIndex) => {
-      const beeIndex = studentIndex % shuffledBees.length;
-
-      return this.firebaseService.addStudentToRound(student.id, path,
-        {beeSpecies: shuffledBees[beeIndex].id});
-    }));
-  }
-
-  /**
-   * Assigns bees when list of bees is provided.
-   * Right now only works on demoBees.
-   */
-  private async customAssign(studentList: SessionStudentData[], beeList: TemplateBee[], path: RoundPath) {
-    // Shuffle the list of students to be a random order
-    const shuffledStudents = this.shuffleArray<SessionStudentData>(studentList);
-
-    // Assign the students to a bee species based on the weight
-    let currentStudent = 0;
-    // TODO: Change to beeList once a proper round template is created
-    for (const bee of beeList) {
-      const numStudents = Math.floor(bee.weight * shuffledStudents.length);
-      for (let i = currentStudent; i < currentStudent + numStudents; i++) {
-        await this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-          {beeSpecies: bee.species.id});
-      }
-      currentStudent += numStudents;
-    }
-
-    // Randomly assign the leftover students to a bee species
-    for (let i = currentStudent; i < shuffledStudents.length; i++) {
-      const beeIndex = Math.floor(Math.random() * beeList.length);
-      await this.firebaseService.addStudentToRound(shuffledStudents[i].id, path,
-        {beeSpecies: beeList[beeIndex].species.id});
-    }
-  }
-
-  shuffleArray<T>(array: T[]): T[] {
-    const newArray = array.slice(0);
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = newArray[i];
-        newArray[i] = newArray[j];
-        newArray[j] = temp;
-    }
-    return newArray;
   }
 }

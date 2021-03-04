@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TimerProgressSpinnerComponent } from './timer-progress-spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TimePeriod, Month } from '../../time-period';
+import { TimePeriod } from '../../time-period';
 
 describe('TimerProgressSpinnerComponent', () => {
   let component: TimerProgressSpinnerComponent;
@@ -29,55 +29,55 @@ describe('TimerProgressSpinnerComponent', () => {
   describe('The spinnerPercent() method', () => {
     const cases = [
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(4, 1),
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(4, 1).time,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 100,
       },
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(7, 1).time,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 0,
       },
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(1, 4),
-        startTime: TimePeriod.fromMonthAndQuarter(1, 3),
-        endTime: TimePeriod.fromMonthAndQuarter(2, 2),
-        expectedSpinnerPercent: 100 * 2 / 3,
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(2, 2).time,
+        startTime: TimePeriod.fromMonthAndQuarter(2, 1),
+        endTime: TimePeriod.fromMonthAndQuarter(2, 4),
+        expectedSpinnerPercent: 100 * 3 / 4,
       },
       {
-        currentTime: undefined,
+        currentTimePrecise: undefined,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 0,
       },
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(6, 4).time,
         startTime: undefined,
         endTime: TimePeriod.fromMonthAndQuarter(6, 4),
         expectedSpinnerPercent: 0,
       },
       {
-        currentTime: TimePeriod.fromMonthAndQuarter(6, 4),
+        currentTimePrecise: TimePeriod.fromMonthAndQuarter(6, 4).time,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: undefined,
         expectedSpinnerPercent: 0,
       },
       {
-        currentTime: undefined,
+        currentTimePrecise: undefined,
         startTime: TimePeriod.fromMonthAndQuarter(4, 1),
         endTime: undefined,
         expectedSpinnerPercent: 0,
       },
     ];
 
-    for (const {currentTime, startTime, endTime, expectedSpinnerPercent} of cases) {
+    for (const {currentTimePrecise, startTime, endTime, expectedSpinnerPercent} of cases) {
       it(`Returns roughly ${Math.round(expectedSpinnerPercent)} given
           startTime: ${startTime},
           endTime: ${endTime},
-          and currentTime: ${currentTime}`, () => {
-        component.currentTime = currentTime;
+          and currentTimePrecise: ${currentTimePrecise}`, () => {
+        component.currentTimePrecise = currentTimePrecise;
         component.startTime = startTime;
         component.endTime = endTime;
 

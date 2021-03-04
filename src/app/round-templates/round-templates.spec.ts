@@ -1,3 +1,4 @@
+import { baseTickSpeed } from '../services/timer.service';
 import { defaultRoundSets } from './round-templates';
 
 describe('Sets of Round Templates', () => {
@@ -40,15 +41,12 @@ describe('Sets of Round Templates', () => {
                 it('has at least 1 bee', () => {
                   expect(bees.length).toBeGreaterThanOrEqual(1);
                 });
-                it('bee weights add to 1', () => {
-                  expect(bees.reduce((prev, curr) => prev + curr.weight, 0)).toBeCloseTo(1, 10);
-                });
               });
             }
 
             it('has a reasonable tickSpeed', () => {
-              expect(tickSpeed).toBeGreaterThanOrEqual(100);
-              expect(tickSpeed).toBeLessThan(100000);
+              expect(tickSpeed).toBeGreaterThanOrEqual(baseTickSpeed); // the minimum our timer can deal with
+              expect(tickSpeed).toBeLessThan(150000); // 2hr round
             });
 
             it('has chronological startTime and endTime', () => {

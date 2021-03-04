@@ -102,12 +102,12 @@ describe('LargeDisplayComponent', () => {
   describe('After the round starts', () => {
     beforeEach(async(inject([TimerService], (timerService: TimerService) => {
       mockCurrentRoundPath$.next({sessionId: 'demo-session', roundId: 'demo-round'});
-      timerService.initialize({
-        running: false,
-        tickSpeed: 1000,
-        currentTime: TimePeriod.fromMonthAndQuarter(4, 1),
-        endTime: TimePeriod.fromMonthAndQuarter(11, 4),
-      });
+      timerService.initialize(
+        TimePeriod.fromMonthAndQuarter(4, 1),
+        TimePeriod.fromMonthAndQuarter(11, 4),
+        1000,
+        false
+      );
     })));
 
     describe('The toggleTimerRunning() method', () => {

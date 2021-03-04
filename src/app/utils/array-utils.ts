@@ -24,3 +24,14 @@ export function chunk<T>(array: T[], size: number): T[][] {
 export function trackByIndex(index: number, item: any) {
   return index;
 }
+
+export function shuffleArray<T>(array: T[]): T[] {
+  const newArray = array.slice(0);
+  for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = newArray[i];
+      newArray[i] = newArray[j];
+      newArray[j] = temp;
+  }
+  return newArray;
+}
