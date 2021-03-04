@@ -14,7 +14,10 @@ export interface FlowerSpecies {
     image_link: string;
   }[];
   blooming_period: [TimePeriod, TimePeriod][];
-  description: string;
+  description: {
+    summary: string;
+    bees_attracted?: string;
+  };
 }
 
 const allFlowersConverted: {[id: string]: FlowerSpecies} = {};
