@@ -19,7 +19,7 @@
           <li>
             Bees {{template.bees ? '' : '- randomly selected'}}
             <ul>
-              <li *ngFor="let bee of template.bees">{{bee.species.name}} ({{bee.species.sci_name}}) - {{bee.weight}}</li>
+              <li *ngFor="let bee of template.bees">{{bee.name}} ({{bee.sci_name}})</li>
             </ul>
           </li>
           <li>
@@ -36,7 +36,7 @@
         <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
         <app-timer-progress-bar [startMonth]="template.startTime.month" [endMonth]="template.endTime.month" [currentTimePrecise]="template.startTime.time" [currentMonth]="template.startTime.month"></app-timer-progress-bar>
         <div>
-          <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.species.art_file}}" width="100px" title="{{bee.species.name}}">
+          <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.art_file}}" width="100px" title="{{bee.name}}">
         </div>
       </div>
     </div>

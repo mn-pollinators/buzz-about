@@ -10,11 +10,11 @@ const commonAttributes = {
   // (13 seconds per tick * 36 ticks)
   tickSpeed: 10000,
   bees: [
-    { species: allBeeSpecies.agapostemon_virescens, weight: 0.2 },
-    { species: allBeeSpecies.anthophora_bomboides, weight: 0.2 },
-    { species: allBeeSpecies.augochlora_pura, weight: 0.2 },
-    { species: allBeeSpecies.bombus_affinis, weight: 0.2 },
-    { species: allBeeSpecies.xylocopa_virginica, weight: 0.2 },
+    allBeeSpecies.agapostemon_virescens,
+    allBeeSpecies.anthophora_bomboides,
+    allBeeSpecies.augochlora_pura,
+    allBeeSpecies.bombus_affinis,
+    allBeeSpecies.xylocopa_virginica,
   ],
 };
 
