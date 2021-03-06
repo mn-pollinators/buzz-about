@@ -57,7 +57,7 @@ export const beeDescriptionKeys: {[key in (keyof BeeSpecies['description'])] : s
   features: 'Features',
   did_you_know: 'Did you know?',
   chosen_bee: 'Chosen Bee',
-}
+};
 
 const allBeesConverted: {[id: string]: BeeSpecies} = {};
 
@@ -84,7 +84,7 @@ export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
 
 /**
- * Finds the bees attracted by a given flower.
+ * Finds the bees attracted to a given flower.
  * @param flower The `FlowerSpecies` to find bees for.
  * @returns An array of the `BeeSpecies` which list the given flower in their `flowers_accepted`.
  */
