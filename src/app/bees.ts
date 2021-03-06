@@ -45,7 +45,7 @@ export enum BeeSociality {
 /**
  * A map from the keys in a `BeeSpecies` description to nicely formatted strings for display.
  */
-export const beeDescriptionKeys: {[key in (keyof BeeSpecies['description'])] : string} = {
+export const beeDescriptionKeys: {[key in (keyof BeeSpecies['description'])]: string} = {
   genus: 'Genus',
   sociality: 'Sociality',
   nesting: 'Nesting',
