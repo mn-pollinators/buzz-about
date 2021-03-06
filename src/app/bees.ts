@@ -42,6 +42,9 @@ export enum BeeSociality {
   communal,
 }
 
+/**
+ * A map from the keys in a `BeeSpecies` description to nicely formatted strings for display.
+ */
 export const beeDescriptionKeys: {[key in (keyof BeeSpecies['description'])] : string} = {
   genus: 'Genus',
   sociality: 'Sociality',
@@ -80,6 +83,11 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
 export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
 
+/**
+ * Finds the bees attracted by a given flower.
+ * @param flower The `FlowerSpecies` to find bees for.
+ * @returns An array of the `BeeSpecies` which list the given flower in their `flowers_accepted`.
+ */
 export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
   return Object.values(allBeeSpecies).filter(bee => bee.flowers_accepted.includes(flower));
 }

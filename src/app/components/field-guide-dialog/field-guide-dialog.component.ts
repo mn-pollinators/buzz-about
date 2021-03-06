@@ -27,6 +27,9 @@ export class FieldGuideDialogComponent implements OnInit {
   flower = this.data.type === 'flower' ? this.data.value : null;
   bee = this.data.type === 'bee' ? this.data.value : null;
 
+  /**
+   * The list of bee description sections we want to display in the order we want to display them in.
+   */
   beeDescriptionParts: (keyof BeeSpecies['description'])[] = [
     'features',
     'activity',
