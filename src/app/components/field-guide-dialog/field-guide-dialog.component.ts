@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { beeDescriptionKeys, BeeSpecies } from 'src/app/bees';
+import { beeDescriptionKeys, BeeSpecies, getBeesForFlower } from 'src/app/bees';
 import { FlowerSpecies } from 'src/app/flowers';
 
 export type FieldGuideDialogData = {
@@ -45,6 +45,8 @@ export class FieldGuideDialogComponent implements OnInit {
         text: this.bee.description[key]
       }))
     : null;
+
+  acceptedList = this.bee ? this.bee.flowers_accepted : getBeesForFlower(this.flower);
 
   ngOnInit(): void {
   }

@@ -21,7 +21,7 @@ export class FieldGuideTestComponent implements OnInit {
   }
 
   openDialog(data: FieldGuideDialogData) {
-    return this.dialog.open(FieldGuideDialogComponent, { data: data });
+    return this.dialog.open(FieldGuideDialogComponent, { data, panelClass: 'field-guide-panel', width: '800px' });
   }
 
 }

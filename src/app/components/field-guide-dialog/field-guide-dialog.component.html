@@ -6,15 +6,24 @@
   <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
 </div>
 <mat-dialog-content>
-<div *ngIf="flower">
-  <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
-</div>
-<div *ngIf="bee">
-  <dl>
-    <ng-container *ngFor="let desc of beeDescription">
-      <dt class="mat-body-2">{{desc.title}}</dt>
-      <dd>{{desc.text}}</dd>
-    </ng-container>
-  </dl>
-</div>
+  <div *ngIf="flower">
+    <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
+  </div>
+  <div *ngIf="bee">
+    <dl>
+      <ng-container *ngFor="let desc of beeDescription">
+        <dt class="mat-body-2">{{desc.title}}</dt>
+        <dd>{{desc.text}}</dd>
+      </ng-container>
+    </dl>
+  </div>
+  <div>
+    <h3>{{flower ? 'Bees Attracted' : 'Flowers Accepted'}}</h3>
+    <div class="accepted-list">
+      <div *ngFor="let item of acceptedList" class="accepted-list-item">
+        <img src="/assets/art/500w/{{flower ? 'bees' : 'flowers'}}/{{item.art_file}}">
+        <div>{{item.name}}</div>
+      </div>
+    </div>
+  </div>
 </mat-dialog-content>

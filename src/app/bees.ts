@@ -79,3 +79,7 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
 
 export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
+
+export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
+  return Object.values(allBeeSpecies).filter(bee => bee.flowers_accepted.includes(flower));
+}

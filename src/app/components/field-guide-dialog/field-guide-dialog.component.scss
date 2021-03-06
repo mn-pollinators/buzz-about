@@ -25,3 +25,13 @@
   }
 }
 
+.accepted-list {
+  display: flex;
+  overflow-x: auto;
+  .accepted-list-item {
+    margin-right: 8px;
+    img {
+      height: 120px;
+    }
+  }
+}
