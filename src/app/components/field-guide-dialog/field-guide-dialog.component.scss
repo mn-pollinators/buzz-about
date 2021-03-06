@@ -16,7 +16,6 @@
     color: mat-color($foreground, secondary-text);
     font: {
       size :mat-font-size($typography-config, body-1);
-      style: italic;
     }
   }
 
@@ -25,3 +24,4 @@
     height: 152px
   }
 }
+
