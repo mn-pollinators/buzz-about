@@ -42,6 +42,20 @@ export enum BeeSociality {
   communal,
 }
 
+export const beeDescriptionKeys: {[key in (keyof BeeSpecies['description'])] : string} = {
+  genus: 'Genus',
+  sociality: 'Sociality',
+  nesting: 'Nesting',
+  pollen_collection: 'Pollen collection',
+  activity: 'Activity',
+  species: 'Species',
+  brood: 'Brood',
+  forage: 'Foraging behavior',
+  features: 'Features',
+  did_you_know: 'Did you know?',
+  chosen_bee: 'Chosen Bee',
+}
+
 const allBeesConverted: {[id: string]: BeeSpecies} = {};
 
 for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {

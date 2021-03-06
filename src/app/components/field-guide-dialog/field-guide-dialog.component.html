@@ -6,5 +6,15 @@
   <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
 </div>
 <mat-dialog-content>
-
+<div *ngIf="flower">
+{{flower.description.summary}}
+</div>
+<div *ngIf="bee">
+<dl>
+  <ng-container *ngFor="let desc of beeDescription">
+    <dt>{{desc.title}}</dt>
+    <dl>{{desc.text}}</dl>
+  </ng-container>
+</dl>
+</div>
 </mat-dialog-content>
