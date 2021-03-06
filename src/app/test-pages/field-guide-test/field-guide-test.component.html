@@ -1,1 +1,8 @@
-<p>field-guide-test works!</p>
+<h2>Flowers</h2>
+<ul>
+  <li *ngFor="let flower of flowers">{{flower.name}} <button (click)="openDialog({type: 'flower', value: flower})">View</button></li>
+</ul>
+<h2>Bees</h2>
+<ul>
+  <li *ngFor="let bee of bees">{{bee.name}} <button (click)="openDialog({type: 'bee', value: bee})">View</button></li>
+</ul>
