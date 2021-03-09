@@ -16,7 +16,7 @@ export interface BeeSpecies {
     caption: string;
     image_link: string;
   }[];
-  active_period: [TimePeriod, TimePeriod][];
+  active_period: [TimePeriod, TimePeriod];
   description: {
     genus?: string;
     sociality?: string;
@@ -70,12 +70,10 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
       .filter(flowerId => flowerId in allFlowerSpecies)
       .map(flowerId => allFlowerSpecies[flowerId]),
     nest_type: allNests[beeFromJson.nest_type],
-    active_period: beeFromJson.active_period.map(interval =>
-      [
-        TimePeriod.fromIsoDate(interval.split('/')[0]),
-        TimePeriod.fromIsoDate(interval.split('/')[1]),
-      ]
-    ),
+    active_period: [
+      TimePeriod.fromIsoDate(beeFromJson.active_period.split('/')[0]),
+      TimePeriod.fromIsoDate(beeFromJson.active_period.split('/')[1]),
+    ],
     sociality: BeeSociality[beeFromJson.sociality],
   };
 }

@@ -32,11 +32,8 @@ export class FieldGuideDialogComponent implements OnInit {
    */
   beeDescriptionParts: (keyof BeeSpecies['description'])[] = [
     'features',
-    'activity',
-    'forage',
     'pollen_collection',
     'nesting',
-    'brood',
     'did_you_know'
   ];
 

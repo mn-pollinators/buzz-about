@@ -13,7 +13,7 @@ export interface FlowerSpecies {
     caption: string;
     image_link: string;
   }[];
-  blooming_period: [TimePeriod, TimePeriod][];
+  blooming_period: [TimePeriod, TimePeriod];
   description: {
     summary: string;
     bees_attracted?: string;
@@ -26,12 +26,10 @@ for (const [key, flowerFromJson] of Object.entries(allFlowersFromJson)) {
   allFlowersConverted[key] = {
     ...flowerFromJson,
     id: key,
-    blooming_period: flowerFromJson.blooming_period.map(interval =>
-      [
-        TimePeriod.fromIsoDate(interval.split('/')[0]),
-        TimePeriod.fromIsoDate(interval.split('/')[1]),
-      ]
-    )
+    blooming_period: [
+      TimePeriod.fromIsoDate(flowerFromJson.blooming_period.split('/')[0]),
+      TimePeriod.fromIsoDate(flowerFromJson.blooming_period.split('/')[1]),
+    ]
   };
 }
 

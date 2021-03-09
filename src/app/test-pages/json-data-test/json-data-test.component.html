@@ -4,10 +4,7 @@
     {{flowerSpecies.name}} &ndash; {{flowerSpecies.sci_name}}
     <ul>
       <li>
-        Blooming Periods:
-        <ul>
-          <li *ngFor="let bloomingPeriod of flowerSpecies.blooming_period">{{bloomingPeriod[0]}} &ndash; {{bloomingPeriod[1]}}</li>
-        </ul>
+        Blooming Period: {{flowerSpecies.blooming_period[0]}} &ndash; {{flowerSpecies.blooming_period[1]}}
       </li>
       <li>
         <div>File: {{flowerSpecies.art_file}}</div>
@@ -31,10 +28,7 @@
 
       <li>Nest: {{beeSpecies.nest_type.name}}</li>
       <li>
-        Active Periods:
-        <ul>
-          <li *ngFor="let activePeriod of beeSpecies.active_period">{{activePeriod[0]}} &ndash; {{activePeriod[1]}}</li>
-        </ul>
+        Active Period: {{beeSpecies.active_period[0]}} &ndash; {{beeSpecies.active_period[1]}}
       </li>
       <li>
         <details>

@@ -140,7 +140,7 @@ export class StudentRoundService {
     ).pipe(
     map(([species, time]) =>
       species && time
-        ? species.active_period.some(interval => time.fallsWithin(...interval))
+        ? time.fallsWithin(...species.active_period)
         : null
     ),
     distinctUntilChanged(),
