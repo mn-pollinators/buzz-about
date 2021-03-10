@@ -12,6 +12,7 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AboutComponent } from './pages/about/about.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -36,6 +37,7 @@ const routes: Routes = [
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes},
   {path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule)},
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
