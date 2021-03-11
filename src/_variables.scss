@@ -34,5 +34,8 @@ $typography-config: mat-typography-config();
 
 $pollen-color: mat-palette($mat-amber);
 
+$flower-color: mat-palette($custom-mat-green);
+$bee-color: mat-palette($mat-amber);
+
 // How frequently the timer service updates itself.
 $timer-base-tick-speed: 500ms;

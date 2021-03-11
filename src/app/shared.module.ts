@@ -26,6 +26,7 @@ import { SentenceCasePipe } from './utils/string-utils';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-indicator.component';
 import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
+import { SmallTimelineComponent } from './components/small-timeline/small-timeline.component';
 
 
 
@@ -61,12 +62,13 @@ const sharedComponents = [
   SentenceCasePipe,
   BackButtonComponent,
   PollenIndicatorComponent,
+  SmallTimelineComponent,
+  FieldGuideDialogComponent
 ];
 
 @NgModule({
   declarations: [
     ...sharedComponents,
-    FieldGuideDialogComponent
   ],
   imports: [
     ...sharedImportModules

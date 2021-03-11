@@ -17,7 +17,7 @@ export class FieldGuideTestComponent implements OnInit {
   bees = Object.values(allBeeSpecies);
 
   ngOnInit(): void {
-    this.openDialog({type: 'flower', value: allFlowerSpecies.asclepias_syriaca});
+    // this.openDialog({type: 'flower', value: allFlowerSpecies.asclepias_syriaca});
   }
 
   openDialog(data: FieldGuideDialogData) {
