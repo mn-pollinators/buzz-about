@@ -6,7 +6,7 @@ import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../ro
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from '../utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
-import { TimePeriod } from '../time-period';
+import { MAX_TIME, TimePeriod } from '../time-period';
 import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { User } from 'firebase';
 import { AuthService } from './auth.service';
@@ -52,19 +52,19 @@ describe('StudentRoundService', () => {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
-        currentTime: 47,
+        currentTime: MAX_TIME,
       },
       s: {
         flowerSpeciesIds: ['asclepias_syriaca'],
         status: 'fine',
         running: true,
-        currentTime: 47,
+        currentTime: MAX_TIME,
       },
       t: {
         flowerSpeciesIds: [],
         status: 'just swell',
         running: false,
-        currentTime: 47,
+        currentTime: MAX_TIME,
       },
     },
 
@@ -87,12 +87,12 @@ describe('StudentRoundService', () => {
       ],
       R: [
         // Note that both A. syriaca and C. palmata change their blooming
-        // status from time period 25 to time period 47.
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
-        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(47)),
+        // status from time period 25 to the maximum time period.
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(MAX_TIME)),
+        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(MAX_TIME)),
       ],
       S: [
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(MAX_TIME)),
       ],
     },
 
@@ -106,7 +106,7 @@ describe('StudentRoundService', () => {
     times: {
       n: null,
       P: new TimePeriod(25),
-      R: new TimePeriod(47),
+      R: new TimePeriod(MAX_TIME),
     },
 
     booleans: {

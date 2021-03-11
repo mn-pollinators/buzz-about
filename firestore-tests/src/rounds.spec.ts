@@ -1,4 +1,5 @@
 import * as firebase from '@firebase/testing';
+import { MAX_TIME } from 'src/app/time-period';
 import { HostEventType } from '../../src/app/round';
 import {
   createSession,
@@ -43,7 +44,7 @@ describe('Rounds', () => {
 
   it('can only be updated by the teacher', async () => {
     const round = await createRoundInSession(admin, session.id, demoRound);
-    await firebase.assertSucceeds(alice.doc(round.path).update({currentTime: 47}));
+    await firebase.assertSucceeds(alice.doc(round.path).update({currentTime: MAX_TIME}));
     await firebase.assertFails(bob.doc(round.path).update({currentTime: 2}));
     await firebase.assertFails(otherUser.doc(round.path).update({currentTime: 8}));
     await firebase.assertFails(noAuth.doc(round.path).update({currentTime: 36}));
