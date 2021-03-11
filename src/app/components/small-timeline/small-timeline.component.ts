@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ElementRef, Input, OnInit } from '@angular/core';
 import { MAX_TIME, Month, TimePeriod } from 'src/app/time-period';
 import { rangeArray } from 'src/app/utils/array-utils';
 
@@ -20,8 +20,13 @@ export class SmallTimelineComponent implements OnInit {
 
   getMonths(): Month[] {
     switch (this.showMonths) {
-      case 'startAndEnd':
-        return [this.timeRange[0].month, this.timeRange[1].month];
+      case 'startAndEnd': {
+        if (this.timeRange[0].month === this.timeRange[1].month) {
+          return [this.timeRange[0].month];
+        } else {
+          return [this.timeRange[0].month, this.timeRange[1].month];
+        }
+      }
       case 'inRange':
         return rangeArray(this.timeRange[0].month, this.timeRange[1].month);
       case 'all':
@@ -31,7 +36,7 @@ export class SmallTimelineComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
   }

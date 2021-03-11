@@ -46,8 +46,8 @@
 .bottom-text {
   width: 100%;
   position: relative;
-  @include mat-typography-level-to-styles($typography-config, body-1);
-  height: mat-line-height($typography-config, body-1);
+  @include mat-typography-level-to-styles($typography-config, caption);
+  height: mat-line-height($typography-config, caption);
   & > span {
     position: absolute;
     transform: translate(-50%);
