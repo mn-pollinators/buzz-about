@@ -1,5 +1,5 @@
 import * as firebase from '@firebase/testing';
-import { MAX_TIME } from 'src/app/time-period';
+import { MAX_TIME } from '../../src/app/time-period';
 import { HostEventType } from '../../src/app/round';
 import {
   createSession,

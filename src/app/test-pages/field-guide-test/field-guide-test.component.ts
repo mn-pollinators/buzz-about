@@ -27,7 +27,7 @@ export class FieldGuideTestComponent implements OnInit {
     [TimePeriod.fromMonthAndQuarter(12, 1), TimePeriod.fromMonthAndQuarter(12, 4)],
     [new TimePeriod(0), new TimePeriod(4)],
     [new TimePeriod(2), new TimePeriod(2)]
-  ]
+  ];
 
   ngOnInit(): void {
     // this.openDialog({type: 'flower', value: allFlowerSpecies.asclepias_syriaca});
