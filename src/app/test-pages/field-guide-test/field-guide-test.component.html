@@ -1,9 +1,15 @@
+<ul>
+  <li *ngFor="let times of testTimes">
+    {{times[0]}} - {{times[1]}}
+    <app-small-timeline [timeRange]="times" type="flower" showMonths="all"></app-small-timeline>
+  </li>
+</ul>
 <h2>Flowers</h2>
 <ul>
   <li *ngFor="let flower of flowers">
     {{flower.name}}
     <button (click)="openDialog({type: 'flower', value: flower})">View</button>
-    <app-small-timeline [timeRange]="flower.blooming_period" type="flower"></app-small-timeline>
+    <app-small-timeline [timeRange]="flower.blooming_period" type="flower" showMonths="startAndEnd"></app-small-timeline>
   </li>
 </ul>
 <h2>Bees</h2>
@@ -11,6 +17,6 @@
   <li *ngFor="let bee of bees">
     {{bee.name}}
     <button (click)="openDialog({type: 'bee', value: bee})">View</button>
-    <app-small-timeline [timeRange]="bee.active_period" type="bee"></app-small-timeline>
+    <app-small-timeline [timeRange]="bee.active_period" type="bee" showMonths="startAndEnd"></app-small-timeline>
   </li>
 </ul>

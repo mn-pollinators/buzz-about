@@ -2,12 +2,9 @@
   <div class="timeline-outer" >
     <div class="timeline-inner" [ngStyle]="getInnerBarStyle()"></div>
   </div>
-  <div class="bottom-text" *ngIf="showText">
-    <span class="start-month" [ngStyle]="getTextStyle(timeRange[0].month)">
-      {{timeRange[0].monthString | slice:0:3}}
-    </span>
-    <span class="end-month" [ngStyle]="getTextStyle(timeRange[1].month)">
-      {{timeRange[1].monthString | slice:0:3}}
+  <div class="bottom-text" *ngIf="showMonths">
+    <span class="" *ngFor="let month of getMonths()" [ngStyle]="getTextStyle(month)">
+      {{Month[month] | slice:0:3}}
     </span>
   </div>
 </ng-container>
