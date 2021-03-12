@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MAX_TIME, Month, TimePeriod } from 'src/app/time-period';
 import { rangeArray } from 'src/app/utils/array-utils';
 

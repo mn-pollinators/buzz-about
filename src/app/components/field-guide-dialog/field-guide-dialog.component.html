@@ -1,11 +1,18 @@
-<div class="header">
-  <div>
-    <div class="title">{{data.value.name | titlecase}}</div>
-    <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
+
+<mat-dialog-content cdkFocusInitial>
+  <div class="header">
+    <div class="header-text">
+      <div class="title">{{data.value.name | titlecase}}</div>
+      <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
+
+    </div>
+    <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
   </div>
-  <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
-</div>
-<mat-dialog-content>
+  <div class="active-period">
+    <div class="section-header">{{flower ? 'Blooming Period' : 'Active Period'}}</div>
+    <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
+    <app-small-timeline *ngIf="bee" [timeRange]="bee.active_period" type="bee" showMonths="inRange"></app-small-timeline>
+  </div>
   <div *ngIf="flower">
     <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
   </div>
@@ -22,7 +29,7 @@
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
         <img src="/assets/art/500w/{{flower ? 'bees' : 'flowers'}}/{{item.art_file}}">
-        <div>{{item.name}}</div>
+        <div class="accepted-name">{{item.name}}</div>
       </div>
     </div>
   </div>
