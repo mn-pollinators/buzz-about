@@ -8,13 +8,12 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageNotFoundComponent implements OnInit {
-  path: string
+  path: string;
 
   constructor(private route: ActivatedRoute) {
-    this.path = "\"/" + this.route.snapshot.url.join('/') + "\"";
+    this.path = '"/' + this.route.snapshot.url.join('/') + '"';
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }
