@@ -4,7 +4,7 @@
     <mat-card>
       <mat-card-title>Page Not Found</mat-card-title>
       <mat-card-content>
-        Sorry, we couldn't find a page located at {{path}}.
+        Sorry, we couldn't find a page at <code>/{{(route.url | async).join('/')}}</code>.
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-button color="primary" routerLink="/">Navigate to Home</button>
