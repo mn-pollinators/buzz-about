@@ -17,6 +17,8 @@ export class FieldGuideTestComponent implements OnInit {
   flowers = Object.values(allFlowerSpecies);
   bees = Object.values(allBeeSpecies);
 
+  timelineType = 'all';
+
   testTimes = [
     [new TimePeriod(0), MAX_TIME_PERIOD],
     [new TimePeriod(1), MAX_TIME_PERIOD],
@@ -26,7 +28,8 @@ export class FieldGuideTestComponent implements OnInit {
     [new TimePeriod(2), new TimePeriod(3)],
     [TimePeriod.fromMonthAndQuarter(12, 1), TimePeriod.fromMonthAndQuarter(12, 4)],
     [new TimePeriod(0), new TimePeriod(4)],
-    [new TimePeriod(2), new TimePeriod(2)]
+    [new TimePeriod(2), new TimePeriod(2)],
+    [TimePeriod.fromMonthAndQuarter(4, 1), TimePeriod.fromMonthAndQuarter(11, 4)]
   ];
 
   ngOnInit(): void {
