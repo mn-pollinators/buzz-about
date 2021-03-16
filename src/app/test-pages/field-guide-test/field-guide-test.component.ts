@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { allBeeSpecies } from 'src/app/bees';
 import { FieldGuideDialogComponent, FieldGuideDialogData } from 'src/app/components/field-guide-dialog/field-guide-dialog.component';
@@ -10,7 +10,7 @@ import { MAX_TIME, MAX_TIME_PERIOD, TimePeriod } from 'src/app/time-period';
   templateUrl: './field-guide-test.component.html',
   styleUrls: ['./field-guide-test.component.scss']
 })
-export class FieldGuideTestComponent implements OnInit {
+export class FieldGuideTestComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog) { }
 
@@ -32,12 +32,16 @@ export class FieldGuideTestComponent implements OnInit {
     [TimePeriod.fromMonthAndQuarter(4, 1), TimePeriod.fromMonthAndQuarter(11, 4)]
   ];
 
+  ngAfterViewInit(): void {
+    this.openDialog({type: 'bee', value: allBeeSpecies.bombus_affinis});
+  }
+
   ngOnInit(): void {
-    // this.openDialog({type: 'flower', value: allFlowerSpecies.asclepias_syriaca});
+
   }
 
   openDialog(data: FieldGuideDialogData) {
-    return this.dialog.open(FieldGuideDialogComponent, { data, panelClass: 'field-guide-panel', width: '800px' });
+    return this.dialog.open(FieldGuideDialogComponent, { data, panelClass: 'field-guide-panel', maxWidth: null });
   }
 
 }

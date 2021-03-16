@@ -1,31 +1,30 @@
 
-<mat-dialog-content cdkFocusInitial>
-  <div class="header">
-    <div class="header-text">
-      <div class="title">{{data.value.name | titlecase}}</div>
-      <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
+<div class="header">
+  <div class="title">{{data.value.name | titlecase}}</div>
+  <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
+</div>
 
-    </div>
-    <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
-  </div>
+<div class="description">
+  <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
   <div class="active-period">
-    <div class="section-header">{{flower ? 'Blooming Period' : 'Active Period'}}</div>
+    <div class="section-header">{{flower ? 'Blooming Period' : 'Time Active'}}</div>
     <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
     <app-small-timeline *ngIf="bee" [timeRange]="bee.active_period" type="bee" showMonths="inRange"></app-small-timeline>
   </div>
-  <div *ngIf="flower">
+
+
+  <div *ngIf="flower" class="description-text">
     <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
   </div>
-  <div *ngIf="bee">
-    <dl>
-      <ng-container *ngFor="let desc of beeDescription">
-        <dt class="mat-body-2">{{desc.title}}</dt>
-        <dd>{{desc.text}}</dd>
-      </ng-container>
-    </dl>
+  <div *ngIf="bee" class="description-text">
+      <details *ngFor="let desc of beeDescription">
+        <summary class="mat-body-2">{{desc.title}}</summary>
+        {{desc.text}}
+      </details>
   </div>
+
   <div>
-    <h3>{{flower ? 'Bees Attracted' : 'Flowers Accepted'}}</h3>
+    <h3>{{flower ? 'Bees Attracted' : 'Flowers Preferred'}}</h3>
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
         <img src="/assets/art/500w/{{flower ? 'bees' : 'flowers'}}/{{item.art_file}}">
@@ -33,4 +32,5 @@
       </div>
     </div>
   </div>
-</mat-dialog-content>
+
+</div>

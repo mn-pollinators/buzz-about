@@ -1,14 +1,6 @@
 @use '../../../variables' as *;
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap-reverse;
-
-  .header-text {
-    flex-grow: 1;
-  }
-
   .title {
     margin-bottom: 4px;
     font: {
@@ -22,16 +14,15 @@
     @include mat-typography-level-to-styles($typography-config, body-1);
   }
 
-  .header-image {
-    //width: 152px;
-    height: 152px;
-    //margin-left: auto;
-    margin-right: auto;
-  }
+  margin-bottom: 16px;
+}
 
-  & > * {
-    margin-bottom: 16px;
-  }
+.header-image {
+  //width: 152px;
+  display: block;
+  height: 152px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .accepted-list {
@@ -47,6 +38,8 @@
   margin-left: -24px;
   margin-right: -24px;
 
+  padding-bottom: 4px;
+
   &:before, &:after {
     content: '';
     width: 24px;
@@ -60,6 +53,7 @@
       margin-left: auto;
       margin-right: auto;
       height: 56px;
+      margin-bottom: 4px;
     }
     .accepted-name {
       text-align: center;
@@ -68,13 +62,38 @@
   }
 }
 
+.description {
+  display: block;
+  margin: 8px -24px;
+  padding: 0 24px;
+  max-height: 75vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  margin-bottom: -24px;
+
+  &>*:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
 .active-period {
   app-small-timeline {
     //width: 50%;
     //min-width: 250px;
   }
+
 }
+
+.description-text {
+
+}
+
 
 .section-header {
   @include mat-typography-level-to-styles($typography-config, subheading-2);
 }
+
+
+
+
