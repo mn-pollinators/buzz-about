@@ -14,7 +14,7 @@
 <ul>
   <li *ngFor="let flower of flowers">
     {{flower.name}}
-    <button (click)="openSheet({type: 'flower', value: flower})">View</button>
+    <button (click)="openDialog({type: 'flower', value: flower})">View</button>
     <app-small-timeline slanted [timeRange]="flower.blooming_period" type="flower" [showMonths]="timelineType"></app-small-timeline>
   </li>
 </ul>
@@ -22,7 +22,7 @@
 <ul>
   <li *ngFor="let bee of bees">
     {{bee.name}}
-    <button (click)="openSheet({type: 'bee', value: bee})">View</button>
+    <button (click)="openDialog({type: 'bee', value: bee})">View</button>
     <app-small-timeline [timeRange]="bee.active_period" type="bee" [showMonths]="timelineType"></app-small-timeline>
   </li>
 </ul>
