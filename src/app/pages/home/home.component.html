@@ -27,6 +27,7 @@
           Buzz About by Minnesota Pollinators
         </span>
         <span class="about-buttons" fxHide.xs>
+          <button mat-button routerLink="/field-guide">Field Guide</button>
           <button mat-button routerLink="/markers">Markers</button>
           <button mat-button routerLink="/about">About</button>
           <!-- <button mat-button >Privacy Policy</button> -->
@@ -36,6 +37,9 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="/field-guide">
+              Field Guide
+            </button>
             <button mat-menu-item routerLink="/markers">
               Markers
             </button>
