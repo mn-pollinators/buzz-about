@@ -1,6 +1,8 @@
 @use '../../../variables' as *;
 
 .header {
+  position: relative;
+
   .title {
     margin-bottom: 4px;
     font: {
@@ -12,6 +14,13 @@
   .subtitle {
     color: mat-color($foreground, secondary-text);
     @include mat-typography-level-to-styles($typography-config, body-1);
+  }
+
+  .close-button {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    color: mat-color($foreground, secondary-text);
   }
 
   margin-bottom: 16px;
@@ -86,7 +95,14 @@
 }
 
 .description-text {
-
+  details {
+    summary:focus {
+      //outline-color: mat-color($foreground, disabled);
+    }
+    summary::marker, summary::-webkit-details-marker {
+      color: mat-color($foreground, secondary-text);
+    }
+  }
 }
 
 

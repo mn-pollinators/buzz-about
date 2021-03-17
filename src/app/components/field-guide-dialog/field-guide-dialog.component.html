@@ -1,5 +1,8 @@
 
 <div class="header">
+  <button mat-icon-button class="close-button" aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
   <div class="title">{{data.value.name | titlecase}}</div>
   <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
 </div>
@@ -17,10 +20,10 @@
     <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
   </div>
   <div *ngIf="bee" class="description-text">
-      <details *ngFor="let desc of beeDescription">
-        <summary class="mat-body-2">{{desc.title}}</summary>
-        {{desc.text}}
-      </details>
+    <details *ngFor="let desc of beeDescription">
+      <summary class="mat-body-2">{{desc.title}}</summary>
+      {{desc.text}}
+    </details>
   </div>
 
   <div>

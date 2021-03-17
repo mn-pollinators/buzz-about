@@ -41,7 +41,7 @@ export class FieldGuideTestComponent implements OnInit, AfterViewInit {
   }
 
   openDialog(data: FieldGuideDialogData) {
-    return this.dialog.open(FieldGuideDialogComponent, { data, panelClass: 'field-guide-panel', maxWidth: null });
+    return this.dialog.open(FieldGuideDialogComponent, { data, panelClass: 'field-guide-panel', maxWidth: null, autoFocus: false });
   }
 
 }
