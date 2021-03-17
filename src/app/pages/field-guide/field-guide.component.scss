@@ -25,10 +25,15 @@
       display: grid;
       place-items: center;
       img {
+        pointer-events: none;
         display: block;
         max-height: 152px;
         max-width: 100%;
       }
+    }
+
+    .mat-card-title {
+      margin-bottom: 0;
     }
   }
 
