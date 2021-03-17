@@ -1,8 +1,8 @@
 <app-hill-background cover></app-hill-background>
-<app-back-button top-left fxHide.lt-lg routerLink="/"></app-back-button>
+<app-back-button *ngIf="backButton" top-left fxHide.lt-lg routerLink="/"></app-back-button>
 <div class="outer-container">
   <div class="content-container">
-    <app-back-button fxHide.gt-md routerLink="/"></app-back-button>
+    <app-back-button *ngIf="backButton" fxHide.gt-md routerLink="/"></app-back-button>
     <h1>Field Guide</h1>
     <h2>Flowers</h2>
     <div class="flowers item-list">
