@@ -20,9 +20,6 @@ Buzz About uses a third party service Google Firebase to authenticate users and 
 ## Data Security
 Buzz About makes reasonable efforts to avoid the loss, misuse, or unauthorized access, disclosure, alteration or destruction of your data, including personal information. Users should understand that no data storage can guarantee 100 percent security. Because our data is stored using a third party, please reference the Google Firebase privacy policy for more information on how your information may be secured. Again, we cannot guarantee the security of third party services.
 
-## Children’s Privacy
-In compliance with the Children’s Online Privacy Protection Act (COPPA), Buzz About does not knowingly collect, use, or distribute personal information from children under the age of 18 without prior verifiable consent from a parent or guardian. Additionally, Buzz About does not ask children under the age of 18 to divulge more information than is needed to participate in the activity.
-
 ## International Users
 Buzz About was developed and is maintained in the United States, which may not provide the same level of protection as the laws in your jurisdiction. By using Buzz About, you understand and agree that your information may be transferred to and stored on servers located outside of your resident jurisdiction. Furthermore, Buzz About is not responsible for the data’s storage once it has been transferred to a third party service.
 
