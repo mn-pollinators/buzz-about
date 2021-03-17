@@ -2,6 +2,7 @@
 
 .header {
   position: relative;
+  margin-bottom: 16px;
 
   .title {
     margin-bottom: 4px;
@@ -22,12 +23,9 @@
     right: -12px;
     color: mat-color($foreground, secondary-text);
   }
-
-  margin-bottom: 16px;
 }
 
 .header-image {
-  //width: 152px;
   display: block;
   height: 152px;
   margin-left: auto;
@@ -35,18 +33,15 @@
 }
 
 .accepted-list {
-
   display: grid;
   grid-gap: 10px;
   grid-template-columns: 10px;
   grid-template-rows: 1fr;
   grid-auto-flow: column;
   grid-auto-columns: 80px; //TODO
-  //display: flex;
   overflow-x: auto;
   margin-left: -24px;
   margin-right: -24px;
-
   padding-bottom: 4px;
 
   &:before, &:after {
@@ -55,8 +50,6 @@
   }
 
   .accepted-list-item {
-    //margin-right: 8px;
-    //min-width: 80px;
     img {
       display: block;
       margin-left: auto;
@@ -78,7 +71,6 @@
   max-height: 75vh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-
   margin-bottom: -24px;
 
   &>*:not(:last-child) {
@@ -86,18 +78,10 @@
   }
 }
 
-.active-period {
-  app-small-timeline {
-    //width: 50%;
-    //min-width: 250px;
-  }
-
-}
-
 .description-text {
   details {
     summary:focus {
-      //outline-color: mat-color($foreground, disabled);
+      outline-color: mat-color($foreground, disabled-button);
     }
     summary::marker, summary::-webkit-details-marker {
       color: mat-color($foreground, secondary-text);
@@ -105,11 +89,6 @@
   }
 }
 
-
 .section-header {
   @include mat-typography-level-to-styles($typography-config, subheading-2);
 }
-
-
-
-

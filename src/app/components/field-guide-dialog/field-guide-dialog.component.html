@@ -1,4 +1,3 @@
-
 <div class="header">
   <button mat-icon-button class="close-button" aria-label="close dialog" mat-dialog-close>
     <mat-icon>close</mat-icon>
@@ -14,7 +13,6 @@
     <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
     <app-small-timeline *ngIf="bee" [timeRange]="bee.active_period" type="bee" showMonths="inRange"></app-small-timeline>
   </div>
-
 
   <div *ngIf="flower" class="description-text">
     <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
@@ -35,5 +33,4 @@
       </div>
     </div>
   </div>
-
 </div>
