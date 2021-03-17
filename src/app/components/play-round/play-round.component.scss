@@ -1,8 +1,26 @@
-.student-bee {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: 50%;
+@import "../../../variables";
+
+/**
+ * Provide different font sizes depending on the size class of the device.
+ *
+ * This mixin also updates the line-height property, so that it always equals
+ * the font size.
+ */
+@mixin responsive-font-size(
+  $for-phone-portrait,
+  $for-tablet-portrait,
+  $for-tablet-landscape,
+) {
+  font-size: $for-phone-portrait;
+  line-height: $for-phone-portrait;
+  @media (min-width: $tablet-portrait-min-width) {
+    font-size: $for-tablet-portrait;
+    line-height: $for-tablet-portrait;
+  }
+  @media (min-width: $tablet-landscape-min-width) {
+    font-size: $for-tablet-landscape;
+    line-height: $for-tablet-landscape;
+  }
 }
 
 :host {
@@ -12,12 +30,111 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+
+  // Prevent the user from selecting text elements.
+  -webkit-user-select: none;
+  user-select: none;
+
+  touch-action: none;
+}
+
+.cards {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.nest-card, .pollen-card {
+  margin: 4px;
+  @include responsive-font-size(1.5rem, 2rem, 2.5rem);
+}
+
+.pollen-card {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  align-items: center;
+}
+
+.pollen-indicator {
+  // Set the SVG's height in terms of the font size.
+  height: 1em;
+  &:not(:last-child) {
+    margin-right: 0.20em;
+  }
+}
+
+.nest-card {
+  text-align: center;
+
+  .nest-pollen-count {
+    font-weight: 700;
+  }
+}
+
+
+.marker-info {
+  position: relative;
+  margin-top: 16px;
+  margin-bottom: 0;
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.marker-name, .marker-tip {
+  text-align: center;
+
+  font-weight: 500;
+  color: white;
+  // I played around with drop shadows for a while before settling on
+  // a single, wide, dark-grey shadow, which seemed to be the most readable.
+  // (I tried a pure black shadow first, but it had a bit too much visual
+  // noise.)
+  text-shadow: 0 0 0.6em #111;
+}
+
+.marker-name {
+  @include responsive-font-size(2rem, 2.5rem, 3rem);
+}
+
+.marker-tip {
+  margin-top: 8px;
+  @include responsive-font-size(1rem, 1.5rem, 2rem);
+}
+
+.student-bee {
+  // We're setting height in [ngStyle]; that way, when AnimeJS changes the
+  // height, it doesn't flicker as much.
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+}
+
+.thought-bubble {
+  height: 16%;
+  position: absolute;
+  bottom: 30%;
+  // This calculation is a little bit weird, but here's what's happening.
+  // 50% gets us to the center of the screen, and then we add a bit of an
+  // offset to move us farther leftward.
+  // The offset is defined in terms of view height, so if the view height is
+  // halved, the offset is halved.
+  // (This is the same way we're scaling the bee image; if the view height is
+  // halved, the bee image is halved.)
+  right: calc(50% + 8vh);
 }
 
 .interact-button {
   position: absolute;
-  left:50%;
-  transform: translate(-50%, 0);
-  bottom: 5%;
-  text-transform: uppercase;
+  right: 16px;
+  bottom: 16px;
+  width: 112px;
+  height: 112px;
+  .mat-icon {
+    width: 72px;
+    height: 72px;
+  }
 }

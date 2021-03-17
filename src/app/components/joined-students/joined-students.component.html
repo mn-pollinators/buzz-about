@@ -4,12 +4,12 @@
       <div class="student-name">{{student.name}}</div>
       <div>
         <mat-menu #studentConfig="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="renameStudent(student)">
             <mat-icon>edit</mat-icon>
             <span>Rename</span>
           </button>
-          <button mat-menu-item>
-            <mat-icon>exit_to_app</mat-icon>
+          <button mat-menu-item (click)="removeStudent(student)">
+            <mat-icon>person_remove</mat-icon>
             <span>Remove</span>
           </button>
         </mat-menu>

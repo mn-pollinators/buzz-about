@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { roundTemplates } from 'src/app/round-template';
+import { MatStepper } from '@angular/material/stepper';
 import { FlowerSpecies } from 'src/app/flowers';
+import { defaultRoundSets, RoundTemplateSet } from 'src/app/round-templates/round-templates';
 import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
 
 @Component({
@@ -15,13 +16,21 @@ export class RoundChooserDialogComponent implements OnInit {
 
   }
 
-  roundTemplates = roundTemplates;
+  @ViewChild(MatStepper) matStepper: MatStepper;
+
+  roundSets = defaultRoundSets;
+
+  currentSets: RoundTemplateSet[] = [this.roundSets[0]];
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
   ngOnInit(): void {
+  }
+
+  startRound() {
+    this.dialogRef.close(this.currentSets[0].templates[this.matStepper.selectedIndex]);
   }
 
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {

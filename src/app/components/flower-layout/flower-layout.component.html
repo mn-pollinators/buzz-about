@@ -1,9 +1,9 @@
 <app-hill-background></app-hill-background>
-<div class="flowers">
+<div class="flowers" [ngClass]="'flowers-' + items.length">
   <app-flower-layout-item
-  *ngFor="let item of items; trackBy:trackByFlower"
+  *ngFor="let item of items; trackBy:trackByIndex"
   [item]="item"
-  [matTooltip]="item.alt"
+  [matTooltip]="item.alt | sentenceCase"
   [matTooltipDisabled]="!tooltips"
   >
   </app-flower-layout-item>

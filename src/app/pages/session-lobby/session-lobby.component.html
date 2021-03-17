@@ -2,19 +2,41 @@
 <div class="main-view" *ngIf="(loadingRound$ | async) === false else loading">
   <div class="top-content">
     <!--This is not an accident, the div elements are being used to split the upper portion of the page into three even sections-->
-    <div></div>
+    <div class="top-content-left-section"></div>
     <div class="top-content-middle-section">
       <mat-card class="join-code">
-        <mat-card-content>Join at buzzabout.app</mat-card-content>
-        <mat-card-content>With the join code:</mat-card-content>
-        <mat-card-title>{{ teacherSessionService.sessionId$ | async }}</mat-card-title>
+        <ng-container *ngIf="(joinCode$ | async) as joinCode; else noJoinCode">
+          <div class="above-join-code">Join at <b>buzzabout.app</b> with the join code:</div>
+          <h1 class="join-code-text">{{ joinCode.id | slice:0:3 }}&nbsp;{{ joinCode.id | slice:3:6 }}</h1>
+        </ng-container>
+        <ng-template #noJoinCode>
+          <div class="above-join-code">To allow players to join:</div>
+          <div class="create-join-code">
+            <button mat-raised-button color="primary" (click)="createJoinCode()" [disabled]="joinCodeButtonDisabled$ | async">Create join code</button>
+          </div>
+          <div class="below-join-code-button">
+            Join codes expire after one hour
+          </div>
+        </ng-template>
+          <mat-card-actions>
+            <div class="player-count">
+              <mat-icon>person</mat-icon>
+              <span class="player-count-text">&nbsp;{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</span>
+            </div>
+            <button
+              mat-icon-button
+              (click)="deleteJoinCode()"
+              aria-label="Remove join code"
+              matTooltip="Remove join code"
+              [disabled]="(joinCode$ | async) === null"
+            >
+              <mat-icon>block</mat-icon>
+            </button>
+          </mat-card-actions>
       </mat-card>
     </div>
     <div class="top-content-right-section">
-      <div class="player-count">
-        <h1 class="number-of-players">{{(teacherSessionService.studentsInCurrentSession$ | async)?.length}}</h1>
-        <p>{{'Player' | makePluralString: (teacherSessionService.studentsInCurrentSession$ | async)?.length}}</p>
-      </div>
+
     </div>
   </div>
   <div class="player-list">
@@ -36,5 +58,4 @@
 <app-bottom-bar>
   <button left mat-raised-button color="accent" (click)="quitSession()">Quit Session</button>
   <button center mat-raised-button color="accent" (click)="openRoundDialog()" [disabled]="loadingRound$ | async">Start Round</button>
-  <button right mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </app-bottom-bar>

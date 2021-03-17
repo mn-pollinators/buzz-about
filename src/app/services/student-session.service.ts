@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SessionWithId, SessionStudentData } from '../session';
-import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { switchMap, shareReplay, map, distinctUntilChanged, take } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, combineLatest, NEVER } from 'rxjs';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, tap, filter, mapTo, catchError } from 'rxjs/operators';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { AuthService } from './auth.service';
 
@@ -16,14 +16,20 @@ export class StudentSessionService {
   sessionId$ = new BehaviorSubject<string | null>(null);
 
 
-  currentSessionWithState$: Observable<{sessionIdSet: boolean, session: SessionWithId}> = this.sessionId$.pipe(
+  currentSessionWithState$: Observable<{heardBackFromFirebase: boolean, session: SessionWithId | null}> = this.sessionId$.pipe(
     switchMap(sessionId =>
       sessionId
-        ? this.firebaseService.getSession(sessionId).pipe(map(session => ({
-          sessionIdSet: true,
-          session
-        })))
-        : of({sessionIdSet: false, session: null})
+        ? this.firebaseService.getSession(sessionId).pipe(
+          map(session => ({
+            heardBackFromFirebase: true,
+            session
+          })),
+          catchError(() => of({
+            heardBackFromFirebase: true,
+            session: null
+          }))
+        )
+        : of({heardBackFromFirebase: false, session: null})
     ),
     shareReplay(1),
   );
@@ -62,6 +68,11 @@ export class StudentSessionService {
     shareReplay(1)
   );
 
+  sessionStudentRemoved$: Observable<void> = combineLatest([this.sessionId$, this.authService.currentUser$]).pipe(
+    switchMap(([sessionId, user]) => sessionId && user ? this.firebaseService.sessionStudentRemoved(sessionId, user.uid) : NEVER)
+  );
+
+
   /**
    * Leave a session, if the student is connected to a session.
    *
@@ -82,6 +93,12 @@ export class StudentSessionService {
     this.sessionId$.next(sessionId);
   }
 
+  private getSessionIdFromJoinCode(joinCodeId: string) {
+    return this.firebaseService.getJoinCode(joinCodeId).pipe(
+      map(joinCode => joinCode.sessionId)
+    );
+  }
+
   /**
    * Register the current student as one of the members of this session.
    *
@@ -91,10 +108,14 @@ export class StudentSessionService {
    * the `setCurrentSession()` method.)
    *
    * @param studentData the Student's data for this session
-   * @param session ID of the session the student should be added to
+   * @param joinCodeId join code of the session the student should be added to
+   *
+   * @returns the session ID of the session the student has joined
    */
-  async joinSession(studentData: SessionStudentData, sessionId: string) {
+  async joinSession(studentData: SessionStudentData, joinCodeId: string): Promise<string> {
     const user = await this.authService.currentUser$.pipe(take(1)).toPromise();
-    return this.firebaseService.addStudentToSession(user.uid, sessionId, studentData);
+    const sessionId = await this.getSessionIdFromJoinCode(joinCodeId).toPromise();
+    await this.firebaseService.addStudentToSession(user.uid, sessionId, studentData);
+    return sessionId;
   }
 }

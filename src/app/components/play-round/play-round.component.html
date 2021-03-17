@@ -1,17 +1,57 @@
-<app-ar-view [markers]="arMarkers$ | async" [debug]="false" (markerStates)="this.onMarkerState($event)"></app-ar-view>
+<app-ar-view [markers]="arMarkers$ | async" (foundMarker)="this.onFoundMarker($event)"></app-ar-view>
+
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
   src="/assets/art/500w/bees/{{bee.art_file}}"
-  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')'}"
+  [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
   [alt]="bee.name"
 >
+
+<app-thought-bubble
+  *ngIf="(this.foundRoundMarker$ | async)?.thoughtBubble as thoughtBubble"
+  class="thought-bubble"
+  [type]="thoughtBubble"
+></app-thought-bubble>
+
+
+<div class="cards">
+  <mat-card class='pollen-card'>
+    <app-pollen-indicator
+      *ngFor="let pollenCount of rangeArray(1, MAX_CURRENT_POLLEN)"
+      class="pollen-indicator"
+      [full]="pollenCount <= (studentRoundService.currentBeePollen$ | async)"
+    >
+    </app-pollen-indicator>
+  </mat-card>
+
+  <mat-card class="nest-card" *ngIf="(this.foundRoundMarker$ | async)?.isNest">
+    Pollen in nest:
+    <span class="nest-pollen-count">
+      {{(this.studentRoundService.currentNestPollen$ | async)}}
+    </span>
+  </mat-card>
+</div>
+
+<div class="marker-info" *ngIf="this.foundRoundMarker$ | async as marker">
+  <div class="marker-name">
+    {{marker.name | titlecase}}
+  </div>
+  <div class="marker-tip" *ngIf="marker.tip as tip">
+    {{tip | sentenceCase }}
+  </div>
+</div>
+
 <button
-  mat-raised-button
+  *ngIf="this.foundRoundMarker$ | async as marker"
+  mat-fab
   class="interact-button"
   color="primary"
-  *ngIf="this.foundRoundMarker$ | async as marker" [disabled]="!marker.active"
-  (click)="clickInteract(marker)"
+  [disabled]="interactionInProgress || !marker.canVisit"
+  (click)="clickInteract()"
+  aria-label="Interact"
 >
-  Visit {{marker.name}}
+  <mat-icon [svgIcon]="marker.isNest ? 'arrow-home' : 'arrow-flower'">
+  </mat-icon>
 </button>
+

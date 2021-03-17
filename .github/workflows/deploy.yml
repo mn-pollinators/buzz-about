@@ -27,6 +27,7 @@ jobs:
       run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CYPRESS_INSTALL_BINARY: 0
     - name: Build (npm run build)
       run: npm run build -- --prod

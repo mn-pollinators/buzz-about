@@ -6,17 +6,31 @@
   grid-template-columns: 100%;
   margin-left: 8px;
   margin-right: 8px;
-  overflow-y: scroll;
 }
 
-.lccmr-card {
-  max-width: 600px;
-  margin-bottom: 16px;
+.about-container {
+  max-width: 600px + 32px;
+  padding-bottom: 16px;
+  width: 100%;
+}
+
+.about-card {
   margin-left: 8px;
   margin-right: 8px;
+  mat-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    .about-buttons {
+      white-space: nowrap;
+    }
+  }
 }
 
 .main-section {
+  padding-top: 8px;
+  padding-bottom: 8px;
   max-width: 600px + 32px;
   width: 100%;
   display: flex;
@@ -35,4 +49,12 @@
     flex-basis: 100%;
     flex: 1;
   }
+}
+
+// We are setting the size of the Buzz About icon to 1x1 in the HTML
+// to hint to the browser what its aspect ratio is.
+// Because of that, we need to set `height: auto` here to allow it to
+// continue to scale by width.
+.mat-card-image {
+  height: auto
 }

@@ -8,7 +8,7 @@
     <span
         *ngFor="let month of getMonths()"
         class="progressMonth"
-        [ngClass]="{'currentMonth': this.currentTime?.month === month}"
+        [ngClass]="{'currentMonth': this.currentMonth === month}"
     >
       {{Month[month]}}
     </span>

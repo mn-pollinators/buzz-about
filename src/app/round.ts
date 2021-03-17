@@ -1,6 +1,7 @@
 import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
-import { firestore } from 'firebase';
+import * as firebase from 'firebase/app';
+import firestore = firebase.firestore;
 
 
 /**
@@ -39,6 +40,8 @@ export interface Interaction {
   timePeriod: number;
   userId: string;
   barcodeValue: number;
+  isNest: boolean;
+  incompatibleFlower: boolean;
 }
 
 /**

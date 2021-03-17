@@ -1,0 +1,30 @@
+<ng-container [ngSwitch]="currentScreen$ | async">
+
+  <app-play-round *ngSwitchCase="ScreenId.Play"></app-play-round>
+
+  <ng-container *ngSwitchDefault>
+    <app-hill-background cover></app-hill-background>
+    <div class="centered-container centered-text" [ngSwitch]="currentScreen$ | async">
+
+      <mat-card *ngSwitchCase="ScreenId.Paused">
+        <mat-card-title>Paused</mat-card-title>
+      </mat-card>
+
+      <mat-card *ngSwitchCase="ScreenId.InactiveBee">
+        <img
+          class="student-bee"
+          *ngIf="(roundService.currentBeeSpecies$ | async) as bee"
+          src="/assets/art/500w/bees/{{bee.art_file}}"
+          [alt]="bee.name"
+        >
+        <mat-card-title>
+          {{(roundService.currentBeeSpecies$ | async).name | sentenceCase}}s are not active right now
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="(nextActivePeriodText$| async) as nextActivePeriodText">
+          You will next be active {{nextActivePeriodText}}
+        </mat-card-subtitle>
+      </mat-card>
+
+    </div>
+  </ng-container>
+</ng-container>

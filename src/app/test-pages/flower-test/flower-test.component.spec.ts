@@ -9,6 +9,7 @@ import { FullscreenButtonComponent } from '../../components/fullscreen-button/fu
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { SentenceCasePipe } from 'src/app/utils/string-utils';
 
 describe('FlowerTestComponent', () => {
   let component: FlowerTestComponent;
@@ -28,6 +29,7 @@ describe('FlowerTestComponent', () => {
         FlowerLayoutComponent,
         FlowerLayoutItemComponent,
         FullscreenButtonComponent,
+        SentenceCasePipe
       ],
     })
     .compileComponents();

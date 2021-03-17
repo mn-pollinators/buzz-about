@@ -27,6 +27,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest",
+              "src/robots.txt",
               {
                 "glob": "**/*",
                 "input": "node_modules/@mn-pollinators/assets/art-resized",
@@ -34,7 +35,9 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/typeface-roboto/index.css",
+              "node_modules/material-design-icons-iconfont/dist/material-design-icons.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -122,7 +125,7 @@
             "tsConfig": [
               "tsconfig.app.json",
               "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "cypress/tsconfig.json"
             ],
             "exclude": [
               "**/node_modules/**"
