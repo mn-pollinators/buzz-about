@@ -1,0 +1,56 @@
+.item-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: -8px;
+  margin-right: -8px;
+
+  .item-card {
+    user-select: none;
+
+    // Chosen so that, when the item list is at its largest width, exactly six
+    // cards fit on a row.
+    width: 152px;
+
+    margin: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .image-container {
+      height: 152px;
+      margin-bottom: 16px;
+      display: grid;
+      place-items: center;
+      img {
+        display: block;
+        max-height: 152px;
+        max-width: 100%;
+      }
+    }
+  }
+
+  // Add an extra dom element after all the items that can grow to make sure
+  // that the last row is left-aligned.
+  &::after {
+    content: "";
+    flex: auto;
+  }
+}
+
+.outer-container {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 16px;
+}
+
+h1, h2 {
+  position: relative;
+}

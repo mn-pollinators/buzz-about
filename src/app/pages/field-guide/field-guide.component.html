@@ -1,0 +1,36 @@
+<app-hill-background cover></app-hill-background>
+<app-back-button top-left fxHide.lt-lg routerLink="/"></app-back-button>
+<div class="outer-container">
+  <div class="content-container">
+    <app-back-button fxHide.gt-md routerLink="/"></app-back-button>
+    <h1>Field Guide</h1>
+    <h2>Flowers</h2>
+    <div class="flowers item-list">
+      <mat-card
+        *ngFor="let flower of flowers"
+        matRipple
+        (click)="openDialog({ type: 'flower', value: flower })"
+        class="item-card"
+      >
+        <div class="image-container">
+          <img src="/assets/art/500w/flowers/{{ flower.art_file }}" />
+        </div>
+        <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+    <h2>Bees</h2>
+    <div class="bees item-list">
+      <mat-card
+        *ngFor="let bee of bees"
+        matRipple
+        (click)="openDialog({ type: 'bee', value: bee })"
+        class="item-card"
+      >
+        <div class="image-container">
+          <img src="/assets/art/500w/bees/{{ bee.art_file }}" />
+        </div>
+        <mat-card-title>{{ bee.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+</div>

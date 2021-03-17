@@ -13,6 +13,7 @@ import { HostSessionComponent } from './pages/host-session/host-session.componen
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AboutComponent } from './pages/about/about.component';
 import { FieldGuideTestComponent } from './test-pages/field-guide-test/field-guide-test.component';
+import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -34,6 +35,7 @@ const routes: Routes = [
   },
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
+  {path: 'field-guide', component: FieldGuideComponent},
   {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes},
