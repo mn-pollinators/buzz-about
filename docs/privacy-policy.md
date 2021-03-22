@@ -1,6 +1,6 @@
 # Privacy Policy
 
-*Effective 2020-10-05*
+*Effective 2021-03-22*
 
 ## Collection of Information
 
