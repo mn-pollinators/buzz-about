@@ -1,19 +1,10 @@
 .item-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-left: -8px;
-  margin-right: -8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(152px, 100%), 1fr));
+  grid-gap: 16px;
 
   .item-card {
     user-select: none;
-
-    // Chosen so that, when the item list is at its largest width, exactly six
-    // cards fit on a row.
-    width: 152px;
-
-    margin: 8px;
 
     &:hover {
       cursor: pointer;
@@ -49,10 +40,14 @@
   height: 100%;
   display: grid;
   place-items: center;
+
+  margin-left: 16px;
+  margin-right: 16px;
 }
 
 .content-container {
   max-width: 1200px;
+  width: 100%;
   margin: 16px;
 }
 
