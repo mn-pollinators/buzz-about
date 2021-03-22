@@ -1,7 +1,13 @@
+$content-width: 1200px;
+$content-margin: 16px;
+$num-cols-max: 6;
+$item-max-width: ($content-width - (($num-cols-max - 1) * $content-margin)) / $num-cols-max;
+$item-img-height: 152px;
+
 .item-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(152px, 100%), 1fr));
-  grid-gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(#{$item-max-width}, max(#{$item-img-height}, 50% - #{$content-margin * 3})), 1fr));
+  grid-gap: $content-margin;
 
   .item-card {
     user-select: none;
@@ -11,14 +17,14 @@
     }
 
     .image-container {
-      height: 152px;
+      height: $item-img-height;
       margin-bottom: 16px;
       display: grid;
       place-items: center;
       img {
         pointer-events: none;
         display: block;
-        max-height: 152px;
+        max-height: $item-img-height;
         max-width: 100%;
       }
     }
@@ -28,27 +34,21 @@
     }
   }
 
-  // Add an extra dom element after all the items that can grow to make sure
-  // that the last row is left-aligned.
-  &::after {
-    content: "";
-    flex: auto;
-  }
+  margin-bottom: $content-margin;
 }
 
 .outer-container {
   height: 100%;
   display: grid;
   place-items: center;
-
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: $content-margin;
+  margin-right: $content-margin;
 }
 
 .content-container {
-  max-width: 1200px;
+  max-width: $content-width;
   width: 100%;
-  margin: 16px;
+  margin-top: $content-margin;
 }
 
 h1, h2 {
