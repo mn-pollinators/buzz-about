@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { FieldGuideComponent } from './field-guide.component';
 
@@ -8,7 +9,8 @@ describe('FieldGuideComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FieldGuideComponent ]
+      declarations: [ FieldGuideComponent ],
+      imports: [MatDialogModule]
     })
     .compileComponents();
   }));
