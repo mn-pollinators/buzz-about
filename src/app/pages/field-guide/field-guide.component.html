@@ -14,7 +14,7 @@
         [attr.data-cy]="flower.id"
       >
         <div class="image-container">
-          <img src="/assets/art/500w/flowers/{{ flower.art_file }}" />
+          <img [src]="flower.asset_urls.art_500_wide">
         </div>
         <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
       </mat-card>
@@ -29,7 +29,7 @@
         [attr.data-cy]="bee.id"
       >
         <div class="image-container">
-          <img src="/assets/art/500w/bees/{{ bee.art_file }}" />
+        <img [src]="bee.asset_urls.art_500_wide">
         </div>
         <mat-card-title>{{ bee.name | titlecase }}</mat-card-title>
       </mat-card>
