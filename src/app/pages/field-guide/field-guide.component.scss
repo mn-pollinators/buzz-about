@@ -40,7 +40,7 @@ $item-img-height: 152px;
     }
   }
 
-  margin-bottom: $content-margin;
+  margin-bottom: $content-margin * 3;
 }
 
 .outer-container {
@@ -57,8 +57,13 @@ $item-img-height: 152px;
   margin-top: $content-margin;
 }
 
-h1, h2 {
+.header-text {
   position: relative;
+  text-shadow:
+    0 0 6px white,
+    0 0 8px white,
+    0 0 10px white;
+  margin-bottom: 8px;
 }
 
 .back-left {
@@ -76,4 +81,8 @@ h1, h2 {
   .back-left {
     display: block;
   }
+}
+
+.back-top {
+  margin-bottom: $content-margin;
 }

@@ -23,7 +23,7 @@ export interface FlowerSpecies {
     art_512_square: string;
     art_512_square_grayscale: string;
   };
-};
+}
 
 const allFlowersConverted: {[id: string]: FlowerSpecies} = {};
 

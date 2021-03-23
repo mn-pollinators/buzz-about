@@ -3,8 +3,8 @@
 <div class="outer-container">
   <div class="content-container">
     <app-back-button *ngIf="backButton" class="back-top" routerLink="/"></app-back-button>
-    <h1>Field Guide</h1>
-    <h2>Flowers</h2>
+    <div class="mat-display-2 header-text title" role="heading" aria-level="1">Field Guide</div>
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Flowers</div>
     <div class="flowers item-list">
       <mat-card
         *ngFor="let flower of flowers"
@@ -19,8 +19,8 @@
         <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
       </mat-card>
     </div>
-    <h2>Bees</h2>
-    <div class="bees item-list">
+    <div class="mat-display-1 header-text">Bees</div>
+    <div class="bees item-list" role="heading" aria-level="2">
       <mat-card
         *ngFor="let bee of bees"
         matRipple
@@ -29,7 +29,7 @@
         [attr.data-cy]="bee.id"
       >
         <div class="image-container">
-        <img [src]="bee.asset_urls.art_500_wide">
+          <img [src]="bee.asset_urls.art_500_wide">
         </div>
         <mat-card-title>{{ bee.name | titlecase }}</mat-card-title>
       </mat-card>
