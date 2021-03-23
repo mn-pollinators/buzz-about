@@ -11,6 +11,7 @@
         matRipple
         (click)="openDialog({ type: 'flower', value: flower })"
         class="item-card"
+        [attr.data-cy]="flower.id"
       >
         <div class="image-container">
           <img src="/assets/art/500w/flowers/{{ flower.art_file }}" />
@@ -25,6 +26,7 @@
         matRipple
         (click)="openDialog({ type: 'bee', value: bee })"
         class="item-card"
+        [attr.data-cy]="bee.id"
       >
         <div class="image-container">
           <img src="/assets/art/500w/bees/{{ bee.art_file }}" />
