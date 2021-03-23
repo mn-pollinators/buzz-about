@@ -95,3 +95,12 @@ export const allBeeSpecies =
 export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
   return Object.values(allBeeSpecies).filter(bee => bee.flowers_accepted.includes(flower));
 }
+
+/**
+ * Finds the bees for a given nest
+ * @param nest The `Nest` to find bees for.
+ * @returns An array of the `BeeSpecies` which list the given nest as their nest type.
+ */
+export function getBeesForNest(nest: Nest): BeeSpecies[] {
+  return Object.values(allBeeSpecies).filter(bee => bee.nest_type.id === nest.id);
+}

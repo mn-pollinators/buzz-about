@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { allBeeSpecies } from 'src/app/bees';
 import { FieldGuideDialogComponent, FieldGuideDialogData } from 'src/app/components/field-guide-dialog/field-guide-dialog.component';
 import { allFlowerSpecies } from 'src/app/flowers';
+import { allNests } from 'src/app/nests';
 
 @Component({
   selector: 'app-field-guide',
@@ -17,6 +18,7 @@ export class FieldGuideComponent implements OnInit {
 
   flowers = Object.values(allFlowerSpecies);
   bees = Object.values(allBeeSpecies);
+  nests = Object.values(allNests);
 
   ngOnInit(): void {
   }

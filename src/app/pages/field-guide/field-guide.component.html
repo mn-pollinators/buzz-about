@@ -19,8 +19,8 @@
         <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
       </mat-card>
     </div>
-    <div class="mat-display-1 header-text">Bees</div>
-    <div class="bees item-list" role="heading" aria-level="2">
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Bees</div>
+    <div class="bees item-list">
       <mat-card
         *ngFor="let bee of bees"
         matRipple
@@ -32,6 +32,21 @@
           <img [src]="bee.asset_urls.art_500_wide">
         </div>
         <mat-card-title>{{ bee.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Nests</div>
+    <div class="nests item-list">
+      <mat-card
+        *ngFor="let nest of nests"
+        matRipple
+        (click)="openDialog({ type: 'nest', value: nest })"
+        class="item-card"
+        [attr.data-cy]="nest.id"
+      >
+        <div class="image-container">
+          <img [src]="nest.asset_urls.art_500_wide">
+        </div>
+        <mat-card-title>{{ nest.name | titlecase }}</mat-card-title>
       </mat-card>
     </div>
   </div>

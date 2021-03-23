@@ -3,12 +3,14 @@
     <mat-icon>close</mat-icon>
   </button>
   <div class="title">{{data.value.name | titlecase}}</div>
-  <div class="subtitle"><i>{{data.value.sci_name}}</i></div>
+  <div class="subtitle" *ngIf="sciName"><i>{{sciName}}</i></div>
 </div>
 
 <div class="description">
-  <img class="header-image" [src]="data.value.asset_urls.art_500_wide">
-  <div class="active-period">
+  <div class="header-image-container">
+    <img class="header-image" [src]="data.value.asset_urls.art_500_wide">
+  </div>
+  <div class="active-period" *ngIf="!nest">
     <div class="section-header">{{flower ? 'Blooming Period' : 'Time Active'}}</div>
     <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
     <app-small-timeline *ngIf="bee" [timeRange]="bee.active_period" type="bee" showMonths="inRange"></app-small-timeline>
@@ -23,9 +25,12 @@
       {{desc.text}}
     </details>
   </div>
+  <div *ngIf="nest" class="description-text nest-description">
+    <p>{{nest.description}}</p>
+  </div>
 
   <div>
-    <h3>{{flower ? 'Bees Attracted' : 'Flowers Preferred'}}</h3>
+    <h3>{{flower ? 'Bees Attracted' : bee ? 'Flowers Preferred' : 'Bee with this Nest'}}</h3>
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
         <img [src]="item.asset_urls.art_500_wide">

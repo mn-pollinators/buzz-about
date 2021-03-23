@@ -25,12 +25,17 @@
   }
 }
 
-.header-image {
-  display: block;
+.header-image-container {
   height: 152px;
-  margin-left: auto;
-  margin-right: auto;
+  display: grid;
+  place-items: center;
+  .header-image {
+    display: block;
+    max-height: 152px;
+    max-width: 100%;
+  }
 }
+
 
 .accepted-list {
   display: grid;
@@ -87,6 +92,10 @@
       color: mat-color($foreground, secondary-text);
     }
   }
+}
+
+.nest-description {
+  margin-top: 16px;
 }
 
 .section-header {

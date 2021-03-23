@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { beeDescriptionKeys, BeeSpecies, getBeesForFlower } from 'src/app/bees';
+import { beeDescriptionKeys, BeeSpecies, getBeesForFlower, getBeesForNest } from 'src/app/bees';
 import { FlowerSpecies } from 'src/app/flowers';
+import { Nest } from 'src/app/nests';
 
 export type FieldGuideDialogData = {
   type: 'bee';
@@ -9,6 +10,9 @@ export type FieldGuideDialogData = {
 } | {
   type: 'flower';
   value: FlowerSpecies;
+} | {
+  type: 'nest';
+  value: Nest;
 };
 
 
@@ -26,6 +30,9 @@ export class FieldGuideDialogComponent implements OnInit {
 
   flower = this.data.type === 'flower' ? this.data.value : null;
   bee = this.data.type === 'bee' ? this.data.value : null;
+  nest = this.data.type === 'nest' ? this.data.value : null;
+
+  sciName = 'sci_name' in this.data.value ? this.data.value.sci_name : null;
 
   /**
    * The list of bee description sections we want to display in the order we want to display them in.
@@ -46,7 +53,7 @@ export class FieldGuideDialogComponent implements OnInit {
       }))
     : null;
 
-  acceptedList = this.bee ? this.bee.flowers_accepted : getBeesForFlower(this.flower);
+  acceptedList = this.bee ? this.bee.flowers_accepted : this.flower ? getBeesForFlower(this.flower) : getBeesForNest(this.nest);
 
   ngOnInit(): void {
   }
