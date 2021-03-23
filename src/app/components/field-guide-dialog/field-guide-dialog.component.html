@@ -7,7 +7,7 @@
 </div>
 
 <div class="description">
-  <img class="header-image" src="/assets/art/500w/{{data.type}}s/{{data.value.art_file}}">
+  <img class="header-image" [src]="data.value.asset_urls.art_500_wide">
   <div class="active-period">
     <div class="section-header">{{flower ? 'Blooming Period' : 'Time Active'}}</div>
     <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
@@ -28,7 +28,7 @@
     <h3>{{flower ? 'Bees Attracted' : 'Flowers Preferred'}}</h3>
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
-        <img src="/assets/art/500w/{{flower ? 'bees' : 'flowers'}}/{{item.art_file}}">
+        <img [src]="item.asset_urls.art_500_wide">
         <div class="accepted-name">{{item.name}}</div>
       </div>
     </div>

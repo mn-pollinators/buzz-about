@@ -32,6 +32,9 @@ export interface BeeSpecies {
   };
   nest_type: Nest;
   sociality: BeeSociality;
+  asset_urls: {
+    art_500_wide: string;
+  };
 }
 
 export enum BeeSociality {
@@ -75,6 +78,9 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
       TimePeriod.fromIsoDate(beeFromJson.active_period.split('/')[1]),
     ],
     sociality: BeeSociality[beeFromJson.sociality],
+    asset_urls: {
+      art_500_wide: `/assets/art/500w/bees/${beeFromJson.art_file}`
+    }
   };
 }
 

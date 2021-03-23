@@ -89,7 +89,7 @@ export class FlowerTestComponent implements OnInit {
     return inputs.map(({species, blooming}) => {
       const speciesObj = allFlowerSpecies[species];
       return {
-        imgSrc: `assets/art/500w/flowers/${speciesObj.art_file}`,
+        imgSrc: speciesObj.asset_urls.art_500_wide,
         alt: speciesObj.name,
         active: blooming,
         scale: speciesObj.relative_size

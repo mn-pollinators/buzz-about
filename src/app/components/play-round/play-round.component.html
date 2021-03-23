@@ -3,7 +3,7 @@
 <img
   class="student-bee"
   *ngIf="(studentRoundService.currentBeeSpecies$ | async) as bee"
-  src="/assets/art/500w/bees/{{bee.art_file}}"
+  [src]="bee.asset_urls.art_500_wide"
   [ngStyle]="{'transform': 'translate(-50%, 25%) scale(' + calculateBeeScale(bee.relative_size) + ')', 'height': '50%'}"
   [alt]="bee.name"
 >

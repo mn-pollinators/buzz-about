@@ -8,9 +8,9 @@
       </li>
       <li>
         <div>File: {{flowerSpecies.art_file}}</div>
-        <img src="/assets/art/500w/flowers/{{flowerSpecies.art_file}}" width="100px" title="500w image">
-        <img src="/assets/art/512-square/flowers/{{flowerSpecies.art_file}}" width="100px" title="512 square image">
-        <img src="/assets/art/512-square-grayscale/flowers/{{flowerSpecies.art_file}}" width="100px" title="512 square grayscale image">
+        <img [src]="flowerSpecies.asset_urls.art_500_wide" width="100px" title="500w image">
+        <img [src]="flowerSpecies.asset_urls.art_512_square" width="100px" title="512 square image">
+        <img [src]="flowerSpecies.asset_urls.art_512_square_grayscale" width="100px" title="512 square grayscale image">
       </li>
     </ul>
   </li>
@@ -23,7 +23,7 @@
     <ul>
       <li>
         <div>File: {{beeSpecies.art_file}}</div>
-        <img src="/assets/art/500w/bees/{{beeSpecies.art_file}}" width="100px" title="500w image">
+        <img [src]="beeSpecies.asset_urls.art_500_wide" width="100px" title="500w image">
       </li>
 
       <li>Nest: {{beeSpecies.nest_type.name}}</li>
@@ -49,9 +49,9 @@
     <ul>
       <li>
         <div>File: {{nest.art_file}}</div>
-        <img src="/assets/art/500w/nests/{{nest.art_file}}" width="100px" title="500w image">
-        <img src="/assets/art/512-square/nests/{{nest.art_file}}" width="100px" title="512 square image">
-        <img src="/assets/art/512-square-grayscale/nests/{{nest.art_file}}" width="100px" title="512 square grayscale image">
+        <img [src]="nest.asset_urls.art_500_wide" width="100px" title="500w image">
+        <img [src]="nest.asset_urls.art_512_square" width="100px" title="512 square image">
+        <img [src]="nest.asset_urls.art_512_square_grayscale" width="100px" title="512 square grayscale image">
       </li>
     </ul>
   </li>

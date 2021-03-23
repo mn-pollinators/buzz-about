@@ -34,7 +34,7 @@ export class LargeDisplayComponent implements OnInit {
 
   flowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.teacherRoundService.currentFlowers$.pipe(
     map(roundFlowers => roundFlowers.map(rf => ({
-      imgSrc: `assets/art/500w/flowers/${rf.species.art_file}`,
+      imgSrc: rf.species.asset_urls.art_500_wide,
       alt: rf.species.name,
       active: rf.isBlooming,
       scale: rf.species.relative_size
