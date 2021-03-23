@@ -1,5 +1,5 @@
-import { allFlowerSpecies, FlowerSpecies } from "src/app/flowers";
-import { allBeeSpecies, BeeSpecies } from "src/app/bees";
+import { allFlowerSpecies, FlowerSpecies } from 'src/app/flowers';
+import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
 
 describe('The field guide page', () => {
   beforeEach(() => {
