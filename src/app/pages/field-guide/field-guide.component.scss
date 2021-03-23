@@ -1,6 +1,6 @@
-$content-width: 1200px;
+$content-width: 1400px;
 $content-margin: 16px;
-$num-cols-max: 6;
+$num-cols-max: 7;
 $item-max-width: ($content-width - (($num-cols-max - 1) * $content-margin)) / $num-cols-max;
 $item-img-height: 152px;
 
@@ -8,6 +8,7 @@ $item-img-height: 152px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(#{$item-max-width}, max(#{$item-img-height}, 50% - #{$content-margin * 3})), 1fr));
   grid-gap: $content-margin;
+  grid-auto-rows: 1fr;
 
   .item-card {
     user-select: none;
@@ -53,4 +54,21 @@ $item-img-height: 152px;
 
 h1, h2 {
   position: relative;
+}
+
+.back-left {
+  display: none;
+}
+
+@media(min-width: $content-width
+  + 80px // back button width * 2
+  + $content-margin * 2 // content margin * 2
+  + 16px // 8px button left offset * 2
+ ) {
+  .back-top {
+    display: none;
+  }
+  .back-left {
+    display: block;
+  }
 }
