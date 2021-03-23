@@ -1,3 +1,5 @@
+@use '../../../variables' as *;
+
 $content-width: 1400px;
 $content-margin: 16px;
 $num-cols-max: 7;
@@ -9,6 +11,8 @@ $item-img-height: 152px;
   grid-template-columns: repeat(auto-fill, minmax(min(#{$item-max-width}, max(#{$item-img-height}, 50% - #{$content-margin * 3})), 1fr));
   grid-gap: $content-margin;
   grid-auto-rows: 1fr;
+
+  margin-top: $content-margin;
 
   .item-card {
     user-select: none;
@@ -32,6 +36,7 @@ $item-img-height: 152px;
 
     .mat-card-title {
       margin-bottom: 0;
+      line-height: mat-line-height($typography-config, subheading-1);
     }
   }
 
@@ -41,7 +46,7 @@ $item-img-height: 152px;
 .outer-container {
   height: 100%;
   display: grid;
-  place-items: center;
+  justify-items: center;
   margin-left: $content-margin;
   margin-right: $content-margin;
 }
