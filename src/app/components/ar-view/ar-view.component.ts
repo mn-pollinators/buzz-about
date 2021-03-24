@@ -11,7 +11,7 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import * as THREE from 'threear/node_modules/three';
+import * as THREE from 'three';
 import * as THREEAR from 'threear';
 import { ARMarker, markersEqual } from 'src/app/markers';
 import { Observable } from 'rxjs';
