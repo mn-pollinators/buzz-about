@@ -1,0 +1,14 @@
+<app-hill-background cover></app-hill-background>
+<div class="centered-container">
+  <div>
+    <mat-card>
+      <mat-card-title>Page Not Found</mat-card-title>
+      <mat-card-content>
+        Sorry, we couldn't find a page at <code>/{{(route.url | async).join('/')}}</code>.
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary" routerLink="/">Go Home</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
