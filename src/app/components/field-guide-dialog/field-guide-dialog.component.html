@@ -34,7 +34,7 @@
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
         <img [src]="item.asset_urls.art_500_wide">
-        <div class="accepted-name">{{item.name}}</div>
+        <div class="accepted-name">{{item.name | titlecase}}</div>
       </div>
     </div>
   </div>
