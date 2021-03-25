@@ -36,6 +36,12 @@ describe('StudentRoundService', () => {
 
     rounds: {
       n: null,
+      0: {
+        flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+        status: 'just starting',
+        running: true,
+        currentTime: 0,
+      },
       p: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'cool as a cucumber',
@@ -107,6 +113,8 @@ describe('StudentRoundService', () => {
       n: null,
       P: new TimePeriod(25),
       R: new TimePeriod(MAX_TIME),
+      // The start of A. mellifera's active period.
+      A: allBeeSpecies.apis_mellifera.active_period[0]
     },
 
     booleans: {
@@ -280,9 +288,6 @@ describe('StudentRoundService', () => {
     expect(service).toBeTruthy();
   });
 
-  /**
-   *
-   */
   describe('The currentRound$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRound$).toBe('n-', values.rounds);
@@ -334,9 +339,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('The currentFlowerSpecies$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -401,9 +403,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentTime$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentTime$).toBe(
@@ -468,9 +467,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentFlowers$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -528,9 +524,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentRunning$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRunning$).toBe(
@@ -595,9 +588,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('the roundStudentData$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.roundStudentData$).toBe(
@@ -674,9 +664,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentBeeSpecies$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeSpecies$).toBe(
@@ -767,9 +754,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentBeeActive$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeActive$).toBe(
@@ -888,9 +872,88 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
+  describe('the nextActivePeriod$ observable', () => {
+    scheduledIt('Doesn\'t emit if there\'s no round', ({expectObservable}) => {
+      expectObservable(service.nextActivePeriod$).toBe('-', values.times);
+    });
+
+    scheduledIt('Doesn\'t emit if there\'s no user', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.nextActivePeriod$).toBe('-', values.times);
+    });
+
+    scheduledIt('Emits null if there\'s no bee', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      const [
+        currentUserXData,
+        currentUser,
+        expectedNextActivePeriod,
+      ] = [
+        '--n--',
+        '---X-',
+        '-----',
+      ];
+      cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+      expectObservable(service.nextActivePeriod$).toBe(
+        expectedNextActivePeriod,
+        values.times,
+      );
+    });
+
+    scheduledIt(
+      'Emits the starting value of the bee\'s only active period, if that period hasn\'t started yet',
+      ({expectObservable, cold}) => {
+        mockCurrentRoundPath$.next(values.roundPaths.A);
+        const [
+          currentRoundState,
+          currentUserXData,
+          currentUser,
+          expectedNextActivePeriod,
+        ] = [
+          '--0--',
+          '--V--',
+          '---X-',
+          '---A-',
+        ];
+
+        cold(currentRoundState, values.rounds).subscribe(mockRound1AData$);
+        cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+        cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+        expectObservable(service.nextActivePeriod$).toBe(
+          expectedNextActivePeriod,
+          values.times,
+        );
+      }
+    );
+
+    scheduledIt(
+      'Emits null, if that active period has started.',
+      ({expectObservable, cold}) => {
+        mockCurrentRoundPath$.next(values.roundPaths.A);
+        const [
+          currentRoundState,
+          currentUserXData,
+          currentUser,
+          expectedNextActivePeriod,
+        ] = [
+          '--0----q-',
+          '--V------',
+          '---X-----',
+          '---A---n-',
+        ];
+
+        cold(currentRoundState, values.rounds).subscribe(mockRound1AData$);
+        cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+        cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+        expectObservable(service.nextActivePeriod$).toBe(
+          expectedNextActivePeriod,
+          values.times,
+        );
+      }
+    );
+  });
+
   describe('the interactions$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.interactions$).toBe(
@@ -989,9 +1052,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentBeePollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentBeePollen$).toBe(
@@ -1044,9 +1104,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentNestPollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentNestPollen$).toBe(
@@ -1099,9 +1156,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('The interact() method', () => {
     let interactionSpy: jasmine.Spy<FirebaseService['addInteraction']>;
 
@@ -1179,6 +1233,5 @@ describe('StudentRoundService', () => {
         incompatibleFlower: false
       });
     }));
-
   });
 });
