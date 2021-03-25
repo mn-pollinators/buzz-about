@@ -35,6 +35,7 @@ import { RoundChooserDialogComponent } from './components/round-chooser-dialog/r
 import { AboutComponent } from './pages/about/about.component';
 import { SharedModule } from './shared.module';
 import { FieldGuideTestComponent } from './test-pages/field-guide-test/field-guide-test.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
@@ -68,6 +69,7 @@ const FIREBASE_MODULES = [
     ConfirmRemoveStudentDialogComponent,
     RenameStudentDialogComponent,
     FieldGuideTestComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
