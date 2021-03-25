@@ -8,7 +8,7 @@
 Buzz About receives personal information when you sign in. This may include your email address and your phone number.
 
 ### Information we collect automatically
-We collect information about your interactions in Buzz About. While Buzz About itself does not collect any information automatically about your machine, third party services that we use may collect that information. Check the privacy policies of our third party services below to read about the information they collect.
+We collect information about your interactions in Buzz About. While Buzz About itself does not collect any information automatically about your device, third party services that we use may collect that information. Check the privacy policies of our third party services below to read about the information they collect.
 
 ## Use of Information
 The data collected by Buzz About is used by a research team at the University of Minnesota Morris. The purpose of this research is to learn more about how taking part in activities that show what bees do and what they need might help people understand more about how to support bees and how they help people. We want to know more about how we can use technology to help people learn more from these activities. The results of this research might help people design technology in a way that helps people learn more effectively. Along with current Buzz About research, the data we collect may be used in future studies.
