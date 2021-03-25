@@ -28,7 +28,7 @@ describe('The field guide page', () => {
   });
 
   // Next, we'll try clicking on various field guide items.
-  const cases: ['flower' | 'bee', FlowerSpecies | BeeSpecies][] = [
+  const cases: (['flower', FlowerSpecies] | ['bee', BeeSpecies])[] = [
     ['flower', allFlowerSpecies.asclepias_syriaca],
     ['flower', allFlowerSpecies.zizia_aurea],
     ['bee', allBeeSpecies.apis_mellifera],
@@ -42,8 +42,8 @@ describe('The field guide page', () => {
       });
 
       it(`Pops up a dialog with information about that ${type}`, () => {
-        cy.get('app-field-guide-dialog')
-          .should('be.visible')
+        cy.get('app-field-guide-dialog').should('be.visible')
+        cy.get('app-field-guide-dialog .title')
           .contains(species.name, { matchCase: false });
       });
     });
