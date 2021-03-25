@@ -55,7 +55,7 @@ describe('The field guide page', () => {
       });
 
       it(`Pops up a dialog with information about that ${type}`, () => {
-        cy.get('app-field-guide-dialog').should('be.visible')
+        cy.get('app-field-guide-dialog').should('be.visible');
         cy.get('app-field-guide-dialog .title')
           .contains(species.name, { matchCase: false });
       });
