@@ -1,5 +1,6 @@
 import { allFlowerSpecies, FlowerSpecies } from 'src/app/flowers';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
+import { allNests, Nest } from 'src/app/nests';
 
 describe('The field guide page', () => {
   beforeEach(() => {
@@ -27,12 +28,24 @@ describe('The field guide page', () => {
       .should('have.length', Object.keys(allBeeSpecies).length);
   });
 
+  it('Should one list item for each nest', () => {
+    cy.get('.nests.item-list')
+      .find('.item-card')
+      .should('have.length', Object.keys(allNests).length);
+  });
+
   // Next, we'll try clicking on various field guide items.
-  const cases: (['flower', FlowerSpecies] | ['bee', BeeSpecies])[] = [
+  const cases: (
+    ['flower', FlowerSpecies]
+    | ['bee', BeeSpecies]
+    | ['nest', Nest]
+  )[] = [
     ['flower', allFlowerSpecies.asclepias_syriaca],
     ['flower', allFlowerSpecies.zizia_aurea],
     ['bee', allBeeSpecies.apis_mellifera],
     ['bee', allBeeSpecies.andrena_carolina],
+    ['nest', allNests.ground_bare],
+    ['nest', allNests.bumble_bee_nest]
   ];
 
   for (const [type, species] of cases) {
