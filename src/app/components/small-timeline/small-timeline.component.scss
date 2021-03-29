@@ -1,0 +1,55 @@
+@use '../../../variables' as *;
+
+:host {
+  display: block;
+}
+
+:host {
+  .timeline-outer {
+    background-color: rgba(black, 0.15);
+  }
+  .timeline-inner {
+    background-color: mat-color($primary);
+  }
+}
+
+:host[type="bee"] {
+  .timeline-outer {
+    background-color: mat-color($bee-color, lighter);
+  }
+  .timeline-inner {
+    background-color: mat-color($bee-color);
+  }
+}
+
+:host[type="flower"] {
+  .timeline-outer {
+    background-color: mat-color($flower-color, lighter);
+  }
+  .timeline-inner {
+    background-color: mat-color($flower-color);
+  }
+}
+
+.timeline-outer {
+  width: 100%;
+  height: 8px; // TODO
+  border-radius: 2px;
+  position: relative;
+}
+
+.timeline-inner {
+  height: 100%;
+  position: absolute;
+}
+
+.bottom-text {
+  width: 100%;
+  position: relative;
+  @include mat-typography-level-to-styles($typography-config, caption);
+  height: mat-line-height($typography-config, caption);
+  & > span {
+    position: absolute;
+    transform: translate(-50%);
+  }
+}

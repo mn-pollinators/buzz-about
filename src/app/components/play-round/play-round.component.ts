@@ -55,7 +55,7 @@ export class PlayRoundComponent implements OnInit {
       isNest: true,
       canVisit: pollenCount !== 0,
       barcodeValue: student.nestBarcode,
-      imgPath: `/assets/art/512-square/nests/${bee.nest_type.art_file}`,
+      imgPath: bee.nest_type.asset_urls.art_512_square,
       tip: pollenCount === 0 ? 'Gather pollen to deposit in your nest' : null
     })),
     shareReplay(1),
@@ -227,7 +227,7 @@ export class PlayRoundComponent implements OnInit {
 
     return {
       barcodeValue,
-      imgPath: this.imagePathForFlower(flower),
+      imgPath: flower.isBlooming ? flower.species.asset_urls.art_512_square : flower.species.asset_urls.art_512_square_grayscale,
       name: flower.species.name,
       isBlooming: flower.isBlooming,
       isNest: false,
@@ -237,12 +237,4 @@ export class PlayRoundComponent implements OnInit {
       thoughtBubble
     };
   }
-
-  imagePathForFlower(flower: RoundFlower): string {
-    return (
-      `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}`
-      + `/flowers/${flower.species.art_file}`
-    );
-  }
-
 }

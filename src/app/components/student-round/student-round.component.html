@@ -10,11 +10,11 @@
         <mat-card-title>Paused</mat-card-title>
       </mat-card>
 
-      <mat-card *ngSwitchCase="ScreenId.InactiveBee">
+      <mat-card *ngSwitchCase="ScreenId.InactiveBee" class="inactive-bee">
         <img
           class="student-bee"
           *ngIf="(roundService.currentBeeSpecies$ | async) as bee"
-          src="/assets/art/500w/bees/{{bee.art_file}}"
+          [src]="bee.asset_urls.art_500_wide"
           [alt]="bee.name"
         >
         <mat-card-title>
@@ -23,6 +23,9 @@
         <mat-card-subtitle *ngIf="(nextActivePeriodText$| async) as nextActivePeriodText">
           You will next be active {{nextActivePeriodText}}
         </mat-card-subtitle>
+        <mat-card-actions>
+          <button mat-raised-button color="accent" (click)="onOpenFieldGuide()">View Field Guide</button>
+        </mat-card-actions>
       </mat-card>
 
     </div>

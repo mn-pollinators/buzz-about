@@ -48,8 +48,8 @@ export class TimerService {
    * This stream emits fractional time periods.
    *
    * (Fractional time periods are represented as floating-point values between
-   * 0 and 47, inclusive, where 0 is the first quarter of January and 47 is the
-   * last quarter of December.)
+   * 0 and MAX_TIME, inclusive, where 0 is the first quarter of January and
+   * MAX_TIME is the last quarter of December.)
    *
    * This stream emits whenever the fractional time period changes.
    */

@@ -140,7 +140,7 @@ export class StudentRoundService {
     ).pipe(
     map(([species, time]) =>
       species && time
-        ? species.active_period.some(interval => time.fallsWithin(...interval))
+        ? time.fallsWithin(...species.active_period)
         : null
     ),
     distinctUntilChanged(),
@@ -151,13 +151,18 @@ export class StudentRoundService {
   * An observable stream of the next TimePeriod when the bee starts to be active
   * in relation to the current time of the the round.
   * - `null` if bee doesn't have anymore active periods in the current round
+  *
+  * Otherwise, this observable doesn't emit.
   */
   nextActivePeriod$: Observable<TimePeriod | null> = combineLatest(
     [this.currentBeeSpecies$, this.currentTime$]
   ).pipe(
     filter(([species, time]) => !!species && !!time),
     map(([species, time]) =>
-      species.active_period.find(interval => time.time < interval[0].time)?.[0] ?? null
+      // Are we waiting for the active period to start?
+      time.time < species.active_period[0].time
+        ? species.active_period[0]
+        : null
     ),
     shareReplay(1)
   );

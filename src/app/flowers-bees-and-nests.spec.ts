@@ -14,14 +14,8 @@ describe('The allFlowerSpecies mapping', () => {
       });
 
       describe('Its blooming period', () => {
-        it('Contains at least one interval', () => {
-          expect(flowerSpecies.blooming_period.length).toBeGreaterThanOrEqual(1);
-        });
-
-        it('Has intervals each with a start-time that comes strictly before its end-time', () => {
-          for (const [start, end] of flowerSpecies.blooming_period) {
-            expect(start.time).toBeLessThan(end.time);
-          }
+        it('Has a start-time that comes strictly before its end-time', () => {
+          expect(flowerSpecies.blooming_period[0].time).toBeLessThan(flowerSpecies.blooming_period[1].time);
         });
       });
     });
@@ -40,14 +34,8 @@ describe('The allBeeSpecies mapping', () => {
       });
 
       describe('Its active period', () => {
-        it('Contains at least one interval', () => {
-          expect(beeSpecies.active_period.length).toBeGreaterThanOrEqual(1);
-        });
-
-        it('Has intervals each of whose start-time comes strictly before its end-time', () => {
-          for (const [start, end] of beeSpecies.active_period) {
-            expect(start.time).toBeLessThan(end.time);
-          }
+        it('Has a start-time that comes strictly before its end-time', () => {
+          expect(beeSpecies.active_period[0].time).toBeLessThan(beeSpecies.active_period[1].time);
         });
       });
 

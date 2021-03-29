@@ -36,7 +36,7 @@
         <app-flower-layout [items]="getFlowers(template.flowerSpecies)" tooltips="true"></app-flower-layout>
         <app-timer-progress-bar [startMonth]="template.startTime.month" [endMonth]="template.endTime.month" [currentTimePrecise]="template.startTime.time" [currentMonth]="template.startTime.month"></app-timer-progress-bar>
         <div>
-          <img *ngFor="let bee of template.bees" src="/assets/art/500w/bees/{{bee.art_file}}" width="100px" title="{{bee.name}}">
+          <img *ngFor="let bee of template.bees" [src]="bee.asset_urls.art_500_wide" width="100px" title="{{bee.name}}">
         </div>
       </div>
     </div>

@@ -1,0 +1,41 @@
+<div class="header">
+  <button mat-icon-button class="close-button" aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+  <div class="title">{{data.value.name | titlecase}}</div>
+  <div class="subtitle" *ngIf="sciName"><i>{{sciName}}</i></div>
+</div>
+
+<div class="description">
+  <div class="header-image-container">
+    <img class="header-image" [src]="data.value.asset_urls.art_500_wide">
+  </div>
+  <div class="active-period" *ngIf="!nest">
+    <div class="section-header">{{flower ? 'Blooming Period' : 'Time Active'}}</div>
+    <app-small-timeline *ngIf="flower" [timeRange]="flower.blooming_period" type="flower" showMonths="inRange"></app-small-timeline>
+    <app-small-timeline *ngIf="bee" [timeRange]="bee.active_period" type="bee" showMonths="inRange"></app-small-timeline>
+  </div>
+
+  <div *ngIf="flower" class="description-text">
+    <p><i>{{flower.sci_name}}</i>{{flower.description.summary | ltrim: flower.sci_name}}</p>
+  </div>
+  <div *ngIf="bee" class="description-text">
+    <details *ngFor="let desc of beeDescription">
+      <summary class="mat-body-2">{{desc.title}}</summary>
+      {{desc.text}}
+    </details>
+  </div>
+  <div *ngIf="nest" class="description-text nest-description">
+    <p>{{nest.description}}</p>
+  </div>
+
+  <div>
+    <h3>{{flower ? 'Bees Attracted' : bee ? 'Flowers Preferred' : 'Bee with this Nest'}}</h3>
+    <div class="accepted-list">
+      <div *ngFor="let item of acceptedList" class="accepted-list-item">
+        <img [src]="item.asset_urls.art_500_wide">
+        <div class="accepted-name">{{item.name | titlecase}}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,8 @@ import { JoinSessionComponent } from './pages/join-session/join-session.componen
 import { HostSessionComponent } from './pages/host-session/host-session.component';
 import { TestPagesComponent } from './pages/test-pages/test-pages.component';
 import { AboutComponent } from './pages/about/about.component';
+import { FieldGuideTestComponent } from './test-pages/field-guide-test/field-guide-test.component';
+import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 const testRoutes: Routes = [
@@ -21,6 +23,7 @@ const testRoutes: Routes = [
   {path: 'session-test', component: SessionTestComponent},
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
+  {path: 'field-guide-test', component: FieldGuideTestComponent},
 ];
 
 const routes: Routes = [
@@ -33,6 +36,7 @@ const routes: Routes = [
   },
   {path: 'host', component: HostSessionComponent},
   {path: 'host/:sessionId', component: LargeDisplayComponent},
+  {path: 'field-guide', component: FieldGuideComponent},
   {path: 'about', component: AboutComponent},
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes},

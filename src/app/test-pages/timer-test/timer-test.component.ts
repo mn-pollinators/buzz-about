@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimerService } from '../../services/timer.service';
-import { TimePeriod } from '../../time-period';
+import { MAX_TIME, TimePeriod } from '../../time-period';
 import { map } from 'rxjs/operators';
-
 @Component({
   selector: 'app-timer-test',
   templateUrl: './timer-test.component.html',
@@ -13,6 +12,7 @@ export class TimerTestComponent implements OnInit {
   constructor(public timer: TimerService) { }
 
   public newTime: number;
+  public MAX_TIME = MAX_TIME;
 
   timerTime = this.timer.currentTimePeriod$.pipe(map(t => t.time));
 

@@ -1,0 +1,53 @@
+<app-hill-background cover></app-hill-background>
+<app-back-button *ngIf="backButton" class="back-left" top-left routerLink="/"></app-back-button>
+<div class="outer-container">
+  <div class="content-container">
+    <app-back-button *ngIf="backButton" class="back-top" routerLink="/"></app-back-button>
+    <div class="mat-display-2 header-text title" role="heading" aria-level="1">Field Guide</div>
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Flowers</div>
+    <div class="flowers item-list">
+      <mat-card
+        *ngFor="let flower of flowers"
+        matRipple
+        (click)="openDialog({ type: 'flower', value: flower })"
+        class="item-card"
+        [attr.data-cy]="flower.id"
+      >
+        <div class="image-container">
+          <img [src]="flower.asset_urls.art_500_wide">
+        </div>
+        <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Bees</div>
+    <div class="bees item-list">
+      <mat-card
+        *ngFor="let bee of bees"
+        matRipple
+        (click)="openDialog({ type: 'bee', value: bee })"
+        class="item-card"
+        [attr.data-cy]="bee.id"
+      >
+        <div class="image-container">
+          <img [src]="bee.asset_urls.art_500_wide">
+        </div>
+        <mat-card-title>{{ bee.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="mat-display-1 header-text" role="heading" aria-level="2">Nests</div>
+    <div class="nests item-list">
+      <mat-card
+        *ngFor="let nest of nests"
+        matRipple
+        (click)="openDialog({ type: 'nest', value: nest })"
+        class="item-card"
+        [attr.data-cy]="nest.id"
+      >
+        <div class="image-container">
+          <img [src]="nest.asset_urls.art_500_wide">
+        </div>
+        <mat-card-title>{{ nest.name | titlecase }}</mat-card-title>
+      </mat-card>
+    </div>
+  </div>
+</div>

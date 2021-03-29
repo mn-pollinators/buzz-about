@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRippleModule } from '@angular/material/core';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +26,10 @@ import { HillBackgroundComponent } from './components/hill-background/hill-backg
 import { SentenceCasePipe } from './utils/string-utils';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-indicator.component';
+import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
+import { SmallTimelineComponent } from './components/small-timeline/small-timeline.component';
+import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -42,6 +47,7 @@ const ANGULAR_MATERIAL_MODULES = [
   MatListModule,
   MatTooltipModule,
   MatStepperModule,
+  MatRippleModule,
 ];
 
 const sharedImportModules = [
@@ -60,14 +66,18 @@ const sharedComponents = [
   SentenceCasePipe,
   BackButtonComponent,
   PollenIndicatorComponent,
+  SmallTimelineComponent,
+  FieldGuideDialogComponent,
+  FieldGuideComponent
 ];
 
 @NgModule({
   declarations: [
-    ...sharedComponents
+    ...sharedComponents,
   ],
   imports: [
-    ...sharedImportModules
+    ...sharedImportModules,
+    RouterModule
   ],
   exports: [
     ...sharedImportModules,

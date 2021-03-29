@@ -1,0 +1,10 @@
+<ng-container *ngIf="timeRange">
+  <div class="timeline-outer" >
+    <div class="timeline-inner" [ngStyle]="getInnerBarStyle()"></div>
+  </div>
+  <div class="bottom-text" *ngIf="showMonths">
+    <span class="" *ngFor="let month of getMonths()" [ngStyle]="getTextStyle(month)">
+      {{Month[month] | slice:0:3}}
+    </span>
+  </div>
+</ng-container>
