@@ -34,3 +34,7 @@ for (const [key, nestFromJson] of Object.entries(allNestsFromJson)) {
 
 export const allNests =
   allNestsConverted as {[id in keyof typeof allNestsFromJson]: Nest};
+
+export const allNestsArray: Nest[] = [
+  ...Object.values(allNests)
+];

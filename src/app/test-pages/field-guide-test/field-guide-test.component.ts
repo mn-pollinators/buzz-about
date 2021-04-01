@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { allBeeSpecies } from 'src/app/bees';
+import { allBeeSpecies, allBeeSpeciesArray } from 'src/app/bees';
 import { FieldGuideDialogComponent, FieldGuideDialogData } from 'src/app/components/field-guide-dialog/field-guide-dialog.component';
-import { allFlowerSpecies } from 'src/app/flowers';
+import { allFlowerSpeciesArray } from 'src/app/flowers';
 import { MAX_TIME, MAX_TIME_PERIOD, TimePeriod } from 'src/app/time-period';
 
 @Component({
@@ -14,8 +14,8 @@ export class FieldGuideTestComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog) { }
 
-  flowers = Object.values(allFlowerSpecies);
-  bees = Object.values(allBeeSpecies);
+  flowers = allFlowerSpeciesArray;
+  bees = allBeeSpeciesArray;
 
   timelineType = 'all';
 

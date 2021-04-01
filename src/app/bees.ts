@@ -1,6 +1,6 @@
 import { bees as allBeesFromJson } from '@mn-pollinators/assets/bees.json';
 import { TimePeriod } from './time-period';
-import { FlowerSpecies, allFlowerSpecies } from './flowers';
+import { FlowerSpecies, allFlowerSpecies, allFlowerSpeciesArray } from './flowers';
 import { Nest, allNests } from './nests';
 
 export interface BeeSpecies {
@@ -68,10 +68,7 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
   allBeesConverted[key] = {
     ...beeFromJson,
     id: key,
-    flowers_accepted: beeFromJson.flowers_accepted
-      // Ignore unknown flower names
-      .filter(flowerId => flowerId in allFlowerSpecies)
-      .map(flowerId => allFlowerSpecies[flowerId]),
+    flowers_accepted: allFlowerSpeciesArray.filter(flower => beeFromJson.flowers_accepted.includes(flower.id)),
     nest_type: allNests[beeFromJson.nest_type],
     active_period: [
       TimePeriod.fromIsoDate(beeFromJson.active_period.split('/')[0]),
@@ -87,13 +84,19 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
 export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
 
+export const allBeeSpeciesArray: BeeSpecies[] = [
+  allBeeSpecies.bombus_affinis,
+  ...Object.values(allBeeSpecies).filter(bee => bee.id !== 'bombus_affinis' && bee.id !== 'apis_mellifera'),
+  allBeeSpecies.apis_mellifera,
+];
+
 /**
  * Finds the bees attracted to a given flower.
  * @param flower The `FlowerSpecies` to find bees for.
  * @returns An array of the `BeeSpecies` which list the given flower in their `flowers_accepted`.
  */
 export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
-  return Object.values(allBeeSpecies).filter(bee => bee.flowers_accepted.includes(flower));
+  return allBeeSpeciesArray.filter(bee => bee.flowers_accepted.includes(flower));
 }
 
 /**
@@ -102,5 +105,5 @@ export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
  * @returns An array of the `BeeSpecies` which list the given nest as their nest type.
  */
 export function getBeesForNest(nest: Nest): BeeSpecies[] {
-  return Object.values(allBeeSpecies).filter(bee => bee.nest_type.id === nest.id);
+  return allBeeSpeciesArray.filter(bee => bee.nest_type.id === nest.id);
 }
