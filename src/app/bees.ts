@@ -101,7 +101,7 @@ const minerBees = [
 const carpenterBees = [
   allBeeSpecies.xylocopa_virginica,
   allBeeSpecies.ceratina_calcarata,
-]
+];
 
 export const allBeeSpeciesArray: BeeSpecies[] = [
   allBeeSpecies.bombus_affinis,
