@@ -103,12 +103,16 @@ const carpenterBees = [
   allBeeSpecies.ceratina_calcarata,
 ];
 
+const masonBees = [
+  allBeeSpecies.hoplitis_albifrons,
+  allBeeSpecies.osmia_distincta,
+];
+
 export const allBeeSpeciesArray: BeeSpecies[] = [
   allBeeSpecies.bombus_affinis,
-  allBeeSpecies.hoplitis_albifrons,
+  ...masonBees,
   allBeeSpecies.anthophora_bomboides,
   allBeeSpecies.anthidium_manicatum,
-  allBeeSpecies.osmia_distincta,
   ...minerBees,
   ...sweatBees,
   ...carpenterBees,
