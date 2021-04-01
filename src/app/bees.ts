@@ -1,6 +1,6 @@
 import { bees as allBeesFromJson } from '@mn-pollinators/assets/bees.json';
 import { TimePeriod } from './time-period';
-import { FlowerSpecies, allFlowerSpecies, allFlowerSpeciesArray } from './flowers';
+import { FlowerSpecies, allFlowerSpeciesArray } from './flowers';
 import { Nest, allNests } from './nests';
 
 export interface BeeSpecies {
@@ -84,9 +84,40 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
 export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
 
+
+const sweatBees = [
+  allBeeSpecies.augochlora_pura,
+  allBeeSpecies.augochloropsis_metallica,
+  allBeeSpecies.augochlorella_aurata,
+  allBeeSpecies.agapostemon_virescens,
+  allBeeSpecies.lasioglossum_cressonii,
+];
+
+const minerBees = [
+  allBeeSpecies.andrena_carolina,
+  allBeeSpecies.calliopsis_coloradensis,
+];
+
+const carpenterBees = [
+  allBeeSpecies.xylocopa_virginica,
+  allBeeSpecies.ceratina_calcarata,
+]
+
 export const allBeeSpeciesArray: BeeSpecies[] = [
   allBeeSpecies.bombus_affinis,
-  ...Object.values(allBeeSpecies).filter(bee => bee.id !== 'bombus_affinis' && bee.id !== 'apis_mellifera'),
+  allBeeSpecies.hoplitis_albifrons,
+  allBeeSpecies.anthophora_bomboides,
+  allBeeSpecies.anthidium_manicatum,
+  allBeeSpecies.osmia_distincta,
+  ...minerBees,
+  ...sweatBees,
+  ...carpenterBees,
+  allBeeSpecies.melissodes_illatus,
+  allBeeSpecies.halictus_confusus,
+  allBeeSpecies.megachile_pugnata,
+  allBeeSpecies.hylaeus_modestus,
+  allBeeSpecies.heriades_variolosa,
+  allBeeSpecies.colletes_simulans,
   allBeeSpecies.apis_mellifera,
 ];
 
