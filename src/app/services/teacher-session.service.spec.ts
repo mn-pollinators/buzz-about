@@ -2,7 +2,7 @@ import { async, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@
 import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { scheduledIt } from './../utils/karma-utils';
 import { firestore, User } from 'firebase';
 import { AuthService } from './../services/auth.service';
@@ -658,8 +658,6 @@ describe('TeacherSessionService', () => {
       'Should not complete until the firebase service has completed',
       fakeAsync(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
         service.setCurrentSession('1');
-
-        const completeTheFirebaseService$ = new Subject<void>();
 
         const spy = spyOn(firebaseService, 'setShowFieldGuide')
           .and.callFake(() => new Promise(resolve => setTimeout(resolve, 1000)));
