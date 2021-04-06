@@ -2,7 +2,7 @@ import { async, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@
 import { randomJoinCode, TeacherSessionService } from './teacher-session.service';
 import { SessionWithId, SessionStudentData } from './../session';
 import { FirebaseService } from './firebase.service';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { scheduledIt } from './../utils/karma-utils';
 import { firestore, User } from 'firebase';
 import { AuthService } from './../services/auth.service';
@@ -186,9 +186,19 @@ describe('TeacherSessionService', () => {
        */
       getMostRecentSessionJoinCodes() {
         throw new Error(
-          'Not implemented; if you need a mocked version of '
-          + 'getMostRecentSessionJoinCodes, please use Jasmine\'s '
-          + 'spyOn().and.callFake().'
+          'Not implemented; if you need a mocked version of getMostRecentSessionJoinCodes, '
+          + 'please use Jasmine\'s spyOn().and.callFake().'
+        );
+      },
+
+      /**
+       * As with setJoinCode(), individual tests should stub out this method if
+       * they want to use it.
+       */
+      setShowFieldGuide() {
+        throw new Error(
+          'Not implemented; if you need a mocked version of setShowFieldGuide, '
+          + 'please use Jasmine\'s spyOn().and.callFake().'
         );
       },
 
@@ -625,5 +635,46 @@ describe('TeacherSessionService', () => {
         expect(emittedJoinCodeIds).toEqual([null, '123456', null]);
       }));
     });
+  });
+
+  describe('Showing and hiding the field guide', () => {
+    it(
+      'Should call down to the firebase service',
+      fakeAsync(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+        service.setCurrentSession('1');
+
+        const spy = spyOn(firebaseService, 'setShowFieldGuide')
+          .and.callFake(() => Promise.resolve());
+
+        service.showFieldGuide(true);
+        tick(0);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith('1', true);
+      }))
+    );
+
+    it(
+      'Should not complete until the firebase service has completed',
+      fakeAsync(inject([FirebaseService], (firebaseService: Partial<FirebaseService>) => {
+        service.setCurrentSession('1');
+
+        const completeTheFirebaseService$ = new Subject<void>();
+
+        const spy = spyOn(firebaseService, 'setShowFieldGuide')
+          .and.callFake(() => new Promise(resolve => setTimeout(resolve, 1000)));
+
+        let hasShowFieldGuideCompleted = false;
+        service.showFieldGuide(true).then(() => {
+          hasShowFieldGuideCompleted = true;
+        });
+
+        tick(0);
+        expect(hasShowFieldGuideCompleted).toBe(false);
+
+        tick(2000);
+        expect(hasShowFieldGuideCompleted).toBe(true);
+      }))
+    );
   });
 });
