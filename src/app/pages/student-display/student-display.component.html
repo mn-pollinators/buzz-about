@@ -2,6 +2,8 @@
 
   <app-student-round *ngSwitchCase="ScreenId.StudentRound"></app-student-round>
 
+  <app-field-guide *ngSwitchCase="ScreenId.FieldGuide" [backButton]="false"></app-field-guide>
+
   <ng-container *ngSwitchDefault>
     <app-hill-background cover></app-hill-background>
     <div class="centered-container" [ngSwitch]="currentScreen$ | async">

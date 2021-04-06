@@ -31,6 +31,21 @@ describe('StudentDisplayComponent', () => {
     createdAt: firestore.Timestamp.fromMillis(0),
   };
 
+  const sessionShowingFieldGuide: SessionWithId = {
+    id: '1',
+    hostId: 'Tintin',
+    showFieldGuide: true,
+    createdAt: firestore.Timestamp.fromMillis(0),
+  };
+
+  const sessionWithACurrentRoundAndShowingFieldGuide: SessionWithId = {
+    id: '1',
+    hostId: 'Tintin',
+    currentRoundId: 'First Round',
+    showFieldGuide: true,
+    createdAt: firestore.Timestamp.fromMillis(0),
+  };
+
   // This observable pretend to be the session data coming from Firebase.
   // You can push whatever values you want to it.
   let mockSessionData$: BehaviorSubject<SessionWithId>;
@@ -121,23 +136,41 @@ describe('StudentDisplayComponent', () => {
         tick(0);
       }));
 
-      it(
-        'Should change to ScreenId.PlayRound when a currentRoundId is set on the session',
-        fakeAsync(() => {
-          component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
-            expect(currentScreen).toBe(ScreenId.SessionLobby);
-          });
-          tick(0);
 
-          mockSessionData$.next(sessionWithACurrentRound);
-          tick(0);
-
-          component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
-            expect(currentScreen).toBe(ScreenId.StudentRound);
-          });
-          tick(0);
-        }),
-      );
+      const cases = [
+        {
+          session: sessionWithACurrentRound,
+          expected: ScreenId.StudentRound,
+          circumstance: 'the session has currentRound',
+        },
+        {
+          session: sessionShowingFieldGuide,
+          expected: ScreenId.FieldGuide,
+          circumstance: 'showFieldGuide is set on the session',
+        },
+        {
+          session: sessionWithACurrentRound,
+          expected: ScreenId.StudentRound,
+          circumstance: 'showFieldGuide is set on the session, but *also* the session has a current round',
+        },
+      ];
+      for (const {session, expected, circumstance} of cases) {
+        it(
+          `Should change to ScreenId.${ScreenId[expected]} when ${circumstance}.`,
+          fakeAsync(() => {
+            component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
+              expect(currentScreen).toBe(ScreenId.SessionLobby);
+            });
+            tick(0);
+            mockSessionData$.next(session);
+            tick(0);
+            component.currentScreen$.pipe(take(1)).subscribe(currentScreen => {
+              expect(currentScreen).toBe(expected);
+            });
+            tick(0);
+          })
+        );
+      }
     });
   });
 });

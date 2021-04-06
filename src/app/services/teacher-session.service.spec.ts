@@ -192,7 +192,6 @@ describe('TeacherSessionService', () => {
         );
       },
 
-
       deleteJoinCode() {
         return Promise.resolve();
       }

@@ -15,12 +15,11 @@
 .top-content {
   display: flex;
   padding: 16px;
-  > * {
-    display: flex;
-  }
+  justify-content: center;
 }
 
 .top-content-middle-section {
+  display: flex;
   justify-content: center;
   flex-grow: 1;
   max-width: 800px;
@@ -36,21 +35,13 @@
   }
 }
 
-.player-count-text{
+.player-count-text {
   font-size: 24px;
 }
 
 .player-count {
   display: flex;
   align-items: center;
-}
-
-.top-content-left-section {
-  flex: 1;
-}
-
-.top-content-right-section {
-  flex: 1;
 }
 
 .player-list {
@@ -93,4 +84,17 @@ mat-spinner {
 .below-join-code-button {
   margin-top: 8px;
   text-align: center;
+}
+
+.field-guide-dialog {
+  max-width: 340px;
+  align-self: flex-end;
+  margin: 8px;
+}
+
+.loading {
+  min-width: 168px;
+  mat-card-title {
+    text-align: center;
+  }
 }
