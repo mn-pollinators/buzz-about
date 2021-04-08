@@ -1,5 +1,5 @@
-import { clearAllJoinCodes, clearAllSessions, clearAllStudents, TEST_UID } from "cypress/support/firebase-utils";
-import { firestore } from "firebase";
+import { clearAllJoinCodes, clearAllSessions, clearAllStudents, TEST_UID } from 'cypress/support/firebase-utils';
+import { firestore } from 'firebase';
 import { Session, SessionStudentData } from 'src/app/session';
 
 
@@ -24,9 +24,9 @@ describe('The student display', () => {
 
   context('When the student has joined the session', () => {
     const mockStudent: SessionStudentData = {
-      name: "Test Student",
+      name: 'Test Student',
       nestBarcode: 20
-    }
+    };
 
     beforeEach(() => {
       cy.callFirestore('set', `sessions/${mockSessionId}/students/${TEST_UID}`, mockStudent);
