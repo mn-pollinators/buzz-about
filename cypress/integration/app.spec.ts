@@ -2,7 +2,7 @@ describe('App', () => {
   beforeEach(() => cy.visit('/'));
 
   it('Should load', () => {
-    cy.document().should('exist');
+    cy.get('[data-cy=app]').should('exist');
   });
 
 });
