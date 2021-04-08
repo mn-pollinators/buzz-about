@@ -1,14 +1,21 @@
 <ng-container [ngSwitch]="currentScreen$ | async">
 
-  <app-student-round *ngSwitchCase="ScreenId.StudentRound"></app-student-round>
+  <app-student-round
+    *ngSwitchCase="ScreenId.StudentRound"
+    data-cy="studentRoundScreen"
+  ></app-student-round>
 
-  <app-field-guide *ngSwitchCase="ScreenId.FieldGuide" [backButton]="false"></app-field-guide>
+  <app-field-guide
+    *ngSwitchCase="ScreenId.FieldGuide"
+    [backButton]="false"
+    data-cy="fieldGuideScreen"
+  ></app-field-guide>
 
   <ng-container *ngSwitchDefault>
     <app-hill-background cover></app-hill-background>
     <div class="centered-container" [ngSwitch]="currentScreen$ | async">
 
-      <mat-card *ngSwitchCase="ScreenId.SessionLobby">
+      <mat-card *ngSwitchCase="ScreenId.SessionLobby" data-cy="sessionLobbyCard">
         <mat-card-title>Waiting for round to begin&hellip;</mat-card-title>
         <mat-card-content>
           Please wait for the host to start a round.
@@ -18,14 +25,14 @@
         </mat-card-actions>
       </mat-card>
 
-      <mat-card *ngSwitchCase="ScreenId.InvalidSession">
+      <mat-card *ngSwitchCase="ScreenId.InvalidSession" data-cy="invalidSessionCard">
         <mat-card-title>Error: invalid session</mat-card-title>
         <mat-card-actions align="end">
           <button mat-button color="primary" routerLink="/">Go Back</button>
         </mat-card-actions>
       </mat-card>
 
-      <mat-card *ngSwitchDefault>
+      <mat-card *ngSwitchDefault data-cy="loadingSessionCard">
         <mat-card-title>
           Loading Session&hellip;
         </mat-card-title>
