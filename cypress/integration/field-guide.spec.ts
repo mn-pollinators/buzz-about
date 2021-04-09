@@ -16,19 +16,15 @@ describe('The field guide page', () => {
     cy.get('app-field-guide-dialog').should('not.exist');
   });
 
-  it('Should one list item for each flower species', () => {
+  it('Should one list item for each flower species, bee species, and nest', () => {
     cy.get('.flowers.item-list')
       .find('.item-card')
       .should('have.length', Object.keys(allFlowerSpecies).length);
-  });
 
-  it('Should one list item for each bee species', () => {
     cy.get('.bees.item-list')
       .find('.item-card')
       .should('have.length', Object.keys(allBeeSpecies).length);
-  });
 
-  it('Should one list item for each nest', () => {
     cy.get('.nests.item-list')
       .find('.item-card')
       .should('have.length', Object.keys(allNests).length);

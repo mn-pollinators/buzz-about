@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StudentSessionService } from '../../services/student-session.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, shareReplay } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -10,7 +10,8 @@ export enum ScreenId {
   Loading,
   InvalidSession,
   SessionLobby,
-  StudentRound
+  StudentRound,
+  FieldGuide
 }
 
 @Component({
@@ -42,15 +43,20 @@ export class StudentDisplayComponent implements OnInit, OnDestroy {
   constructor(public sessionService: StudentSessionService, private activatedRoute: ActivatedRoute, public dialog: MatDialog) { }
 
   currentScreen$: Observable<ScreenId> = this.sessionService.currentSessionWithState$.pipe(
-    map(({heardBackFromFirebase, session}) =>
-    heardBackFromFirebase
-      ? (session
-        ? (session.currentRoundId
-          ? ScreenId.StudentRound
-          : ScreenId.SessionLobby)
-        : ScreenId.InvalidSession)
-      : ScreenId.Loading
-    ),
+    map(({heardBackFromFirebase, session}) => {
+      if (!heardBackFromFirebase) {
+        return ScreenId.Loading;
+      } else if (!session) {
+        return ScreenId.InvalidSession;
+      } else if (session.currentRoundId) {
+        return ScreenId.StudentRound;
+      } else if (session.showFieldGuide) {
+        return ScreenId.FieldGuide;
+      } else {
+        return ScreenId.SessionLobby;
+      }
+    }),
+    distinctUntilChanged(),
     shareReplay(1)
   );
 
