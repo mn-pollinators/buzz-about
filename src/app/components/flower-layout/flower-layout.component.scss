@@ -77,6 +77,22 @@ $positionsByNumber: (
     app-flower-layout-item {
       //display: block;
     }
+
+    .marker-number {
+      position: absolute;
+      left: 25%;
+      bottom: 0;
+      background-color: white;
+      border-radius: 50%;
+      min-width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+
+      font-weight: 600;
+      font-size: 12px;
+      transform: translate(-50%, 0);
+    }
   }
 }
 
