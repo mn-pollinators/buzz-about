@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 
 @Component({
