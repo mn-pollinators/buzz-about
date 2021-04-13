@@ -45,7 +45,7 @@ $positionsByNumber: (
 @mixin positionFlowers($positions) {
   @for $i from 1 through length($positions) {
     $pair: nth($positions, $i);
-    app-flower-layout-item:nth-child(#{$i}) {
+    .flower-item:nth-child(#{$i}) {
       left: nth($pair, 1);
       top: nth($pair, 2);
     }
@@ -70,14 +70,29 @@ $positionsByNumber: (
   height: 100%;
   display: block;
 
-  app-flower-layout-item {
-    // Base width of each flower is 10%, flowers may have their own scaling
-    width: 10%;
-
+  .flower-item {
     position: absolute;
-
-    // Measure from the center the flower, not the corner.
     transform: translate(-50%, -50%);
+
+    app-flower-layout-item {
+      //display: block;
+    }
+
+    .marker-number {
+      position: absolute;
+      left: 25%;
+      bottom: 0;
+      background-color: white;
+      border-radius: 50%;
+      min-width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+
+      font-weight: 600;
+      font-size: 12px;
+      transform: translate(-50%, 0);
+    }
   }
 }
 

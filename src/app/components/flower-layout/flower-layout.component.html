@@ -1,10 +1,21 @@
 <app-hill-background></app-hill-background>
 <div class="flowers" [ngClass]="'flowers-' + items.length">
-  <app-flower-layout-item
-  *ngFor="let item of items; trackBy:trackByIndex"
-  [item]="item"
-  [matTooltip]="item.alt | sentenceCase"
-  [matTooltipDisabled]="!tooltips"
+  <div
+    *ngFor="let item of items; trackBy:trackByIndex; index as i"
+    class="flower-item"
+    [ngStyle]="{'width': calculateFlowerSize(item.scale) * 100 + '%'}"
+    [matTooltip]="item.alt | sentenceCase"
+    [matTooltipDisabled]="!tooltips"
   >
-  </app-flower-layout-item>
+    <app-flower-layout-item
+      *ngIf="item"
+      [imgSrc]="item.imgSrc"
+      [imgAlt]="item.alt"
+      [active]="item.active"
+    >
+    </app-flower-layout-item>
+    <div class="marker-number">
+      {{i + 1}}
+    </div>
+  </div>
 </div>

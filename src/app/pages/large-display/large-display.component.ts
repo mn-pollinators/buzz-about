@@ -1,5 +1,4 @@
 import { Component, OnInit, } from '@angular/core';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../../services/timer.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, of } from 'rxjs';
@@ -7,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 
 /**
  * Over the course of a session, the large display will show several
