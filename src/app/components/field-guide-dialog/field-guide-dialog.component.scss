@@ -111,8 +111,6 @@
   margin-top: 16px;
 }
 
-.section-heade
-
-r {
+.section-header {
   @include mat-typography-level-to-styles($typography-config, subheading-2);
 }

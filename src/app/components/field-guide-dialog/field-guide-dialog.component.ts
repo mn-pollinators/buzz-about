@@ -57,7 +57,6 @@ export class FieldGuideDialogComponent implements OnInit {
   acceptedList = this.bee ? this.bee.flowers_accepted : this.flower ? getBeesForFlower(this.flower) : getBeesForNest(this.nest);
 
   ngOnInit(): void {
-    console.log(this.platform)
   }
 
 }
