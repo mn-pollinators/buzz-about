@@ -33,6 +33,13 @@
     display: block;
     max-height: 152px;
     max-width: 100%;
+
+    &.webkit-fix {
+      // Necessary for Safari. Otherwise we get this bug:
+      // https://github.com/mn-pollinators/buzz-about/issues/257
+      width: 152px;
+      height: 152px;
+    }
   }
 }
 
@@ -61,6 +68,12 @@
       margin-right: auto;
       height: 56px;
       margin-bottom: 4px;
+
+      &.webkit-fix {
+        // Necessary for Safari. Otherwise we get this bug:
+        // https://github.com/mn-pollinators/buzz-about/issues/257
+        width: 56px;
+      }
     }
     .accepted-name {
       text-align: center;
@@ -98,6 +111,8 @@
   margin-top: 16px;
 }
 
-.section-header {
+.section-heade
+
+r {
   @include mat-typography-level-to-styles($typography-config, subheading-2);
 }

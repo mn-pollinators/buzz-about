@@ -8,7 +8,10 @@
 
 <div class="description">
   <div class="header-image-container">
-    <img class="header-image" [src]="data.value.asset_urls.art_500_wide">
+    <img *ngIf="!platform.WEBKIT; else webkitFixHeaderImg" class="header-image" [src]="data.value.asset_urls.art_500_wide">
+    <ng-template #webkitFixHeaderImg>
+      <img class="header-image webkit-fix" [src]="data.value.asset_urls.art_512_square">
+    </ng-template>
   </div>
   <div class="active-period" *ngIf="!nest">
     <div class="section-header">{{flower ? 'Blooming Period' : 'Time Active'}}</div>
@@ -33,7 +36,10 @@
     <h3>{{flower ? 'Bees Attracted' : bee ? 'Flowers Preferred' : 'Bee with this Nest'}}</h3>
     <div class="accepted-list">
       <div *ngFor="let item of acceptedList" class="accepted-list-item">
-        <img [src]="item.asset_urls.art_500_wide">
+        <img *ngIf="!platform.WEBKIT; else webkitFixAcceptedImg" [src]="item.asset_urls.art_500_wide">
+        <ng-template #webkitFixAcceptedImg>
+          <img class="webkit-fix" [src]="item.asset_urls.art_512_square">
+        </ng-template>
         <div class="accepted-name">{{item.name | titlecase}}</div>
       </div>
     </div>

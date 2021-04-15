@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { beeDescriptionKeys, BeeSpecies, getBeesForFlower, getBeesForNest } from 'src/app/bees';
@@ -24,7 +25,7 @@ export type FieldGuideDialogData = {
 })
 export class FieldGuideDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: FieldGuideDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: FieldGuideDialogData, public platform: Platform) {
 
   }
 
@@ -56,6 +57,7 @@ export class FieldGuideDialogComponent implements OnInit {
   acceptedList = this.bee ? this.bee.flowers_accepted : this.flower ? getBeesForFlower(this.flower) : getBeesForNest(this.nest);
 
   ngOnInit(): void {
+    console.log(this.platform)
   }
 
 }

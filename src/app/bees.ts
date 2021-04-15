@@ -34,6 +34,7 @@ export interface BeeSpecies {
   sociality: BeeSociality;
   asset_urls: {
     art_500_wide: string;
+    art_512_square: string;
   };
 }
 
@@ -79,7 +80,8 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
     ],
     sociality: BeeSociality[beeFromJson.sociality],
     asset_urls: {
-      art_500_wide: `/assets/art/500w/bees/${beeFromJson.art_file}`
+      art_500_wide: `/assets/art/500w/bees/${beeFromJson.art_file}`,
+      art_512_square: `/assets/art/512-square/bees/${beeFromJson.art_file}`
     }
   };
 }
