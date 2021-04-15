@@ -473,6 +473,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.source?.dispose();
     }
     this.controller?.dispose();
+    this.renderer?.forceContextLoss();
     this.renderer?.renderLists.dispose();
     this.renderer?.dispose();
   }
