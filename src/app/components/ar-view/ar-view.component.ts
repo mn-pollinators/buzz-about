@@ -264,12 +264,13 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.controller = controller;
 
         // Call animate for the first time
-        this.animate();
+        requestAnimationFrame(() => { this.animate(); });
 
         // Resolve the initAR Promise
         resolve();
 
       }).catch(error => {
+        //this.dispose();
         reject(error);
       });
     });
@@ -282,7 +283,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private animate() {
     // Stop the animate loop when the controller has been disposed
     if (this.disposeQueued) {
-      this.dispose();
+      console.log('animate disposeQueued true');
+      //this.dispose();
       return;
     }
 
@@ -290,12 +292,13 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
     this.totalTime += this.deltaTime; // Add to the current timestamp
 
+    console.log('animate: before controller update');
     // Update the state of the THREEAR Controller
     this.controller.update(this.source.domElement);
-
+    console.log('animate: before render');
     // Render the markers
     this.renderer.render(this.scene, this.camera);
-
+    console.log('animate: before next frame');
     requestAnimationFrame(() => { this.animate(); });
   }
 
@@ -469,7 +472,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
     }
 
-    if (this.source.domElement.parentNode) {
+    if (this.source?.domElement?.parentNode) {
       this.source?.dispose();
     }
     this.controller?.dispose();
@@ -483,7 +486,10 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // `updateMarkers` gets called, it'll check these flags and know to shut
     // down.
     this.disposeQueued = true;
+    console.log('after this.disposeQueued = true;');
     this.arReady = false;
+    this.dispose();
+    console.log('after this.dispose();');
   }
 
 }

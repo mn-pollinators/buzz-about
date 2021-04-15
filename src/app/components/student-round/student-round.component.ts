@@ -31,8 +31,8 @@ export class StudentRoundComponent implements OnInit {
       ? this.roundService.currentBeeActive$.pipe(map(active => active ? ScreenId.Play : ScreenId.InactiveBee))
       : of(ScreenId.Paused)
     ),
-    shareReplay(1),
-    tap(x => console.log(x))
+    distinctUntilChanged(),
+    shareReplay(1)
   );
 
   nextActivePeriodText$ = combineLatest(
