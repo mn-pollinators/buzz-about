@@ -83,6 +83,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Provides a reference for the canvas element
   private get canvas(): HTMLCanvasElement {
+    console.log('get canvas');
     return this.canvasRef.nativeElement;
   }
 
@@ -92,6 +93,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Provide a reference for the container
   private get container(): HTMLDivElement {
+    console.log('get container');
     return this.containerRef.nativeElement;
   }
 
@@ -182,7 +184,9 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @returns a promise that resolves when AR is ready.
    */
   private initAR(): Promise<any> {
+    console.log('initAR called');
     return new Promise<void>((resolve, reject) => {
+      console.log('initAR promise start');
       this.clock = new THREE.Clock(); // setup the clock for keeping track of frametimes
 
       this.scene = new THREE.Scene(); // create the main scene
@@ -216,6 +220,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         displayHeight: ArResolution.height,
       });
 
+      console.log('before THREEAR init');
       // Initialize THREEAR
       THREEAR.initialize(
         {
@@ -263,6 +268,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         // Initialize returns a controller, set this.controller to that so we have a reference to it
         this.controller = controller;
 
+        console.log('before first request animation frame');
         // Call animate for the first time
         requestAnimationFrame(() => { this.animate(); });
 
@@ -270,6 +276,8 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         resolve();
 
       }).catch(error => {
+        console.log('THREEAR init error');
+        console.log(error);
         //this.dispose();
         reject(error);
       });
@@ -309,6 +317,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @param imgPath the path to the image to display for the marker
    */
   public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
+    console.log(`addMarker called: ${marker.barcodeValue}`);
 
     // Setup the three group for this marker
     const markerGroup = new THREE.Group();
@@ -366,6 +375,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private markerFoundOrLost() {
+    console.log('markerFoundOrLost called');
     const activeMarkers = this.controller.markers.barcode.filter(marker => marker.found);
 
     if (activeMarkers.length > 0) {
@@ -392,6 +402,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Sets up marker events
    */
   private setupEvents() {
+    console.log('setupEvents called');
     this.controller.addEventListener('markerFound', () => {
       this.markerFoundOrLost();
     });
@@ -405,6 +416,7 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @param changedMarkers the markers that have been changed and need to be updated or added
    */
   private updateMarkers(changedMarkers: ARMarker[]) {
+    console.log('updateMarkers called');
     // Loop through changed markers
     for (const changedMarker of changedMarkers) {
 
@@ -432,8 +444,10 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges called');
     // Check if there is a change to the markers and make sure AR has started
     if (typeof changes.markers !== 'undefined' && this.arReady) {
+      console.log('checking marker changes');
       const change = changes.markers;
 
       // We don't want to do this on the first change because that is when we are already setting the markers
@@ -482,11 +496,11 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnDestroy() {
+    console.log('ngOnDestroy called');
     // Just set some flags. The next time a function like `animate()` or
     // `updateMarkers` gets called, it'll check these flags and know to shut
     // down.
     this.disposeQueued = true;
-    console.log('after this.disposeQueued = true;');
     this.arReady = false;
     this.dispose();
     console.log('after this.dispose();');
