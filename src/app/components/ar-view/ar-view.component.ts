@@ -64,15 +64,12 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   scene: THREE.Scene; // The Three scene, where the groups to display on markers are held
   camera: THREE.Camera;
   renderer: THREE.WebGLRenderer;
-  clock: THREE.Clock;
-  deltaTime = 0;
-  totalTime = 0;
   source: THREEAR.Source;
 
   controller: THREEAR.Controller;
 
   arReady = false;
-  disposeQueued = false;
+  disposed = false;
 
   lastActiveMarker: number;
 
@@ -156,24 +153,23 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    this.initAR().then(() => { // init ar
+  async ngAfterViewInit() {
+    await this.initAR(); // init ar
 
-      if (this.disposeQueued) {
-        return;
-      }
+    if (this.disposed) {
+      return;
+    }
 
-      // Add initial set of markers passed into the component
-      if (this.markers) {
-        this.markers.forEach((marker) => this.addMarker(marker));
-      }
+    // Add initial set of markers passed into the component
+    if (this.markers) {
+      this.markers.forEach((marker) => this.addMarker(marker));
+    }
 
-      // Setup AR events
-      this.setupEvents();
+    // Setup AR events
+    this.setupEvents();
 
-      // Set flag that AR is ready
-      this.arReady = true;
-    });
+    // Set flag that AR is ready
+    this.arReady = true;
   }
 
 
@@ -181,98 +177,84 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * Setup the canvas, camera, and basic AR library
    * @returns a promise that resolves when AR is ready.
    */
-  private initAR(): Promise<any> {
-    return new Promise<void>((resolve, reject) => {
-      this.clock = new THREE.Clock(); // setup the clock for keeping track of frametimes
+  private async initAR() {
+    this.scene = new THREE.Scene(); // create the main scene
 
-      this.scene = new THREE.Scene(); // create the main scene
+    // Set lighting
+    const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+    this.scene.add(ambientLight);
 
-      // Set lighting
-      const ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
-      this.scene.add(ambientLight);
+    // Setup camera
+    this.camera = new THREE.Camera();
+    this.scene.add(this.camera);
 
-      // Setup camera
-      this.camera = new THREE.Camera();
-      this.scene.add(this.camera);
-
-      // Setup renderer
-      this.renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-        canvas: this.canvas // Point the renderer at the canvas element in the HTML
-      });
-
-      this.renderer.setClearColor(new THREE.Color('lightgrey'), 0);
-      this.renderer.setSize(ArResolution.width, ArResolution.height); // TODO: resize to entire component size
-
-      // Setup the THREEAR Source with the parent div and the renderer and camera we setup
-      this.source = new THREEAR.Source({
-        parent: this.container,
-        renderer: this.renderer,
-        camera: this.camera,
-        sourceWidth: ArResolution.width,
-        sourceHeight: ArResolution.height,
-        displayWidth: ArResolution.width,
-        displayHeight: ArResolution.height,
-      });
-
-      // Initialize THREEAR
-      THREEAR.initialize(
-        {
-          source: this.source,
-          // the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-          detectionMode: 'mono_and_matrix',
-
-          // type of matrix code - valid iif detectionMode end with 'matrix' -
-          // [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-          matrixCodeType: '4x4_BCH_13_9_3',
-
-          // timeout for setting a marker as lost when it is no longer seen
-          // default was 1000
-          lostTimeout: 100,
-
-          positioning: {
-            // turn on/off camera smoothing
-            smooth: false, // note: turning this off seems to make the tracking much better
-
-            // number of matrices to smooth tracking over, more = smoother but slower follow
-            smoothCount: 5,
-
-            // distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
-            smoothTolerance: 0.01,
-
-            // threshold for smoothing, will keep still unless enough matrices are over tolerance
-            smoothThreshold: 2
-          },
-
-          // tune the maximum rate of pose detection in the source image
-          maxDetectionRate: 60,
-
-          // resolution of at which we detect pose in the source image
-          canvasWidth: ArResolution.width,
-          canvasHeight: ArResolution.height,
-
-          // the patternRatio inside the artoolkit marker - artoolkit only
-          patternRatio: 0.5,
-
-          // enable image smoothing or not for canvas copy - default to true
-          // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-          imageSmoothingEnabled: true
-        }
-      ).then((controller: THREEAR.Controller) => {
-        // Initialize returns a controller, set this.controller to that so we have a reference to it
-        this.controller = controller;
-
-        // Call animate for the first time
-        this.animate();
-
-        // Resolve the initAR Promise
-        resolve();
-
-      }).catch(error => {
-        reject(error);
-      });
+    // Setup renderer
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      canvas: this.canvas // Point the renderer at the canvas element in the HTML
     });
+
+    this.renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+    this.renderer.setSize(ArResolution.width, ArResolution.height); // TODO: resize to entire component size
+
+    // Setup the THREEAR Source with the parent div and the renderer and camera we setup
+    this.source = new THREEAR.Source({
+      parent: this.container,
+      renderer: this.renderer,
+      camera: this.camera,
+      sourceWidth: ArResolution.width,
+      sourceHeight: ArResolution.height,
+      displayWidth: ArResolution.width,
+      displayHeight: ArResolution.height,
+    });
+
+    // Initialize THREEAR
+    this.controller = await THREEAR.initialize(
+      {
+        source: this.source,
+        // the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+        detectionMode: 'mono_and_matrix',
+
+        // type of matrix code - valid iif detectionMode end with 'matrix' -
+        // [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+        matrixCodeType: '4x4_BCH_13_9_3',
+
+        // timeout for setting a marker as lost when it is no longer seen
+        // default was 1000
+        lostTimeout: 100,
+
+        positioning: {
+          // turn on/off camera smoothing
+          smooth: false, // note: turning this off seems to make the tracking much better
+
+          // number of matrices to smooth tracking over, more = smoother but slower follow
+          smoothCount: 5,
+
+          // distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+          smoothTolerance: 0.01,
+
+          // threshold for smoothing, will keep still unless enough matrices are over tolerance
+          smoothThreshold: 2
+        },
+
+        // tune the maximum rate of pose detection in the source image
+        maxDetectionRate: 60,
+
+        // resolution of at which we detect pose in the source image
+        canvasWidth: ArResolution.width,
+        canvasHeight: ArResolution.height,
+
+        // the patternRatio inside the artoolkit marker - artoolkit only
+        patternRatio: 0.5,
+
+        // enable image smoothing or not for canvas copy - default to true
+        // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+        imageSmoothingEnabled: true
+      }
+    );
+
+    requestAnimationFrame(() => { this.animate(); });
   }
 
 
@@ -281,21 +263,14 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    */
   private animate() {
     // Stop the animate loop when the controller has been disposed
-    if (this.disposeQueued) {
-      this.dispose();
+    if (this.disposed) {
       return;
     }
 
-    // Setup the next call
-    this.deltaTime = this.clock.getDelta(); // Calculate the time delta between frames
-    this.totalTime += this.deltaTime; // Add to the current timestamp
-
     // Update the state of the THREEAR Controller
     this.controller.update(this.source.domElement);
-
     // Render the markers
     this.renderer.render(this.scene, this.camera);
-
     requestAnimationFrame(() => { this.animate(); });
   }
 
@@ -306,7 +281,6 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * @param imgPath the path to the image to display for the marker
    */
   public addMarker(marker: ARMarker): THREEAR.BarcodeMarker {
-
     // Setup the three group for this marker
     const markerGroup = new THREE.Group();
     // Add the group to the scene that contains all the markers
@@ -469,20 +443,18 @@ export class ArViewComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.source.domElement.srcObject.getTracks().forEach(track => track.stop());
     }
 
-    if (this.source.domElement.parentNode) {
+    if (this.source?.domElement?.parentNode) {
       this.source?.dispose();
     }
     this.controller?.dispose();
+    this.renderer?.forceContextLoss();
     this.renderer?.renderLists.dispose();
     this.renderer?.dispose();
   }
 
   ngOnDestroy() {
-    // Just set some flags. The next time a function like `animate()` or
-    // `updateMarkers` gets called, it'll check these flags and know to shut
-    // down.
-    this.disposeQueued = true;
+    this.dispose();
     this.arReady = false;
+    this.disposed = true;
   }
-
 }
