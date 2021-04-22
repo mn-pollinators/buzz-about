@@ -3,7 +3,7 @@
   "short_name": "Buzz About",
   "theme_color": "#4CAF50",
   "background_color": "#fafafa",
-  "display": "fullscreen",
+  "display": "standalone",
   "scope": "/",
   "start_url": "/",
   "icons": [
