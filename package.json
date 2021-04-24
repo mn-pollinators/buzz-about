@@ -38,7 +38,7 @@
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@angular/service-worker": "~9.1.11",
-    "@mn-pollinators/assets": "0.6.0",
+    "@mn-pollinators/assets": "0.7.0",
     "@ngneat/until-destroy": "^7.3.2",
     "animejs": "^3.2.1",
     "firebase": ">= 5.5.7 <8",
