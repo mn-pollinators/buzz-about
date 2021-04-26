@@ -12,6 +12,7 @@ jobs:
         uses: fkirc/skip-duplicate-actions@master
         with:
           paths_ignore: '["**.md", "docs/**", "cypress/**", "src/**/*.spec.ts"]'
+          cancel_others: true
 
   firestore-tests:
     needs: pre-job
