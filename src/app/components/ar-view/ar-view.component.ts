@@ -11,10 +11,9 @@ import {
   OnDestroy,
   AfterViewInit
 } from '@angular/core';
-import * as THREE from 'threear/node_modules/three';
-import * as THREEAR from 'threear';
+import * as THREE from 'three';
+import * as THREEAR from '@mn-pollinators/threear';
 import { ARMarker, markersEqual } from 'src/app/markers';
-import { Observable } from 'rxjs';
 
 /**
  * The state of a marker
