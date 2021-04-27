@@ -20,6 +20,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgPipesModule } from 'ngx-pipes';
+import { RouterModule } from '@angular/router';
+import { PlatformModule } from '@angular/cdk/platform';
 
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
@@ -29,7 +31,7 @@ import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-i
 import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
 import { SmallTimelineComponent } from './components/small-timeline/small-timeline.component';
 import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
-import { RouterModule } from '@angular/router';
+
 
 
 
@@ -58,6 +60,7 @@ const sharedImportModules = [
   ReactiveFormsModule,
   HttpClientModule,
   NgPipesModule,
+  PlatformModule,
 ];
 
 const sharedComponents = [
