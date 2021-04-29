@@ -1,5 +1,8 @@
-<div #contents>
+<div>
   <div class="flower-settings">
+    <input type="checkbox" [(ngModel)]="showBees" name="showBees">
+    <label for="showBees">Show with Bees</label>
+    <h2>Flowers</h2>
     <div *ngFor="let flower of flowers">
       <select [(ngModel)]="flower.species">
         <option *ngFor="let species of allFlowerSpeciesArray" [value]="species.id">{{species.name}}</option>
@@ -7,9 +10,21 @@
 
       <input type="checkbox" [(ngModel)]="flower.blooming">
     </div>
+    <h2>Bees</h2>
+    <div *ngFor="let bee of bees">
+      <select [(ngModel)]="bee.species">
+        <option *ngFor="let species of allBeeSpeciesArray" [value]="species.id">{{species.name}}</option>
+      </select>
+
+      <input type="number" min="0" max="16" [(ngModel)]="bee.currentFlower">
+    </div>
+    <br>
+    <button (click)="moveBeesAutomatically()">Move Automatically</button><button (click)="clearMoveBees()">Cancel</button>
   </div>
 
   <div class="test-container">
-    <app-flower-layout [items]="getFlowers(flowers)" tooltips="true"></app-flower-layout>
+    <app-flower-layout-with-bees *ngIf="showBees" [flowers]="getFlowers(flowers)" [bees]="getBees(bees)"></app-flower-layout-with-bees>
+    <app-flower-layout *ngIf="!showBees" [items]="getFlowers(flowers)" tooltips="true"></app-flower-layout>
   </div>
 </div>
+

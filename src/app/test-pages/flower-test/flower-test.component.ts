@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { allBeeSpecies } from 'src/app/bees';
+import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
 import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 
@@ -9,7 +11,28 @@ import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 })
 export class FlowerTestComponent implements OnInit {
 
-
+  bees: {species: string, currentFlower: number}[] = [
+    {
+      species: allBeeSpecies.andrena_carolina.id,
+      currentFlower: 1
+    },
+    {
+      species: allBeeSpecies.apis_mellifera.id,
+      currentFlower: 3
+    },
+    {
+      species: allBeeSpecies.megachile_pugnata.id,
+      currentFlower: 5
+    },
+    {
+      species: allBeeSpecies.bombus_affinis.id,
+      currentFlower: 2
+    },
+    {
+      species: allBeeSpecies.hoplitis_albifrons.id,
+      currentFlower: 8
+    },
+  ];
 
   flowers: {species: string, blooming: boolean}[] = [
     {
@@ -79,6 +102,10 @@ export class FlowerTestComponent implements OnInit {
   ];
 
   allFlowerSpeciesArray = Object.values(allFlowerSpecies);
+  allBeeSpeciesArray = Object.values(allBeeSpecies);
+
+  interval: number;
+  showBees = true;
 
   constructor() { }
 
@@ -95,6 +122,37 @@ export class FlowerTestComponent implements OnInit {
         scale: speciesObj.relative_size
       };
     });
+  }
+
+  getBees(inputs: {species: string, currentFlower: number}[]): BeeLayoutItem[] {
+    return inputs.map(({species, currentFlower}, index) => {
+      const speciesObj = allBeeSpecies[species];
+      return {
+        id: index.toString(),
+        imgSrc: speciesObj.asset_urls.art_500_wide,
+        alt: speciesObj.name,
+        currentFlower,
+        scale: speciesObj.relative_size
+      };
+    });
+  }
+
+  clearMoveBees() {
+    if (this.interval) {
+      window.clearTimeout(this.interval);
+      this.interval = null;
+    }
+  }
+
+  moveBeesAutomatically() {
+    this.clearMoveBees();
+    this.interval = window.setInterval(() => {
+      for (const bee of this.bees) {
+        if (Math.random() < 0.1) {
+          bee.currentFlower = Math.floor(Math.random() * 17);
+        }
+      }
+    }, 500);
   }
 
 

@@ -1,0 +1,12 @@
+<app-flower-layout [items]="flowers"></app-flower-layout>
+<div class="bees" [ngClass]="'flowers-' + flowers.length">
+  <div
+    *ngFor="let item of bees; trackBy:trackById;"
+    class="bee-item"
+    [ngStyle]="{'width': calculateBeeSize(item.scale) * 100 + '%'}"
+    [ngClass]="
+      item.currentFlower ? ('at-flower-' + item.currentFlower) : 'no-flower'"
+  >
+    <img [src]="item.imgSrc" [alt]="item.alt">
+  </div>
+</div>

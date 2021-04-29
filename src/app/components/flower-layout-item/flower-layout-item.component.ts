@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, animate, transition, style, state} from '@angular/animations';
 
 
@@ -23,7 +23,8 @@ import { trigger, animate, transition, style, state} from '@angular/animations';
         animate('500ms ease')
       ])
     ])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlowerLayoutItemComponent implements OnInit, OnChanges {
 
