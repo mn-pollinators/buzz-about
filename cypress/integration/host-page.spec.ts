@@ -1,10 +1,6 @@
 import { Session } from 'src/app/session';
 import { firestore } from 'firebase';
-
-// We use this  in a few places, so I thought I'd make it its own function.
-function clearAllSessions() {
-  cy.callFirestore('delete', 'sessions', { recursive: true });
-}
+import { clearAllSessions } from 'cypress/support/firebase-utils';
 
 describe('The host page', () => {
   beforeEach(() => {
@@ -12,12 +8,10 @@ describe('The host page', () => {
     cy.login();
   });
 
-  before(clearAllSessions);
-
-  afterEach(clearAllSessions);
+  beforeEach(clearAllSessions);
 
   it('Should load', () => {
-    cy.document().should('exist');
+    cy.get('[data-cy=hostPage]').should('exist');
   });
 
   describe('Clicking the "create session" button ', () => {

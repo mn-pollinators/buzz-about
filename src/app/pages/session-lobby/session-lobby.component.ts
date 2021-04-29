@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TeacherSessionService } from '../../services/teacher-session.service';
-import { FirebaseRound } from '../../round';
 import { TeacherRoundService } from '../../services/teacher-round.service';
-import { allBeeSpecies } from '../../bees';
 import { Router } from '@angular/router';
 import { RoundTemplate } from 'src/app/round-templates/round-templates';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -10,6 +8,7 @@ import { RoundChooserDialogComponent } from 'src/app/components/round-chooser-di
 import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FullscreenService } from 'src/app/services/fullscreen.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-session-lobby',
@@ -27,36 +26,41 @@ export class SessionLobbyComponent implements OnInit {
     public fullscreenService: FullscreenService
   ) {  }
 
-  loadingRound$ = new BehaviorSubject<boolean>(false);
+  loading$ = new BehaviorSubject<boolean>(false);
 
   joinCode$ = this.teacherSessionService.activeJoinCode$;
 
   joinCodeButtonDisabled$ = new BehaviorSubject<boolean>(false);
 
+  showFieldGuide$ = this.teacherSessionService.showFieldGuide$;
+
   ngOnInit(): void {
   }
 
-  public quitSession() {
+  public async quitSession() {
+    this.loading$.next(true);
+    await this.closeFieldGuide();
     this.teacherSessionService.leaveSession();
     this.fullscreenService.exit();
     this.router.navigate(['/']);
   }
 
-  openRoundDialog(): void {
+  async openRoundDialog() {
     const dialogRef: MatDialogRef<RoundChooserDialogComponent, RoundTemplate> =
       this.matDialog.open(RoundChooserDialogComponent);
 
-    dialogRef.afterClosed().subscribe(template => {
-      if (template) {
-        this.loadingRound$.next(true);
-        this.teacherRoundService.startNewRound(template).then(() => {
-          this.loadingRound$.next(false);
-        }, (err) => {
-          this.loadingRound$.next(false);
-          this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
-        });
+    const template = await dialogRef.afterClosed().toPromise();
+    if (template) {
+      this.loading$.next(true);
+      await this.closeFieldGuide();
+      try {
+        await this.teacherRoundService.startNewRound(template);
+      } catch (err) {
+        this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
+      } finally {
+        this.loading$.next(false);
       }
-    });
+    }
   }
 
   createJoinCode() {
@@ -75,5 +79,15 @@ export class SessionLobbyComponent implements OnInit {
 
   deleteJoinCode() {
     return this.teacherSessionService.deleteCurrentJoinCode();
+  }
+
+  showFieldGuide() {
+    return this.teacherSessionService.showFieldGuide(true);
+  }
+
+  async closeFieldGuide() {
+    if (await this.showFieldGuide$.pipe(take(1)).toPromise()) {
+      return this.teacherSessionService.showFieldGuide(false);
+    }
   }
 }

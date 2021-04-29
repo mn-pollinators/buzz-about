@@ -9,7 +9,8 @@
       "node",
       "cypress-firebase"
     ],
-    "sourceMap": false
+    "sourceMap": false,
+    "noEmit": true
   },
   "include": [
     "**/*.ts",

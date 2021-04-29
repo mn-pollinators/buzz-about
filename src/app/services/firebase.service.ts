@@ -123,12 +123,16 @@ export class FirebaseService {
       .update({currentRoundId: roundPath.roundId});
   }
 
+  setShowFieldGuide(sessionId: string, showFieldGuide: boolean) {
+    return this.angularFirestore.collection('sessions').doc<Session>(sessionId).update({showFieldGuide});
+  }
+
   /**
    * Returns an observable of all student data as an array of JSON objects
    * @param sessionID the ID of the session the students are in
    */
   getStudentsInSession(sessionId: string): Observable<SessionStudentData[]> {
-    return  this.getSessionDocument(sessionId)
+    return this.getSessionDocument(sessionId)
       .collection<SessionStudentData>('students')
       .valueChanges({idField: 'id'});
   }

@@ -87,6 +87,12 @@ export class TeacherSessionService {
     shareReplay(1)
   );
 
+  showFieldGuide$ = this.currentSession$.pipe(
+    map(session => session && session.showFieldGuide),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
+
   /**
    * Mark a session as the currently playing one.
    *
@@ -161,5 +167,10 @@ export class TeacherSessionService {
   async renameStudent(id: string, name: string) {
     const sessionId = await this.sessionId$.pipe(take(1)).toPromise();
     return this.firebaseService.updateStudentInSession(id, sessionId, {name});
+  }
+
+  async showFieldGuide(showFieldGuide: boolean) {
+    const sessionId = await this.sessionId$.pipe(take(1)).toPromise();
+    return this.firebaseService.setShowFieldGuide(sessionId, showFieldGuide);
   }
 }
