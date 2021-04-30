@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { allFlowerSpecies } from '../../flowers';
-import { allBeeSpecies } from '../../bees';
-import { allNests } from '../../nests';
+import { allFlowerSpeciesArray } from '../../flowers';
+import { allBeeSpeciesArray } from '../../bees';
+import { allNestsArray } from '../../nests';
 
 @Component({
   selector: 'app-json-data-test',
@@ -12,9 +12,9 @@ export class JsonDataTestComponent implements OnInit {
 
   constructor() { }
 
-  allFlowerSpecies = Object.values(allFlowerSpecies);
-  allBeeSpecies = Object.values(allBeeSpecies);
-  allNests = Object.values(allNests);
+  allFlowerSpecies = allFlowerSpeciesArray;
+  allBeeSpecies = allBeeSpeciesArray;
+  allNests = allNestsArray;
 
   ngOnInit(): void {
 

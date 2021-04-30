@@ -1,6 +1,6 @@
-import { allFlowerSpecies } from './flowers';
-import { allBeeSpecies, BeeSociality } from './bees';
-import { allNests } from './nests';
+import { allFlowerSpecies, allFlowerSpeciesArray } from './flowers';
+import { allBeeSpecies, allBeeSpeciesArray, BeeSociality } from './bees';
+import { allNests, allNestsArray } from './nests';
 
 describe('The allFlowerSpecies mapping', () => {
   it('Contains at least one species of flower', () => {
@@ -20,6 +20,20 @@ describe('The allFlowerSpecies mapping', () => {
       });
     });
   }
+
+  describe('The allFlowerSpeciesArray', () => {
+    it('Contains the same number of flowers as the object', () => {
+      expect(allFlowerSpeciesArray.length).toEqual(Object.entries(allFlowerSpecies).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allFlowerSpecies)) {
+        it(i.id, () => {
+          expect(allFlowerSpeciesArray).toContain(i);
+        });
+      }
+    });
+  });
 });
 
 describe('The allBeeSpecies mapping', () => {
@@ -63,6 +77,20 @@ describe('The allBeeSpecies mapping', () => {
       });
     });
   }
+
+  describe('The allBeeSpeciesArray', () => {
+    it('Contains the same number of bees as the object', () => {
+      expect(allBeeSpeciesArray.length).toEqual(Object.entries(allBeeSpecies).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allBeeSpecies)) {
+        it(i.id, () => {
+          expect(allBeeSpeciesArray).toContain(i);
+        });
+      }
+    });
+  });
 });
 
 describe('The allNests mapping', () => {
@@ -77,4 +105,18 @@ describe('The allNests mapping', () => {
       });
     });
   }
+
+  describe('The allNestsArray', () => {
+    it('Contains the same number of nests as the object', () => {
+      expect(allNestsArray.length).toEqual(Object.entries(allNests).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allNests)) {
+        it(i.id, () => {
+          expect(allNestsArray).toContain(i);
+        });
+      }
+    });
+  });
 });
