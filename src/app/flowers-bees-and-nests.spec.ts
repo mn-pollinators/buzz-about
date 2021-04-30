@@ -107,7 +107,7 @@ describe('The allNests mapping', () => {
   }
 
   describe('The allNestsArray', () => {
-    it('Contains the same number of bees as the object', () => {
+    it('Contains the same number of nests as the object', () => {
       expect(allNestsArray.length).toEqual(Object.entries(allNests).length);
     });
 
