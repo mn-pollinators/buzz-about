@@ -1,6 +1,6 @@
 import { bees as allBeesFromJson } from '@mn-pollinators/assets/bees.json';
 import { TimePeriod } from './time-period';
-import { FlowerSpecies, allFlowerSpecies } from './flowers';
+import { FlowerSpecies, allFlowerSpeciesArray } from './flowers';
 import { Nest, allNests } from './nests';
 
 export interface BeeSpecies {
@@ -69,10 +69,7 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
   allBeesConverted[key] = {
     ...beeFromJson,
     id: key,
-    flowers_accepted: beeFromJson.flowers_accepted
-      // Ignore unknown flower names
-      .filter(flowerId => flowerId in allFlowerSpecies)
-      .map(flowerId => allFlowerSpecies[flowerId]),
+    flowers_accepted: allFlowerSpeciesArray.filter(flower => beeFromJson.flowers_accepted.includes(flower.id)),
     nest_type: allNests[beeFromJson.nest_type],
     active_period: [
       TimePeriod.fromIsoDate(beeFromJson.active_period.split('/')[0]),
@@ -89,13 +86,54 @@ for (const [key, beeFromJson] of Object.entries(allBeesFromJson)) {
 export const allBeeSpecies =
   allBeesConverted as {[id in keyof typeof allBeesFromJson]: BeeSpecies};
 
+
+const sweatBees = [
+  allBeeSpecies.augochlora_pura,
+  allBeeSpecies.augochloropsis_metallica,
+  allBeeSpecies.augochlorella_aurata,
+  allBeeSpecies.agapostemon_virescens,
+  allBeeSpecies.lasioglossum_cressonii,
+];
+
+const minerBees = [
+  allBeeSpecies.andrena_carolina,
+  allBeeSpecies.calliopsis_coloradensis,
+];
+
+const carpenterBees = [
+  allBeeSpecies.xylocopa_virginica,
+  allBeeSpecies.ceratina_calcarata,
+];
+
+const masonBees = [
+  allBeeSpecies.hoplitis_albifrons,
+  allBeeSpecies.osmia_distincta,
+];
+
+export const allBeeSpeciesArray: BeeSpecies[] = [
+  allBeeSpecies.bombus_affinis,
+  allBeeSpecies.anthidium_manicatum,
+  allBeeSpecies.melissodes_illatus,
+  ...minerBees,
+  allBeeSpecies.anthophora_bomboides,
+  allBeeSpecies.megachile_pugnata,
+  ...sweatBees,
+  ...carpenterBees,
+  ...masonBees,
+  allBeeSpecies.halictus_confusus,
+  allBeeSpecies.hylaeus_modestus,
+  allBeeSpecies.heriades_variolosa,
+  allBeeSpecies.colletes_simulans,
+  allBeeSpecies.apis_mellifera,
+];
+
 /**
  * Finds the bees attracted to a given flower.
  * @param flower The `FlowerSpecies` to find bees for.
  * @returns An array of the `BeeSpecies` which list the given flower in their `flowers_accepted`.
  */
 export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
-  return Object.values(allBeeSpecies).filter(bee => bee.flowers_accepted.includes(flower));
+  return allBeeSpeciesArray.filter(bee => bee.flowers_accepted.includes(flower));
 }
 
 /**
@@ -104,5 +142,5 @@ export function getBeesForFlower(flower: FlowerSpecies): BeeSpecies[] {
  * @returns An array of the `BeeSpecies` which list the given nest as their nest type.
  */
 export function getBeesForNest(nest: Nest): BeeSpecies[] {
-  return Object.values(allBeeSpecies).filter(bee => bee.nest_type.id === nest.id);
+  return allBeeSpeciesArray.filter(bee => bee.nest_type.id === nest.id);
 }
