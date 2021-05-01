@@ -45,3 +45,7 @@ for (const [key, flowerFromJson] of Object.entries(allFlowersFromJson)) {
 
 export const allFlowerSpecies =
   allFlowersConverted as {[id in keyof typeof allFlowersFromJson]: FlowerSpecies};
+
+export const allFlowerSpeciesArray: FlowerSpecies[] = [
+  ...Object.values(allFlowerSpecies)
+];
