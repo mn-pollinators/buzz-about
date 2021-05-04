@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
 import { FirebaseRound, RoundFlower, HostEventType } from '../round';
 import { TimerService } from './timer.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { asyncScheduler, BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay } from 'rxjs/operators';
+import { filter, take, map, shareReplay, throttleTime } from 'rxjs/operators';
 import { RoundTemplate } from '../round-templates/round-templates';
 import { shuffleArray } from '../utils/array-utils';
 
@@ -28,6 +28,7 @@ export class TeacherRoundService {
     // the time of its occurrence.
     combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.running$]).pipe(
       filter(([roundPath]) => roundPath !== null),
+      throttleTime(1000, asyncScheduler, { leading: true, trailing: true }),
     ).subscribe(([roundPath, running]) => {
       this.addHostEvent(running ? HostEventType.Play : HostEventType.Pause);
       this.firebaseService.updateRoundData(roundPath, {running});
