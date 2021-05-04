@@ -1,28 +1,5 @@
-@use '../flower-layout/flower-layout-positions' as *;
-
-@mixin positionBees($positions) {
-  @for $i from 1 through length($positions) {
-    $pair: nth($positions, $i);
-    .at-flower-#{$i} {
-      left: nth($pair, 1);
-      top: nth($pair, 2);
-    }
-  }
-}
-
-/**
- * Create classes like `.flowers-8` and `.flowers-16` with rules for how
- * to position flowers
- */
-@each $numFlowers, $positions in $positionsByNumberOfFlowers {
-  .flowers-#{$numFlowers} {
-    @include positionBees($positions)
-  }
-}
-
 :host {
   display: block;
-  //width: 100%;
   position: relative;
   overflow: hidden;
   contain: layout;
@@ -42,17 +19,11 @@
 
     img {
       display: block;
-      //filter: drop-shadow(0 -5px 15px #f0f1eb);
       width: 100%;
     }
 
-    transition:
-      left 0.8s cubic-bezier(.33,0,.1,1),
-      top 0.8s cubic-bezier(.33,0,.1,1);
+    // transition:
+    //   left 0.8s cubic-bezier(.33,0,.1,1),
+    //   top 0.8s cubic-bezier(.33,0,.1,1);
   }
-}
-
-.no-flower {
-  left: 110%;
-  top: 110%;
 }

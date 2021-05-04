@@ -1,9 +1,9 @@
 <app-hill-background></app-hill-background>
 <div class="flowers" [ngClass]="'flowers-' + items.length">
   <div
-    *ngFor="let item of items; trackBy:trackByIndex;"
+    *ngFor="let item of items; index as i; count as c; trackBy:trackByIndex;"
     class="flower-item"
-    [ngStyle]="{'width': calculateFlowerSize(item.scale) * 100 + '%'}"
+    [ngStyle]="getFlowerStyle(item, c, i)"
     [matTooltip]="item.alt | sentenceCase"
     [matTooltipDisabled]="!tooltips"
   >

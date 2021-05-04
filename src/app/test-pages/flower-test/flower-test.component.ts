@@ -10,6 +10,7 @@ import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
   styleUrls: ['./flower-test.component.scss']
 })
 export class FlowerTestComponent implements OnInit {
+  numFlowers = 16;
 
   bees: {species: string, currentFlower: number}[] = [
     {
@@ -113,7 +114,7 @@ export class FlowerTestComponent implements OnInit {
   }
 
   getFlowers(inputs: {species: string, blooming: boolean}[]): FlowerLayoutItem[] {
-    return inputs.map(({species, blooming}) => {
+    return inputs.slice(0, this.numFlowers).map(({species, blooming}) => {
       const speciesObj = allFlowerSpecies[species];
       return {
         imgSrc: speciesObj.asset_urls.art_500_wide,
@@ -149,7 +150,7 @@ export class FlowerTestComponent implements OnInit {
     this.interval = window.setInterval(() => {
       for (const bee of this.bees) {
         if (Math.random() < 0.1) {
-          bee.currentFlower = Math.floor(Math.random() * 17);
+          bee.currentFlower = Math.floor(Math.random() * (this.numFlowers + 1));
         }
       }
     }, 500);

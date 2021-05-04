@@ -3,7 +3,12 @@
     <input type="checkbox" [(ngModel)]="showBees" name="showBees">
     <label for="showBees">Show with Bees</label>
     <h2>Flowers</h2>
-    <div *ngFor="let flower of flowers">
+    <label for="numFlowers">Number of Flowers</label>
+    <select [(ngModel)]="numFlowers" name="numFlowers">
+      <option [value]="8">8</option>
+      <option [value]="16">16</option>
+    </select>
+    <div *ngFor="let flower of flowers.slice(0, numFlowers)">
       <select [(ngModel)]="flower.species">
         <option *ngFor="let species of allFlowerSpeciesArray" [value]="species.id">{{species.name}}</option>
       </select>
@@ -16,7 +21,7 @@
         <option *ngFor="let species of allBeeSpeciesArray" [value]="species.id">{{species.name}}</option>
       </select>
 
-      <input type="number" min="0" max="16" [(ngModel)]="bee.currentFlower">
+      <input type="number" min="0" [max]="numFlowers" [(ngModel)]="bee.currentFlower">
     </div>
     <br>
     <button (click)="moveBeesAutomatically()">Move Automatically</button><button (click)="clearMoveBees()">Cancel</button>
