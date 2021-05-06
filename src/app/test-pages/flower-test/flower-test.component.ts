@@ -15,19 +15,19 @@ export class FlowerTestComponent implements OnInit {
   bees: {species: string, currentFlower: number}[] = [
     {
       species: allBeeSpecies.andrena_carolina.id,
-      currentFlower: 1
+      currentFlower: 0
     },
     {
       species: allBeeSpecies.apis_mellifera.id,
-      currentFlower: 3
+      currentFlower: 0
     },
     {
       species: allBeeSpecies.megachile_pugnata.id,
-      currentFlower: 5
+      currentFlower: 0
     },
     {
       species: allBeeSpecies.bombus_affinis.id,
-      currentFlower: 2
+      currentFlower: 0
     },
     {
       species: allBeeSpecies.hoplitis_albifrons.id,

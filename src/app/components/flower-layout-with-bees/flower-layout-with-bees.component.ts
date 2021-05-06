@@ -59,7 +59,7 @@ const beeWidth = 0.05;
   styleUrls: ['./flower-layout-with-bees.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges {
+export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() flowers: FlowerLayoutItem[] = [];
 
@@ -89,8 +89,9 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.bees) {
-      this.handleBeeChange(changes.bees);
+    console.log(changes);
+    if (changes.bees && !changes.bees.firstChange) {
+      this.handleBeeChange(changes.bees.currentValue, changes.bees.previousValue);
     }
   }
 
@@ -98,9 +99,28 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges {
     return positionsByNumberOfFlowers[this.flowers.length][flowerId - 1];
   }
 
-  handleBeeChange(change: SimpleChange) {
-    const previousBees: BeeLayoutItem[] = change.previousValue ?? [];
-    const currentBees: BeeLayoutItem[] = change.currentValue ?? [];
+  getBeePosition(beeElement: Element): Position {
+    // There are a few things going on here.
+    // First; since we're setting the bees' position in %, `anime.get()` will
+    // return a string with % at the end.
+    // Then, we can use `parseFloat()` to get the numeric part of that
+    // percentage string.
+    // `parseFloat()` will discard any non-numeric characters at the end the
+    // string.
+    return [
+      parseFloat(anime.get(beeElement, 'left') as string),
+      parseFloat(anime.get(beeElement, 'top') as string)
+    ] as Position;
+  }
+
+  ngAfterViewInit() {
+    // Position the bees correctly the first time.
+    this.handleBeeChange(this.bees, []);
+  }
+
+  handleBeeChange(currentBees: BeeLayoutItem[], previousBees: BeeLayoutItem[]) {
+    currentBees = currentBees ?? [];
+    previousBees = previousBees ?? [];
 
     // Check for:
     // 1. Newly-added bees. (Bees will be added to the view as soon as they
@@ -113,31 +133,91 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges {
       current,
       previous: previousBees.find(val => val.id === current.id)
     })).filter(({current, previous}) =>
-      !previous || current.currentFlower !== previous.currentFlower
+      (!previous && current.currentFlower !== 0)
+      || (previous && current.currentFlower !== previous.currentFlower)
     );
 
-    // TODO: handle the "moving to and from nests" case.
-    const betweenFlowers = changed.filter(({current, previous}) => current?.currentFlower && previous?.currentFlower);
-    Promise.all(betweenFlowers.map(({current, previous}) =>
-      this.animateBee(current.id, previous.currentFlower, current.currentFlower)
+    Promise.all(changed.map(({current, previous}) =>
+      this.animateBee(current, !previous || previous.currentFlower === 0)
     ));
   }
 
-  animateBee(id: string, oldFlower: number, newFlower: number) {
-    const [oldFlowerLeft, oldFlowerRight] = this.getFlowerPosition(oldFlower);
-    const [newFlowerLeft, newFlowerRight] = this.getFlowerPosition(newFlower);
+  getOffsetPosition(pos: Position): Position {
+    return [
+      pos[0] + Math.random() * 4 - 2,
+      pos[1] - 4 + Math.random() * 4 - 2
+    ];
+  }
+
+  animateBee(bee: BeeLayoutItem, fromOffScreen = false ) {
+    const id = bee.id;
+    const beeElement = document.querySelector(`[beeid="${id}"]`);
+
+    let currentPos: Position;
+    let newPos: Position;
+
+    if (fromOffScreen) {
+      newPos = this.getOffsetPosition(this.getFlowerPosition(bee.currentFlower));
+      currentPos = this.closePointOffscreen(newPos);
+    } else if (bee.currentFlower === 0) {
+      currentPos = this.getBeePosition(beeElement);
+      newPos = this.closePointOffscreen(currentPos);
+    } else {
+      currentPos = this.getBeePosition(beeElement);
+      newPos = this.getOffsetPosition(this.getFlowerPosition(bee.currentFlower));
+    }
+
+    const [currentLeft, currentTop] = currentPos;
+    const [newLeft, newTop] = newPos;
+
+    anime.remove(beeElement);
+
+    const wiggleAmount = '0.5rad';
+
+    const wiggle = [
+      { value: '-=' + wiggleAmount },
+      { value: '+=' + wiggleAmount },
+      { value: '+=' + wiggleAmount },
+      { value: '-=' + wiggleAmount },
+    ];
+
+    // We need these translations to center the bee, so that all positions
+    // are measured from the middle of the bee instead of the top-left corner
+    // of the bee.
+    const translations = {
+      translateX: '-50%',
+      translateY: '-50%',
+    };
+
+    if (fromOffScreen) {
+      anime.set(beeElement, {
+        left: `${currentLeft}%`,
+        top: `${currentTop}%`,
+      });
+    }
+
     return anime.timeline({
-      targets: `[beeid="${id}"]`
+      targets: beeElement
     }).add({
-      left: oldFlowerLeft + '%',
-      top: oldFlowerRight + '%',
+      rotate: this.displacementToAngle([currentLeft, currentTop], [newLeft, newTop]) + 'rad',
+      duration: 100
+    }, 0).add({
+      rotate: [
+        ...wiggle,
+        ...wiggle,
+      ],
+      duration: 600,
+      easing: 'linear'
     }).add({
-      left: newFlowerLeft + '%',
-      top: newFlowerRight + '%',
-    }).add({
-      left: `+=${anime.random(-2, 2)}%`,
-      top: `+=${anime.random(-2, 2)}%`
-    }).finished;
+      left: `${newLeft}%`,
+      top: `${newTop}%`,
+      duration: 800,
+      easing: 'linear'
+    }, 0).add({
+      duration: 100,
+      rotate: 0,
+      easing: 'linear'
+    }, '-=100').finished;
   }
 
   /**
@@ -146,15 +226,47 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges {
    * two positions.
    *
    * The angle is returned in radians, clockwise from the top: 0 is straight
-   * up, π/2 is to the right, π is down, and 3π/2 is left.
+   * up, π/2 is to the right, π is down, and -π/2 is left.
    *
-   * The angle we return may be negative.
+   * The angle we return will be between -π and π.
    */
   displacementToAngle([startX, startY]: Position, [endX, endY]: Position): number {
+    // Note that the Y axis points *from* the top of the page *to* the bottom.
     const deltaX = endX - startX;
     const deltaY = endY - startY;
-    const radiansCcwFromTheRight = Math.atan2(deltaY * this.hostWidth / this.hostHeight, deltaX);
-    const radiansCwFromTheTop = Math.PI / 2 - radiansCcwFromTheRight;
+    const radiansCwFromTheRight = Math.atan2(deltaY * this.hostWidth / this.hostHeight, deltaX);
+
+    let radiansCwFromTheTop = Math.PI / 2 + radiansCwFromTheRight;
+    if (radiansCwFromTheTop > Math.PI) {
+      radiansCwFromTheTop -= 2 * Math.PI;
+    }
+
     return radiansCwFromTheTop;
+  }
+
+  /**
+   * Given the bee's position on the flower field, return a nearby point
+   * offscreen. (This is useful if the bee needs to make a quick exit. When
+   * it's leaving the flower field, where should it head off to?)
+   */
+  closePointOffscreen([x, y]: Position): Position {
+    // `offset` is how far offscreen the bees should go.
+    // (They should be a little ways away from the edge of the screen, so that
+    // we don't want to see a corner of a wing poking out of the frame.)
+    const offset = 15;
+
+    if (y <= x && y <= 100 - x) {
+      // Move up.
+      return [x, -offset];
+    } else if (y < x && y > 100 - x) {
+      // Move right.
+      return [100 + offset, y];
+    } else if (y >= x && y >= 100 - x) {
+      // Move down.
+      return [x, 100 + offset];
+    } else {
+      // Move left.
+      return [-offset, y];
+    }
   }
 }

@@ -213,6 +213,13 @@ export class FirebaseService {
     ).valueChanges();
   }
 
+  getInteractions(roundPath: RoundPath): Observable<Interaction[]> {
+    return this.angularFirestore.collection<Interaction>(
+      'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
+      ref => ref.orderBy('createdAt', 'desc'),
+    ).valueChanges();
+  }
+
   /**
    * Adds an host event to the `hostEvents` collection in firebase.
    *

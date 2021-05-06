@@ -7,6 +7,8 @@ import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
 import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
+import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
+import { allBeeSpecies } from 'src/app/bees';
 
 /**
  * Over the course of a session, the large display will show several
@@ -40,6 +42,23 @@ export class LargeDisplayComponent implements OnInit {
       scale: rf.species.relative_size
     })))
   );
+
+  // TODO implement getting student bee species and combining with this information to produce BeeLaytouItems
+
+  // beeLayoutItems$: Observable<BeeLayoutItem[]> = this.teacherRoundService.mostRecentInteractionForEachStudent$.pipe(
+  //   map(interactions => {
+  //     interactions
+  //       .filter(i => !i.incompatibleFlower)
+  //       .map(({userId, isNest, barcodeValue}) => {
+  //         const bee = allBeeSpecies[]
+
+  //         return {
+  //           id: userId,
+  //           currentFlower: isNest ? 0 : barcodeValue
+  //         };
+  //       });
+  //   })
+  // )
 
   // TODO: Eventually, the teacher will make their own session, but for the
   // moment, we'll just use this one.

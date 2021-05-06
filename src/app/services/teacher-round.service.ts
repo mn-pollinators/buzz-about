@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, HostEventType } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType, Interaction } from '../round';
 import { TimerService } from './timer.service';
 import { asyncScheduler, BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay, throttleTime } from 'rxjs/operators';
+import { filter, take, map, shareReplay, throttleTime, switchMap } from 'rxjs/operators';
 import { RoundTemplate } from '../round-templates/round-templates';
 import { shuffleArray } from '../utils/array-utils';
 
@@ -48,6 +48,14 @@ export class TeacherRoundService {
   currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTimePeriod$]).pipe(
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
     shareReplay(1)
+  );
+
+  interactions$: Observable<Interaction[]> = this.teacherSessionService.currentRoundPath$.pipe(
+    switchMap(path => path ? this.firebaseService.getInteractions(path) : [])
+  );
+
+  mostRecentInteractionForEachStudent$: Observable<Interaction[]> = this.interactions$.pipe(
+    map(interactions => interactions.filter((val, i) => interactions.findIndex(a => a.userId === val.userId) === i))
   );
 
   async addHostEvent(eventType: HostEventType) {

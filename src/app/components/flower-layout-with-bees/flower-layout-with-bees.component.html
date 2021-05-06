@@ -5,6 +5,7 @@
     class="bee-item"
     [ngStyle]="{'width': calculateBeeSize(item.scale) * 100 + '%'}"
     [attr.beeid]="item.id"
+    style="transform: translateX(-50%) translateY(-50%);"
   >
     <img [src]="item.imgSrc" [alt]="item.alt">
   </div>

@@ -14,16 +14,15 @@
   display: block;
 
   .bee-item {
+    top: -15%;
+    left: -15%;
     position: absolute;
-    transform: translate(-50%, -50%);
+    // We set `transform: translate(-50%, -50%)` in the HTML, because if it's
+    // in the HTML, Anime.js won't mess with it.
 
     img {
       display: block;
       width: 100%;
     }
-
-    // transition:
-    //   left 0.8s cubic-bezier(.33,0,.1,1),
-    //   top 0.8s cubic-bezier(.33,0,.1,1);
   }
 }
