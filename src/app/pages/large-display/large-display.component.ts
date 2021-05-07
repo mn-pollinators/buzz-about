@@ -43,25 +43,15 @@ export class LargeDisplayComponent implements OnInit {
     })))
   );
 
-  // TODO implement getting student bee species and combining with this information to produce BeeLaytouItems
-
-  // beeLayoutItems$: Observable<BeeLayoutItem[]> = this.teacherRoundService.mostRecentInteractionForEachStudent$.pipe(
-  //   map(interactions => {
-  //     interactions
-  //       .filter(i => !i.incompatibleFlower)
-  //       .map(({userId, isNest, barcodeValue}) => {
-  //         const bee = allBeeSpecies[]
-
-  //         return {
-  //           id: userId,
-  //           currentFlower: isNest ? 0 : barcodeValue
-  //         };
-  //       });
-  //   })
-  // )
-
-  // TODO: Eventually, the teacher will make their own session, but for the
-  // moment, we'll just use this one.
+  beeLayoutItems$: Observable<BeeLayoutItem[]> = this.teacherRoundService.mostRecentValidInteractionWithBeeSpecies$.pipe(
+    map(interactions => interactions.map(({userId, beeSpecies, barcodeValue, isNest}) => ({
+      id: userId,
+      imgSrc: beeSpecies.asset_urls.art_500_wide,
+      scale: beeSpecies.relative_size,
+      alt: beeSpecies.name,
+      currentFlower: isNest ? 0 : barcodeValue
+    })))
+  );
 
   loadingSession$ = new BehaviorSubject<boolean>(true);
 

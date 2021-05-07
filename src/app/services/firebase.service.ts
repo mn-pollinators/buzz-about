@@ -93,6 +93,12 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).valueChanges();
   }
 
+   getStudentsInRound(roundPath: RoundPath): Observable<RoundStudentData[]> {
+    return this.getRoundDocument(roundPath)
+      .collection<RoundStudentData>('students')
+      .valueChanges({idField: 'id'});
+  }
+
   getRoundStudent(roundPath: RoundPath, studentId: string): Observable<RoundStudentData> {
     return this.getRoundDocument(roundPath)
       .collection('students')
