@@ -36,6 +36,7 @@ describe('LargeDisplayComponent', () => {
   beforeEach(async(() => {
     const mockTeacherRoundService: Partial<TeacherRoundService> = {
       currentFlowers$: of([]),
+      mostRecentValidInteractionWithBeeSpecies$: of([]),
       async endRound() {}
     };
 
