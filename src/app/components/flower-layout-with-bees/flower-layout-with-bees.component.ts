@@ -212,7 +212,7 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
       left: `${newLeft}%`,
       top: `${newTop}%`,
       duration: 800,
-      easing: 'linear'
+      easing: 'easeInOutSine'
     }, 0).add({
       duration: 100,
       rotate: 0,
