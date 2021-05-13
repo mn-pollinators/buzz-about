@@ -8,7 +8,6 @@ import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
 import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
-import { allBeeSpecies } from 'src/app/bees';
 
 /**
  * Over the course of a session, the large display will show several

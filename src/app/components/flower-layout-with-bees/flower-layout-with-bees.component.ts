@@ -78,7 +78,7 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
     return this.hostElement.nativeElement.scrollHeight;
   }
 
-  trackById(index, item: BeeLayoutItem) {
+  trackById(index: number, item: BeeLayoutItem) {
     return item.id;
   }
 
@@ -89,7 +89,7 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
+    //console.log(changes);
     if (changes.bees && !changes.bees.firstChange) {
       this.handleBeeChange(changes.bees.currentValue, changes.bees.previousValue);
     }
@@ -231,12 +231,20 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
    * The angle we return will be between -π and π.
    */
   displacementToAngle([startX, startY]: Position, [endX, endY]: Position): number {
-    // Note that the Y axis points *from* the top of the page *to* the bottom.
+
+    // Normally, 1% on the y axis is smaller than 1% on the x axis. (The y axis
+    // is squished.)
+    // To get a common, commeasurable unit of length, we need to adjust the y
+    // distance.
     const deltaX = endX - startX;
-    const deltaY = endY - startY;
-    const radiansCwFromTheRight = Math.atan2(deltaY * this.hostWidth / this.hostHeight, deltaX);
+    const deltaY = (endY - startY) * this.hostWidth / this.hostHeight;
+
+    // Note, that the Y axis points *downward*, towards the bottom of the page.
+    const radiansCwFromTheRight = Math.atan2(deltaY, deltaX);
 
     let radiansCwFromTheTop = Math.PI / 2 + radiansCwFromTheRight;
+
+    // For any angle bigger than 180°, write it as a negative angle.
     if (radiansCwFromTheTop > Math.PI) {
       radiansCwFromTheTop -= 2 * Math.PI;
     }
