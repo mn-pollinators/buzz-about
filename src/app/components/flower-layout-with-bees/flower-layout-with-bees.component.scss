@@ -17,8 +17,22 @@
     top: -15%;
     left: -15%;
     position: absolute;
+
+    // Hint to the browser that the left and top properties will change
+    will-change: left, top;
+
+    // This attempts to force anti-aliasing in Chrome and potentially other browsers
+    // by setting a transparent outline
+    outline: 1px solid transparent;
+
+
     // We set `transform: translate(-50%, -50%)` in the HTML, because if it's
     // in the HTML, Anime.js won't mess with it.
+
+    // We also set `transform: translateZ(0)` in the HTML, to hint to the
+    // browser that it should draw the bee in a different layer and composite
+    // that layer onto the flower field. (This is particularly helpful in
+    // Safari, where it can improve the quality of initial paints.)
 
     img {
       display: block;
