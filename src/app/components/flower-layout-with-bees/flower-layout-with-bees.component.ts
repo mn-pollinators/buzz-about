@@ -136,9 +136,16 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
       || (previous && current.currentFlower !== previous.currentFlower)
     );
 
-    Promise.all(changed.map(({current, previous}) =>
-      this.animateBee(current, !previous || previous.currentFlower === 0)
-    ));
+    // Request an animation frame to make sure that the animations run
+    // *after* the template gets updated.
+    // See: https://swizec.com/blog/how-to-wait-for-dom-elements-to-show-up-in-modern-browsers/
+    if (changed.length > 0) {
+      requestAnimationFrame(() => {
+        changed.forEach(({current, previous}) =>
+          this.animateBee(current, !previous || previous.currentFlower === 0)
+        );
+      });
+    }
   }
 
   getOffsetPosition(pos: Position): Position {
