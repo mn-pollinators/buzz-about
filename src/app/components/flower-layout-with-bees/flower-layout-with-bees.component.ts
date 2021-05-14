@@ -89,7 +89,6 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    //console.log(changes);
     if (changes.bees && !changes.bees.firstChange) {
       this.handleBeeChange(changes.bees.currentValue, changes.bees.previousValue);
     }
@@ -172,7 +171,7 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
 
     anime.remove(beeElement);
 
-    const wiggleAmount = '0.5rad';
+    const wiggleAmount = '0.4rad';
 
     const wiggle = [
       { value: '-=' + wiggleAmount },
