@@ -55,11 +55,6 @@ export class TeacherRoundService {
     shareReplay(1),
   );
 
-  // mostRecentInteractionForEachStudent$: Observable<Interaction[]> = this.interactions$.pipe(
-  //   map(interactions => interactions.filter((val, i) => interactions.findIndex(a => a.userId === val.userId) === i)),
-  //   shareReplay(1),
-  // );
-
   students$: Observable<RoundStudentData[]> = this.teacherSessionService.currentRoundPath$.pipe(
     switchMap(path => path ? this.firebaseService.getStudentsInRound(path) : of([])),
     shareReplay(1),
@@ -69,12 +64,6 @@ export class TeacherRoundService {
     map(students => students.filter(s => s.beeSpecies).map(({id, beeSpecies}) => ({id, beeSpecies: allBeeSpecies[beeSpecies]}))),
     shareReplay(1)
   );
-
-  // studentBees$: Observable<{[id: string]: BeeSpecies}[]> = this.students$.pipe(
-  //   map(students => students.filter(s => !!s.beeSpecies).map(({id, beeSpecies}) => [id, allBeeSpecies[beeSpecies]])),
-  //   map(studentsArray => Object.fromEntries(studentsArray)),
-  //   shareReplay(1)
-  // );
 
   mostRecentValidInteractionWithBeeSpecies$: Observable<(Interaction & {beeSpecies: BeeSpecies})[]> = combineLatest(
     [this.studentBeeSpecies$, this.interactions$]
