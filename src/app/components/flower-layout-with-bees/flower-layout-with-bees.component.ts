@@ -232,12 +232,15 @@ export class FlowerLayoutWithBeesComponent implements OnInit, OnChanges, AfterVi
    */
   displacementToAngle([startX, startY]: Position, [endX, endY]: Position): number {
 
-    // Normally, 1% on the y axis is smaller than 1% on the x axis. (The y axis
-    // is squished.)
-    // To get a common, commeasurable unit of length, we need to adjust the y
-    // distance.
     const deltaX = endX - startX;
-    const deltaY = (endY - startY) * this.hostWidth / this.hostHeight;
+
+    // Normally, 1% on the y axis is smaller than 1% on the x axis. (The y axis
+    // is squished.) To get a common, commeasurable unit of length, we need to adjust the y
+    // distance.
+    // To do this, we take a distance measured in %y
+    // - convert %y to pixels, by multiplying by (hostHeight px / 100%)
+    // - convert pixels to %x, by multiplying by (100% / hostWidth px)
+    const deltaY = (endY - startY) * this.hostHeight / this.hostWidth;
 
     // Note, that the Y axis points *downward*, towards the bottom of the page.
     const radiansCwFromTheRight = Math.atan2(deltaY, deltaX);
