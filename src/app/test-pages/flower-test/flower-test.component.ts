@@ -10,7 +10,9 @@ import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
   styleUrls: ['./flower-test.component.scss']
 })
 export class FlowerTestComponent implements OnInit {
-  numFlowers = 16;
+  numFlowers = '16';
+
+  parseInt = parseInt;
 
   bees: {species: string, currentFlower: number}[] = allBeeSpeciesArray.map((v, i) => ({
     species: v.id,
@@ -96,7 +98,7 @@ export class FlowerTestComponent implements OnInit {
   }
 
   getFlowers(inputs: {species: string, blooming: boolean}[]): FlowerLayoutItem[] {
-    return inputs.slice(0, this.numFlowers).map(({species, blooming}) => {
+    return inputs.slice(0, parseInt(this.numFlowers, 10)).map(({species, blooming}) => {
       const speciesObj = allFlowerSpecies[species];
       return {
         imgSrc: speciesObj.asset_urls.art_500_wide,
@@ -130,9 +132,10 @@ export class FlowerTestComponent implements OnInit {
   moveBeesAutomatically() {
     this.clearMoveBees();
     this.interval = window.setInterval(() => {
+      console.log(this.numFlowers);
       for (const bee of this.bees) {
         if (Math.random() < 0.1) {
-          bee.currentFlower = Math.floor(Math.random() * (this.numFlowers + 1));
+          bee.currentFlower = Math.floor(Math.random() * (parseInt(this.numFlowers, 10) + 1));
         }
       }
     }, 500);

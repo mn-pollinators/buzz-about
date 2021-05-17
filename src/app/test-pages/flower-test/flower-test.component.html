@@ -8,7 +8,7 @@
       <option [value]="8">8</option>
       <option [value]="16">16</option>
     </select>
-    <div *ngFor="let flower of flowers.slice(0, numFlowers)">
+    <div *ngFor="let flower of flowers.slice(0, parseInt(this.numFlowers, 10))">
       <select [(ngModel)]="flower.species">
         <option *ngFor="let species of allFlowerSpeciesArray" [value]="species.id">{{species.name}}</option>
       </select>
@@ -21,7 +21,7 @@
         <option *ngFor="let species of allBeeSpeciesArray" [value]="species.id">{{species.name}}</option>
       </select>
 
-      <input type="number" min="0" [max]="numFlowers" [(ngModel)]="bee.currentFlower">
+      <input type="number" min="0" [max]="parseInt(this.numFlowers, 10)" [(ngModel)]="bee.currentFlower">
     </div>
     <br>
     <button (click)="moveBeesAutomatically()">Move Automatically</button><button (click)="clearMoveBees()">Cancel</button>
