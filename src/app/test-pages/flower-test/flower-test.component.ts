@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { allBeeSpecies } from 'src/app/bees';
+import { allBeeSpecies, allBeeSpeciesArray } from 'src/app/bees';
 import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
 import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
@@ -12,28 +12,10 @@ import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 export class FlowerTestComponent implements OnInit {
   numFlowers = 16;
 
-  bees: {species: string, currentFlower: number}[] = [
-    {
-      species: allBeeSpecies.andrena_carolina.id,
-      currentFlower: 0
-    },
-    {
-      species: allBeeSpecies.apis_mellifera.id,
-      currentFlower: 0
-    },
-    {
-      species: allBeeSpecies.megachile_pugnata.id,
-      currentFlower: 0
-    },
-    {
-      species: allBeeSpecies.bombus_affinis.id,
-      currentFlower: 0
-    },
-    {
-      species: allBeeSpecies.hoplitis_albifrons.id,
-      currentFlower: 8
-    },
-  ];
+  bees: {species: string, currentFlower: number}[] = allBeeSpeciesArray.map((v, i) => ({
+    species: v.id,
+    currentFlower: (i % 8) + 1
+  }));
 
   flowers: {species: string, blooming: boolean}[] = [
     {
