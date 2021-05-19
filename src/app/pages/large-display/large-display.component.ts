@@ -68,6 +68,10 @@ export class LargeDisplayComponent implements OnInit {
     ),
   );
 
+  roundStatus$ = this.teacherRoundService.roundStatus$;
+
+  roundTemplate$ = this.teacherRoundService.roundTemplate$;
+
   constructor(
     public timerService: TimerService,
     public teacherRoundService: TeacherRoundService,

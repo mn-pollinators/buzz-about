@@ -36,5 +36,34 @@ export const testRounds: RoundTemplateSet = {
         allBeeSpecies.apis_mellifera
       ]
     },
+    {
+      id: 'test-fast-round',
+      name: 'Fast Round',
+      flowerSpecies: [
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale,
+        allFlowerSpecies.taraxacum_officinale
+      ],
+      startTime: TimePeriod.fromMonthAndQuarter(5, 1),
+      endTime: TimePeriod.fromMonthAndQuarter(5, 4),
+      tickSpeed: 1000,
+      bees: [
+        allBeeSpecies.bombus_affinis,
+        allBeeSpecies.apis_mellifera
+      ]
+    },
   ],
 };

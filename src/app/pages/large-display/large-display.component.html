@@ -5,24 +5,61 @@
 
   <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="large-display-content during-the-round">
-      <app-timer-progress-bar
-        *ngIf="teacherRoundService.roundTemplate$ | async as template"
-        [currentTimePrecise]="timerService.currentTimePrecise$ | async"
-        [currentMonth]="timerService.currentMonth$ | async"
-        [startMonth]="template.startTime.month"
-        [endMonth]="template.endTime.month"
-      >
-      </app-timer-progress-bar>
+      <ng-container [ngSwitch]="roundStatus$ | async">
+        <ng-container *ngSwitchCase="'playRound'">
+          <app-timer-progress-bar
+            *ngIf="teacherRoundService.roundTemplate$ | async as template"
+            [currentTimePrecise]="timerService.currentTimePrecise$ | async"
+            [currentMonth]="timerService.currentMonth$ | async"
+            [startMonth]="template.startTime.month"
+            [endMonth]="template.endTime.month"
+          >
+          </app-timer-progress-bar>
 
-      <app-flower-layout-with-bees [flowers]="flowerLayoutItems$ | async" [bees]="beeLayoutItems$ | async"></app-flower-layout-with-bees>
+          <app-flower-layout-with-bees [flowers]="flowerLayoutItems$ | async" [bees]="beeLayoutItems$ | async"></app-flower-layout-with-bees>
 
-      <app-timer-progress-spinner
-        *ngIf="teacherRoundService.roundTemplate$ | async as template"
-        [currentTimePrecise]="timerService.currentTimePrecise$ | async"
-        [startTime]="template.startTime"
-        [endTime]="template.endTime"
-      >
-      </app-timer-progress-spinner>
+          <app-timer-progress-spinner
+            *ngIf="teacherRoundService.roundTemplate$ | async as template"
+            [currentTimePrecise]="timerService.currentTimePrecise$ | async"
+            [startTime]="template.startTime"
+            [endTime]="template.endTime"
+          >
+          </app-timer-progress-spinner>
+        </ng-container>
+        <ng-container *ngSwitchCase="'preRound'">
+          <app-hill-background cover></app-hill-background>
+          <div class="centered-container">
+            <mat-card *ngIf="roundTemplate$ | async as roundTemplate">
+              <mat-card-title>
+                {{roundTemplate.name}}
+              </mat-card-title>
+              <mat-card-content>
+                {{roundTemplate.description}}
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'postRound'">
+          <app-hill-background cover></app-hill-background>
+          <div class="centered-container">
+            <mat-card>
+              <mat-card-title>
+                post round
+              </mat-card-title>
+            </mat-card>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <div class="centered-container">
+            <mat-card>
+              <mat-card-title>
+                Loading Round&hellip;
+              </mat-card-title>
+              <mat-spinner></mat-spinner>
+            </mat-card>
+          </div>
+        </ng-container>
+      </ng-container>
     </div>
 
     <app-bottom-bar>
@@ -31,7 +68,7 @@
       </div>
 
       <div center>
-        <button mat-mini-fab color="accent" (click)="toggleTimerRunning()"
+        <button mat-mini-fab color="accent" (click)="toggleTimerRunning()" [disabled]="(this.roundStatus$ | async) === 'postRound'"
         >
           <mat-icon>
             {{(timerService.running$ | async) ? 'pause' : 'play_arrow'}}

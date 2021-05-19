@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, HostEventType, Interaction, RoundStudentData } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType, Interaction, RoundStudentData, RoundStatus } from '../round';
 import { TimerService } from './timer.service';
-import { asyncScheduler, BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { asyncScheduler, BehaviorSubject, combineLatest, forkJoin, Observable, of, Subject } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay, throttleTime, switchMap } from 'rxjs/operators';
+import { filter, take, map, shareReplay, throttleTime, switchMap, startWith, distinctUntilChanged } from 'rxjs/operators';
 import { RoundTemplate } from '../round-templates/round-templates';
 import { shuffleArray } from '../utils/array-utils';
 
@@ -31,7 +31,16 @@ export class TeacherRoundService {
       throttleTime(1000, asyncScheduler, { leading: true, trailing: true }),
     ).subscribe(([roundPath, running]) => {
       this.addHostEvent(running ? HostEventType.Play : HostEventType.Pause);
+      //const status: Pick<FirebaseRound, 'status'> | {} = running ? {status: 'playRound'} : {};
       this.firebaseService.updateRoundData(roundPath, {running});
+    });
+
+    combineLatest([this.teacherSessionService.currentRoundPath$, this.roundStatus$]).pipe(
+      filter(([roundPath]) => roundPath !== null)
+    ).subscribe(([roundPath, status]) => {
+      //this.addHostEvent(running ? HostEventType.Play : HostEventType.Pause);
+      this.firebaseService.updateRoundData(roundPath, {status});
+      console.log(status);
     });
 
     combineLatest([this.teacherSessionService.currentRoundPath$, this.timerService.currentTimePeriod$]).pipe(
@@ -44,6 +53,18 @@ export class TeacherRoundService {
   }
 
   public readonly roundTemplate$ = new BehaviorSubject<RoundTemplate | null>(null);
+
+  public readonly roundStart$ = new Subject();
+
+  roundStatus$: Observable<RoundStatus> = this.roundStart$.pipe(
+    switchMap(() => combineLatest([this.timerService.running$, this.timerService.done$]).pipe(
+      filter(([running, done]) => running || done),
+      map(([running, done]) => (done ? 'postRound' : 'playRound') as RoundStatus),
+      startWith('preRound' as RoundStatus)
+    )),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
 
   currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTimePeriod$]).pipe(
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
@@ -103,7 +124,7 @@ export class TeacherRoundService {
 
     const roundData: FirebaseRound = {
       flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
-      status: 'start',
+      status: 'preRound',
       running: false,
       currentTime: template.startTime.time
     };
@@ -116,6 +137,8 @@ export class TeacherRoundService {
     await this.firebaseService.setCurrentRound(roundPath);
 
     this.timerService.initialize(template.startTime, template.endTime, template.tickSpeed, false);
+
+    this.roundStart$.next();
 
     this.teacherSessionService.currentRoundPath$.next(roundPath);
   }
