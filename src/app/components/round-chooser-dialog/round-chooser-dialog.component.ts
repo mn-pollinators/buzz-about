@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { FlowerSpecies } from 'src/app/flowers';
 import { defaultRoundSets, RoundTemplateSet } from 'src/app/round-templates/round-templates';
-import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
+import { FlowerLayoutItem } from '../flower-layout/flower-layout.component';
 
 @Component({
   selector: 'app-round-chooser-dialog',

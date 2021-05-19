@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FlowerSpecies } from '../../flowers';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
 import { defaultRoundSets } from 'src/app/round-templates/round-templates';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 
 @Component({
   selector: 'app-round-template-test',

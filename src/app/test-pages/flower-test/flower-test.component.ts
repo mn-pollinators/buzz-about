@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
+import { allBeeSpecies, allBeeSpeciesArray } from 'src/app/bees';
+import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
 
 @Component({
@@ -8,8 +10,14 @@ import { FlowerSpecies, allFlowerSpecies } from '../../flowers';
   styleUrls: ['./flower-test.component.scss']
 })
 export class FlowerTestComponent implements OnInit {
+  numFlowers = '16';
 
+  parseInt = parseInt;
 
+  bees: {species: string, currentFlower: number}[] = allBeeSpeciesArray.map((v, i) => ({
+    species: v.id,
+    currentFlower: (i % 8) + 1
+  }));
 
   flowers: {species: string, blooming: boolean}[] = [
     {
@@ -79,6 +87,10 @@ export class FlowerTestComponent implements OnInit {
   ];
 
   allFlowerSpeciesArray = Object.values(allFlowerSpecies);
+  allBeeSpeciesArray = Object.values(allBeeSpecies);
+
+  interval: number;
+  showBees = true;
 
   constructor() { }
 
@@ -86,7 +98,7 @@ export class FlowerTestComponent implements OnInit {
   }
 
   getFlowers(inputs: {species: string, blooming: boolean}[]): FlowerLayoutItem[] {
-    return inputs.map(({species, blooming}) => {
+    return inputs.slice(0, parseInt(this.numFlowers, 10)).map(({species, blooming}) => {
       const speciesObj = allFlowerSpecies[species];
       return {
         imgSrc: speciesObj.asset_urls.art_500_wide,
@@ -95,6 +107,38 @@ export class FlowerTestComponent implements OnInit {
         scale: speciesObj.relative_size
       };
     });
+  }
+
+  getBees(inputs: {species: string, currentFlower: number}[]): BeeLayoutItem[] {
+    return inputs.map(({species, currentFlower}, index) => {
+      const speciesObj = allBeeSpecies[species];
+      return {
+        id: index.toString(),
+        imgSrc: speciesObj.asset_urls.art_500_wide,
+        alt: speciesObj.name,
+        currentFlower,
+        scale: speciesObj.relative_size
+      };
+    });
+  }
+
+  clearMoveBees() {
+    if (this.interval) {
+      window.clearTimeout(this.interval);
+      this.interval = null;
+    }
+  }
+
+  moveBeesAutomatically() {
+    this.clearMoveBees();
+    this.interval = window.setInterval(() => {
+      console.log(this.numFlowers);
+      for (const bee of this.bees) {
+        if (Math.random() < 0.1) {
+          bee.currentFlower = Math.floor(Math.random() * (parseInt(this.numFlowers, 10) + 1));
+        }
+      }
+    }, 500);
   }
 
 

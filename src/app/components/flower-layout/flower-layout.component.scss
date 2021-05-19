@@ -1,67 +1,3 @@
-@import "../../../variables";
-
-$positionsByNumber: (
-  // It's important that flowers be listed from smallest y-position to largest
-  // y-position. (That ensures that when flower images overlap, the ones at the
-  // top of the hill appear in back.)
-  16: (
-    42.5% 18%,
-    20% 22%,
-    65% 22%,
-    54% 24%,
-    77% 25%,
-    32% 27%,
-    8% 30%,
-    90% 30%,
-    40% 45%,
-    62% 47%,
-    74% 48%,
-    30% 51%,
-    19% 45%,
-    8% 53%,
-    50% 55%,
-    88% 53%,
-  ),
-  8: (
-    //42.5% 18%,
-    //20% 22%,
-    //65% 22%,
-    54% 24%,
-    77% 25%,
-    32% 27%,
-    8% 30%,
-    //90% 30%,
-    40% 45%,
-    62% 47%,
-    //74% 48%,
-    //30% 51%,
-    19% 45%,
-    //8% 53%,
-    //50% 55%,
-    88% 53%,
-  )
-);
-
-@mixin positionFlowers($positions) {
-  @for $i from 1 through length($positions) {
-    $pair: nth($positions, $i);
-    app-flower-layout-item:nth-child(#{$i}) {
-      left: nth($pair, 1);
-      top: nth($pair, 2);
-    }
-  }
-}
-
-/**
- * Create classes like `.flowers-8` and `.flowers-16` with rules for how
- * to position flowers
- */
-@each $numFlowers, $positions in $positionsByNumber {
-  .flowers-#{$numFlowers} {
-    @include positionFlowers($positions)
-  }
-}
-
 .flowers {
   position: absolute;
   top: 0;
@@ -70,17 +6,11 @@ $positionsByNumber: (
   height: 100%;
   display: block;
 
-  app-flower-layout-item {
-    // Base width of each flower is 10%, flowers may have their own scaling
-    width: 10%;
-
+  .flower-item {
     position: absolute;
-
-    // Measure from the center the flower, not the corner.
     transform: translate(-50%, -50%);
   }
 }
-
 
 :host {
   display: block;
@@ -89,5 +19,3 @@ $positionsByNumber: (
   overflow: hidden;
   contain: layout;
 }
-
-

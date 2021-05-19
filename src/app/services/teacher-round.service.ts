@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, HostEventType } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType, Interaction, RoundStudentData } from '../round';
 import { TimerService } from './timer.service';
-import { asyncScheduler, BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { asyncScheduler, BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay, throttleTime } from 'rxjs/operators';
+import { filter, take, map, shareReplay, throttleTime, switchMap } from 'rxjs/operators';
 import { RoundTemplate } from '../round-templates/round-templates';
 import { shuffleArray } from '../utils/array-utils';
 
@@ -47,6 +47,37 @@ export class TeacherRoundService {
 
   currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTimePeriod$]).pipe(
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
+    shareReplay(1)
+  );
+
+  interactions$: Observable<Interaction[]> = this.teacherSessionService.currentRoundPath$.pipe(
+    switchMap(path => path ? this.firebaseService.getInteractions(path) : of([])),
+    shareReplay(1),
+  );
+
+  students$: Observable<RoundStudentData[]> = this.teacherSessionService.currentRoundPath$.pipe(
+    switchMap(path => path ? this.firebaseService.getStudentsInRound(path) : of([])),
+    shareReplay(1),
+  );
+
+  studentBeeSpecies$: Observable<{id: string, beeSpecies: BeeSpecies}[]> = this.students$.pipe(
+    map(students => students.filter(s => s.beeSpecies).map(({id, beeSpecies}) => ({id, beeSpecies: allBeeSpecies[beeSpecies]}))),
+    shareReplay(1)
+  );
+
+  mostRecentValidInteractionWithBeeSpecies$: Observable<(Interaction & {beeSpecies: BeeSpecies})[]> = combineLatest(
+    [this.studentBeeSpecies$, this.interactions$]
+  ).pipe(
+    map(([students, interactions]) => {
+      const filteredInteractions = interactions.filter(i => !i.incompatibleFlower);
+      return students.map(({id, beeSpecies}) => ({
+        interaction: filteredInteractions.find(int => int.userId === id),
+        beeSpecies
+      })).filter(item => item.interaction).map(({beeSpecies, interaction}) => ({
+        ...interaction,
+        beeSpecies
+      }));
+    }),
     shareReplay(1)
   );
 
