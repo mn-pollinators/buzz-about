@@ -12,7 +12,7 @@
 </div align="center">
 
 
-Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
+Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota. [https://www.youtube.com/watch?v=28o83phCBFM][One-minute video about Buzz About]
 
 Buzz About is a web app built with [Angular][] and [Firebase][].
 
