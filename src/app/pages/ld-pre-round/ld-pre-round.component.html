@@ -1,0 +1,11 @@
+<app-hill-background cover></app-hill-background>
+<div class="centered-container">
+  <mat-card *ngIf="roundTemplate$ | async as roundTemplate">
+    <mat-card-title>
+      {{roundTemplate.name}}
+    </mat-card-title>
+    <mat-card-content>
+      {{roundTemplate.description}}
+    </mat-card-content>
+  </mat-card>
+</div>

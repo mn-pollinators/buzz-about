@@ -6,49 +6,9 @@
   <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="large-display-content during-the-round">
       <ng-container [ngSwitch]="roundStatus$ | async">
-        <ng-container *ngSwitchCase="'playRound'">
-          <app-timer-progress-bar
-            *ngIf="teacherRoundService.roundTemplate$ | async as template"
-            [currentTimePrecise]="timerService.currentTimePrecise$ | async"
-            [currentMonth]="timerService.currentMonth$ | async"
-            [startMonth]="template.startTime.month"
-            [endMonth]="template.endTime.month"
-          >
-          </app-timer-progress-bar>
-
-          <app-flower-layout-with-bees [flowers]="flowerLayoutItems$ | async" [bees]="beeLayoutItems$ | async"></app-flower-layout-with-bees>
-
-          <app-timer-progress-spinner
-            *ngIf="teacherRoundService.roundTemplate$ | async as template"
-            [currentTimePrecise]="timerService.currentTimePrecise$ | async"
-            [startTime]="template.startTime"
-            [endTime]="template.endTime"
-          >
-          </app-timer-progress-spinner>
-        </ng-container>
-        <ng-container *ngSwitchCase="'preRound'">
-          <app-hill-background cover></app-hill-background>
-          <div class="centered-container">
-            <mat-card *ngIf="roundTemplate$ | async as roundTemplate">
-              <mat-card-title>
-                {{roundTemplate.name}}
-              </mat-card-title>
-              <mat-card-content>
-                {{roundTemplate.description}}
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="'postRound'">
-          <app-hill-background cover></app-hill-background>
-          <div class="centered-container">
-            <mat-card>
-              <mat-card-title>
-                post round
-              </mat-card-title>
-            </mat-card>
-          </div>
-        </ng-container>
+        <app-ld-play-round  *ngSwitchCase="'playRound'"></app-ld-play-round>
+        <app-ld-pre-round *ngSwitchCase="'preRound'"></app-ld-pre-round>
+        <app-ld-post-round *ngSwitchCase="'postRound'"></app-ld-post-round>
         <ng-container *ngSwitchDefault>
           <div class="centered-container">
             <mat-card>

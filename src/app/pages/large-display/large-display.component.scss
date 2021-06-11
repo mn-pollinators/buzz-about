@@ -20,29 +20,6 @@
     justify-content: center;
     align-items: center;
   }
-
-  &.during-the-round {
-    background-color: mat-color($primary);
-
-    app-flower-layout {
-      display: block;
-      width: 100%;
-    }
-
-    app-timer-progress-spinner {
-      position: absolute;
-      display: block;
-      left: 40px;
-      top: 40px;
-    }
-
-    app-timer-progress-bar {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      z-index: 1;
-    }
-  }
 }
 
 mat-spinner {
