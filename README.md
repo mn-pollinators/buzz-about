@@ -12,7 +12,7 @@
 </div align="center">
 
 
-Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
+Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota. [One-minute video about Buzz About][IDC Video]
 
 Buzz About is a web app built with [Angular][] and [Firebase][].
 
@@ -52,3 +52,4 @@ The Trust Fund is a permanent fund constitutionally established by the citizens 
 [DEVELOPMENT.md]: ./DEVELOPMENT.md
 [Code of Conduct]: https://github.com/mn-pollinators/code-of-conduct/blob/master/CODE_OF_CONDUCT.md
 [LCCMR]: https://www.lccmr.leg.mn/
+[IDC Video]: https://www.youtube.com/watch?v=28o83phCBFM
