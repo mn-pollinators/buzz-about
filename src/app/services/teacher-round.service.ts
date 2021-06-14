@@ -102,6 +102,16 @@ export class TeacherRoundService {
     shareReplay(1)
   );
 
+  flowerInteractions$: Observable<Interaction[]> = this.interactions$.pipe(
+    map(interactions => interactions.filter(i => !i.incompatibleFlower && !i.isNest))
+  );
+
+  pollenCount$: Observable<number> = this.flowerInteractions$.pipe(
+    map(interactions => interactions.length),
+    distinctUntilChanged(),
+    shareReplay(1)
+  );
+
   async addHostEvent(eventType: HostEventType) {
     const time = await this.timerService.currentTimePeriod$.pipe(take(1)).toPromise();
     const roundPath = await this.teacherSessionService.currentRoundPath$.pipe(take(1)).toPromise();

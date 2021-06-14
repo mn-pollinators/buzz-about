@@ -58,7 +58,7 @@ export const testRounds: RoundTemplateSet = {
         allFlowerSpecies.taraxacum_officinale
       ],
       startTime: TimePeriod.fromMonthAndQuarter(5, 1),
-      endTime: TimePeriod.fromMonthAndQuarter(5, 4),
+      endTime: TimePeriod.fromMonthAndQuarter(7, 4),
       tickSpeed: 1000,
       bees: [
         allBeeSpecies.bombus_affinis,

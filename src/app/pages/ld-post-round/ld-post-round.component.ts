@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { TeacherRoundService } from 'src/app/services/teacher-round.service';
 
 @Component({
   selector: 'app-ld-post-round',
@@ -8,7 +9,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class LdPostRoundComponent implements OnInit {
 
-  constructor() { }
+  pollenCount$ = this.teacherRoundService.pollenCount$;
+
+  constructor(public teacherRoundService: TeacherRoundService) { }
 
   ngOnInit(): void {
   }

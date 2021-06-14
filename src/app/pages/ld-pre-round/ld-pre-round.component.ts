@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TeacherRoundService } from 'src/app/services/teacher-round.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ld-pre-round',
