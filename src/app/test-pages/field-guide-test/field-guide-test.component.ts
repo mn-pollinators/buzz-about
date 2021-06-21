@@ -17,9 +17,9 @@ export class FieldGuideTestComponent implements OnInit, AfterViewInit {
   flowers = allFlowerSpeciesArray;
   bees = allBeeSpeciesArray;
 
-  timelineType = 'all';
+  timelineType: 'startAndEnd' | 'inRange' | 'all' = 'all';
 
-  testTimes = [
+  testTimes: [TimePeriod, TimePeriod][] = [
     [new TimePeriod(0), MAX_TIME_PERIOD],
     [new TimePeriod(1), MAX_TIME_PERIOD],
     [new TimePeriod(0), new TimePeriod(MAX_TIME - 1)],
