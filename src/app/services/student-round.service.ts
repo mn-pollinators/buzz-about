@@ -221,10 +221,15 @@ export class StudentRoundService {
     shareReplay(1),
   );
 
-  totalPollen$: Observable<number> = this.interactions$.pipe(
+  validInteractions$: Observable<Interaction[]> = this.interactions$.pipe(
     map(interactions =>
-      interactions.filter(interaction => (!interaction.isNest && !interaction.incompatibleFlower)).length
+      interactions.filter(interaction => (!interaction.isNest && !interaction.incompatibleFlower))
     ),
+    shareReplay(1),
+  );
+
+  totalPollen$: Observable<number> = this. validInteractions$.pipe(
+    map(interactions => interactions.length),
     shareReplay(1),
   );
 
@@ -248,6 +253,27 @@ export class StudentRoundService {
     ),
     distinctUntilChanged(),
     shareReplay(1)
+  );
+
+  currentUniqueFlowerSpecies$: Observable<{species: FlowerSpecies, barcodes: number[]}[]> = this.currentFlowersSpecies$.pipe(
+    map(currentFlowerSpecies => [...new Set(currentFlowerSpecies)].map(species => ({
+      species,
+      barcodes: currentFlowerSpecies.flatMap((sp, i) => sp.id === species.id ? i + 1 : [])
+    })))
+  );
+
+  pollenByFlowerSpecies$: Observable<{species: FlowerSpecies, pollenCount: number}[]> = combineLatest([
+    this.currentUniqueFlowerSpecies$,
+    this.validInteractions$,
+  ]).pipe(
+    map(([allSpecies, interactions]) => allSpecies.map(({species, barcodes}) => ({
+      species,
+      pollenCount: interactions.filter(interaction => barcodes.includes(interaction.barcodeValue)).length
+    })))
+  );
+
+  pollenByFlowerSpeciesFiltered$ = this.pollenByFlowerSpecies$.pipe(
+    map(pollenBySpecies => pollenBySpecies.filter(({pollenCount}) => pollenCount > 0))
   );
 
   /**

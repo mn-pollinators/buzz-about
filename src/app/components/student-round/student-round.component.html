@@ -47,6 +47,18 @@
         </mat-card>
       </ng-container>
 
+      <ng-container *ngSwitchCase="ScreenId.PostRound">
+        <mat-card>
+          <mat-card-title>You collected {{roundService.totalPollen$ | async}} pollen</mat-card-title>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let flower of roundService.pollenByFlowerSpeciesFiltered$ | async">{{flower.species.name}}: {{flower.pollenCount}} pollen</li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+
+      </ng-container>
+
 
       <mat-card *ngSwitchDefault>
         <mat-card-title>

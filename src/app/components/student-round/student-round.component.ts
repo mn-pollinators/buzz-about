@@ -35,6 +35,9 @@ export class StudentRoundComponent implements OnInit {
         case 'preRound': {
           return of(ScreenId.PreRound);
         }
+        case 'postRound': {
+          return of(ScreenId.PostRound);
+        }
         default: {
           return running
           ? this.roundService.currentBeeActive$.pipe(map(active => active ? ScreenId.Play : ScreenId.InactiveBee))
