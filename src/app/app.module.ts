@@ -25,7 +25,6 @@ import {
 } from './components/joined-students/joined-students.component';
 import { SessionTestComponent } from './test-pages/session-test/session-test.component';
 import { JoinSessionComponent } from './pages/join-session/join-session.component';
-import { PrepareRoundTestComponent } from './test-pages/prepare-round-test/prepare-round-test.component';
 import { SessionLobbyComponent } from './pages/session-lobby/session-lobby.component';
 import { BottomBarComponent } from './components/bottom-bar/bottom-bar.component';
 import { HostSessionComponent } from './pages/host-session/host-session.component';
@@ -59,7 +58,6 @@ const FIREBASE_MODULES = [
     JoinedStudentsComponent,
     SessionTestComponent,
     JoinSessionComponent,
-    PrepareRoundTestComponent,
     BottomBarComponent,
     SessionLobbyComponent,
     HostSessionComponent,
