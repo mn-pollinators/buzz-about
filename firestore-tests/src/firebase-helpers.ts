@@ -122,7 +122,8 @@ export const demoRound: FirebaseRound = {
   flowerSpeciesIds: Array(8).fill('asclepias_syriaca'),
   status: 'start',
   running: false,
-  currentTime: 9
+  currentTime: 9,
+  templateId: 'demo'
 };
 
 
