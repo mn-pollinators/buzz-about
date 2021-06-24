@@ -105,7 +105,8 @@ export class TeacherRoundService {
       flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
       status: 'start',
       running: false,
-      currentTime: template.startTime.time
+      currentTime: template.startTime.time,
+      templateId: template.id
     };
 
     const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
