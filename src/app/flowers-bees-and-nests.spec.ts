@@ -47,6 +47,10 @@ describe('The allBeeSpecies mapping', () => {
         expect(beeSpecies.id).toEqual(key);
       });
 
+      it('Has a name that ends in "bee"', () => {
+        expect(beeSpecies.name.endsWith('bee')).toBe(true);
+      });
+
       describe('Its active period', () => {
         it('Has a start-time that comes strictly before its end-time', () => {
           expect(beeSpecies.active_period[0].time).toBeLessThan(beeSpecies.active_period[1].time);
