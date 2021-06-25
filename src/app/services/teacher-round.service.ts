@@ -86,6 +86,13 @@ export class TeacherRoundService {
     shareReplay(1)
   );
 
+  beeSpeciesWithStudentIds$: Observable<{species: BeeSpecies, ids: string[]}[]> = this.studentBeeSpecies$.pipe(
+    map(studentBeeSpecies => [...new Set(studentBeeSpecies.map(({beeSpecies}) => beeSpecies))].map(species => ({
+      species,
+      ids: studentBeeSpecies.filter(({beeSpecies}) => species.id === beeSpecies.id).map(({id}) => id)
+    })))
+  );
+
   mostRecentValidInteractionWithBeeSpecies$: Observable<(Interaction & {beeSpecies: BeeSpecies})[]> = combineLatest(
     [this.studentBeeSpecies$, this.interactions$]
   ).pipe(
@@ -103,13 +110,34 @@ export class TeacherRoundService {
   );
 
   flowerInteractions$: Observable<Interaction[]> = this.interactions$.pipe(
-    map(interactions => interactions.filter(i => !i.incompatibleFlower && !i.isNest))
+    map(interactions => interactions.filter(i => !i.incompatibleFlower && !i.isNest)),
+    shareReplay(1)
   );
 
   pollenCount$: Observable<number> = this.flowerInteractions$.pipe(
     map(interactions => interactions.length),
     distinctUntilChanged(),
-    shareReplay(1)
+  );
+
+  averagePollenCount$: Observable<number> = combineLatest([
+    this.pollenCount$,
+    this.students$
+  ]).pipe(
+    map(([pollenCount, students]) => pollenCount / students.length)
+  );
+
+  pollenCountByBeeSpecies$: Observable<{species: BeeSpecies, pollenCount: number, averagePollenCount: number}[]> = combineLatest([
+    this.beeSpeciesWithStudentIds$,
+    this.flowerInteractions$
+  ]).pipe(
+    map(([beeSpeciesWithIds, interactions]) => beeSpeciesWithIds.map(({species, ids}) => {
+      const pollenCount = interactions.filter(({userId}) => ids.includes(userId)).length;
+      return {
+        species,
+        pollenCount,
+        averagePollenCount: pollenCount / ids.length
+      }
+    }))
   );
 
   async addHostEvent(eventType: HostEventType) {

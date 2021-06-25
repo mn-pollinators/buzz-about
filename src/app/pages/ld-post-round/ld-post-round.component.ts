@@ -9,8 +9,6 @@ import { TeacherRoundService } from 'src/app/services/teacher-round.service';
 })
 export class LdPostRoundComponent implements OnInit {
 
-  pollenCount$ = this.teacherRoundService.pollenCount$;
-
   constructor(public teacherRoundService: TeacherRoundService) { }
 
   ngOnInit(): void {

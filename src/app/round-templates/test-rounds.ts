@@ -1,5 +1,5 @@
-import { allBeeSpecies } from '../bees';
-import { allFlowerSpecies } from '../flowers';
+import { allBeeSpecies, allBeeSpeciesArray } from '../bees';
+import { allFlowerSpecies, allFlowerSpeciesArray } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { RoundTemplateSet } from './round-templates';
 
@@ -63,6 +63,19 @@ export const testRounds: RoundTemplateSet = {
       bees: [
         allBeeSpecies.bombus_affinis,
         allBeeSpecies.apis_mellifera
+      ]
+    },
+    {
+      id: 'test-crazy-round',
+      name: 'Crazy Round',
+      flowerSpecies: [
+        ...allFlowerSpeciesArray.slice(0, 16)
+      ],
+      startTime: TimePeriod.fromMonthAndQuarter(5, 1),
+      endTime: TimePeriod.fromMonthAndQuarter(7, 4),
+      tickSpeed: 1000,
+      bees: [
+        ...allBeeSpeciesArray
       ]
     },
   ],
