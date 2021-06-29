@@ -20,7 +20,7 @@ Buzz About is a web app built with [Angular][] and [Firebase][].
 
 - [One-minute introduction video](https://www.youtube.com/watch?v=28o83phCBFM)
 - [7-minute demo video](https://www.youtube.com/watch?v=V9D8TBLzfcM)
-- Our IDC 2021 Work-in-Progress paper: [Pandemic Pivot: Designing a Participatory Simulation to Support Social Distancing and Remote Learning. In Interaction Design and Children](https://doi.org/10.1145/3459990.3465192)
+- Our IDC 2021 Work-in-Progress paper: [Pandemic Pivot: Designing a Participatory Simulation to Support Social Distancing and Remote Learning](https://doi.org/10.1145/3459990.3465192)
 
 ## Usage
 
