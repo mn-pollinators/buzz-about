@@ -22,6 +22,10 @@ function formatContributor(contributor) {
     auth: process.env.GITHUB_TOKEN
   });
 
+  const ratelimit = await octokit.rateLimit.get();
+
+  console.log(ratelimit.data.resources.core);
+
 
   const gitInfo = await gitDescribe({
     customArguments: ['--abbrev=40'],
