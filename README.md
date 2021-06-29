@@ -12,9 +12,15 @@
 </div align="center">
 
 
-Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota. [One-minute video about Buzz About][IDC Video]
+Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
 
 Buzz About is a web app built with [Angular][] and [Firebase][].
+
+### More Information
+
+- [One-minute introduction video](https://www.youtube.com/watch?v=28o83phCBFM)
+- [7-minute demo video](https://www.youtube.com/watch?v=V9D8TBLzfcM)
+- Our IDC 2021 Work-in-Progress paper: [Pandemic Pivot: Designing a Participatory Simulation to Support Social Distancing and Remote Learning. In Interaction Design and Children](https://doi.org/10.1145/3459990.3465192)
 
 ## Usage
 
@@ -52,4 +58,3 @@ The Trust Fund is a permanent fund constitutionally established by the citizens 
 [DEVELOPMENT.md]: ./DEVELOPMENT.md
 [Code of Conduct]: https://github.com/mn-pollinators/code-of-conduct/blob/master/CODE_OF_CONDUCT.md
 [LCCMR]: https://www.lccmr.leg.mn/
-[IDC Video]: https://www.youtube.com/watch?v=28o83phCBFM
