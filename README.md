@@ -11,10 +11,11 @@
 
 </div align="center">
 
-
 Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
 
 Buzz About is a web app built with [Angular][] and [Firebase][].
+
+<img alt="Screenshots of Buzz About" src="https://user-images.githubusercontent.com/1300395/123937128-7863f480-d95b-11eb-955e-2d63882b9b4c.png" width="100%"/>
 
 ### More Information
 
