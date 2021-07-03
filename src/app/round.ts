@@ -12,6 +12,7 @@ export interface FirebaseRound {
   status: string;
   running: boolean;
   currentTime: number;
+  templateId: string;
 }
 
 /**

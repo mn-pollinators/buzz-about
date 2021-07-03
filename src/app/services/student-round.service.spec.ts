@@ -41,36 +41,42 @@ describe('StudentRoundService', () => {
         status: 'just starting',
         running: true,
         currentTime: 0,
+        templateId: 'test'
       },
       p: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'cool as a cucumber',
         running: false,
         currentTime: 25,
+        templateId: 'test'
       },
       q: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
         currentTime: 25,
+        templateId: 'test'
       },
       r: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
         currentTime: MAX_TIME,
+        templateId: 'test'
       },
       s: {
         flowerSpeciesIds: ['asclepias_syriaca'],
         status: 'fine',
         running: true,
         currentTime: MAX_TIME,
+        templateId: 'test'
       },
       t: {
         flowerSpeciesIds: [],
         status: 'just swell',
         running: false,
         currentTime: MAX_TIME,
+        templateId: 'test'
       },
     },
 
