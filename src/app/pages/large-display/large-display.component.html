@@ -14,7 +14,8 @@
       >
       </app-timer-progress-bar>
 
-      <app-flower-layout-with-bees [flowers]="flowerLayoutItems$ | async" [bees]="beeLayoutItems$ | async"></app-flower-layout-with-bees>
+      <app-flower-layout-with-bees *ngIf="!(teacherRoundService.roundOptions$ | async).hideLdFlowersBees else noBeesFlowers" [flowers]="flowerLayoutItems$ | async" [bees]="beeLayoutItems$ | async"></app-flower-layout-with-bees>
+      <ng-template #noBeesFlowers><app-hill-background></app-hill-background></ng-template>
 
       <app-timer-progress-spinner
         *ngIf="teacherRoundService.roundTemplate$ | async as template"

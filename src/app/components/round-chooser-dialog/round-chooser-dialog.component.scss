@@ -49,3 +49,12 @@ app-flower-layout {
   min-width: 50vw;
   max-width: 100vh;
 }
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.options-menu {
+  min-width: calc(100% + 64px);
+
+}
