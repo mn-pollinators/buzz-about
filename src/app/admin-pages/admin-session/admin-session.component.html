@@ -1,0 +1,13 @@
+<div class="centered-container">
+  <div>
+    <mat-card *ngIf="(teacherSessionService.currentSession$ | async) as session">
+      <mat-card-title>{{session.id}}</mat-card-title>
+      <mat-card-subtitle>Created {{session.createdAt | timeAgo}}</mat-card-subtitle>
+      <mat-card-content>
+        <p>Host ID: {{session.hostId}}</p>
+        <p>Current Round ID: {{session.currentRoundId}}</p>
+        <p>Current join code: {{(teacherSessionService.activeJoinCode$ | async)?.id}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
