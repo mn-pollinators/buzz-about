@@ -99,10 +99,12 @@ export class TeacherRoundService {
    */
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
-  async startNewRound(template: RoundTemplate, options: RoundOptions = {...defaultRoundOptions}) {
+  async startNewRound(template: RoundTemplate, options?: Partial<RoundOptions>) {
+
+    const newRoundOptions: RoundOptions = {...options, ...defaultRoundOptions};
 
     this.roundTemplate$.next(template);
-    this.roundOptions$.next(options);
+    this.roundOptions$.next(newRoundOptions);
 
     const roundData: FirebaseRound = {
       flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
@@ -110,7 +112,7 @@ export class TeacherRoundService {
       running: false,
       currentTime: template.startTime.time,
       templateId: template.id,
-      options
+      options: newRoundOptions
     };
 
     const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
