@@ -1,14 +1,26 @@
 @use "../../../variables" as *;
 
+$progress-bar-height: 24px;
+
 .timer-progress-bar-container {
   position: relative;
   width: 100%;
 
   mat-progress-bar.monthProgress {
-    height: 24px;
+    height: $progress-bar-height;
 
-    .mat-progress-bar-fill::after {
-      background-color: mat-color($primary, 300);
+    .mat-progress-bar-fill {
+      animation: none;
+      transform-origin: top left;
+      transition: transform $timer-base-tick-speed linear;
+
+      @include cdk-high-contrast(active, off) {
+        border-top: solid $progress-bar-height;
+      }
+
+      &::after {
+        background-color: mat-color($primary, 300);
+      }
     }
   }
 
@@ -22,8 +34,8 @@
 
     .progressMonth {
       flex: 1;
-      height: 24px;
-      line-height: 24px;
+      height: $progress-bar-height;
+      line-height: $progress-bar-height;
       text-align: center;
       font-size: 16px;
       position: relative;
@@ -33,7 +45,7 @@
       }
 
       &.currentMonth {
-        font-weight: 600;
+        font-weight: 700;
         color: mat-color($foreground, text);
       }
     }

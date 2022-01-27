@@ -11,10 +11,17 @@
 
 </div align="center">
 
-
 Buzz About is a participatory simulation that teaches people about native pollinators of Minnesota.
 
 Buzz About is a web app built with [Angular][] and [Firebase][].
+
+<img alt="Screenshots of Buzz About" src="https://user-images.githubusercontent.com/1300395/123937128-7863f480-d95b-11eb-955e-2d63882b9b4c.png" width="100%"/>
+
+### More Information
+
+- [One-minute introduction video](https://www.youtube.com/watch?v=28o83phCBFM)
+- [7-minute demo video](https://www.youtube.com/watch?v=V9D8TBLzfcM)
+- Our IDC 2021 Work-in-Progress paper: [Pandemic Pivot: Designing a Participatory Simulation to Support Social Distancing and Remote Learning](https://doi.org/10.1145/3459990.3465192)
 
 ## Usage
 
@@ -36,15 +43,14 @@ Funding for this project was provided by the Minnesota Environment and Natural R
 
 The Trust Fund is a permanent fund constitutionally established by the citizens of Minnesota to assist in the protection, conservation, preservation, and enhancement of the state’s air, water, land, fish, wildlife, and other natural resources. Currently 40% of net Minnesota State Lottery proceeds are dedicated to growing the Trust Fund and ensuring future benefits for Minnesota’s environment and natural resources.
 
-
-[Angular Tests badge]: ../../workflows/Angular%20Tests/badge.svg
-[Angular Tests page]: ../../actions?query=workflow%3A"Angular+Tests"
-[Cypress Tests badge]: ../../workflows/Cypress%20Tests/badge.svg
-[Cypress Tests page]: ../../actions?query=workflow%3A"Cypress+Tests"
-[Firebase Tests badge]: ../../workflows/Firebase%20Tests/badge.svg
-[Firebase Tests page]: ../../actions?query=workflow%3A"Firebase+Tests"
-[Deploy badge]: ../../workflows/Firebase%20Deploy/badge.svg
-[Deploy page]: ../../actions?query=workflow%3A"Firebase+Deploy"
+[Angular Tests badge]: ../../actions/workflows/angular-tests.yml/badge.svg
+[Angular Tests page]: ../../actions/workflows/angular-tests.yml
+[Cypress Tests badge]: ../../actions/workflows/cypress.yml/badge.svg
+[Cypress Tests page]: ../../actions/workflows/cypress.yml
+[Firebase Tests badge]: ../../actions/workflows/firebase-tests.yml/badge.svg
+[Firebase Tests page]: ../../actions/workflows/firebase-tests.yml
+[Deploy badge]: ../../actions/workflows/deploy.yml/badge.svg
+[Deploy page]: ../../actions/workflows/deploy.yml
 [Angular]: https://angular.io/
 [Firebase]: https://firebase.google.com/
 [AR Markers]: ./AR_Markers.pdf

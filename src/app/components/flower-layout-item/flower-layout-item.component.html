@@ -1,8 +1,6 @@
 <img
-  *ngIf="item"
-  [@active]="item.active"
-  [ngStyle]="{'transform': 'scale(' + calculateScale(item.scale) + ')'}"
+  [@active]="active"
   class="displayItem"
-  [src]="item.imgSrc"
-  [alt]="item.alt"
+  [src]="imgSrc"
+  [alt]="imgAlt"
 >

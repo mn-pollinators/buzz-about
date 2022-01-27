@@ -1,12 +1,24 @@
 <h1 mat-dialog-title>Select a Round</h1>
-<div mat-dialog-content fxLayout="row" fxLayoutAlign="space-between">
-  <mat-selection-list #templates [multiple]="false" fxFlex="30">
-    <mat-list-option *ngFor="let template of roundTemplates" [value]="template">
-      {{template.name}}
+<div mat-dialog-content fxLayout="row" fxLayoutAlign="space-between" class="dialog-content">
+  <mat-selection-list [multiple]="false" fxFlex="30" [(ngModel)]="currentSets" class="set-list">
+    <div mat-subheader>Round Sets</div>
+    <mat-list-option *ngFor="let set of roundSets" [value]="set">
+      {{set.name}}
     </mat-list-option>
   </mat-selection-list>
-  <div>
-    <app-flower-layout [items]="getFlowers(templates.selectedOptions.selected[0]?.value.flowerSpecies || [])" tooltips="true"></app-flower-layout>
+  <div fxFlex="70" class="set-container">
+    <mat-horizontal-stepper #stepper [@.disabled]="true" class="horizontal-stepper-no-padding" *ngFor="let currentSet of currentSets">
+      <mat-step *ngFor="let template of currentSet.templates; index as i" [label]="template.name" [completed]="false">
+        <div class="template-information" *ngIf="stepper.selectedIndex === i">
+          <app-flower-layout [items]="getFlowers(template.flowerSpecies)" [tooltips]="true"></app-flower-layout>
+          <div class="template-description mat-body">
+            <h2 class="template-name">{{currentSet.name}}: {{template.name}}</h2>
+            <p class="mat-body-2">{{currentSet.description}}</p>
+            <p>{{template.description}}</p>
+          </div>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
   </div>
 </div>
 <div mat-dialog-actions align="end">
@@ -14,8 +26,8 @@
   <button
     color="primary"
     mat-button
-    [disabled]="templates.selectedOptions.isEmpty()"
-    [mat-dialog-close]="templates.selectedOptions.selected[0]?.value"
+    [disabled]="!currentSets[0]"
+    (click)="startRound()"
   >
     Start
   </button>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StudentSessionService } from './student-session.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
-import { switchMap, shareReplay, map, distinctUntilChanged, take, tap } from 'rxjs/operators';
+import { switchMap, shareReplay, map, distinctUntilChanged, take, filter } from 'rxjs/operators';
 import { allFlowerSpecies, FlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { FirebaseService } from './firebase.service';
@@ -135,14 +135,36 @@ export class StudentRoundService {
    * This observable emits when it is subscribed to, and whenever the bee
    * becomes active or inactive.
    */
-  currentBeeActive$: Observable<boolean | null> = combineLatest([this.currentBeeSpecies$, this.currentTime$]).pipe(
+  currentBeeActive$: Observable<boolean | null> = combineLatest(
+     [this.currentBeeSpecies$, this.currentTime$]
+    ).pipe(
     map(([species, time]) =>
       species && time
-        ? species.active_period.some(interval => time.fallsWithin(...interval))
+        ? time.fallsWithin(...species.active_period)
         : null
     ),
     distinctUntilChanged(),
     shareReplay(1),
+  );
+
+ /**
+  * An observable stream of the next TimePeriod when the bee starts to be active
+  * in relation to the current time of the the round.
+  * - `null` if bee doesn't have anymore active periods in the current round
+  *
+  * Otherwise, this observable doesn't emit.
+  */
+  nextActivePeriod$: Observable<TimePeriod | null> = combineLatest(
+    [this.currentBeeSpecies$, this.currentTime$]
+  ).pipe(
+    filter(([species, time]) => !!species && !!time),
+    map(([species, time]) =>
+      // Are we waiting for the active period to start?
+      time.time < species.active_period[0].time
+        ? species.active_period[0]
+        : null
+    ),
+    shareReplay(1)
   );
 
   /**
@@ -201,7 +223,7 @@ export class StudentRoundService {
 
   totalPollen$: Observable<number> = this.interactions$.pipe(
     map(interactions =>
-      interactions.filter(interaction => !interaction.isNest).length
+      interactions.filter(interaction => (!interaction.isNest && !interaction.incompatibleFlower)).length
     ),
     shareReplay(1),
   );
@@ -213,7 +235,9 @@ export class StudentRoundService {
    * observable will just emit 0.
    */
   currentBeePollen$: Observable<number> = this.recentFlowerInteractions$.pipe(
-    map(recentFlowerInteractions => recentFlowerInteractions.length),
+    map(recentFlowerInteractions =>
+      recentFlowerInteractions.filter(interaction => !interaction.incompatibleFlower).length
+    ),
     distinctUntilChanged(),
     shareReplay(1),
   );
@@ -232,12 +256,10 @@ export class StudentRoundService {
    * @param barcodeValue the barcode value to submit in the interaction
    * @param isANest whether the barcode corresponds to a student's nest
    */
-  interact(barcodeValue: number, isNest: boolean = false) {
-    combineLatest([this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]).pipe(take(1)).subscribe(
-      ([path, user, time]) =>
-      this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, timePeriod: time.time})
-    );
+  async interact(barcodeValue: number, isNest: boolean = false, incompatibleFlower: boolean = false) {
+    const [path, user, time] = await combineLatest(
+      [this.sessionService.currentRoundPath$, this.authService.currentUser$, this.currentTime$]
+    ).pipe(take(1)).toPromise();
+    return this.firebaseService.addInteraction(path, {userId: user.uid, barcodeValue, isNest, incompatibleFlower, timePeriod: time.time});
   }
-
-  // TODO: interact(interaction) creates interaction
 }

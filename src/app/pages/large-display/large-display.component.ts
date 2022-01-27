@@ -1,5 +1,4 @@
 import { Component, OnInit, } from '@angular/core';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
 import { TimerService } from '../../services/timer.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Observable, BehaviorSubject, of } from 'rxjs';
@@ -7,6 +6,8 @@ import { take } from 'rxjs/operators';
 import { TeacherRoundService } from '../../services/teacher-round.service';
 import { TeacherSessionService } from '../../services/teacher-session.service';
 import { ActivatedRoute } from '@angular/router';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
+import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower-layout-with-bees.component';
 
 /**
  * Over the course of a session, the large display will show several
@@ -34,15 +35,22 @@ export class LargeDisplayComponent implements OnInit {
 
   flowerLayoutItems$: Observable<FlowerLayoutItem[]> = this.teacherRoundService.currentFlowers$.pipe(
     map(roundFlowers => roundFlowers.map(rf => ({
-      imgSrc: `assets/art/500w/flowers/${rf.species.art_file}`,
+      imgSrc: rf.species.asset_urls.art_500_wide,
       alt: rf.species.name,
       active: rf.isBlooming,
       scale: rf.species.relative_size
     })))
   );
 
-  // TODO: Eventually, the teacher will make their own session, but for the
-  // moment, we'll just use this one.
+  beeLayoutItems$: Observable<BeeLayoutItem[]> = this.teacherRoundService.mostRecentValidInteractionWithBeeSpecies$.pipe(
+    map(interactions => interactions.map(({userId, beeSpecies, barcodeValue, isNest}) => ({
+      id: userId,
+      imgSrc: beeSpecies.asset_urls.art_500_wide,
+      scale: beeSpecies.relative_size,
+      alt: beeSpecies.name,
+      currentFlower: isNest ? 0 : barcodeValue
+    })))
+  );
 
   loadingSession$ = new BehaviorSubject<boolean>(true);
 

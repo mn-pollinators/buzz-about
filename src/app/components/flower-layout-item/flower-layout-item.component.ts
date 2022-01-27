@@ -1,12 +1,6 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, animate, transition, style, state} from '@angular/animations';
 
-export interface FlowerLayoutItem {
-  imgSrc: string;
-  active: boolean;
-  scale: number;
-  alt: string;
-}
 
 
 @Component({
@@ -29,11 +23,15 @@ export interface FlowerLayoutItem {
         animate('500ms ease')
       ])
     ])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlowerLayoutItemComponent implements OnInit, OnChanges {
 
-  @Input() item: FlowerLayoutItem;
+  @Input() imgSrc: string;
+  @Input() active: boolean;
+  @Input() imgAlt: string;
+
 
   constructor() { }
 
@@ -44,9 +42,5 @@ export class FlowerLayoutItemComponent implements OnInit, OnChanges {
 
   }
 
-  calculateScale(scale: number) {
-    // Normalize scale
-    return ((scale - 1) * 0.2) + 1;
-  }
 
 }

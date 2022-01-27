@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import { SessionStudentData } from '../../src/app/session';
 import { JoinCode } from '../../src/app/join-code';
 import { RoundStudentData, FirebaseRound, Interaction, HostEvent } from '../../src/app/round';
-import { roundTemplates } from '../../src/app/round-template';
 
 const PROJECT_ID = 'firestore-testing-project';
 
@@ -123,10 +122,11 @@ export function addHostEvent(db: firestore.Firestore, roundPath: string, data: P
 
 // Some demo round data to use.
 export const demoRound: FirebaseRound = {
-  flowerSpeciesIds: roundTemplates[0].flowerSpecies.map(f => f.id),
+  flowerSpeciesIds: Array(8).fill('asclepias_syriaca'),
   status: 'start',
   running: false,
-  currentTime: roundTemplates[0].startTime.time
+  currentTime: 9,
+  templateId: 'demo'
 };
 
 

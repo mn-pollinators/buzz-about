@@ -1,4 +1,4 @@
-import { RoundFlower, Interaction } from './round';
+import { ThoughtBubbleType } from './components/thought-bubble/thought-bubble.component';
 
 /**
  * A barcode marker for AR.
@@ -11,6 +11,10 @@ import { RoundFlower, Interaction } from './round';
 export interface ARMarker {
   barcodeValue: number;
   imgPath: string;
+}
+
+export function markersEqual(a: ARMarker, b: ARMarker) {
+  return a.barcodeValue === b.barcodeValue && a.imgPath === b.imgPath;
 }
 
 /**
@@ -35,6 +39,13 @@ export interface RoundMarker extends ARMarker {
   // The 'tip' field will only be present if this round marker matches any conditional
   // to display a tip to the students
   tip?: string;
+
+  // This field will only be present on round markers representing flowers.
+  // It will be true or false depending on whether this flower species is
+  // on a bee's 'flowers_accepted' list
+  incompatibleFlower?: boolean;
+
+  thoughtBubble?: ThoughtBubbleType;
 }
 
 export const MIN_FLOWER_MARKER = 1;
@@ -44,55 +55,4 @@ export const MAX_FLOWER_MARKER = 16;
 export const MIN_NEST_MARKER = 20;
 export const MAX_NEST_MARKER = 120;
 
-
-/**
- * Given a RoundFlower instance and some supplemental information, construct
- * a RoundMarker.
- */
-export function roundMarkerFromRoundFlower(
-  flower: RoundFlower,
-  barcodeValue: number,
-  currentBeePollen: number,
-  recentFlowerInteractions: Interaction[]
-): RoundMarker {
-  const canVisit = canVisitFlower(
-    barcodeValue,
-    flower.isBlooming,
-    currentBeePollen,
-    recentFlowerInteractions,
-  );
-  return {
-    barcodeValue,
-    imgPath: imagePathForFlower(flower),
-    name: flower.species.name,
-    isBlooming: flower.isBlooming,
-    isNest: false,
-    canVisit,
-  };
-}
-
-/**
- * Given some information about a flower, return whether the bee can
- * interact with it right now.
- *
- * (The bee may be unable to interact with it if, for example, the bee is
- * carrying too much pollen already.)
- */
-export function canVisitFlower(
-  barcodeValue: number,
-  isBlooming: boolean,
-  currentBeePollen: number,
-  recentFlowerInteractions: Interaction[],
-): boolean {
-  const haveVisitedThisFlower = recentFlowerInteractions
-    .map(interaction => interaction.barcodeValue)
-    .includes(barcodeValue);
-  return isBlooming && currentBeePollen < 3 && !haveVisitedThisFlower;
-}
-
-function imagePathForFlower(flower: RoundFlower): string {
-  return (
-    `/assets/art/${flower.isBlooming ? '512-square' : '512-square-grayscale'}`
-    + `/flowers/${flower.species.art_file}`
-  );
-}
+export const MAX_CURRENT_POLLEN = 3;

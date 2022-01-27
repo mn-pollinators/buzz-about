@@ -6,7 +6,7 @@ import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../ro
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from '../utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
-import { TimePeriod } from '../time-period';
+import { MAX_TIME, TimePeriod } from '../time-period';
 import { shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { User } from 'firebase';
 import { AuthService } from './auth.service';
@@ -36,35 +36,47 @@ describe('StudentRoundService', () => {
 
     rounds: {
       n: null,
+      0: {
+        flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
+        status: 'just starting',
+        running: true,
+        currentTime: 0,
+        templateId: 'test'
+      },
       p: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'cool as a cucumber',
         running: false,
         currentTime: 25,
+        templateId: 'test'
       },
       q: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
         currentTime: 25,
+        templateId: 'test'
       },
       r: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
-        currentTime: 47,
+        currentTime: MAX_TIME,
+        templateId: 'test'
       },
       s: {
         flowerSpeciesIds: ['asclepias_syriaca'],
         status: 'fine',
         running: true,
-        currentTime: 47,
+        currentTime: MAX_TIME,
+        templateId: 'test'
       },
       t: {
         flowerSpeciesIds: [],
         status: 'just swell',
         running: false,
-        currentTime: 47,
+        currentTime: MAX_TIME,
+        templateId: 'test'
       },
     },
 
@@ -87,12 +99,12 @@ describe('StudentRoundService', () => {
       ],
       R: [
         // Note that both A. syriaca and C. palmata change their blooming
-        // status from time period 25 to time period 47.
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
-        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(47)),
+        // status from time period 25 to the maximum time period.
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(MAX_TIME)),
+        new RoundFlower(allFlowerSpecies.coreopsis_palmata, new TimePeriod(MAX_TIME)),
       ],
       S: [
-        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(47)),
+        new RoundFlower(allFlowerSpecies.asclepias_syriaca, new TimePeriod(MAX_TIME)),
       ],
     },
 
@@ -106,7 +118,9 @@ describe('StudentRoundService', () => {
     times: {
       n: null,
       P: new TimePeriod(25),
-      R: new TimePeriod(47),
+      R: new TimePeriod(MAX_TIME),
+      // The start of A. mellifera's active period.
+      A: allBeeSpecies.apis_mellifera.active_period[0]
     },
 
     booleans: {
@@ -149,19 +163,24 @@ describe('StudentRoundService', () => {
       n: null,
       E: [],
       P: [
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
       ],
       N: [
-        {barcodeValue: 5, isNest: false} as Interaction,
-        {barcodeValue: 6, isNest: false} as Interaction,
-        {barcodeValue: 0, isNest: true} as Interaction,
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 0, isNest: true, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
       ],
       // This one is just N without the nest interaction. Used to test totalPollen$
       W: [
-        {barcodeValue: 5, isNest: false} as Interaction,
-        {barcodeValue: 6, isNest: false} as Interaction,
-        {barcodeValue: 5, isNest: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+      ],
+      X: [
+        {barcodeValue: 5, isNest: false, incompatibleFlower: false} as Interaction,
+        {barcodeValue: 6, isNest: false, incompatibleFlower: true} as Interaction,
+        {barcodeValue: 5, isNest: false, incompatibleFlower: true} as Interaction,
       ]
     },
   };
@@ -275,9 +294,6 @@ describe('StudentRoundService', () => {
     expect(service).toBeTruthy();
   });
 
-  /**
-   *
-   */
   describe('The currentRound$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRound$).toBe('n-', values.rounds);
@@ -329,9 +345,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('The currentFlowerSpecies$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -396,9 +409,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentTime$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentTime$).toBe(
@@ -463,9 +473,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentFlowers$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.currentFlowersSpecies$).toBe(
@@ -523,9 +530,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('The currentRunning$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentRunning$).toBe(
@@ -590,9 +594,6 @@ describe('StudentRoundService', () => {
     );
   });
 
-  /**
-   *
-   */
   describe('the roundStudentData$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.roundStudentData$).toBe(
@@ -669,9 +670,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentBeeSpecies$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeSpecies$).toBe(
@@ -762,9 +760,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentBeeActive$ observable', () => {
     scheduledIt('Emits null initially', ({expectObservable}) => {
       expectObservable(service.currentBeeActive$).toBe(
@@ -883,9 +878,88 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
+  describe('the nextActivePeriod$ observable', () => {
+    scheduledIt('Doesn\'t emit if there\'s no round', ({expectObservable}) => {
+      expectObservable(service.nextActivePeriod$).toBe('-', values.times);
+    });
+
+    scheduledIt('Doesn\'t emit if there\'s no user', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      expectObservable(service.nextActivePeriod$).toBe('-', values.times);
+    });
+
+    scheduledIt('Emits null if there\'s no bee', ({expectObservable, cold}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      const [
+        currentUserXData,
+        currentUser,
+        expectedNextActivePeriod,
+      ] = [
+        '--n--',
+        '---X-',
+        '-----',
+      ];
+      cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+      cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+      expectObservable(service.nextActivePeriod$).toBe(
+        expectedNextActivePeriod,
+        values.times,
+      );
+    });
+
+    scheduledIt(
+      'Emits the starting value of the bee\'s only active period, if that period hasn\'t started yet',
+      ({expectObservable, cold}) => {
+        mockCurrentRoundPath$.next(values.roundPaths.A);
+        const [
+          currentRoundState,
+          currentUserXData,
+          currentUser,
+          expectedNextActivePeriod,
+        ] = [
+          '--0--',
+          '--V--',
+          '---X-',
+          '---A-',
+        ];
+
+        cold(currentRoundState, values.rounds).subscribe(mockRound1AData$);
+        cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+        cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+        expectObservable(service.nextActivePeriod$).toBe(
+          expectedNextActivePeriod,
+          values.times,
+        );
+      }
+    );
+
+    scheduledIt(
+      'Emits null, if that active period has started.',
+      ({expectObservable, cold}) => {
+        mockCurrentRoundPath$.next(values.roundPaths.A);
+        const [
+          currentRoundState,
+          currentUserXData,
+          currentUser,
+          expectedNextActivePeriod,
+        ] = [
+          '--0----q-',
+          '--V------',
+          '---X-----',
+          '---A---n-',
+        ];
+
+        cold(currentRoundState, values.rounds).subscribe(mockRound1AData$);
+        cold(currentUserXData, values.studentData).subscribe(mockUserXData$);
+        cold(currentUser, values.authUsers).subscribe(mockCurrentUser$);
+        expectObservable(service.nextActivePeriod$).toBe(
+          expectedNextActivePeriod,
+          values.times,
+        );
+      }
+    );
+  });
+
   describe('the interactions$ observable', () => {
     scheduledIt('Emits an empty array initially', ({expectObservable}) => {
       expectObservable(service.interactions$).toBe(
@@ -921,9 +995,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the totalPollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.totalPollen$).toBe(
@@ -975,11 +1046,18 @@ describe('StudentRoundService', () => {
         values.numbers,
       );
     });
+
+    scheduledIt('Filters out incompatible flowers', ({expectObservable}) => {
+      mockCurrentRoundPath$.next(values.roundPaths.A);
+      mockCurrentUser$.next(values.authUsers.Z);
+      mockInteractionsZ$.next(values.interactions.X);
+      expectObservable(service.totalPollen$).toBe(
+        '1-',
+        values.numbers,
+      );
+    });
   });
 
-  /**
-   *
-   */
   describe('the currentBeePollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentBeePollen$).toBe(
@@ -1032,9 +1110,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('the currentNestPollen$ observable', () => {
     scheduledIt('Emits 0 initially', ({expectObservable}) => {
       expectObservable(service.currentNestPollen$).toBe(
@@ -1087,9 +1162,6 @@ describe('StudentRoundService', () => {
     });
   });
 
-  /**
-   *
-   */
   describe('The interact() method', () => {
     let interactionSpy: jasmine.Spy<FirebaseService['addInteraction']>;
 
@@ -1104,6 +1176,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
     }));
 
@@ -1114,6 +1187,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
         values.roundPaths.A,
@@ -1125,6 +1199,7 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[0]).toEqual(
         values.roundPaths.B,
@@ -1138,12 +1213,14 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(5);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
         userId: values.authUsers.X.uid,
         timePeriod: values.rounds.q.currentTime,
         barcodeValue: 5,
         isNest: false,
+        incompatibleFlower: false
       });
 
       interactionSpy.calls.reset();
@@ -1152,14 +1229,15 @@ describe('StudentRoundService', () => {
       tick(0);
 
       service.interact(7);
+      tick(0);
       expect(interactionSpy).toHaveBeenCalledTimes(1);
       expect(interactionSpy.calls.mostRecent().args[1]).toEqual({
         userId: values.authUsers.Y.uid,
         timePeriod: values.rounds.r.currentTime,
         barcodeValue: 7,
         isNest: false,
+        incompatibleFlower: false
       });
     }));
-
   });
 });

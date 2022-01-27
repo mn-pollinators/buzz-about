@@ -12,6 +12,7 @@ export interface FirebaseRound {
   status: string;
   running: boolean;
   currentTime: number;
+  templateId: string;
 }
 
 /**
@@ -24,7 +25,7 @@ export class RoundFlower {
   readonly isBlooming: boolean;
 
   constructor(public readonly species: FlowerSpecies, currentTime: TimePeriod) {
-    this.isBlooming = species.blooming_period.some(interval => currentTime.fallsWithin(...interval));
+    this.isBlooming = currentTime.fallsWithin(...species.blooming_period);
   }
 
   equals(other: RoundFlower): boolean {
@@ -33,6 +34,7 @@ export class RoundFlower {
 }
 
 export interface RoundStudentData {
+  id?: string;
   beeSpecies?: string;
 }
 
@@ -41,6 +43,7 @@ export interface Interaction {
   userId: string;
   barcodeValue: number;
   isNest: boolean;
+  incompatibleFlower: boolean;
 }
 
 /**

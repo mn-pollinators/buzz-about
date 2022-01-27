@@ -1,6 +1,6 @@
-import { allFlowerSpecies } from './flowers';
-import { allBeeSpecies, BeeSociality } from './bees';
-import { allNests } from './nests';
+import { allFlowerSpecies, allFlowerSpeciesArray } from './flowers';
+import { allBeeSpecies, allBeeSpeciesArray, BeeSociality } from './bees';
+import { allNests, allNestsArray } from './nests';
 
 describe('The allFlowerSpecies mapping', () => {
   it('Contains at least one species of flower', () => {
@@ -14,18 +14,26 @@ describe('The allFlowerSpecies mapping', () => {
       });
 
       describe('Its blooming period', () => {
-        it('Contains at least one interval', () => {
-          expect(flowerSpecies.blooming_period.length).toBeGreaterThanOrEqual(1);
-        });
-
-        it('Has intervals each with a start-time that comes strictly before its end-time', () => {
-          for (const [start, end] of flowerSpecies.blooming_period) {
-            expect(start.time).toBeLessThan(end.time);
-          }
+        it('Has a start-time that comes strictly before its end-time', () => {
+          expect(flowerSpecies.blooming_period[0].time).toBeLessThan(flowerSpecies.blooming_period[1].time);
         });
       });
     });
   }
+
+  describe('The allFlowerSpeciesArray', () => {
+    it('Contains the same number of flowers as the object', () => {
+      expect(allFlowerSpeciesArray.length).toEqual(Object.entries(allFlowerSpecies).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allFlowerSpecies)) {
+        it(i.id, () => {
+          expect(allFlowerSpeciesArray).toContain(i);
+        });
+      }
+    });
+  });
 });
 
 describe('The allBeeSpecies mapping', () => {
@@ -39,15 +47,13 @@ describe('The allBeeSpecies mapping', () => {
         expect(beeSpecies.id).toEqual(key);
       });
 
-      describe('Its active period', () => {
-        it('Contains at least one interval', () => {
-          expect(beeSpecies.active_period.length).toBeGreaterThanOrEqual(1);
-        });
+      it('Has a name that ends in "bee"', () => {
+        expect(beeSpecies.name.endsWith('bee')).toBe(true);
+      });
 
-        it('Has intervals each of whose start-time comes strictly before its end-time', () => {
-          for (const [start, end] of beeSpecies.active_period) {
-            expect(start.time).toBeLessThan(end.time);
-          }
+      describe('Its active period', () => {
+        it('Has a start-time that comes strictly before its end-time', () => {
+          expect(beeSpecies.active_period[0].time).toBeLessThan(beeSpecies.active_period[1].time);
         });
       });
 
@@ -75,6 +81,20 @@ describe('The allBeeSpecies mapping', () => {
       });
     });
   }
+
+  describe('The allBeeSpeciesArray', () => {
+    it('Contains the same number of bees as the object', () => {
+      expect(allBeeSpeciesArray.length).toEqual(Object.entries(allBeeSpecies).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allBeeSpecies)) {
+        it(i.id, () => {
+          expect(allBeeSpeciesArray).toContain(i);
+        });
+      }
+    });
+  });
 });
 
 describe('The allNests mapping', () => {
@@ -89,4 +109,18 @@ describe('The allNests mapping', () => {
       });
     });
   }
+
+  describe('The allNestsArray', () => {
+    it('Contains the same number of nests as the object', () => {
+      expect(allNestsArray.length).toEqual(Object.entries(allNests).length);
+    });
+
+    describe('Contain each item from the object', () => {
+      for (const i of Object.values(allNests)) {
+        it(i.id, () => {
+          expect(allNestsArray).toContain(i);
+        });
+      }
+    });
+  });
 });

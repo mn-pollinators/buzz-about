@@ -2,3 +2,50 @@ mat-selection-list {
   margin-right: 16px;
   overflow: auto;
 }
+
+app-flower-layout {
+  border-radius: 4px;
+}
+
+.template-information {
+  position: relative;
+  margin-top: 8px;
+  max-height: 50vh;
+}
+
+.template-description {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background-color: rgba($color: white, $alpha: 0.85);
+  padding: 16px;
+
+  .template-name{
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  overflow-y: auto;
+}
+
+.set-container {
+  overflow-y: hidden;
+}
+
+.set-list {
+  overflow-y: auto;
+}
+
+.dialog-content {
+  min-width: 50vw;
+  max-width: 100vh;
+}

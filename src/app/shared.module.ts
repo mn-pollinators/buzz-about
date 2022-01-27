@@ -12,17 +12,26 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRippleModule } from '@angular/material/core';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgPipesModule } from 'ngx-pipes';
+import { RouterModule } from '@angular/router';
+import { PlatformModule } from '@angular/cdk/platform';
 
 import { FullscreenButtonComponent } from './components/fullscreen-button/fullscreen-button.component';
 import { HillBackgroundComponent } from './components/hill-background/hill-background.component';
 import { SentenceCasePipe } from './utils/string-utils';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-indicator.component';
+import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
+import { SmallTimelineComponent } from './components/small-timeline/small-timeline.component';
+import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
+
 
 
 
@@ -39,6 +48,8 @@ const ANGULAR_MATERIAL_MODULES = [
   MatDialogModule,
   MatListModule,
   MatTooltipModule,
+  MatStepperModule,
+  MatRippleModule,
 ];
 
 const sharedImportModules = [
@@ -49,6 +60,7 @@ const sharedImportModules = [
   ReactiveFormsModule,
   HttpClientModule,
   NgPipesModule,
+  PlatformModule,
 ];
 
 const sharedComponents = [
@@ -56,14 +68,19 @@ const sharedComponents = [
   HillBackgroundComponent,
   SentenceCasePipe,
   BackButtonComponent,
+  PollenIndicatorComponent,
+  SmallTimelineComponent,
+  FieldGuideDialogComponent,
+  FieldGuideComponent
 ];
 
 @NgModule({
   declarations: [
-    ...sharedComponents
+    ...sharedComponents,
   ],
   imports: [
-    ...sharedImportModules
+    ...sharedImportModules,
+    RouterModule
   ],
   exports: [
     ...sharedImportModules,

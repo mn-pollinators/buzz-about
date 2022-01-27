@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { roundTemplates } from 'src/app/round-template';
+import { MatStepper } from '@angular/material/stepper';
 import { FlowerSpecies } from 'src/app/flowers';
-import { FlowerLayoutItem } from '../flower-layout-item/flower-layout-item.component';
+import { defaultRoundSets, RoundTemplateSet } from 'src/app/round-templates/round-templates';
+import { FlowerLayoutItem } from '../flower-layout/flower-layout.component';
 
 @Component({
   selector: 'app-round-chooser-dialog',
@@ -15,7 +16,11 @@ export class RoundChooserDialogComponent implements OnInit {
 
   }
 
-  roundTemplates = roundTemplates;
+  @ViewChild(MatStepper) matStepper: MatStepper;
+
+  roundSets = defaultRoundSets;
+
+  currentSets: RoundTemplateSet[] = [this.roundSets[0]];
 
   onCancel(): void {
     this.dialogRef.close();
@@ -24,10 +29,14 @@ export class RoundChooserDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  startRound() {
+    this.dialogRef.close(this.currentSets[0].templates[this.matStepper.selectedIndex]);
+  }
+
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {
     return flowers.map((species) => {
       return {
-        imgSrc: `assets/art/500w/flowers/${species.art_file}`,
+        imgSrc: species.asset_urls.art_500_wide,
         alt: species.name,
         active: true,
         scale: species.relative_size

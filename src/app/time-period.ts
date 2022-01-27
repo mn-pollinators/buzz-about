@@ -26,6 +26,8 @@ export enum Season {
   Fall = 'Fall'
 }
 
+export const MAX_TIME = 47;
+
 /**
  * Each value of this type represents a quarter-of-the-month: 1 is the first
  * quarter, 2 is the second quarter, and so on.
@@ -44,7 +46,7 @@ export class TimePeriod {
 
   /**
    * The time, expressed as an integer, where 0 is the first quarter of January
-   * and 47 is the last quarter of December.
+   * and MAX_PERIOD is the last quarter of December.
    */
   readonly time: number;
 
@@ -139,7 +141,7 @@ export class TimePeriod {
    * the first quarter of January.
    */
   next(): TimePeriod {
-    return new TimePeriod((this.time + 1) % 48);
+    return new TimePeriod((this.time + 1) % (MAX_TIME + 1));
   }
 
   equals(other: TimePeriod): boolean {
@@ -170,7 +172,8 @@ export class TimePeriod {
    * but not great for display to the user.
    */
   toString() {
-    return `${this.monthString} quarter ${this.quarter}`;
+    return `${this.monthString} Quarter ${this.quarter}`;
   }
 }
 
+export const MAX_TIME_PERIOD = new TimePeriod(MAX_TIME);

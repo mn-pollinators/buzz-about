@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { roundTemplates } from '../../round-template';
 import { FlowerSpecies } from '../../flowers';
-import { FlowerLayoutItem } from '../../components/flower-layout-item/flower-layout-item.component';
+import { defaultRoundSets } from 'src/app/round-templates/round-templates';
+import { FlowerLayoutItem } from 'src/app/components/flower-layout/flower-layout.component';
 
 @Component({
   selector: 'app-round-template-test',
@@ -12,7 +12,7 @@ export class RoundTemplateTestComponent implements OnInit {
 
   constructor() { }
 
-  roundTemplates = roundTemplates;
+  roundSets = defaultRoundSets;
 
   ngOnInit(): void {
   }
@@ -20,7 +20,7 @@ export class RoundTemplateTestComponent implements OnInit {
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {
     return flowers.map((species) => {
       return {
-        imgSrc: `assets/art/500w/flowers/${species.art_file}`,
+        imgSrc: species.asset_urls.art_500_wide,
         alt: species.name,
         active: true,
         scale: species.relative_size

@@ -4,6 +4,8 @@ import { RoundChooserDialogComponent } from './round-chooser-dialog.component';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { FlowerSpecies, allFlowerSpecies } from 'src/app/flowers';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatStepperModule } from '@angular/material/stepper';
 
 describe('RoundChooserDialogComponent', () => {
   let component: RoundChooserDialogComponent;
@@ -19,6 +21,8 @@ describe('RoundChooserDialogComponent', () => {
         MatButtonModule,
         MatDialogModule,
         MatListModule,
+        MatStepperModule,
+        NoopAnimationsModule
       ],
       declarations: [
         RoundChooserDialogComponent,
@@ -62,19 +66,19 @@ describe('RoundChooserDialogComponent', () => {
       ];
       const expectedFlowerLayoutItems = [
         {
-          imgSrc: `assets/art/500w/flowers/${fakeFlowerSpecies[0].art_file}`,
+          imgSrc: fakeFlowerSpecies[0].asset_urls.art_500_wide,
           alt: fakeFlowerSpecies[0].name,
           active: true,
           scale: fakeFlowerSpecies[0].relative_size
         },
         {
-          imgSrc: `assets/art/500w/flowers/${fakeFlowerSpecies[1].art_file}`,
+          imgSrc: fakeFlowerSpecies[1].asset_urls.art_500_wide,
           alt: fakeFlowerSpecies[1].name,
           active: true,
           scale: fakeFlowerSpecies[1].relative_size
         },
         {
-            imgSrc: `assets/art/500w/flowers/${fakeFlowerSpecies[2].art_file}`,
+            imgSrc: fakeFlowerSpecies[2].asset_urls.art_500_wide,
             alt: fakeFlowerSpecies[2].name,
             active: true,
             scale: fakeFlowerSpecies[2].relative_size
