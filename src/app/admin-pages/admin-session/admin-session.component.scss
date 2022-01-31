@@ -1,0 +1,16 @@
+.card-container {
+  display: flex;
+  .mat-card:not(:last-child) {
+    margin-right: 16px;
+  }
+}
+
+.mat-card:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.round-list {
+  .active .mat-line {
+    font-weight: bold !important;
+  }
+}

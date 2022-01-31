@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map, mapTo } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
+import { FirebaseRound, RoundStudentData, Interaction, HostEvent, FirebaseRoundWithId } from './../round';
 import { JoinCode, JoinCodeWithId } from '../join-code';
 import * as firebase from 'firebase/app';
 import firestore = firebase.firestore;
@@ -83,6 +83,14 @@ export class FirebaseService {
           ? {id: actions[0].payload.doc.id, ...actions[0].payload.doc.data({serverTimestamps: 'estimate'})}
           : null
       ));
+  }
+
+  getRoundsInSession(sessionId: string): Observable<FirebaseRoundWithId[]> {
+    return this.angularFirestore
+      .collection('sessions')
+      .doc<Session>(sessionId)
+      .collection<FirebaseRound>('rounds')
+      .valueChanges({idField: 'id'});
   }
 
   /**

@@ -1,13 +1,39 @@
 <div class="centered-container">
-  <div>
-    <mat-card *ngIf="(teacherSessionService.currentSession$ | async) as session">
+  <div *ngIf="(adminService.teacherSessionService.currentSession$ | async) as session">
+    <mat-card>
       <mat-card-title>{{session.id}}</mat-card-title>
       <mat-card-subtitle>Created {{session.createdAt | timeAgo}}</mat-card-subtitle>
       <mat-card-content>
         <p>Host ID: {{session.hostId}}</p>
         <p>Current Round ID: {{session.currentRoundId}}</p>
-        <p>Current join code: {{(teacherSessionService.activeJoinCode$ | async)?.id}}</p>
+        <p>Current join code: {{(adminService.teacherSessionService.activeJoinCode$ | async)?.id}}</p>
       </mat-card-content>
     </mat-card>
+    <div class="card-container">
+      <mat-card>
+        <mat-card-title>Students</mat-card-title>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let student of adminService.teacherSessionService.studentsInCurrentSession$ | async">
+              <div matLine>{{student.name}}</div>
+              <div matLine>ID: {{student.id}}</div>
+              <div matLine>Nest: {{student.nestBarcode}}</div>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Rounds</mat-card-title>
+        <mat-card-content>
+          <mat-nav-list class="round-list">
+            <a mat-list-item *ngFor="let round of adminService.roundsInCurrentSession$ | async" [ngClass]="{'active': session.currentRoundId === round.id}">
+              <div matLine>{{round.id}}</div>
+              <div matLine>status: {{round.status}} | {{round.running ? '▶️' : '⏸️'}} | {{round.currentTime}}</div>
+              <div matLine>template: {{round.templateId}}</div>
+            </a>
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>
