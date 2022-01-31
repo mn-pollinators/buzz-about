@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
-import { Interaction, RoundStudentData } from 'src/app/round';
+import { Interaction, RoundStudentData, InteractionWithId } from 'src/app/round';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { StudentRoundService } from 'src/app/services/student-round.service';
@@ -29,8 +29,8 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
 
 
 
-  roundInteractions$: Observable<Interaction[]> = this.studentSessionService.currentRoundPath$.pipe(
-    switchMap(path => path ? this.firebaseService.getRoundInteractions(path) : of([]))
+  roundInteractions$: Observable<InteractionWithId[]> = this.studentSessionService.currentRoundPath$.pipe(
+    switchMap(path => path ? this.firebaseService.getInteractionsWithIds(path) : of([]))
   );
 
   roundStudents$: Observable<RoundStudentData[]> = this.studentSessionService.currentRoundPath$.pipe(
@@ -70,7 +70,7 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
           ...sessionStudent,
           ...roundStudent,
           bee,
-          beeActive: bee && time && bee.active_period.some(interval => time.fallsWithin(...interval)),
+          beeActive: bee && time && time.fallsWithin(...bee.active_period),
           interactions,
           totalPollen: interactions.filter(interaction => !interaction.isNest).length,
           currentPollen: recentFlowerInteractions,

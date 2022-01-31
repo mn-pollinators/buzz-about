@@ -14,7 +14,6 @@ import { AboutComponent } from './pages/about/about.component';
 import { FieldGuideTestComponent } from './test-pages/field-guide-test/field-guide-test.component';
 import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { RoundMonitorComponent } from './test-pages/round-monitor/round-monitor.component';
 
 const testRoutes: Routes = [
   {path: 'timer-test', component: TimerTestComponent},
@@ -23,7 +22,6 @@ const testRoutes: Routes = [
   {path: 'round-template-test', component: RoundTemplateTestComponent},
   {path: 'flower-test', component: FlowerTestComponent},
   {path: 'field-guide-test', component: FieldGuideTestComponent},
-  {path: 'round-monitor/:sessionId', component: RoundMonitorComponent},
 ];
 
 const routes: Routes = [

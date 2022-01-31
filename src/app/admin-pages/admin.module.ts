@@ -9,6 +9,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
 import { AdminSessionComponent } from './admin-session/admin-session.component';
+import { RoundMonitorComponent } from './round-monitor/round-monitor.component';
 
 
 const ANGULAR_MATERIAL_MODULES = [
@@ -22,6 +23,7 @@ const ANGULAR_MATERIAL_MODULES = [
     AdminHomeComponent,
     AdminSessionsComponent,
     AdminSessionComponent,
+    RoundMonitorComponent,
   ],
   imports: [
     SharedModule,

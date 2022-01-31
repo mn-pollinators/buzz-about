@@ -53,6 +53,10 @@ export interface Interaction {
   incompatibleFlower: boolean;
 }
 
+export interface InteractionWithId extends Interaction {
+  id: string;
+}
+
 /**
  * A string enum representing the different types of host events we want to record.
  */
