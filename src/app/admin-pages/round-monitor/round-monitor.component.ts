@@ -10,6 +10,13 @@ import { StudentRoundService } from 'src/app/services/student-round.service';
 import { StudentSessionService } from 'src/app/services/student-session.service';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
 import { TimePeriod } from 'src/app/time-period';
+import { FlowerSpecies } from 'src/app/flowers';
+
+interface StudentInteraction extends Omit<InteractionWithId, 'timePeriod'> {
+  flower: FlowerSpecies | null;
+  timePeriod: TimePeriod;
+}
+
 
 @Component({
   selector: 'app-round-monitor',
@@ -37,7 +44,7 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     switchMap(path => path ? this.firebaseService.getStudentsInRound(path) : of([]))
   );
 
-  roundInteractionsWithFlowers$ = combineLatest([
+  roundInteractionsWithFlowers$: Observable<StudentInteraction[]> = combineLatest([
     this.roundInteractions$,
     this.studentRoundService.currentFlowersSpecies$
   ]).pipe(
@@ -93,7 +100,7 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     this.teacherSessionService.leaveSession();
   }
 
-  trackInteractions(index, item: {id: string}) {
+  trackInteractions(index, item: StudentInteraction) {
     return item.id;
   }
 

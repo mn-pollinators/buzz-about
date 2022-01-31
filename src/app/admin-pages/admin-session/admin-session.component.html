@@ -8,6 +8,9 @@
         <p>Current Round ID: {{session.currentRoundId}}</p>
         <p>Current join code: {{(adminService.teacherSessionService.activeJoinCode$ | async)?.id}}</p>
       </mat-card-content>
+      <mat-card-actions>
+        <button mat-button [routerLink]="['/admin/sessions', session.id, 'round-monitor']">Round Monitor</button>
+      </mat-card-actions>
     </mat-card>
     <div class="card-container">
       <mat-card>
