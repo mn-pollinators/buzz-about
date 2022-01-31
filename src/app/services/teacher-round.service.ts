@@ -101,7 +101,7 @@ export class TeacherRoundService {
   // than passing it in as a parameter.
   async startNewRound(template: RoundTemplate, options?: Partial<RoundOptions>) {
 
-    const newRoundOptions: RoundOptions = {...options, ...defaultRoundOptions};
+    const newRoundOptions: RoundOptions = {...defaultRoundOptions, ...options};
 
     this.roundTemplate$.next(template);
     this.roundOptions$.next(newRoundOptions);
