@@ -4,6 +4,14 @@ import * as firebase from 'firebase/app';
 import firestore = firebase.firestore;
 
 
+export interface RoundOptions {
+  hideLdFlowersBees: boolean;
+}
+
+export const defaultRoundOptions: RoundOptions = {
+  hideLdFlowersBees: false
+};
+
 /**
  * The round data as stored in Firebase.
  */
@@ -13,6 +21,7 @@ export interface FirebaseRound {
   running: boolean;
   currentTime: number;
   templateId: string;
+  options: RoundOptions;
 }
 
 /**

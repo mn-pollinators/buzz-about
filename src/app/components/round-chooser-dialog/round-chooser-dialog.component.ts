@@ -4,6 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { FlowerSpecies } from 'src/app/flowers';
 import { defaultRoundSets, RoundTemplateSet } from 'src/app/round-templates/round-templates';
 import { FlowerLayoutItem } from '../flower-layout/flower-layout.component';
+import { defaultRoundOptions, RoundOptions } from 'src/app/round';
 
 @Component({
   selector: 'app-round-chooser-dialog',
@@ -22,6 +23,8 @@ export class RoundChooserDialogComponent implements OnInit {
 
   currentSets: RoundTemplateSet[] = [this.roundSets[0]];
 
+  roundOptions: RoundOptions = {...defaultRoundOptions};
+
   onCancel(): void {
     this.dialogRef.close();
   }
@@ -30,7 +33,7 @@ export class RoundChooserDialogComponent implements OnInit {
   }
 
   startRound() {
-    this.dialogRef.close(this.currentSets[0].templates[this.matStepper.selectedIndex]);
+    this.dialogRef.close({template: this.currentSets[0].templates[this.matStepper.selectedIndex], options: this.roundOptions});
   }
 
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {

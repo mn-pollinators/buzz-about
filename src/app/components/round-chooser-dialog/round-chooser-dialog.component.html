@@ -22,6 +22,23 @@
   </div>
 </div>
 <div mat-dialog-actions align="end">
+  <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="Advanced Options">
+    <mat-icon>tune</mat-icon>
+  </button>
+  <mat-menu #optionsMenu="matMenu" class="custom-options-menu">
+    <div mat-menu-item [disableRipple]="true" (click)="$event.stopPropagation(); hideLdFlowersBees.toggle()" (keydown.enter)="$event.stopPropagation(); hideLdFlowersBees.toggle()">
+      <mat-checkbox
+        class="custom-option-checkbox"
+        (click)="$event.stopPropagation()"
+        color="primary"
+        #hideLdFlowersBees
+        [(ngModel)]="roundOptions.hideLdFlowersBees"
+      >
+        Hide flowers and bees on large display
+      </mat-checkbox>
+    </div>
+  </mat-menu>
+  <div class="spacer"></div>
   <button mat-button (click)="onCancel()">Cancel</button>
   <button
     color="primary"

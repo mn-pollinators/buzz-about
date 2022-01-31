@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, HostEventType, Interaction, RoundStudentData } from '../round';
+import { FirebaseRound, RoundFlower, HostEventType, Interaction, RoundStudentData, RoundOptions, defaultRoundOptions } from '../round';
 import { TimerService } from './timer.service';
 import { asyncScheduler, BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
 import { allBeeSpecies, BeeSpecies } from './../bees';
@@ -44,6 +44,8 @@ export class TeacherRoundService {
   }
 
   public readonly roundTemplate$ = new BehaviorSubject<RoundTemplate | null>(null);
+
+  public readonly roundOptions$ = new BehaviorSubject<RoundOptions>(defaultRoundOptions);
 
   currentFlowers$: Observable<RoundFlower[]> = combineLatest([this.roundTemplate$, this.timerService.currentTimePeriod$]).pipe(
     map(([template, time]) => template && time ? template.flowerSpecies.map(s => new RoundFlower(s, time)) : []),
@@ -97,16 +99,20 @@ export class TeacherRoundService {
    */
   // In the future, we might get sessionId from a TeacherSessionService, rather
   // than passing it in as a parameter.
-  async startNewRound(template: RoundTemplate) {
+  async startNewRound(template: RoundTemplate, options?: Partial<RoundOptions>) {
+
+    const newRoundOptions: RoundOptions = {...defaultRoundOptions, ...options};
 
     this.roundTemplate$.next(template);
+    this.roundOptions$.next(newRoundOptions);
 
     const roundData: FirebaseRound = {
       flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
       status: 'start',
       running: false,
       currentTime: template.startTime.time,
-      templateId: template.id
+      templateId: template.id,
+      options: newRoundOptions
     };
 
     const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();

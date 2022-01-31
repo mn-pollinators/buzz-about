@@ -2,7 +2,7 @@ import { TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 import { StudentRoundService } from './student-round.service';
 import { BehaviorSubject } from 'rxjs';
 import { FirebaseService, RoundPath } from './firebase.service';
-import { FirebaseRound, RoundFlower, RoundStudentData, Interaction } from '../round';
+import { FirebaseRound, RoundFlower, RoundStudentData, Interaction, defaultRoundOptions } from '../round';
 import { StudentSessionService } from './student-session.service';
 import { scheduledIt } from '../utils/karma-utils';
 import { FlowerSpecies, allFlowerSpecies } from '../flowers';
@@ -41,42 +41,48 @@ describe('StudentRoundService', () => {
         status: 'just starting',
         running: true,
         currentTime: 0,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
       p: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'cool as a cucumber',
         running: false,
         currentTime: 25,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
       q: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
         currentTime: 25,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
       r: {
         flowerSpeciesIds: ['asclepias_syriaca', 'coreopsis_palmata'],
         status: 'fine',
         running: true,
         currentTime: MAX_TIME,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
       s: {
         flowerSpeciesIds: ['asclepias_syriaca'],
         status: 'fine',
         running: true,
         currentTime: MAX_TIME,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
       t: {
         flowerSpeciesIds: [],
         status: 'just swell',
         running: false,
         currentTime: MAX_TIME,
-        templateId: 'test'
+        templateId: 'test',
+        options: {...defaultRoundOptions}
       },
     },
 

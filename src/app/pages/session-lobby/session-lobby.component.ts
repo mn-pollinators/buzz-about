@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FullscreenService } from 'src/app/services/fullscreen.service';
 import { take } from 'rxjs/operators';
+import { RoundOptions } from 'src/app/round';
 
 @Component({
   selector: 'app-session-lobby',
@@ -46,15 +47,15 @@ export class SessionLobbyComponent implements OnInit {
   }
 
   async openRoundDialog() {
-    const dialogRef: MatDialogRef<RoundChooserDialogComponent, RoundTemplate> =
+    const dialogRef: MatDialogRef<RoundChooserDialogComponent, {template: RoundTemplate, options?: RoundOptions}> =
       this.matDialog.open(RoundChooserDialogComponent);
 
-    const template = await dialogRef.afterClosed().toPromise();
-    if (template) {
+    const dialogResult = await dialogRef.afterClosed().toPromise();
+    if (dialogResult && dialogResult.template) {
       this.loading$.next(true);
       await this.closeFieldGuide();
       try {
-        await this.teacherRoundService.startNewRound(template);
+        await this.teacherRoundService.startNewRound(dialogResult.template, dialogResult.options);
       } catch (err) {
         this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
       } finally {

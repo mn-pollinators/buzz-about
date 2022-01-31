@@ -47,3 +47,25 @@ body {
     width: 800px;
   }
 }
+
+.custom-options-menu {
+  min-width: calc(100% + 64px) !important;
+}
+
+.custom-option-checkbox {
+  font: {
+    family: mat-font-family($typography-config);
+    size: mat-font-size($typography-config, subheading-2);
+  }
+  height: 100%;
+  .mat-checkbox-layout {
+    height: 100%;
+    .mat-checkbox-label {
+      margin: auto;
+      vertical-align: middle;
+      position: relative;
+    }
+  }
+}
+
+

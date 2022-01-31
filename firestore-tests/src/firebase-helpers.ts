@@ -3,7 +3,7 @@ import { firestore } from '@firebase/testing';
 import * as fs from 'fs';
 import { SessionStudentData } from '../../src/app/session';
 import { JoinCode } from '../../src/app/join-code';
-import { RoundStudentData, FirebaseRound, Interaction, HostEvent } from '../../src/app/round';
+import { RoundStudentData, FirebaseRound, Interaction, HostEvent, defaultRoundOptions } from '../../src/app/round';
 
 const PROJECT_ID = 'firestore-testing-project';
 
@@ -126,7 +126,8 @@ export const demoRound: FirebaseRound = {
   status: 'start',
   running: false,
   currentTime: 9,
-  templateId: 'demo'
+  templateId: 'demo',
+  options: {...defaultRoundOptions}
 };
 
 
