@@ -104,7 +104,7 @@ export class AdminService {
 
       return {
         id: roundSnapshot.id,
-        ...roundSnapshot.data,
+        ...roundSnapshot.data(),
         students: roundStudents,
         hostEvents, interactions
       };
