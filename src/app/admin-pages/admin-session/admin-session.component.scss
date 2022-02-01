@@ -2,6 +2,7 @@
   display: flex;
   .mat-card:not(:last-child) {
     margin-right: 16px;
+    margin-bottom: 0px;
   }
 }
 
@@ -13,4 +14,10 @@
   .active .mat-line {
     font-weight: bold !important;
   }
+}
+
+.mat-nav-list, .mat-list {
+  height: 50vh;
+  padding-top: 0;
+  overflow-y: scroll;
 }
