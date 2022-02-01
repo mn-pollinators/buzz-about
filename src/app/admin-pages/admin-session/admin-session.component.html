@@ -10,6 +10,7 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-button [routerLink]="['/admin/sessions', session.id, 'round-monitor']">Round Monitor</button>
+        <button mat-button (click)="downloadSession(session.id)">Download Session</button>
       </mat-card-actions>
     </mat-card>
     <div class="card-container">
