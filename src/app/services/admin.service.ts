@@ -81,6 +81,10 @@ export class AdminService {
     this.teacherSessionService.leaveSession();
   }
 
+  updateSession(sessionId: string, data: Partial<Session>) {
+    this.angularFirestore.firestore.collection('sessions').doc(sessionId).update(data);
+  }
+
   async getFullSessionData(sessionId: string) {
     const sessionDoc = this.angularFirestore.firestore.collection('sessions').doc(sessionId);
     const roundsCollection = sessionDoc.collection('rounds');

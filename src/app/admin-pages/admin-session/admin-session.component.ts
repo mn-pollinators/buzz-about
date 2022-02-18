@@ -16,6 +16,8 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
     public matSnackbar: MatSnackBar
   ) { }
 
+  editName = false;
+
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.adminService.setCurrentSession(params.get('sessionId'));
@@ -34,6 +36,11 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
         duration: 10000
       });
     });
+  }
+
+  changeName(sessionId: string, name: string) {
+    this.adminService.updateSession(sessionId, {name});
+    this.editName = false;
   }
 
 }

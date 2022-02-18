@@ -9,6 +9,7 @@ export interface Session {
   currentRoundId?: string;
   createdAt: firestore.Timestamp | firestore.FieldValue;
   showFieldGuide?: boolean;
+  name?: string;
 }
 
 

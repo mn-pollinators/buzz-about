@@ -5,7 +5,8 @@
       <mat-card-content>
         <mat-nav-list>
           <a mat-list-item *ngFor="let session of sessions$ | async" [routerLink]="['/admin/sessions', session.id]">
-            <div matLine>{{session.id}}</div>
+            <div matLine>{{session.name ? session.name : session.id}}</div>
+            <div matLine *ngIf="session.name">{{session.id}}</div>
             <div matLine>Created {{session.createdAt | timeAgo}} | {{session.currentRoundId ? 'In round' : 'Not in round'}}</div>
           </a>
         </mat-nav-list>

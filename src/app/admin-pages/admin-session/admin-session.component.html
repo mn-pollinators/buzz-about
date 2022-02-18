@@ -1,9 +1,23 @@
 <div class="centered-container">
   <div *ngIf="(adminService.teacherSessionService.currentSession$ | async) as session">
     <mat-card>
-      <mat-card-title>{{session.id}}</mat-card-title>
+      <mat-card-title *ngIf="!editName">
+        <span>{{session.name ? session.name : session.id}}</span>
+        <button mat-icon-button (click)="editName = true">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-card-title>
+      <mat-card-title *ngIf="editName">
+        <mat-form-field>
+          <input matInput [value]="session.name ? session.name : session.id" #nameInput>
+        </mat-form-field>
+        <button mat-icon-button (click)="changeName(session.id, nameInput.value)">
+          <mat-icon>save</mat-icon>
+        </button>
+      </mat-card-title>
       <mat-card-subtitle>Created {{session.createdAt | timeAgo}} ({{session.createdAt | toDate | date:'yyyy-MM-ddTHH:mm:ssZ'}})</mat-card-subtitle>
       <mat-card-content>
+        <p>Session ID: {{session.id}}</p>
         <p>Host ID: {{session.hostId}}</p>
         <p>Current Round ID: {{session.currentRoundId}}</p>
         <p>Current join code: {{(adminService.teacherSessionService.activeJoinCode$ | async)?.id}}</p>
