@@ -32,6 +32,7 @@ import { PollenIndicatorComponent } from './components/pollen-indicator/pollen-i
 import { FieldGuideDialogComponent } from './components/field-guide-dialog/field-guide-dialog.component';
 import { SmallTimelineComponent } from './components/small-timeline/small-timeline.component';
 import { FieldGuideComponent } from './pages/field-guide/field-guide.component';
+import { ToDatePipe } from './utils/time-utils';
 
 
 
@@ -69,6 +70,7 @@ const sharedComponents = [
   FullscreenButtonComponent,
   HillBackgroundComponent,
   SentenceCasePipe,
+  ToDatePipe,
   BackButtonComponent,
   PollenIndicatorComponent,
   SmallTimelineComponent,

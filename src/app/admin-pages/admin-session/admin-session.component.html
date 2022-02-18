@@ -2,7 +2,7 @@
   <div *ngIf="(adminService.teacherSessionService.currentSession$ | async) as session">
     <mat-card>
       <mat-card-title>{{session.id}}</mat-card-title>
-      <mat-card-subtitle>Created {{session.createdAt | timeAgo}}</mat-card-subtitle>
+      <mat-card-subtitle>Created {{session.createdAt | timeAgo}} ({{session.createdAt | toDate | date:'yyyy-MM-ddTHH:mm:ssZ'}})</mat-card-subtitle>
       <mat-card-content>
         <p>Host ID: {{session.hostId}}</p>
         <p>Current Round ID: {{session.currentRoundId}}</p>
