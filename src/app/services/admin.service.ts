@@ -53,10 +53,17 @@ export class AdminService {
     return this.auth.signOut();
   }
 
-  getRecentSessions(limit = 100): Observable<SessionWithId[]> {
-    return this.angularFirestore
+  getRecentSessions(name?: string, limit = 100): Observable<SessionWithId[]> {
+    console.log(`searching ${name}`);
+    if (name) {
+      return this.angularFirestore
+      .collection<Session>('sessions', ref => ref.where('name', '>=', name).orderBy('name').orderBy('createdAt', 'desc').limit(limit))
+      .valueChanges({idField: 'id'});
+    } else {
+      return this.angularFirestore
       .collection<Session>('sessions', ref => ref.orderBy('createdAt', 'desc').limit(limit))
       .valueChanges({idField: 'id'});
+    }
   }
 
   getAllJoinCodes(): Observable<JoinCodeWithId[]> {

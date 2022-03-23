@@ -9,7 +9,7 @@
       </mat-card-title>
       <mat-card-title *ngIf="editName">
         <mat-form-field>
-          <input matInput [value]="session.name ? session.name : session.id" #nameInput>
+          <input matInput [value]="session.name ? session.name : ''" #nameInput>
         </mat-form-field>
         <button mat-icon-button (click)="changeName(session.id, nameInput.value)">
           <mat-icon>save</mat-icon>

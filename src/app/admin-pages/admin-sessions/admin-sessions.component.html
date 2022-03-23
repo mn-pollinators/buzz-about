@@ -3,6 +3,12 @@
     <mat-card>
       <mat-card-title>Sessions</mat-card-title>
       <mat-card-content>
+        <form autocomplete="off">
+          <mat-form-field [formGroup]="sessionFilterFormGroup">
+            <mat-label>Name Filter</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+        </form>
         <mat-nav-list>
           <a mat-list-item *ngFor="let session of sessions$ | async" [routerLink]="['/admin/sessions', session.id]">
             <div matLine>{{session.name ? session.name : session.id}}</div>
