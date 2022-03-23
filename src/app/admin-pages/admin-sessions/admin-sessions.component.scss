@@ -5,7 +5,9 @@
   }
 }
 
-.mat-card {
+.flex-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .mat-nav-list {

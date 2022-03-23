@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import { Observable, timer, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, switchMap, tap, switchMapTo } from 'rxjs/operators';
@@ -12,6 +12,33 @@ import { StudentSessionService } from './student-session.service';
 import { TeacherSessionService } from './teacher-session.service';
 import { FirebaseRoundWithId, FirebaseRound } from '../round';
 import { downloadObjectToJSON } from '../utils/file-utils';
+
+export interface SessionsQueryFilters {
+  name?: string;
+  dateStart?: Date;
+  dateEnd?: Date;
+  hostId?: string;
+}
+
+function sessionsQuery(ref: Query, filters: SessionsQueryFilters): Query {
+  let newRef = ref;
+  if (filters.name) {
+    newRef = newRef.where('name', '>=', filters.name).orderBy('name');
+  } else if (filters.dateStart || filters.dateEnd) {
+    if (filters.dateStart) {
+      newRef = newRef.where('createdAt', '>=', filters.dateStart);
+    }
+    if (filters.dateEnd) {
+      newRef = newRef.where('createdAt', '<=', filters.dateEnd);
+    }
+  }
+
+  if (filters.hostId) {
+    newRef = newRef.where('hostId', '==', filters.hostId);
+  }
+
+  return newRef;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -53,17 +80,11 @@ export class AdminService {
     return this.auth.signOut();
   }
 
-  getRecentSessions(name?: string, limit = 100): Observable<SessionWithId[]> {
-    console.log(`searching ${name}`);
-    if (name) {
-      return this.angularFirestore
-      .collection<Session>('sessions', ref => ref.where('name', '>=', name).orderBy('name').orderBy('createdAt', 'desc').limit(limit))
+  getRecentSessions(filters: SessionsQueryFilters, limit = 100): Observable<SessionWithId[]> {
+    console.log(filters);
+    return this.angularFirestore
+      .collection<Session>('sessions', ref => sessionsQuery(ref, filters).orderBy('createdAt', 'desc').limit(limit))
       .valueChanges({idField: 'id'});
-    } else {
-      return this.angularFirestore
-      .collection<Session>('sessions', ref => ref.orderBy('createdAt', 'desc').limit(limit))
-      .valueChanges({idField: 'id'});
-    }
   }
 
   getAllJoinCodes(): Observable<JoinCodeWithId[]> {

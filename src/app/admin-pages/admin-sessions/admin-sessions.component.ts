@@ -15,13 +15,16 @@ export class AdminSessionsComponent implements OnInit {
   //sessions$ = this.adminService.getRecentSessions();
 
   sessionFilterFormGroup = new FormGroup({
-    name: new FormControl('')
+    name: new FormControl(''),
+    hostId: new FormControl(''),
+    dateStart: new FormControl(),
+    dateEnd: new FormControl()
   });
 
   sessions$ = this.sessionFilterFormGroup.valueChanges.pipe(
-    startWith({name: ''}),
+    startWith({}),
     debounceTime(500),
-    switchMap(val => this.adminService.getRecentSessions(val.name))
+    switchMap(val => this.adminService.getRecentSessions(val))
   );
 
   ngOnInit(): void {

@@ -2,11 +2,28 @@
   <div class="card-container">
     <mat-card>
       <mat-card-title>Sessions</mat-card-title>
-      <mat-card-content>
-        <form autocomplete="off">
-          <mat-form-field [formGroup]="sessionFilterFormGroup">
+      <mat-card-content class="flex-content">
+        <form autocomplete="off" [formGroup]="sessionFilterFormGroup" class="flex-content">
+          <mat-form-field>
             <mat-label>Name Filter</mat-label>
             <input matInput formControlName="name">
+            <mat-hint>Overrides date filters</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startDatepicker" formControlName="dateStart">
+            <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatepicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endDatepicker" formControlName="dateEnd">
+            <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatepicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>hostId</mat-label>
+            <input matInput formControlName="hostId">
           </mat-form-field>
         </form>
         <mat-nav-list>
