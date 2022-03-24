@@ -11,7 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminSessionsComponent } from './admin-sessions/admin-sessions.component';
-import { AdminSessionComponent } from './admin-session/admin-session.component';
+import { AdminSessionComponent, SessionNoteDialogComponent } from './admin-session/admin-session.component';
 import { RoundMonitorComponent } from './round-monitor/round-monitor.component';
 
 
@@ -29,6 +29,7 @@ const ANGULAR_MATERIAL_MODULES = [
     AdminSessionsComponent,
     AdminSessionComponent,
     RoundMonitorComponent,
+    SessionNoteDialogComponent,
   ],
   imports: [
     SharedModule,

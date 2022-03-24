@@ -21,3 +21,9 @@
   padding-top: 0;
   overflow-y: scroll;
 }
+
+.note-list {
+  .note-content-line {
+    text-overflow: ellipsis;
+  }
+}

@@ -1,7 +1,56 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from 'src/app/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SessionNote } from 'src/app/session';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-session-note-dialog',
+  template: `
+    <form [formGroup]="noteFormGroup" autocomplete="off">
+      <h1 mat-dialog-title>Note</h1>
+      <div mat-dialog-content class="dialog-content">
+        <mat-form-field hideRequiredMarker>
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required>
+        </mat-form-field>
+        <mat-form-field hideRequiredMarker>
+          <mat-label>Content</mat-label>
+          <textarea matInput formControlName="content" required></textarea>
+        </mat-form-field>
+      </div>
+      <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button color="primary" [mat-dialog-close]="noteFormGroup.value" [disabled]="!noteFormGroup.valid">Save</button>
+      </div>
+    </form>
+  `,
+  styles: ['.dialog-content { display: flex; flex-direction: column; }']
+})
+export class SessionNoteDialogComponent {
+
+  noteFormGroup = new FormGroup(
+    {
+      name: new FormControl(this.data.name, Validators.required),
+      content: new FormControl(this.data.content, Validators.required)
+    }
+  );
+
+  constructor(
+    public dialogRef: MatDialogRef<SessionNoteDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: SessionNote
+  ) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
 
 @Component({
   selector: 'app-admin-session',
@@ -13,7 +62,8 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
   constructor(
     public adminService: AdminService,
     private activatedRoute: ActivatedRoute,
-    public matSnackbar: MatSnackBar
+    public matSnackbar: MatSnackBar,
+    public dialog: MatDialog
   ) { }
 
   editName = false;
@@ -41,6 +91,24 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
   changeName(sessionId: string, name: string) {
     this.adminService.updateSession(sessionId, {name});
     this.editName = false;
+  }
+
+  newNote(sessionId: string) {
+    const dialogRef = this.dialog.open(SessionNoteDialogComponent, { data: {name: '', content: ''} });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.adminService.addSessionNote(sessionId, res);
+      }
+    });
+  }
+
+  editNote(sessionId: string, {id, name, content}: SessionNote) {
+    const dialogRef = this.dialog.open(SessionNoteDialogComponent, { data: {name, content} });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        this.adminService.updateSessionNote(sessionId, id, res);
+      }
+    });
   }
 
 }

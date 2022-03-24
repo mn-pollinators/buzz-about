@@ -5,7 +5,7 @@ import * as firebase from 'firebase/app';
 import { Observable, timer, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, switchMap, tap, switchMapTo } from 'rxjs/operators';
 import { JoinCode, JoinCodeWithId, JOIN_CODE_LIFESPAN } from '../join-code';
-import { Session, SessionWithId } from '../session';
+import { Session, SessionWithId, SessionNote } from '../session';
 import { FirebaseService } from './firebase.service';
 import firestore = firebase.firestore;
 import { StudentSessionService } from './student-session.service';
@@ -72,6 +72,15 @@ export class AdminService {
     shareReplay(1),
   );
 
+  notesInCurrentSession$: Observable<SessionNote[]> = this.sessionId$.pipe(
+    switchMap(sessionId =>
+      sessionId
+        ? this.getSessionNotes(sessionId)
+        : of([])
+    ),
+    shareReplay(1),
+  );
+
   signIn() {
     return this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
@@ -113,6 +122,31 @@ export class AdminService {
     this.angularFirestore.firestore.collection('sessions').doc(sessionId).update(data);
   }
 
+  getSessionNotes(sessionId: string): Observable<SessionNote[]> {
+    return this.angularFirestore
+      .collection('sessions')
+      .doc(sessionId)
+      .collection<SessionNote>('notes')
+      .valueChanges({idField: 'id'});
+  }
+
+  updateSessionNote(sessionId: string, noteId: string, data: Partial<SessionNote>) {
+    return this.angularFirestore
+      .collection('sessions')
+      .doc(sessionId)
+      .collection<SessionNote>('notes')
+      .doc(noteId)
+      .update(data);
+  }
+
+  addSessionNote(sessionId: string, data: Omit<SessionNote, 'id'>) {
+    return this.angularFirestore
+      .collection('sessions')
+      .doc(sessionId)
+      .collection<SessionNote>('notes')
+      .add(data);
+  }
+
   async getFullSessionData(sessionId: string) {
     const sessionDoc = this.angularFirestore.firestore.collection('sessions').doc(sessionId);
     const roundsCollection = sessionDoc.collection('rounds');
@@ -121,6 +155,9 @@ export class AdminService {
 
     const studentsSnapshot = await sessionDoc.collection('students').get();
     const students = studentsSnapshot.docs.map(d => ({id: d.id, ...d.data()}));
+
+    const notesSnapshot = await sessionDoc.collection('notes').get();
+    const notes = notesSnapshot.docs.map(d => ({id: d.id, ...d.data()}));
 
     const roundsSnapshot = await roundsCollection.get();
 
@@ -146,6 +183,7 @@ export class AdminService {
       id: sessionSnapshot.id,
       ...sessionSnapshot.data(),
       students,
+      notes,
       rounds
     };
 

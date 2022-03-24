@@ -52,6 +52,18 @@
           </mat-nav-list>
         </mat-card-content>
       </mat-card>
+      <mat-card>
+        <mat-card-title>Notes</mat-card-title>
+        <mat-card-content>
+          <button mat-button (click)="newNote(session.id)">Add Note</button>
+          <mat-action-list class="note-list">
+            <button mat-list-item *ngFor="let note of adminService.notesInCurrentSession$ | async" (click)="editNote(session.id, note)">
+              <div matLine>{{note.name}}</div>
+              <div matLine class="note-content-line">{{note.content}}</div>
+            </button>
+          </mat-action-list>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

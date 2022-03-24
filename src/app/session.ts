@@ -25,3 +25,9 @@ export interface SessionStudentData {
   name: string;
   nestBarcode: number;
 }
+
+export interface SessionNote {
+  id?: string;
+  name: string;
+  content: string;
+}
