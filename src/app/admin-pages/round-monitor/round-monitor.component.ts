@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable, of, BehaviorSubject } from 'rxjs';
-import { map, switchMap, shareReplay } from 'rxjs/operators';
+import { map, switchMap, shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
-import { Interaction, RoundStudentData, InteractionWithId } from 'src/app/round';
+import { Interaction, RoundStudentData, InteractionWithId, FirebaseRound } from 'src/app/round';
 import { AuthService } from 'src/app/services/auth.service';
 import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 import { StudentSessionService } from 'src/app/services/student-session.service';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
 import { TimePeriod } from 'src/app/time-period';
-import { FlowerSpecies } from 'src/app/flowers';
+import { FlowerSpecies, allFlowerSpecies } from 'src/app/flowers';
 
 interface StudentInteraction extends Omit<InteractionWithId, 'timePeriod'> {
   flower: FlowerSpecies | null;
@@ -49,9 +49,25 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     switchMap(path => path ? this.firebaseService.getStudentsInRound(path) : of([]))
   );
 
+  currentRound$: Observable<FirebaseRound | null> = this.currentRoundPath$.pipe(
+    switchMap(roundPath =>
+      roundPath
+        ? this.firebaseService.getRound(roundPath)
+        : of(null)
+    ),
+    shareReplay(1),
+  );
+
+  roundFlowersSpecies$: Observable<FlowerSpecies[]> = this.currentRound$.pipe(
+    map(round => round ? round.flowerSpeciesIds : []),
+    distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+    map(flowerSpeciesIds => flowerSpeciesIds.map(id => allFlowerSpecies[id])),
+    shareReplay(1)
+  );
+
   roundInteractionsWithFlowers$: Observable<StudentInteraction[]> = combineLatest([
     this.roundInteractions$,
-    this.studentRoundService.currentFlowersSpecies$
+    this.roundFlowersSpecies$
   ]).pipe(
     map(([interactions, flowers]) => interactions.map(i => ({
       ...i,
@@ -60,11 +76,18 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     })))
   );
 
+  roundTime$: Observable<TimePeriod | null> = this.currentRound$.pipe(
+    map(round => round ? round.currentTime : null),
+    distinctUntilChanged(),
+    map(time => time !== null ? new TimePeriod(time) : null),
+    shareReplay(1)
+  );
+
   students$ = combineLatest([
     this.teacherSessionService.studentsInCurrentSession$,
     this.roundStudents$,
     this.roundInteractionsWithFlowers$,
-    this.studentRoundService.currentTime$
+    this.roundTime$
   ]).pipe(
     map(([sessionStudents, roundStudents, roundInteractions, time]) => {
       return sessionStudents.map(sessionStudent => {
