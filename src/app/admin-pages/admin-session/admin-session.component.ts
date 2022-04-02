@@ -18,7 +18,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
         </mat-form-field>
         <mat-form-field hideRequiredMarker>
           <mat-label>Content</mat-label>
-          <textarea matInput formControlName="content" required></textarea>
+          <textarea class="note-content" matInput formControlName="content" required></textarea>
         </mat-form-field>
       </div>
       <div mat-dialog-actions align="end">
@@ -27,7 +27,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
       </div>
     </form>
   `,
-  styles: ['.dialog-content { display: flex; flex-direction: column; }']
+  styles: ['.dialog-content { display: flex; flex-direction: column; } .note-content { min-height: 200px; }']
 })
 export class SessionNoteDialogComponent {
 
@@ -93,8 +93,15 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
     this.editName = false;
   }
 
+  openNoteDialog(data: {name: string, content: string}) {
+    return this.dialog.open(SessionNoteDialogComponent, {
+      data,
+      width: '500px',
+    })
+  }
+
   newNote(sessionId: string) {
-    const dialogRef = this.dialog.open(SessionNoteDialogComponent, { data: {name: '', content: ''} });
+    const dialogRef = this.openNoteDialog({name: '', content: ''});
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         this.adminService.addSessionNote(sessionId, res);
@@ -103,7 +110,7 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
   }
 
   editNote(sessionId: string, {id, name, content}: SessionNote) {
-    const dialogRef = this.dialog.open(SessionNoteDialogComponent, { data: {name, content} });
+    const dialogRef = this.openNoteDialog({name, content});
     dialogRef.afterClosed().subscribe(res => {
       if (res) {
         this.adminService.updateSessionNote(sessionId, id, res);

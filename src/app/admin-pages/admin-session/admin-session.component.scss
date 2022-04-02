@@ -1,8 +1,18 @@
 .card-container {
   display: flex;
-  .mat-card:not(:last-child) {
-    margin-right: 16px;
-    margin-bottom: 0px;
+  .mat-card {
+    &:not(:last-child) {
+      margin-right: 16px;
+      margin-bottom: 0px;
+    }
+
+    width: 50%;
+  }
+
+  .mat-nav-list, .mat-list {
+    height: 50vh;
+    padding-top: 0;
+    overflow-y: scroll;
   }
 }
 
@@ -16,14 +26,24 @@
   }
 }
 
-.mat-nav-list, .mat-list {
-  height: 50vh;
-  padding-top: 0;
-  overflow-y: scroll;
-}
+
 
 .note-list {
   .note-content-line {
     text-overflow: ellipsis;
+  }
+}
+
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+}
+
+.notes-card {
+  margin-left: 16px;
+  width: 320px;
+
+  .mat-action-list {
+
   }
 }

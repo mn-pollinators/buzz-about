@@ -1,63 +1,71 @@
 <div class="centered-container">
   <div *ngIf="(adminService.teacherSessionService.currentSession$ | async) as session">
-    <mat-card>
-      <mat-card-title *ngIf="!editName">
-        <span>{{session.name ? session.name : session.id}}</span>
-        <button mat-icon-button (click)="editName = true">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-card-title>
-      <mat-card-title *ngIf="editName">
-        <mat-form-field>
-          <input matInput [value]="session.name ? session.name : ''" #nameInput>
-        </mat-form-field>
-        <button mat-icon-button (click)="changeName(session.id, nameInput.value)">
-          <mat-icon>save</mat-icon>
-        </button>
-      </mat-card-title>
-      <mat-card-subtitle>Created {{session.createdAt | timeAgo}} ({{session.createdAt | toDate | date:'yyyy-MM-ddTHH:mm:ssZ'}})</mat-card-subtitle>
-      <mat-card-content>
-        <p>Session ID: {{session.id}}</p>
-        <p>Host ID: {{session.hostId}}</p>
-        <p>Current Round ID: {{session.currentRoundId}}</p>
-        <p>Current join code: {{(adminService.teacherSessionService.activeJoinCode$ | async)?.id}}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button [routerLink]="['/admin/sessions', session.id, 'round-monitor']">Round Monitor</button>
-        <button mat-button (click)="downloadSession(session.id)">Download Session</button>
-      </mat-card-actions>
-    </mat-card>
-    <div class="card-container">
-      <mat-card>
-        <mat-card-title>Students</mat-card-title>
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let student of adminService.teacherSessionService.studentsInCurrentSession$ | async">
-              <div matLine>{{student.name}}</div>
-              <div matLine>ID: {{student.id}}</div>
-              <div matLine>Nest: {{student.nestBarcode}}</div>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
-        <mat-card-title>Rounds</mat-card-title>
-        <mat-card-content>
-          <mat-nav-list class="round-list">
-            <a mat-list-item *ngFor="let round of adminService.roundsInCurrentSession$ | async" [ngClass]="{'active': session.currentRoundId === round.id}">
-              <div matLine>{{round.id}}</div>
-              <div matLine>status: {{round.status}} | {{round.running ? '▶️' : '⏸️'}} | {{round.currentTime}}</div>
-              <div matLine>template: {{round.templateId}}</div>
-            </a>
-          </mat-nav-list>
-        </mat-card-content>
-      </mat-card>
-      <mat-card>
+    <div class="side-by-side">
+      <div>
+        <mat-card>
+          <mat-card-title *ngIf="!editName">
+            <span>{{session.name ? session.name : session.id}}</span>
+            <button mat-icon-button (click)="editName = true">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-card-title>
+          <mat-card-title *ngIf="editName">
+            <mat-form-field>
+              <input matInput [value]="session.name ? session.name : ''" #nameInput>
+            </mat-form-field>
+            <button mat-icon-button (click)="changeName(session.id, nameInput.value)">
+              <mat-icon>save</mat-icon>
+            </button>
+          </mat-card-title>
+          <mat-card-subtitle>Created {{session.createdAt | timeAgo}} ({{session.createdAt | toDate |
+            date:'yyyy-MM-ddTHH:mm:ssZ'}})</mat-card-subtitle>
+          <mat-card-content>
+            <p>Session ID: {{session.id}}</p>
+            <p>Host ID: {{session.hostId}}</p>
+            <p>Current Round ID: {{session.currentRoundId}}</p>
+            <p>Current join code: {{(adminService.teacherSessionService.activeJoinCode$ | async)?.id}}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button [routerLink]="['/admin/sessions', session.id, 'round-monitor']">Round Monitor</button>
+            <button mat-button (click)="downloadSession(session.id)">Download Session</button>
+          </mat-card-actions>
+        </mat-card>
+        <div class="card-container">
+          <mat-card>
+            <mat-card-title>Students</mat-card-title>
+            <mat-card-content>
+              <mat-list>
+                <mat-list-item
+                  *ngFor="let student of adminService.teacherSessionService.studentsInCurrentSession$ | async">
+                  <div matLine>{{student.name}}</div>
+                  <div matLine>ID: {{student.id}}</div>
+                  <div matLine>Nest: {{student.nestBarcode}}</div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+          <mat-card>
+            <mat-card-title>Rounds</mat-card-title>
+            <mat-card-content>
+              <mat-nav-list class="round-list">
+                <a mat-list-item *ngFor="let round of adminService.roundsInCurrentSession$ | async"
+                  [ngClass]="{'active': session.currentRoundId === round.id}">
+                  <div matLine>{{round.id}}</div>
+                  <div matLine>status: {{round.status}} | {{round.running ? '▶️' : '⏸️'}} | {{round.currentTime}}</div>
+                  <div matLine>template: {{round.templateId}}</div>
+                </a>
+              </mat-nav-list>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <mat-card class="notes-card">
         <mat-card-title>Notes</mat-card-title>
         <mat-card-content>
           <button mat-button (click)="newNote(session.id)">Add Note</button>
           <mat-action-list class="note-list">
-            <button mat-list-item *ngFor="let note of adminService.notesInCurrentSession$ | async" (click)="editNote(session.id, note)">
+            <button mat-list-item *ngFor="let note of adminService.notesInCurrentSession$ | async"
+              (click)="editNote(session.id, note)">
               <div matLine>{{note.name}}</div>
               <div matLine class="note-content-line">{{note.content}}</div>
             </button>
