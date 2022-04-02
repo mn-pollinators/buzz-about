@@ -49,7 +49,8 @@
             <mat-card-content>
               <mat-nav-list class="round-list">
                 <a mat-list-item *ngFor="let round of adminService.roundsInCurrentSession$ | async"
-                  [ngClass]="{'active': session.currentRoundId === round.id}">
+                  [ngClass]="{'active': session.currentRoundId === round.id}"
+                  [routerLink]="['/admin/sessions', session.id, 'round-monitor', round.id]">
                   <div matLine>{{round.id}}</div>
                   <div matLine>status: {{round.status}} | {{round.running ? '▶️' : '⏸️'}} | {{round.currentTime}}</div>
                   <div matLine>template: {{round.templateId}}</div>

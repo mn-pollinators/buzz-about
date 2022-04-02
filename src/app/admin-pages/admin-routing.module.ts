@@ -24,7 +24,8 @@ const routes: Routes = [
       { path: '', component: AdminHomeComponent },
       { path: 'sessions', component: AdminSessionsComponent },
       { path: 'sessions/:sessionId', component: AdminSessionComponent },
-      { path: 'sessions/:sessionId/round-monitor', component: RoundMonitorComponent }
+      { path: 'sessions/:sessionId/round-monitor', component: RoundMonitorComponent },
+      { path: 'sessions/:sessionId/round-monitor/:roundId', component: RoundMonitorComponent }
     ]
   },
   { path: 'login', component: LoginComponent, ...canActivate(adminRedirect) }

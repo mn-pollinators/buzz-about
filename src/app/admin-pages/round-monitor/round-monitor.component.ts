@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable, of, BehaviorSubject } from 'rxjs';
+import { map, switchMap, shareReplay } from 'rxjs/operators';
 import { allBeeSpecies, BeeSpecies } from 'src/app/bees';
 import { Interaction, RoundStudentData, InteractionWithId } from 'src/app/round';
 import { AuthService } from 'src/app/services/auth.service';
-import { FirebaseService } from 'src/app/services/firebase.service';
+import { FirebaseService, RoundPath } from 'src/app/services/firebase.service';
 import { StudentRoundService } from 'src/app/services/student-round.service';
 import { StudentSessionService } from 'src/app/services/student-session.service';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
@@ -34,13 +34,18 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) { }
 
+  overrideRound$ = new BehaviorSubject<RoundPath>(null);
 
+  currentRoundPath$ = this.overrideRound$.pipe(
+    switchMap(path => path ? of(path) : this.studentSessionService.currentRoundPath$),
+    shareReplay(1),
+  );
 
-  roundInteractions$: Observable<InteractionWithId[]> = this.studentSessionService.currentRoundPath$.pipe(
+  roundInteractions$: Observable<InteractionWithId[]> = this.currentRoundPath$.pipe(
     switchMap(path => path ? this.firebaseService.getInteractionsWithIds(path) : of([]))
   );
 
-  roundStudents$: Observable<RoundStudentData[]> = this.studentSessionService.currentRoundPath$.pipe(
+  roundStudents$: Observable<RoundStudentData[]> = this.currentRoundPath$.pipe(
     switchMap(path => path ? this.firebaseService.getStudentsInRound(path) : of([]))
   );
 
@@ -92,7 +97,12 @@ export class RoundMonitorComponent implements OnInit, OnDestroy {
     this.activatedRoute.paramMap.subscribe(params => {
       this.studentSessionService.setCurrentSession(params.get('sessionId'));
       this.teacherSessionService.setCurrentSession(params.get('sessionId'));
+      if (params.has('roundId')) {
+        this.overrideRound$.next({sessionId: params.get('sessionId'), roundId: params.get('roundId')});
+      }
     });
+
+
   }
 
   ngOnDestroy() {
