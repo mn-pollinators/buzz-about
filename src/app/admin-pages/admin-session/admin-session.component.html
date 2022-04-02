@@ -1,7 +1,7 @@
 <div class="centered-container">
   <div *ngIf="(adminService.teacherSessionService.currentSession$ | async) as session">
     <div class="side-by-side">
-      <div>
+      <div class="left-container">
         <mat-card>
           <mat-card-title *ngIf="!editName">
             <span>{{session.name ? session.name : session.id}}</span>
@@ -37,7 +37,7 @@
               <mat-list>
                 <mat-list-item
                   *ngFor="let student of adminService.teacherSessionService.studentsInCurrentSession$ | async">
-                  <div matLine>{{student.name}}</div>
+                  <div matLine class="student-name">{{student.name}}</div>
                   <div matLine>ID: {{student.id}}</div>
                   <div matLine>Nest: {{student.nestBarcode}}</div>
                 </mat-list-item>
