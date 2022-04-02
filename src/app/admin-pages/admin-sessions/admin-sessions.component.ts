@@ -12,8 +12,6 @@ export class AdminSessionsComponent implements OnInit {
 
   constructor(public adminService: AdminService) { }
 
-  //sessions$ = this.adminService.getRecentSessions();
-
   sessionFilterFormGroup = new FormGroup({
     name: new FormControl(''),
     hostId: new FormControl(''),

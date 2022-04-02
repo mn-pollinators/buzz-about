@@ -97,7 +97,7 @@ export class AdminSessionComponent implements OnInit, OnDestroy {
     return this.dialog.open(SessionNoteDialogComponent, {
       data,
       width: '500px',
-    })
+    });
   }
 
   newNote(sessionId: string) {
