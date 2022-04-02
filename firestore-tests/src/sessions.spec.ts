@@ -1,6 +1,7 @@
 import * as firebase from '@firebase/testing';
-import { createSession, noAuth, alice, admin, addStudentToSession, bob, otherUser } from './firebase-helpers';
+import { createSession, noAuth, alice, admin, addStudentToSession, bob, otherUser, adminUser, addSessionNote } from './firebase-helpers';
 import { loadFirestoreRules, clearFirestore, deleteFirestoreInstances } from './firebase-helpers';
+import { SessionNote } from 'src/app/session';
 
 beforeAll(loadFirestoreRules);
 
@@ -84,5 +85,57 @@ describe('Sessions', () => {
     const doc = await createSession(admin, {hostId: 'alice'});
     await firebase.assertFails(otherUser.doc(doc.path).get());
     await firebase.assertFails(noAuth.doc(doc.path).get());
+  });
+
+  it('can be read by admins', async () => {
+    const doc = await createSession(admin, {hostId: 'alice'});
+    await firebase.assertSucceeds(adminUser.doc(doc.path).get());
+  });
+
+  it('can be created by admins', async () => {
+    await firebase.assertSucceeds(createSession(adminUser, {hostId: 'alice'}));
+  });
+
+  it('can be updated by admins', async () => {
+    const doc = await createSession(admin, {hostId: 'alice'});
+    await firebase.assertSucceeds(adminUser.doc(doc.path).update({hostId: 'otheruser'}));
+  });
+
+  it('can be deleted by admins', async () => {
+    const doc = await createSession(admin, {hostId: 'alice'});
+    await firebase.assertSucceeds(adminUser.doc(doc.path).delete());
+  });
+
+  describe('Session Notes', () => {
+    let session: firebase.firestore.DocumentReference;
+    beforeEach(async () => {
+      session = await createSession(admin, {hostId: 'alice'});
+      await addStudentToSession(admin, 'bob', session.id, {
+        name: 'Bob',
+        nestBarcode: 22
+      });
+    });
+
+    const testNote: SessionNote = {
+      name: 'test',
+      content: 'testing'
+    };
+
+    it('can only be added to the session by an admin', async () => {
+      await firebase.assertFails(addSessionNote(bob, session.id, testNote));
+      await firebase.assertFails(addSessionNote(alice, session.id, testNote));
+      await firebase.assertFails(addSessionNote(otherUser, session.id, testNote));
+      await firebase.assertFails(addSessionNote(noAuth, session.id, testNote));
+      await firebase.assertSucceeds(addSessionNote(adminUser, session.id, testNote));
+    });
+
+    it('can only be read by an admin', async () => {
+      const doc = await addSessionNote(admin, session.id, testNote);
+      await firebase.assertSucceeds(adminUser.doc(doc.path).get());
+      await firebase.assertFails(bob.doc(doc.path).get());
+      await firebase.assertFails(alice.doc(doc.path).get());
+      await firebase.assertFails(noAuth.doc(doc.path).get());
+      await firebase.assertFails(otherUser.doc(doc.path).get());
+    });
   });
 });

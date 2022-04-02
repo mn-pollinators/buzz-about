@@ -1,0 +1,51 @@
+<div class="centered-container">
+  <div class="card-container">
+    <mat-card class="flex-content">
+      <mat-card-title>Sessions</mat-card-title>
+      <mat-card-content class="flex-content">
+        <form autocomplete="off" [formGroup]="sessionFilterFormGroup" class="flex-content">
+          <mat-form-field>
+            <mat-label>Name Filter</mat-label>
+            <input matInput formControlName="name">
+            <mat-hint>Overrides date filters</mat-hint>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Start Date</mat-label>
+            <input matInput [matDatepicker]="startDatepicker" formControlName="dateStart">
+            <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatepicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>End Date</mat-label>
+            <input matInput [matDatepicker]="endDatepicker" formControlName="dateEnd">
+            <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatepicker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>hostId</mat-label>
+            <input matInput formControlName="hostId">
+          </mat-form-field>
+        </form>
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let session of sessions$ | async" [routerLink]="['/admin/sessions', session.id]">
+            <div matLine>{{session.name ? session.name : session.id}}</div>
+            <div matLine *ngIf="session.name">{{session.id}}</div>
+            <div matLine>Created {{session.createdAt | timeAgo}} | {{session.currentRoundId ? 'In round' : 'Not in round'}}</div>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="flex-content">
+      <mat-card-title>Active Join Codes</mat-card-title>
+      <mat-card-content>
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let joinCode of adminService.activeJoinCodes$ | async" [routerLink]="['/admin/sessions', joinCode.sessionId]">
+            <div matLine>{{ joinCode.id | slice:0:3 }}&nbsp;{{ joinCode.id | slice:3:6 }}</div>
+            <div matLine>Session: {{joinCode.sessionId}}</div>
+            <div matLine>Updated {{joinCode.updatedAt | timeAgo}}</div>
+          </a>
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

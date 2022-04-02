@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument, DocumentReference } from '@
 import { Observable } from 'rxjs';
 import { Session, SessionWithId, SessionStudentData } from '../session';
 import { map, mapTo } from 'rxjs/operators';
-import { FirebaseRound, RoundStudentData, Interaction, HostEvent } from './../round';
+import { FirebaseRound, RoundStudentData, Interaction, HostEvent, FirebaseRoundWithId, InteractionWithId } from './../round';
 import { JoinCode, JoinCodeWithId } from '../join-code';
 import * as firebase from 'firebase/app';
 import firestore = firebase.firestore;
@@ -85,6 +85,14 @@ export class FirebaseService {
       ));
   }
 
+  getRoundsInSession(sessionId: string): Observable<FirebaseRoundWithId[]> {
+    return this.angularFirestore
+      .collection('sessions')
+      .doc<Session>(sessionId)
+      .collection<FirebaseRound>('rounds')
+      .valueChanges({idField: 'id'});
+  }
+
   /**
    * Return an observable stream of the round data for the round whose
    * Firebase ID is `roundId` within the session denoted by `sessionId`.
@@ -93,17 +101,17 @@ export class FirebaseService {
     return this.getRoundDocument(roundPath).valueChanges();
   }
 
-   getStudentsInRound(roundPath: RoundPath): Observable<RoundStudentData[]> {
-    return this.getRoundDocument(roundPath)
-      .collection<RoundStudentData>('students')
-      .valueChanges({idField: 'id'});
-  }
-
   getRoundStudent(roundPath: RoundPath, studentId: string): Observable<RoundStudentData> {
     return this.getRoundDocument(roundPath)
       .collection('students')
       .doc<RoundStudentData>(studentId)
       .valueChanges();
+  }
+
+  getStudentsInRound(roundPath: RoundPath): Observable<RoundStudentData[]> {
+    return  this.getRoundDocument(roundPath)
+      .collection<RoundStudentData>('students')
+      .valueChanges({idField: 'id'});
   }
 
   addStudentToRound(id: string, roundPath: RoundPath, studentData: RoundStudentData) {
@@ -224,6 +232,13 @@ export class FirebaseService {
       'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
       ref => ref.orderBy('createdAt', 'desc'),
     ).valueChanges();
+  }
+
+  getInteractionsWithIds(roundPath: RoundPath): Observable<InteractionWithId[]> {
+    return this.angularFirestore.collection<Interaction>(
+      'sessions/' + roundPath.sessionId + '/rounds/' + roundPath.roundId + '/interactions',
+      ref => ref.orderBy('createdAt', 'desc'),
+    ).valueChanges({idField: 'id'});
   }
 
   /**

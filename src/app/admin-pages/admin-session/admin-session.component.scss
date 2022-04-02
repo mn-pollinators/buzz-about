@@ -1,0 +1,57 @@
+.card-container {
+  display: flex;
+  .mat-card {
+    &:not(:last-child) {
+      margin-right: 16px;
+      margin-bottom: 0px;
+    }
+
+    width: 50%;
+  }
+
+  .mat-nav-list, .mat-list {
+    height: 50vh;
+    padding-top: 0;
+    overflow-y: scroll;
+  }
+}
+
+.mat-card:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.round-list {
+  .active .mat-line {
+    font-weight: bold !important;
+  }
+}
+
+
+
+.note-list {
+  .note-content-line {
+    text-overflow: ellipsis;
+  }
+}
+
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+}
+
+.notes-card {
+  margin-left: 16px;
+  width: 320px;
+
+  .mat-action-list {
+
+  }
+}
+
+.student-name {
+  text-overflow: ellipsis;
+}
+
+.left-container {
+  max-width: 50vw;
+}

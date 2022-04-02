@@ -39,6 +39,7 @@ const routes: Routes = [
   {path: 'test', component: TestPagesComponent},
   {path: 'test', children: testRoutes},
   {path: 'markers', loadChildren: () => import('./pages/marker-generator/marker-generator.module').then(m => m.MarkerGeneratorModule)},
+  {path: 'admin', loadChildren: () => import('./admin-pages/admin.module').then(m => m.AdminModule)},
   {path: '**', component: PageNotFoundComponent}
 ];
 

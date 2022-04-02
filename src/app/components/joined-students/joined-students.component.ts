@@ -54,7 +54,7 @@ export class RenameStudentDialogComponent {
   nameFormControl: FormControl;
 
   constructor(
-    public dialogRef: MatDialogRef<ConfirmRemoveStudentDialogComponent>,
+    public dialogRef: MatDialogRef<RenameStudentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SessionStudentData
   ) {
     this.nameFormControl = new FormControl(data.name, Validators.required);

@@ -1,7 +1,7 @@
 import * as firebase from '@firebase/testing';
 import { firestore } from '@firebase/testing';
 import * as fs from 'fs';
-import { SessionStudentData } from '../../src/app/session';
+import { SessionStudentData, SessionNote } from '../../src/app/session';
 import { JoinCode } from '../../src/app/join-code';
 import { RoundStudentData, FirebaseRound, Interaction, HostEvent, defaultRoundOptions } from '../../src/app/round';
 
@@ -65,6 +65,9 @@ export const otherUser = getAuthedFirestore({uid: 'otheruser'});
 
 // noAuth is an unauthenticated user
 export const noAuth = getAuthedFirestore(null);
+
+// adminUser is a user with the admin claim
+export const adminUser = getAuthedFirestore({uid: 'adminuser', admin: true});
 
 
 /* These are some utility functions for manipulating firestore. */
@@ -138,4 +141,10 @@ export {milliseconds} from '../../src/app/utils/time-utils';
 
 export async function queryJoinCodesBySessionId(db: firestore.Firestore, sessionId: string) {
   return db.collection('joinCodes').where('sessionId', '==', sessionId).get();
+}
+
+/* Session Notes */
+
+export function addSessionNote(db: firestore.Firestore, sessionId: string, sessionNote: SessionNote) {
+  return db.collection('sessions/' + sessionId + '/notes').add(sessionNote);
 }

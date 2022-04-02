@@ -9,6 +9,7 @@ export interface Session {
   currentRoundId?: string;
   createdAt: firestore.Timestamp | firestore.FieldValue;
   showFieldGuide?: boolean;
+  name?: string;
 }
 
 
@@ -23,4 +24,10 @@ export interface SessionStudentData {
   id?: string;
   name: string;
   nestBarcode: number;
+}
+
+export interface SessionNote {
+  id?: string;
+  name: string;
+  content: string;
 }

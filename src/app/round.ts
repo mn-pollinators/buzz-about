@@ -25,6 +25,13 @@ export interface FirebaseRound {
 }
 
 /**
+ * A FirebaseRound with its ID
+ */
+export interface FirebaseRoundWithId extends FirebaseRound {
+  id: string;
+}
+
+/**
  * An individual flower in the round that bees can visit.
  *
  * Instances of RoundFlower are immutable. As such, when a flower
@@ -53,6 +60,10 @@ export interface Interaction {
   barcodeValue: number;
   isNest: boolean;
   incompatibleFlower: boolean;
+}
+
+export interface InteractionWithId extends Interaction {
+  id: string;
 }
 
 /**

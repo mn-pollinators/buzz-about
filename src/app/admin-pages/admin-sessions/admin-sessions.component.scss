@@ -1,0 +1,26 @@
+.card-container {
+  height: 80vh;
+  display: flex;
+  .mat-card {
+    min-width: 300px;
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+  }
+}
+
+.flex-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-card-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+.mat-nav-list {
+  height: 100%;
+  padding-top: 0;
+  overflow-y: scroll;
+}
