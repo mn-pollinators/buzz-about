@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { FlowerLayoutItem } from '../flower-layout/flower-layout.component';
-import { FlowerSpecies, allFlowerSpecies } from 'src/app/flowers';
+import { FlowerSpecies, allFlowerSpecies, allFlowerSpeciesArray } from 'src/app/flowers';
 import { testRounds } from 'src/app/round-templates/test-rounds';
 import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,11 +8,11 @@ import { takeUntil } from 'rxjs/operators';
 import { FlowerSelectDialogComponent } from '../flower-select-dialog/flower-select-dialog.component';
 
 @Component({
-  selector: 'app-round-editor',
-  templateUrl: './round-editor.component.html',
-  styleUrls: ['./round-editor.component.scss']
+  selector: 'app-round-flowers-editor',
+  templateUrl: './round-flowers-editor.component.html',
+  styleUrls: ['./round-flowers-editor.component.scss']
 })
-export class RoundEditorComponent implements OnInit {
+export class RoundFlowersEditorComponent implements OnInit {
 
   @Input()
   defaultFlowers: FlowerSpecies[] = [
@@ -25,6 +25,9 @@ export class RoundEditorComponent implements OnInit {
     null,
     null,
   ];
+
+  @Input()
+  flowerOptions: FlowerSpecies[] = allFlowerSpeciesArray;
 
   // Output prop name must be Input prop name + 'Change'
   // Use in your component to write an updated value back out to the parent
@@ -59,7 +62,7 @@ export class RoundEditorComponent implements OnInit {
 
 
   flowerClicked(index: number) {
-    const dialog = this.openDialog();
+    const dialog = this.openDialog({flowers: this.flowerOptions});
     dialog.afterClosed().subscribe(flower => {
       if (flower) {
         this.flowers[index] = flower;
