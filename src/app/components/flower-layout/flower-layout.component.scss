@@ -6,9 +6,11 @@
   height: 100%;
   display: block;
 
+
   .flower-item {
     position: absolute;
     transform: translate(-50%, -50%);
+    user-select: none;
   }
 }
 
@@ -18,4 +20,14 @@
   position: relative;
   overflow: hidden;
   contain: layout;
+
+  user-select: none;
+}
+
+:host[clickable-items] {
+  .flower-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

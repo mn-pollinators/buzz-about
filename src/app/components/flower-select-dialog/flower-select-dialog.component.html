@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Select a Flower</h1>
+<div mat-dialog-content>
+  <div class="flowers item-list">
+    <mat-card
+      *ngFor="let flower of data.flowers"
+      matRipple
+      [mat-dialog-close]="flower"
+      class="item-card"
+      [attr.data-cy]="flower.id"
+    >
+      <div class="image-container">
+        <img [src]="flower.asset_urls.art_500_wide">
+      </div>
+      <mat-card-title>{{ flower.name | titlecase }}</mat-card-title>
+    </mat-card>
+  </div>
+</div>

@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { trackByIndex } from 'src/app/utils/array-utils';
+import { FlowerSpecies } from 'src/app/flowers';
 
 export interface FlowerLayoutItem {
   imgSrc: string;
@@ -79,6 +80,8 @@ export class FlowerLayoutComponent implements OnInit {
   @Input() items: FlowerLayoutItem[] = [];
 
   @Input() tooltips = false;
+
+  @Output() itemClicked = new EventEmitter<number>();
 
   trackByIndex = trackByIndex;
 

@@ -36,6 +36,9 @@ import { SharedModule } from './shared.module';
 import { FieldGuideTestComponent } from './test-pages/field-guide-test/field-guide-test.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { FlowerLayoutWithBeesComponent } from './components/flower-layout-with-bees/flower-layout-with-bees.component';
+import { RoundEditorComponent } from './components/round-editor/round-editor.component';
+import { RoundEditorTestComponent } from './test-pages/round-editor-test/round-editor-test.component';
+import { FlowerSelectDialogComponent } from './components/flower-select-dialog/flower-select-dialog.component';
 
 const FIREBASE_MODULES = [
   AngularFireModule.initializeApp(environment.firebase),
@@ -70,6 +73,9 @@ const FIREBASE_MODULES = [
     FieldGuideTestComponent,
     PageNotFoundComponent,
     FlowerLayoutWithBeesComponent,
+    RoundEditorComponent,
+    RoundEditorTestComponent,
+    FlowerSelectDialogComponent,
   ],
   imports: [
     BrowserModule,
