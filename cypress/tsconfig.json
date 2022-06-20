@@ -3,14 +3,12 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["es5", "dom"],
-    "outDir": "../out-tsc/cypress",
     "types": [
       "cypress",
       "node",
       "cypress-firebase"
     ],
-    "sourceMap": false,
-    "noEmit": true
+    "sourceMap": false
   },
   "include": [
     "**/*.ts",
