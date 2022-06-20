@@ -133,10 +133,8 @@
           }
         },
         "e2e": {
-          "builder": "@nrwl/cypress:cypress",
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "cypressConfig": "cypress.json",
-            "tsConfig": "cypress/tsconfig.json",
             "devServerTarget": "buzz-about:serve"
           },
           "configurations": {

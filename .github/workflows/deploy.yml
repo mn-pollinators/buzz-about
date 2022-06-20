@@ -1,5 +1,9 @@
 name: Firebase Deploy
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [ master ]
@@ -10,17 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Cache node modules
-      uses: actions/cache@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
       with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
+        node-version: 16
+        cache: 'npm'
         registry-url: 'https://npm.pkg.github.com'
         scope: '@mn-pollinators'
     - name: Install dependencies (npm ci)
@@ -32,8 +30,9 @@ jobs:
     - name: Build (npm run build)
       run: npm run build -- --prod
     - name: Deploy to Firebase
-      uses: w9jds/firebase-action@master
+    - uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        args: deploy --force
-      env:
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_BUZZ_ABOUT }}'
+        channelId: live
+        projectId: buzz-about
