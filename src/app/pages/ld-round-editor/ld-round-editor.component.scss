@@ -1,0 +1,63 @@
+@import "../../../variables";
+
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-content {
+  display: flex;
+  padding: 16px;
+  justify-content: center;
+}
+
+.top-content-middle-section {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  max-width: 800px;
+}
+
+.overlay {
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.large-display-content {
+  // Fill the rest of the screen. (The parts not covered by the toolbar.)
+  flex: 1;
+  // Crop the contents if they're too big.
+  overflow: hidden;
+  position: relative;
+
+  background-color: mat-color($primary);
+
+  app-round-flowers-editor {
+    display: block;
+    width: 100%;
+  }
+}
+
+.loading {
+  min-width: 168px;
+  mat-card-title {
+    text-align: center;
+  }
+}
+
+mat-spinner {
+  margin: auto;
+  margin-top: 16px;
+}
+
+.main-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

@@ -21,6 +21,7 @@ import { BeeLayoutItem } from 'src/app/components/flower-layout-with-bees/flower
 export enum ScreenId {
   Lobby,
   LoadingSession,
+  EditingRound,
   DuringTheRound,
 }
 
@@ -59,10 +60,13 @@ export class LargeDisplayComponent implements OnInit {
       loading
         ? of(ScreenId.LoadingSession)
         : this.teacherSessionService.currentRoundPath$.pipe(
-          map(roundPath =>
+          switchMap(roundPath =>
             roundPath === null
-              ? ScreenId.Lobby
-              : ScreenId.DuringTheRound
+              ? this.teacherRoundService.roundTemplate$.pipe(
+                map(template =>
+                  template && template.editBeforeStart ? ScreenId.EditingRound : ScreenId.Lobby)
+              )
+              : of(ScreenId.DuringTheRound)
           ),
         )
     ),

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RoundFlowersEditorComponent } from './round-flowers-editor.component';
+import { LdRoundEditorComponent } from './ld-round-editor.component';
 
-describe('RoundEditorComponent', () => {
-  let component: RoundFlowersEditorComponent;
-  let fixture: ComponentFixture<RoundFlowersEditorComponent>;
+describe('LdRoundEditorComponent', () => {
+  let component: LdRoundEditorComponent;
+  let fixture: ComponentFixture<LdRoundEditorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RoundFlowersEditorComponent ]
+      declarations: [ LdRoundEditorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RoundFlowersEditorComponent);
+    fixture = TestBed.createComponent(LdRoundEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,6 +3,10 @@
     <app-session-lobby></app-session-lobby>
   </ng-container>
 
+  <ng-container *ngSwitchCase="ScreenId.EditingRound">
+    <app-ld-round-editor></app-ld-round-editor>
+  </ng-container>
+
   <ng-container *ngSwitchCase="ScreenId.DuringTheRound">
     <div class="large-display-content during-the-round">
       <app-timer-progress-bar

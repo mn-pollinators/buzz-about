@@ -45,6 +45,10 @@ export interface RoundTemplate {
    * If no array is given, bees will be assigned from the set of all be species.
    */
   bees?: BeeSpecies[];
+  /**
+   * Should the round be edited before starting
+   */
+  editBeforeStart?: boolean;
 }
 
 /**

@@ -2,6 +2,7 @@ import { FlowerSpecies } from './flowers';
 import { TimePeriod } from './time-period';
 import * as firebase from 'firebase/app';
 import firestore = firebase.firestore;
+import { RoundTemplate } from './round-templates/round-templates';
 
 
 export interface RoundOptions {
@@ -83,4 +84,9 @@ export interface HostEvent {
   eventType: HostEventType;
   timePeriod: number;
   occurredAt: firestore.Timestamp;
+}
+
+export interface RoundDialogData {
+  template: RoundTemplate;
+  options?: RoundOptions;
 }

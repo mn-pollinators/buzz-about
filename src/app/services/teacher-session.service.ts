@@ -169,8 +169,20 @@ export class TeacherSessionService {
     return this.firebaseService.updateStudentInSession(id, sessionId, {name});
   }
 
-  async showFieldGuide(showFieldGuide: boolean) {
+  async setShowFieldGuide(showFieldGuide: boolean) {
     const sessionId = await this.sessionId$.pipe(take(1)).toPromise();
     return this.firebaseService.setShowFieldGuide(sessionId, showFieldGuide);
+  }
+
+  async showFieldGuide() {
+    if (!(await this.showFieldGuide$.pipe(take(1)).toPromise())) {
+      return this.setShowFieldGuide(false);
+    }
+  }
+
+  async closeFieldGuide() {
+    if (await this.showFieldGuide$.pipe(take(1)).toPromise()) {
+      return this.setShowFieldGuide(false);
+    }
   }
 }
