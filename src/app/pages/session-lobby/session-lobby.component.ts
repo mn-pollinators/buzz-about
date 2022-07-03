@@ -59,6 +59,7 @@ export class SessionLobbyComponent implements OnInit {
         //   });
         // result = await roundEditorDialogRef.afterClosed().toPromise();
         this.teacherRoundService.setRoundTemplateAndOptions(roundChooserDialogResult.template, roundChooserDialogResult.options);
+        await this.showFieldGuide();
       } else {
         this.loading$.next(true);
         await this.closeFieldGuide();

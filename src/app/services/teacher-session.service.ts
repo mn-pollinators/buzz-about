@@ -176,7 +176,7 @@ export class TeacherSessionService {
 
   async showFieldGuide() {
     if (!(await this.showFieldGuide$.pipe(take(1)).toPromise())) {
-      return this.setShowFieldGuide(false);
+      return this.setShowFieldGuide(true);
     }
   }
 
