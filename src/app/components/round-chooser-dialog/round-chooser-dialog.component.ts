@@ -38,6 +38,14 @@ export class RoundChooserDialogComponent implements OnInit {
 
   getFlowers(flowers: FlowerSpecies[]): FlowerLayoutItem[] {
     return flowers.map((species) => {
+      if (!species) {
+        return {
+          imgSrc: '/assets/icons/icon-circle.svg',
+          alt: 'No Flower Selected',
+          active: true,
+          scale: 1
+        };
+      }
       return {
         imgSrc: species.asset_urls.art_500_wide,
         alt: species.name,

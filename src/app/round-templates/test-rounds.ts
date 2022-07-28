@@ -1,4 +1,4 @@
-import { allBeeSpecies } from '../bees';
+import { allBeeSpecies, allBeeSpeciesArray } from '../bees';
 import { allFlowerSpecies } from '../flowers';
 import { TimePeriod } from '../time-period';
 import { RoundTemplateSet } from './round-templates';

@@ -12,6 +12,7 @@
       [imgSrc]="item.imgSrc"
       [imgAlt]="item.alt"
       [active]="item.active"
+      (click)="itemClicked.emit(i)"
     >
     </app-flower-layout-item>
   </div>

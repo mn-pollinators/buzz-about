@@ -1,0 +1,29 @@
+<div class="header">
+  <button mat-icon-button class="close-button" aria-label="close dialog" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+  <h1 mat-dialog-title>
+    {{data.round.name}}
+  </h1>
+</div>
+
+
+
+<div class="description">
+  <div *ngIf="data.round.description" class="description-text">
+    <p>{{data.round.description}}</p>
+  </div>
+
+  <div>
+    <h3>Bees in Round</h3>
+    <div class="accepted-list">
+      <div *ngFor="let item of data.round.bees" class="accepted-list-item">
+        <img *ngIf="!platform.WEBKIT; else webkitFixAcceptedImg" [src]="item.asset_urls.art_500_wide">
+        <ng-template #webkitFixAcceptedImg>
+          <img class="webkit-fix" [src]="item.asset_urls.art_512_square">
+        </ng-template>
+        <div class="accepted-name">{{item.name | titlecase}}</div>
+      </div>
+    </div>
+  </div>
+</div>

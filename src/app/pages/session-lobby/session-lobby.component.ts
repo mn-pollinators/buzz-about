@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FullscreenService } from 'src/app/services/fullscreen.service';
 import { take } from 'rxjs/operators';
-import { RoundOptions } from 'src/app/round';
+import { RoundDialogData, RoundOptions } from 'src/app/round';
 
 @Component({
   selector: 'app-session-lobby',
@@ -47,20 +47,26 @@ export class SessionLobbyComponent implements OnInit {
   }
 
   async openRoundDialog() {
-    const dialogRef: MatDialogRef<RoundChooserDialogComponent, {template: RoundTemplate, options?: RoundOptions}> =
+    const roundChooserDialogRef: MatDialogRef<RoundChooserDialogComponent, RoundDialogData> =
       this.matDialog.open(RoundChooserDialogComponent);
 
-    const dialogResult = await dialogRef.afterClosed().toPromise();
-    if (dialogResult && dialogResult.template) {
-      this.loading$.next(true);
-      await this.closeFieldGuide();
-      try {
-        await this.teacherRoundService.startNewRound(dialogResult.template, dialogResult.options);
-      } catch (err) {
-        this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
-      } finally {
-        this.loading$.next(false);
+    const roundChooserDialogResult = await roundChooserDialogRef.afterClosed().toPromise();
+    if (roundChooserDialogResult && roundChooserDialogResult.template) {
+      if (roundChooserDialogResult.template.editBeforeStart) {
+        this.teacherRoundService.setRoundTemplateAndOptions(roundChooserDialogResult.template, roundChooserDialogResult.options);
+        await this.showFieldGuide();
+      } else {
+        this.loading$.next(true);
+        await this.closeFieldGuide();
+        try {
+          await this.teacherRoundService.startNewRound(roundChooserDialogResult.template, roundChooserDialogResult.options);
+        } catch (err) {
+          this.matSnackbar.open(`Error: ${err}`, undefined, {duration: 10000, horizontalPosition: 'right', verticalPosition: 'top' });
+        } finally {
+          this.loading$.next(false);
       }
+      }
+
     }
   }
 
@@ -82,13 +88,11 @@ export class SessionLobbyComponent implements OnInit {
     return this.teacherSessionService.deleteCurrentJoinCode();
   }
 
-  showFieldGuide() {
-    return this.teacherSessionService.showFieldGuide(true);
+  async showFieldGuide() {
+    return this.teacherSessionService.showFieldGuide();
   }
 
   async closeFieldGuide() {
-    if (await this.showFieldGuide$.pipe(take(1)).toPromise()) {
-      return this.teacherSessionService.showFieldGuide(false);
-    }
+    return this.teacherSessionService.closeFieldGuide();
   }
 }

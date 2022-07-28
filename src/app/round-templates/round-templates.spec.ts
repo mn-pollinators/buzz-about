@@ -25,7 +25,7 @@ describe('Sets of Round Templates', () => {
           expect(new Set(templateIds).size).toEqual(templateIds.length);
         });
 
-        templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees}) => {
+        templates.forEach(({name, flowerSpecies, startTime, endTime, tickSpeed, bees, editBeforeStart}) => {
           describe(name, () => {
 
             it('has a name', () => {
@@ -35,6 +35,14 @@ describe('Sets of Round Templates', () => {
             it('has either 8 or 16 flowers', () => {
               expect([8, 16]).toContain(flowerSpecies.length);
             });
+
+            if (!editBeforeStart) {
+              describe('because editBeforeStart is false', () => {
+                it('has no null flowers', () => {
+                  expect(flowerSpecies).not.toContain(null);
+                });
+              });
+            }
 
             if (bees) {
               describe('if there are bees', () => {

@@ -41,7 +41,13 @@ body {
 }
 
 .field-guide-panel {
+  @media(min-width: $tablet-portrait-min-width) {
+    max-width: 80vw;
+    width: 800px;
+  }
+}
 
+.round-info-panel {
   @media(min-width: $tablet-portrait-min-width) {
     max-width: 80vw;
     width: 800px;

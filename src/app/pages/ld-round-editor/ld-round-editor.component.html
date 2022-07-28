@@ -1,0 +1,40 @@
+<div *ngIf="(loading$ | async) === false else loading" class="main-view">
+  <div class="large-display-content">
+    <app-round-flowers-editor *ngIf="(initialFlowers$ | async) as df" [defaultFlowers]="df" (flowersChange)="flowersChange($event)"></app-round-flowers-editor>
+    <div class="overlay">
+      <div class="top-content">
+        <div class="top-content-middle-section">
+          <mat-card class="top-card">
+            <mat-card-title>Select flowers for this round</mat-card-title>
+            <mat-card-content *ngIf="invalidFlowerCount$ | async as invalidFlowerCount">Select {{invalidFlowerCount}} more {{'flower' | makePluralString: invalidFlowerCount}} to continue</mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="this.openRoundInfoDialog()">Round Info</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-bottom-bar>
+    <button left mat-raised-button color="accent" (click)="quitRound()">Quit Round</button>
+    <button center mat-raised-button
+      color="accent"
+      (click)="startRound()"
+      [disabled]="!(flowersValid$ | async)"
+    >
+      Start Round
+    </button>
+  </app-bottom-bar>
+</div>
+
+<ng-template #loading>
+  <app-hill-background cover></app-hill-background>
+  <div class="centered-container">
+    <mat-card class="loading">
+      <mat-card-title>
+        Loading&hellip;
+      </mat-card-title>
+      <mat-spinner></mat-spinner>
+    </mat-card>
+  </div>
+</ng-template>

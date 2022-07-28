@@ -1,0 +1,44 @@
+@use '../../../variables' as *;
+
+$content-width: 1400px;
+$content-margin: 16px;
+$num-cols-max: 7;
+$item-max-width: ($content-width - (($num-cols-max - 1) * $content-margin)) / $num-cols-max;
+$item-img-height: 152px;
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(#{$item-max-width}, max(#{$item-img-height}, 50% - #{$content-margin * 3})), 1fr));
+  grid-gap: $content-margin;
+  grid-auto-rows: 1fr;
+
+  margin-top: $content-margin;
+
+  .item-card {
+    user-select: none;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .image-container {
+      height: $item-img-height;
+      margin-bottom: 16px;
+      display: grid;
+      place-items: center;
+      img {
+        pointer-events: none;
+        display: block;
+        max-height: $item-img-height;
+        max-width: 100%;
+      }
+    }
+
+    .mat-card-title {
+      margin-bottom: 0;
+      line-height: mat-line-height($typography-config, subheading-1);
+    }
+  }
+
+  margin-bottom: $content-margin * 3;
+}

@@ -6,9 +6,10 @@ import { asyncScheduler, BehaviorSubject, combineLatest, Observable, of } from '
 import { allBeeSpecies, BeeSpecies } from './../bees';
 import { TeacherSessionService } from './../services/teacher-session.service';
 import { SessionStudentData } from './../session';
-import { filter, take, map, shareReplay, throttleTime, switchMap } from 'rxjs/operators';
+import { filter, take, map, shareReplay, throttleTime, switchMap, tap } from 'rxjs/operators';
 import { RoundTemplate } from '../round-templates/round-templates';
 import { shuffleArray } from '../utils/array-utils';
+import { FlowerSpecies } from '../flowers';
 
 @Injectable({
   providedIn: 'root'
@@ -92,19 +93,49 @@ export class TeacherRoundService {
     return this.firebaseService.addHostEvent(roundPath, {eventType, timePeriod: time.time});
   }
 
+
+  async createNewRound(template: RoundTemplate, options?: Partial<RoundOptions>) {
+
+  }
+
+  // async updateRoundFlowers(roundPath: RoundPath, flowers: FlowerSpecies[]) {
+  //   return this.firebaseService.updateRoundData(roundPath, {
+  //     flowerSpeciesIds: flowers.map(f => f.id)
+  //   });
+  // }
+
+
+  setRoundTemplateAndOptions(template: RoundTemplate, options?: Partial<RoundOptions>) {
+    this.roundTemplate$.next(template);
+
+    const newRoundOptions: RoundOptions = {...defaultRoundOptions, ...options};
+    this.roundOptions$.next(newRoundOptions);
+  }
+
+  async updateFlowersInTemplate(flowers: FlowerSpecies[]) {
+    const template = await this.roundTemplate$.pipe(take(1)).toPromise();
+    this.roundTemplate$.next(
+      {
+        ...template,
+        flowerSpecies: flowers
+      }
+    );
+  }
+
   /**
    * Create a new round within the current session, mark it as the currently
    * active round, set its initial state, and hook up the TimerService so that
    * when the timer ticks, the round updates.
    */
-  // In the future, we might get sessionId from a TeacherSessionService, rather
-  // than passing it in as a parameter.
   async startNewRound(template: RoundTemplate, options?: Partial<RoundOptions>) {
+    this.setRoundTemplateAndOptions(template, options);
+    return this.startRound();
+  }
 
-    const newRoundOptions: RoundOptions = {...defaultRoundOptions, ...options};
-
-    this.roundTemplate$.next(template);
-    this.roundOptions$.next(newRoundOptions);
+  async startRound() {
+    const template = await this.roundTemplate$.pipe(take(1)).toPromise();
+    const options = await this.roundOptions$.pipe(take(1)).toPromise();
+    console.log(template);
 
     const roundData: FirebaseRound = {
       flowerSpeciesIds: template.flowerSpecies.map(f => f.id),
@@ -112,7 +143,7 @@ export class TeacherRoundService {
       running: false,
       currentTime: template.startTime.time,
       templateId: template.id,
-      options: newRoundOptions
+      options
     };
 
     const sessionId = await this.teacherSessionService.sessionId$.pipe(take(1)).toPromise();
@@ -159,5 +190,7 @@ export class TeacherRoundService {
     await this.firebaseService.setCurrentRound({sessionId, roundId: null});
     this.teacherSessionService.currentRoundPath$.next(null);
     this.roundTemplate$.next(null);
+    this.roundOptions$.next(null);
+    await this.teacherSessionService.closeFieldGuide();
   }
 }

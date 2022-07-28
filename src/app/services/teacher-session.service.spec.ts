@@ -646,7 +646,7 @@ describe('TeacherSessionService', () => {
         const spy = spyOn(firebaseService, 'setShowFieldGuide')
           .and.callFake(() => Promise.resolve());
 
-        service.showFieldGuide(true);
+        service.setShowFieldGuide(true);
         tick(0);
 
         expect(spy).toHaveBeenCalledTimes(1);
@@ -663,7 +663,7 @@ describe('TeacherSessionService', () => {
           .and.callFake(() => new Promise(resolve => setTimeout(resolve, 1000)));
 
         let hasShowFieldGuideCompleted = false;
-        service.showFieldGuide(true).then(() => {
+        service.setShowFieldGuide(true).then(() => {
           hasShowFieldGuideCompleted = true;
         });
 
