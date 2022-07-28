@@ -7,6 +7,9 @@
           <mat-card class="top-card">
             <mat-card-title>Select flowers for this round</mat-card-title>
             <mat-card-content *ngIf="invalidFlowerCount$ | async as invalidFlowerCount">Select {{invalidFlowerCount}} more {{'flower' | makePluralString: invalidFlowerCount}} to continue</mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="this.openRoundInfoDialog()">Round Info</button>
+            </mat-card-actions>
           </mat-card>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { map, take, tap, shareReplay } from 'rxjs/operators';
 import { FlowerSpecies } from 'src/app/flowers';
 import { BehaviorSubject } from 'rxjs';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
+import { MatDialog } from '@angular/material/dialog';
+import { RoundInfoDialogComponent } from 'src/app/components/round-info-dialog/round-info-dialog.component';
 
 @Component({
   selector: 'app-ld-round-editor',
@@ -12,7 +14,11 @@ import { TeacherSessionService } from 'src/app/services/teacher-session.service'
 })
 export class LdRoundEditorComponent implements OnInit {
 
-  constructor(public teacherRoundService: TeacherRoundService, public teacherSessionService: TeacherSessionService) { }
+  constructor(
+    public teacherRoundService: TeacherRoundService,
+    public teacherSessionService: TeacherSessionService,
+    readonly dialog: MatDialog
+  ) { }
 
   roundTemplate$ = this.teacherRoundService.roundTemplate$;
 
@@ -54,6 +60,18 @@ export class LdRoundEditorComponent implements OnInit {
     await this.teacherSessionService.closeFieldGuide();
     await this.teacherRoundService.endRound();
     this.loading$.next(false);
+  }
+
+  async openRoundInfoDialog() {
+    const round = await this.roundTemplate$.pipe(take(1)).toPromise();
+    return this.dialog.open(RoundInfoDialogComponent, {
+      data: {
+        round
+      },
+      panelClass: 'round-info-panel',
+      maxWidth: null,
+      autoFocus: false
+    });
   }
 
   ngOnInit(): void {
