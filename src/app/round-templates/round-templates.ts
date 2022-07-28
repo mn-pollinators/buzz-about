@@ -3,6 +3,7 @@ import { TimePeriod } from '../time-period';
 import { BeeSpecies } from '../bees';
 import { set1 } from './set-1';
 import { testRounds } from './test-rounds';
+import { testEditableRounds } from './test-editable-rounds';
 
 /**
  * A round template is used to create the round when started.
@@ -74,6 +75,7 @@ export interface RoundTemplateSet {
 }
 
 export const defaultRoundSets: RoundTemplateSet[] = [
+  testEditableRounds,
   set1,
   testRounds
 ];

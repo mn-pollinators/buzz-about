@@ -53,11 +53,6 @@ export class SessionLobbyComponent implements OnInit {
     const roundChooserDialogResult = await roundChooserDialogRef.afterClosed().toPromise();
     if (roundChooserDialogResult && roundChooserDialogResult.template) {
       if (roundChooserDialogResult.template.editBeforeStart) {
-        // const roundEditorDialogRef: MatDialogRef<RoundEditorDialogComponent, RoundDialogData> =
-        //   this.matDialog.open(RoundEditorDialogComponent, {
-        //     data: result
-        //   });
-        // result = await roundEditorDialogRef.afterClosed().toPromise();
         this.teacherRoundService.setRoundTemplateAndOptions(roundChooserDialogResult.template, roundChooserDialogResult.options);
         await this.showFieldGuide();
       } else {

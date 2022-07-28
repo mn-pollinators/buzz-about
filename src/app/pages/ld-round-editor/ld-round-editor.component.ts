@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TeacherRoundService } from 'src/app/services/teacher-round.service';
-import { map, take, tap } from 'rxjs/operators';
+import { map, take, tap, shareReplay } from 'rxjs/operators';
 import { FlowerSpecies } from 'src/app/flowers';
 import { BehaviorSubject } from 'rxjs';
 import { TeacherSessionService } from 'src/app/services/teacher-session.service';
@@ -25,7 +25,13 @@ export class LdRoundEditorComponent implements OnInit {
   flowers$ = new BehaviorSubject<FlowerSpecies[]>([]);
 
   flowersValid$ = this.flowers$.pipe(
-    map(flowers => flowers.length > 0 && flowers.every(flower => flower !== null))
+    map(flowers => flowers.length > 0 && flowers.every(flower => flower !== null)),
+    shareReplay(1)
+  );
+
+  invalidFlowerCount$ = this.flowers$.pipe(
+    map(flowers => flowers.filter(f => f === null).length),
+    shareReplay(1)
   );
 
   loading$ = new BehaviorSubject<boolean>(false);
